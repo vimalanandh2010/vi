@@ -80,8 +80,8 @@ app.use(helmet({
                 "https://*.supabase.co",
                 "https://*.onrender.com",
                 "wss://*.onrender.com",
-                process.env.FRONTEND_URL,
-                process.env.BACKEND_URL
+                process.env.FRONTEND_URL?.trim().replace(/[\r\n]/g, ""),
+                process.env.BACKEND_URL?.trim().replace(/[\r\n]/g, "")
             ].filter(Boolean),
             "frame-src": ["'self'", "https://accounts.google.com", "https://*.supabase.co"],
             "object-src": ["'none'"],
@@ -101,8 +101,8 @@ app.use(cors({
         const allowedOrigins = [
             /^http:\/\/localhost:\d+$/,
             /^http:\/\/127\.0\.0\.1:\d+$/,
-            process.env.FRONTEND_URL,
-            process.env.FRONTEND_URL?.replace(/\/$/, ""), // Remove trailing slash if present
+            process.env.FRONTEND_URL?.trim().replace(/[\r\n]/g, ""),
+            process.env.FRONTEND_URL?.trim().replace(/[\r\n]/g, "").replace(/\/$/, ""), // Remove trailing slash if present
             "https://frontend-portal-b2az.onrender.com" // Actual production frontend URL
         ].filter(Boolean);
 
