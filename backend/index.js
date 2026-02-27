@@ -82,8 +82,16 @@ app.use(cors({
         // Allow requests with no origin (like mobile apps or curl)
         if (!origin) return callback(null, true);
 
-        const allowedOrigins = [/^http:\/\/localhost:\d+$/, /^http:\/\/127\.0\.0\.1:\d+$/];
-        const isAllowed = allowedOrigins.some(regex => regex.test(origin));
+        const allowedOrigins = [
+            /^http:\/\/localhost:\d+$/,
+            /^http:\/\/127\.0\.0\.1:\d+$/,
+            process.env.FRONTEND_URL
+        ].filter(Boolean);
+
+        const isAllowed = allowedOrigins.some(pattern => {
+            if (pattern instanceof RegExp) return pattern.test(origin);
+            return pattern === origin;
+        });
 
         if (isAllowed) {
             callback(null, true);
