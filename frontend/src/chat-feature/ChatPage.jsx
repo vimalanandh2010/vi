@@ -38,7 +38,7 @@ const ChatPage = () => {
             fetchConversations();
 
             // Connect to Socket.io
-            const socketUrl = API_URL.replace('/api', '');
+            const socketUrl = import.meta.env.VITE_SOCKET_URL || API_URL.replace('/api', '');
             const socket = io(socketUrl);
             socket.on('connect', () => {
                 socket.emit('joinChat', profile.chat_username);

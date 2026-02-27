@@ -74,7 +74,7 @@ const CommunityChatPage = () => {
     // Socket Initialization
     useEffect(() => {
         if (profile?.chat_username) {
-            const socketUrl = API_URL.replace('/api', '');
+            const socketUrl = import.meta.env.VITE_SOCKET_URL || API_URL.replace('/api', '');
             const socket = io(socketUrl);
 
             socket.on('connect', () => {

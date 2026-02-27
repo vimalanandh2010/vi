@@ -50,8 +50,7 @@ export const ChatModuleProvider = ({ children }) => {
     const initSocket = () => {
         if (socketRef.current) return; // already connected
 
-        const backendUrl = 'http://localhost:5000';
-        const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.DEV ? backendUrl : window.location.origin);
+        const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
 
         const token = user?.role === 'employer'
             ? localStorage.getItem('recruiterToken')
