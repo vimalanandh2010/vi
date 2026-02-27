@@ -998,103 +998,151 @@ async function getUsers() {
 
 ## Correctness Properties
 
+*A property is a characteristic or behavior that should hold true across all valid executions of a system—essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
+
 ### Property 1: Environment Variable Completeness
 
-```typescript
-// For all deployments, all required environment variables must be present and non-empty
-∀ deployment ∈ Deployments:
-  ∀ requiredVar ∈ RequiredEnvironmentVariables:
-    requiredVar ∈ deployment.environmentVariables ∧
-    deployment.environmentVariables[requiredVar] ≠ null ∧
-    deployment.environmentVariables[requiredVar] ≠ ""
-```
+*For any* deployment configuration, all required environment variables must be present and non-empty.
+
+**Validates: Requirements 3.1, 3.2, 3.3**
 
 ### Property 2: CORS Origin Consistency
 
-```typescript
-// Frontend URL in backend CORS configuration must match actual frontend deployment URL
-∀ deployment ∈ Deployments:
-  deployment.backend.environmentVariables['FRONTEND_URL'] =
-    deployment.frontend.url ∧
-  deployment.backend.corsConfig.origin =
-    deployment.frontend.url
-```
+*For any* deployment, the frontend URL in the backend CORS configuration must match the actual frontend deployment URL.
+
+**Validates: Requirements 4.1**
 
 ### Property 3: Secure Secrets
 
-```typescript
-// All secret values must meet minimum security requirements
-∀ deployment ∈ Deployments:
-  ∀ secret ∈ ['JWT_SECRET', 'SESSION_SECRET']:
-    length(deployment.backend.environmentVariables[secret]) ≥ 32 ∧
-    isRandomString(deployment.backend.environmentVariables[secret])
-```
+*For any* deployment, all secret values (JWT_SECRET, SESSION_SECRET) must have a minimum length of 32 characters and be cryptographically random.
 
-### Property 4: Health Check Availability
+**Validates: Requirements 3.4**
 
-```typescript
-// Backend health check endpoint must always return 200 OK when service is healthy
-∀ deployment ∈ Deployments:
-  deployment.backend.status = 'healthy' ⟹
-    httpGet(deployment.backend.url + '/health').status = 200
-```
+### Property 4: URL HTTPS Enforcement
 
-### Property 5: Database Connection Pooling
+*For any* environment variable ending with "_URL", the value must start with "https://".
 
-```typescript
-// Database connection pool must not exceed configured maximum
-∀ deployment ∈ Deployments:
-  ∀ time ∈ Runtime:
-    activeConnections(deployment.database, time) ≤
-      deployment.database.poolSize
-```
+**Validates: Requirements 3.5, 9.1, 9.2**
 
-### Property 6: HTTPS Enforcement
+### Property 5: Health Check Availability
 
-```typescript
-// All deployment URLs must use HTTPS protocol
-∀ deployment ∈ Deployments:
-  deployment.frontend.url.startsWith('https://') ∧
-  deployment.backend.url.startsWith('https://')
-```
+*For any* healthy backend deployment, the health check endpoint must return HTTP 200.
 
-### Property 7: Socket.IO Transport Availability
+**Validates: Requirements 2.2, 10.1**
 
-```typescript
-// Socket.IO must support both WebSocket and polling transports
-∀ deployment ∈ Deployments:
-  'websocket' ∈ deployment.backend.socketIO.transports ∧
-  'polling' ∈ deployment.backend.socketIO.transports
-```
+### Property 6: Database Connection Pool Limit
+
+*For any* deployment at any point in time, the number of active database connections must not exceed the configured pool size.
+
+**Validates: Requirements 5.2, 17.1**
+
+### Property 7: Socket.IO Transport Support
+
+*For any* WebSocket server configuration, both 'websocket' and 'polling' transports must be included.
+
+**Validates: Requirements 6.1**
 
 ### Property 8: Build Artifact Integrity
 
-```typescript
-// Frontend build must produce valid output directory with index.html
-∀ deployment ∈ Deployments:
-  deployment.frontend.status = 'ready' ⟹
-    exists(deployment.frontend.outputDirectory + '/index.html') ∧
-    isValidHTML(deployment.frontend.outputDirectory + '/index.html')
-```
+*For any* successful frontend build, the output directory must contain a valid index.html file.
 
-### Property 9: API Connectivity
+**Validates: Requirements 12.1, 12.3, 12.4**
 
-```typescript
-// Frontend must be able to reach backend API
-∀ deployment ∈ Deployments:
-  deployment.status = 'success' ⟹
-    canConnect(deployment.frontend.url, deployment.backend.url)
-```
+### Property 9: JWT Token Expiration
 
-### Property 10: Deployment Idempotency
+*For any* generated JWT access token, the expiration time must be set to 15 minutes from creation.
 
-```typescript
-// Deploying the same commit multiple times produces identical results
-∀ commit ∈ Commits:
-  ∀ deployment1, deployment2 ∈ deploy(commit):
-    deployment1.artifacts = deployment2.artifacts ∧
-    deployment1.configuration = deployment2.configuration
-```
+**Validates: Requirements 8.4**
+
+### Property 10: Refresh Token Expiration
+
+*For any* generated refresh token, the expiration time must be set to 7 days from creation.
+
+**Validates: Requirements 8.5**
+
+### Property 11: Protected Endpoint Authentication
+
+*For any* request to a protected API endpoint without a valid JWT token, the backend must reject the request with an authentication error.
+
+**Validates: Requirements 8.7**
+
+### Property 12: File Upload Validation
+
+*For any* file upload request, the backend must validate file type and size before sending to the storage service.
+
+**Validates: Requirements 7.5, 14.5**
+
+### Property 13: File Upload URL Response
+
+*For any* successful file upload, the storage service must return a valid CDN URL.
+
+**Validates: Requirements 7.3**
+
+### Property 14: Input Validation Rejection
+
+*For any* API request with invalid input data, the backend must return HTTP 400 with descriptive error messages.
+
+**Validates: Requirements 14.1, 14.4**
+
+### Property 15: HTML Input Sanitization
+
+*For any* user input containing HTML, the backend must sanitize it to prevent XSS attacks.
+
+**Validates: Requirements 14.2**
+
+### Property 16: Parameterized Query Usage
+
+*For any* database query, the backend must use parameterized queries to prevent SQL injection.
+
+**Validates: Requirements 14.3**
+
+### Property 17: Error Logging Completeness
+
+*For any* API error, the backend must log the error with stack trace and request context.
+
+**Validates: Requirements 16.3, 20.2**
+
+### Property 18: Retry with Exponential Backoff
+
+*For any* failed operation with retry logic (database connection, file upload), retries must occur with exponentially increasing delays.
+
+**Validates: Requirements 5.5, 7.6, 16.4**
+
+### Property 19: Error Message Security
+
+*For any* error response, the backend must never expose sensitive information (secrets, credentials, internal paths) in error messages.
+
+**Validates: Requirements 16.6**
+
+### Property 20: Request Logging Completeness
+
+*For any* API request, the backend must log the HTTP method, path, status code, and response time.
+
+**Validates: Requirements 20.1**
+
+### Property 21: WebSocket Event Logging
+
+*For any* WebSocket connection or disconnection event, the backend must log the event with relevant context.
+
+**Validates: Requirements 20.3**
+
+### Property 22: Room-Based Message Isolation
+
+*For any* message sent to a Socket.IO room, only clients that are members of that room must receive the message.
+
+**Validates: Requirements 6.6**
+
+### Property 23: WebSocket Authentication
+
+*For any* WebSocket connection attempt with an invalid JWT token, the server must reject the connection.
+
+**Validates: Requirements 6.2**
+
+### Property 24: Environment Variable Injection
+
+*For any* frontend build, all VITE_ prefixed environment variables must be injected into the built artifacts.
+
+**Validates: Requirements 1.5**
 
 ## Error Handling
 
@@ -1295,3 +1343,1013 @@ describe('validateEnvironmentVariables property tests', () => {
         (config) => {
           // If any required variable is missing, validation should fail
           const requiredVars = ['VITE_API_URL', 'NODE_ENV', 'DATABASE_URL']
+          const hasAllVars = requiredVars.every(v => 
+            config.frontend.environmentVariables[v] || 
+            config.backend.environmentVariables[v]
+          )
+          
+          if (!hasAllVars) {
+            expect(validateEnvironmentVariables(config)).toBe(false)
+          }
+        }
+      )
+    )
+  })
+  
+  it('should always enforce HTTPS for URLs', () => {
+    fc.assert(
+      fc.property(
+        fc.webUrl(),
+        (url) => {
+          const config = createConfigWithURL(url)
+          const isValid = validateEnvironmentVariables(config)
+          
+          // If URL doesn't start with https://, validation should fail
+          if (!url.startsWith('https://')) {
+            expect(isValid).toBe(false)
+          }
+        }
+      )
+    )
+  })
+})
+```
+
+### Integration Testing Approach
+
+**Scope**: Test interactions between components and external services
+
+**Key Integration Tests**:
+1. Frontend can successfully call backend API endpoints
+2. Backend can connect to Supabase database
+3. Backend can upload files to Cloudinary
+4. Backend can complete Google OAuth flow
+5. Socket.IO connections work between frontend and backend
+6. CORS allows cross-origin requests from frontend to backend
+
+**Test Environment**: Use staging environment with test credentials
+
+**Example Integration Test**:
+```typescript
+describe('Deployment Integration Tests', () => {
+  it('should allow frontend to call backend API', async () => {
+    const frontendURL = process.env.FRONTEND_URL
+    const backendURL = process.env.BACKEND_URL
+    
+    // Simulate frontend making API call
+    const response = await fetch(`${backendURL}/api/health`, {
+      method: 'GET',
+      headers: {
+        'Origin': frontendURL
+      }
+    })
+    
+    expect(response.status).toBe(200)
+    expect(response.headers.get('access-control-allow-origin')).toBe(frontendURL)
+  })
+  
+  it('should establish Socket.IO connection', async () => {
+    const backendURL = process.env.BACKEND_URL
+    const socket = io(backendURL, {
+      transports: ['websocket', 'polling']
+    })
+    
+    await new Promise((resolve) => {
+      socket.on('connect', () => {
+        expect(socket.connected).toBe(true)
+        socket.disconnect()
+        resolve()
+      })
+    })
+  })
+  
+  it('should connect to Supabase database', async () => {
+    const { data, error } = await supabase
+      .from('users')
+      .select('count')
+      .limit(1)
+    
+    expect(error).toBeNull()
+    expect(data).toBeDefined()
+  })
+})
+```
+
+### Smoke Testing Approach
+
+**Scope**: Quick verification that deployment is functional after going live
+
+**Key Smoke Tests**:
+1. Frontend loads successfully (200 OK)
+2. Backend health check returns 200 OK
+3. Database connection is active
+4. Socket.IO connection can be established
+5. Static assets load from CDN
+6. HTTPS certificates are valid
+
+**Execution**: Run automatically after each deployment
+
+**Example Smoke Test Script**:
+```bash
+#!/bin/bash
+
+FRONTEND_URL="https://app.vercel.app"
+BACKEND_URL="https://backend.railway.app"
+
+echo "Running smoke tests..."
+
+# Test 1: Frontend loads
+echo "Testing frontend..."
+FRONTEND_STATUS=$(curl -s -o /dev/null -w "%{http_code}" $FRONTEND_URL)
+if [ $FRONTEND_STATUS -eq 200 ]; then
+  echo "✓ Frontend is accessible"
+else
+  echo "✗ Frontend failed (status: $FRONTEND_STATUS)"
+  exit 1
+fi
+
+# Test 2: Backend health check
+echo "Testing backend health..."
+BACKEND_STATUS=$(curl -s -o /dev/null -w "%{http_code}" $BACKEND_URL/health)
+if [ $BACKEND_STATUS -eq 200 ]; then
+  echo "✓ Backend health check passed"
+else
+  echo "✗ Backend health check failed (status: $BACKEND_STATUS)"
+  exit 1
+fi
+
+# Test 3: HTTPS certificate
+echo "Testing HTTPS certificate..."
+CERT_VALID=$(curl -s -o /dev/null -w "%{ssl_verify_result}" $FRONTEND_URL)
+if [ $CERT_VALID -eq 0 ]; then
+  echo "✓ HTTPS certificate is valid"
+else
+  echo "✗ HTTPS certificate is invalid"
+  exit 1
+fi
+
+echo "All smoke tests passed!"
+```
+
+## Performance Considerations
+
+### Frontend Performance
+
+**Optimization Strategies**:
+1. Code splitting: Split React application into smaller chunks loaded on demand
+2. Tree shaking: Remove unused code during build process
+3. Asset optimization: Compress images, minify CSS/JS
+4. CDN caching: Leverage Vercel's edge network for fast global delivery
+5. Lazy loading: Load components and routes only when needed
+6. Bundle analysis: Monitor bundle size and identify optimization opportunities
+
+**Vite Configuration**:
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          socketio: ['socket.io-client']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true
+      }
+    }
+  }
+})
+```
+
+**Performance Targets**:
+- First Contentful Paint (FCP): < 1.5s
+- Largest Contentful Paint (LCP): < 2.5s
+- Time to Interactive (TTI): < 3.5s
+- Cumulative Layout Shift (CLS): < 0.1
+
+### Backend Performance
+
+**Optimization Strategies**:
+1. Connection pooling: Reuse database connections to reduce overhead
+2. Response caching: Cache frequently accessed data with Redis (optional)
+3. Compression: Enable gzip/brotli compression for API responses
+4. Query optimization: Use indexes and optimize database queries
+5. Rate limiting: Prevent abuse and ensure fair resource usage
+6. Async processing: Handle long-running tasks asynchronously
+
+**Express Configuration**:
+```typescript
+import express from 'express'
+import compression from 'compression'
+import helmet from 'helmet'
+
+const app = express()
+
+// Enable compression
+app.use(compression())
+
+// Security headers
+app.use(helmet())
+
+// Request size limits
+app.use(express.json({ limit: '10mb' }))
+app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+
+// Connection pooling for Supabase
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+  db: {
+    schema: 'public'
+  },
+  auth: {
+    autoRefreshToken: true,
+    persistSession: false
+  }
+})
+```
+
+**Performance Targets**:
+- API response time (p95): < 200ms
+- Database query time (p95): < 100ms
+- WebSocket latency: < 50ms
+- Concurrent connections: Support 1000+ simultaneous users
+
+### Database Performance
+
+**Optimization Strategies**:
+1. Indexing: Create indexes on frequently queried columns
+2. Connection pooling: Configure appropriate pool size (10-20 connections)
+3. Query optimization: Use EXPLAIN to analyze and optimize slow queries
+4. Read replicas: Use Supabase read replicas for read-heavy workloads (if available)
+
+**Supabase Configuration**:
+```typescript
+const poolConfig = {
+  max: 10,                    // Maximum pool size
+  min: 2,                     // Minimum pool size
+  idleTimeoutMillis: 30000,   // Close idle connections after 30s
+  connectionTimeoutMillis: 2000 // Timeout connection attempts after 2s
+}
+```
+
+### Socket.IO Performance
+
+**Optimization Strategies**:
+1. Use WebSocket transport when possible (lower latency than polling)
+2. Implement room-based messaging to reduce broadcast overhead
+3. Enable compression for Socket.IO messages
+4. Set appropriate ping/pong timeouts
+
+**Socket.IO Configuration**:
+```typescript
+const io = new Server(server, {
+  cors: {
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+  },
+  transports: ['websocket', 'polling'],
+  pingTimeout: 60000,
+  pingInterval: 25000,
+  perMessageDeflate: {
+    threshold: 1024 // Compress messages larger than 1KB
+  }
+})
+```
+
+## Security Considerations
+
+### Secrets Management
+
+**Strategy**: Store all sensitive credentials as environment variables, never commit to version control
+
+**Implementation**:
+1. Use platform-specific environment variable management (Vercel/Railway dashboards)
+2. Rotate secrets regularly (JWT_SECRET, SESSION_SECRET, API keys)
+3. Use different credentials for development, staging, and production
+4. Implement secret scanning in CI/CD pipeline
+
+**Environment Variable Security Checklist**:
+- [ ] All secrets are stored as environment variables
+- [ ] .env files are in .gitignore
+- [ ] Production secrets are different from development
+- [ ] Secrets have minimum 32 character length
+- [ ] Secrets are rotated every 90 days
+- [ ] Access to production secrets is restricted
+
+### CORS Security
+
+**Strategy**: Restrict CORS to only allow requests from trusted frontend domain
+
+**Implementation**:
+```typescript
+const corsOptions = {
+  origin: process.env.FRONTEND_URL, // Only allow specific domain
+  credentials: true,                 // Allow cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  maxAge: 86400
+}
+
+app.use(cors(corsOptions))
+```
+
+**Security Checklist**:
+- [ ] CORS origin is set to specific domain (not '*')
+- [ ] Credentials are only enabled when necessary
+- [ ] Allowed methods are restricted to required ones
+- [ ] Preflight requests are handled correctly
+
+### Authentication Security
+
+**Strategy**: Use secure JWT tokens with appropriate expiration and refresh logic
+
+**Implementation**:
+```typescript
+import jwt from 'jsonwebtoken'
+
+function generateAccessToken(user: User): string {
+  return jwt.sign(
+    { userId: user.id, email: user.email },
+    process.env.JWT_SECRET,
+    { expiresIn: '15m' } // Short-lived access token
+  )
+}
+
+function generateRefreshToken(user: User): string {
+  return jwt.sign(
+    { userId: user.id },
+    process.env.JWT_SECRET,
+    { expiresIn: '7d' } // Longer-lived refresh token
+  )
+}
+
+function verifyToken(token: string): Promise<JWTPayload> {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) reject(err)
+      else resolve(decoded as JWTPayload)
+    })
+  })
+}
+```
+
+**Security Checklist**:
+- [ ] JWT secret is cryptographically random (32+ characters)
+- [ ] Access tokens have short expiration (15 minutes)
+- [ ] Refresh tokens are stored securely (httpOnly cookies)
+- [ ] Token verification is performed on all protected routes
+- [ ] Failed authentication attempts are logged
+
+### HTTPS Enforcement
+
+**Strategy**: All traffic must use HTTPS, no HTTP allowed
+
+**Implementation**:
+- Vercel provides automatic HTTPS with Let's Encrypt certificates
+- Railway provides automatic HTTPS for all services
+- Redirect HTTP to HTTPS in Express middleware (if needed)
+
+```typescript
+app.use((req, res, next) => {
+  if (req.header('x-forwarded-proto') !== 'https' && process.env.NODE_ENV === 'production') {
+    res.redirect(`https://${req.header('host')}${req.url}`)
+  } else {
+    next()
+  }
+})
+```
+
+**Security Checklist**:
+- [ ] All deployment URLs use HTTPS
+- [ ] HTTP requests are redirected to HTTPS
+- [ ] SSL certificates are valid and auto-renewing
+- [ ] HSTS header is set
+
+### Input Validation
+
+**Strategy**: Validate and sanitize all user inputs to prevent injection attacks
+
+**Implementation**:
+```typescript
+import { body, validationResult } from 'express-validator'
+
+app.post('/api/users',
+  body('email').isEmail().normalizeEmail(),
+  body('username').isLength({ min: 3, max: 20 }).trim().escape(),
+  body('password').isLength({ min: 8 }),
+  (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+    // Process valid input
+  }
+)
+```
+
+**Security Checklist**:
+- [ ] All user inputs are validated
+- [ ] SQL injection is prevented (use parameterized queries)
+- [ ] XSS is prevented (sanitize HTML inputs)
+- [ ] File uploads are validated (type, size, content)
+- [ ] Rate limiting is implemented
+
+### Security Headers
+
+**Strategy**: Set security headers to protect against common web vulnerabilities
+
+**Implementation**:
+```typescript
+import helmet from 'helmet'
+
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https://res.cloudinary.com"],
+      connectSrc: ["'self'", process.env.FRONTEND_URL]
+    }
+  },
+  hsts: {
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
+  }
+}))
+```
+
+**Security Checklist**:
+- [ ] Content-Security-Policy header is set
+- [ ] X-Frame-Options is set to DENY or SAMEORIGIN
+- [ ] X-Content-Type-Options is set to nosniff
+- [ ] Strict-Transport-Security (HSTS) is enabled
+- [ ] X-XSS-Protection is enabled
+
+## Dependencies
+
+### Frontend Dependencies
+
+**Core Dependencies**:
+- react: ^18.2.0
+- react-dom: ^18.2.0
+- react-router-dom: ^6.x
+- socket.io-client: ^4.x
+- axios or fetch: For API calls
+
+**Build Tools**:
+- vite: ^5.x
+- @vitejs/plugin-react: ^4.x
+- typescript: ^5.x (if using TypeScript)
+
+**Development Dependencies**:
+- @types/react: ^18.x
+- @types/react-dom: ^18.x
+- eslint: ^8.x
+- prettier: ^3.x
+
+### Backend Dependencies
+
+**Core Dependencies**:
+- express: ^4.18.0
+- socket.io: ^4.x
+- @supabase/supabase-js: ^2.x
+- cloudinary: ^1.x
+- cors: ^2.8.5
+- helmet: ^7.x
+- compression: ^1.7.4
+- dotenv: ^16.x
+
+**Authentication**:
+- jsonwebtoken: ^9.x
+- passport: ^0.6.x
+- passport-google-oauth20: ^2.x
+- express-session: ^1.17.x
+
+**Validation**:
+- express-validator: ^7.x
+
+**Development Dependencies**:
+- nodemon: ^3.x
+- typescript: ^5.x (if using TypeScript)
+- @types/express: ^4.x
+- @types/node: ^20.x
+- eslint: ^8.x
+- prettier: ^3.x
+
+### Platform Services
+
+**Vercel**:
+- Account: Free tier supports hobby projects
+- CLI: vercel (npm package for local testing)
+- Integration: GitHub app for automatic deployments
+
+**Railway**:
+- Account: Free tier with $5 monthly credit
+- CLI: railway (npm package for local development)
+- Integration: GitHub app for automatic deployments
+
+**Supabase**:
+- Account: Free tier with 500MB database
+- Client library: @supabase/supabase-js
+- Connection: PostgreSQL connection string
+
+**Cloudinary**:
+- Account: Free tier with 25GB storage
+- SDK: cloudinary npm package
+- API: REST API for uploads
+
+**Google OAuth**:
+- Google Cloud Console project
+- OAuth 2.0 credentials (Client ID and Secret)
+- Authorized redirect URIs configured
+
+### External Services Configuration
+
+**Supabase Setup**:
+1. Create project in Supabase dashboard
+2. Copy project URL and API keys
+3. Set up database schema and tables
+4. Configure Row Level Security (RLS) policies
+5. Enable realtime features if needed
+
+**Cloudinary Setup**:
+1. Create account at cloudinary.com
+2. Copy cloud name, API key, and API secret
+3. Configure upload presets (optional)
+4. Set up folder structure (optional)
+
+**Google OAuth Setup**:
+1. Create project in Google Cloud Console
+2. Enable Google+ API
+3. Create OAuth 2.0 credentials
+4. Add authorized redirect URIs:
+   - Development: http://localhost:3000/auth/google/callback
+   - Production: https://your-backend.railway.app/auth/google/callback
+5. Copy Client ID and Client Secret
+
+## Deployment Checklist
+
+### Pre-Deployment
+
+- [ ] All code is committed and pushed to GitHub
+- [ ] Environment variables are documented
+- [ ] .gitignore includes .env files
+- [ ] Dependencies are up to date
+- [ ] Tests are passing locally
+- [ ] Build succeeds locally
+
+### Vercel Deployment
+
+- [ ] Create Vercel account and connect GitHub
+- [ ] Import frontend repository
+- [ ] Configure build settings (build command, output directory)
+- [ ] Set environment variables (VITE_* variables)
+- [ ] Trigger initial deployment
+- [ ] Verify deployment is accessible
+- [ ] Configure custom domain (optional)
+- [ ] Enable automatic deployments from main branch
+
+### Railway Deployment
+
+- [ ] Create Railway account and connect GitHub
+- [ ] Create new project and service
+- [ ] Import backend repository
+- [ ] Configure start command
+- [ ] Set environment variables (all backend variables)
+- [ ] Trigger initial deployment
+- [ ] Verify health check passes
+- [ ] Test API endpoints
+- [ ] Configure custom domain (optional)
+- [ ] Enable automatic deployments from main branch
+
+### Post-Deployment
+
+- [ ] Update backend FRONTEND_URL with Vercel URL
+- [ ] Update frontend VITE_API_URL with Railway URL
+- [ ] Redeploy both services with updated URLs
+- [ ] Test end-to-end functionality
+- [ ] Verify CORS is working
+- [ ] Test Socket.IO connections
+- [ ] Test file uploads to Cloudinary
+- [ ] Test Google OAuth flow
+- [ ] Run smoke tests
+- [ ] Monitor logs for errors
+- [ ] Set up monitoring and alerts (optional)
+
+### Monitoring Setup (Optional)
+
+- [ ] Configure Vercel Analytics
+- [ ] Configure Railway metrics dashboard
+- [ ] Set up error tracking (Sentry, LogRocket, etc.)
+- [ ] Configure uptime monitoring (UptimeRobot, Pingdom, etc.)
+- [ ] Set up log aggregation (if needed)
+- [ ] Configure alerting for critical errors
+
+## Configuration Files Reference
+
+### Frontend: vercel.json
+
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    },
+    {
+      "source": "/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Backend: railway.json (Optional)
+
+```json
+{
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "node server.js",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 100,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  }
+}
+```
+
+### Backend: package.json Scripts
+
+```json
+{
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  }
+}
+```
+
+### Frontend: package.json Scripts
+
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  }
+}
+```
+
+### Environment Variables Template
+
+**Frontend (.env.example)**:
+```bash
+# API Configuration
+VITE_API_URL=https://your-backend.railway.app
+VITE_SOCKET_URL=https://your-backend.railway.app
+
+# Google OAuth
+VITE_GOOGLE_CLIENT_ID=your-google-client-id
+
+# Cloudinary
+VITE_CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
+```
+
+**Backend (.env.example)**:
+```bash
+# Environment
+NODE_ENV=production
+
+# Server Configuration
+PORT=3000
+
+# Database (Supabase)
+DATABASE_URL=postgresql://user:password@host:port/database
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your-client-id
+GOOGLE_CLIENT_SECRET=your-client-secret
+
+# Security
+JWT_SECRET=your-jwt-secret-min-32-chars
+SESSION_SECRET=your-session-secret-min-32-chars
+
+# CORS
+FRONTEND_URL=https://your-app.vercel.app
+```
+
+## CI/CD Pipeline
+
+### Automatic Deployment Flow
+
+```mermaid
+graph LR
+    A[Push to GitHub] --> B{Branch?}
+    B -->|main| C[Deploy to Production]
+    B -->|develop| D[Deploy to Staging]
+    B -->|feature/*| E[Deploy Preview]
+    
+    C --> F[Run Tests]
+    D --> F
+    E --> F
+    
+    F --> G{Tests Pass?}
+    G -->|Yes| H[Deploy]
+    G -->|No| I[Fail Deployment]
+    
+    H --> J[Health Check]
+    J --> K{Healthy?}
+    K -->|Yes| L[Success]
+    K -->|No| M[Rollback]
+```
+
+### GitHub Actions Workflow (Optional)
+
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: cd frontend && npm ci
+      - name: Run tests
+        run: cd frontend && npm test
+      - name: Build
+        run: cd frontend && npm run build
+
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: cd backend && npm ci
+      - name: Run tests
+        run: cd backend && npm test
+      - name: Lint
+        run: cd backend && npm run lint
+
+  deploy:
+    needs: [test-frontend, test-backend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy notification
+        run: echo "Deploying to production..."
+      # Vercel and Railway handle deployment automatically via their GitHub integrations
+```
+
+## Troubleshooting Guide
+
+### Issue: Frontend Cannot Connect to Backend
+
+**Symptoms**:
+- API calls fail with network errors
+- CORS errors in browser console
+- 404 or 502 errors
+
+**Solutions**:
+1. Verify VITE_API_URL matches Railway backend URL
+2. Check backend FRONTEND_URL matches Vercel frontend URL
+3. Verify CORS configuration includes frontend URL
+4. Check Railway service is running and healthy
+5. Test backend health endpoint directly
+
+### Issue: Socket.IO Connection Fails
+
+**Symptoms**:
+- WebSocket connection errors
+- Chat features not working
+- Connection timeout errors
+
+**Solutions**:
+1. Verify Socket.IO CORS includes frontend URL
+2. Check transports include both 'websocket' and 'polling'
+3. Verify Railway service supports WebSocket connections
+4. Test with polling transport only to isolate issue
+5. Check Railway logs for connection errors
+
+### Issue: Environment Variables Not Loading
+
+**Symptoms**:
+- Application crashes on startup
+- "undefined" errors for environment variables
+- Features not working
+
+**Solutions**:
+1. Verify all required variables are set in platform dashboard
+2. Check variable names match exactly (case-sensitive)
+3. Redeploy after adding new variables
+4. Verify .env.example is up to date
+5. Check for typos in variable names
+
+### Issue: Build Fails
+
+**Symptoms**:
+- Deployment fails during build step
+- Build errors in logs
+- Dependencies not found
+
+**Solutions**:
+1. Verify package.json has correct dependencies
+2. Check Node version matches between local and platform
+3. Clear build cache and retry
+4. Verify build command is correct
+5. Check for syntax errors in code
+
+### Issue: Database Connection Fails
+
+**Symptoms**:
+- API returns 500 errors
+- "Connection refused" errors
+- Database timeout errors
+
+**Solutions**:
+1. Verify DATABASE_URL is correct
+2. Check Supabase project is active
+3. Verify connection pool settings
+4. Check network connectivity from Railway to Supabase
+5. Test connection string locally
+
+### Issue: Google OAuth Fails
+
+**Symptoms**:
+- OAuth redirect fails
+- "Invalid redirect URI" error
+- Authentication doesn't complete
+
+**Solutions**:
+1. Verify redirect URI in Google Console matches backend URL + '/auth/google/callback'
+2. Check GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET are correct
+3. Verify OAuth consent screen is configured
+4. Test in incognito mode to rule out cookie issues
+5. Check backend logs for detailed error messages
+
+### Issue: File Upload Fails
+
+**Symptoms**:
+- Upload returns error
+- Files not appearing in Cloudinary
+- Timeout errors
+
+**Solutions**:
+1. Verify Cloudinary credentials are correct
+2. Check file size limits
+3. Verify upload preset configuration (if used)
+4. Check Cloudinary account quota
+5. Test upload with smaller file
+
+## Maintenance and Updates
+
+### Regular Maintenance Tasks
+
+**Weekly**:
+- Review application logs for errors
+- Check uptime and performance metrics
+- Monitor resource usage (bandwidth, storage)
+
+**Monthly**:
+- Update dependencies to latest stable versions
+- Review and rotate secrets if needed
+- Check for security advisories
+- Review and optimize database queries
+- Analyze bundle size and performance metrics
+
+**Quarterly**:
+- Conduct security audit
+- Review and update documentation
+- Evaluate platform costs and optimization opportunities
+- Test disaster recovery procedures
+
+### Updating Dependencies
+
+```bash
+# Frontend
+cd frontend
+npm outdated
+npm update
+npm audit fix
+
+# Backend
+cd backend
+npm outdated
+npm update
+npm audit fix
+
+# Test after updates
+npm test
+npm run build
+```
+
+### Scaling Considerations
+
+**When to Scale**:
+- Response times consistently exceed targets
+- Database connection pool frequently exhausted
+- CPU/memory usage consistently high
+- User growth exceeds current capacity
+
+**Scaling Options**:
+
+**Vercel**:
+- Automatic edge caching and CDN
+- Scales automatically with traffic
+- Upgrade to Pro plan for higher limits
+
+**Railway**:
+- Vertical scaling: Increase CPU/memory allocation
+- Horizontal scaling: Add more service instances (Pro plan)
+- Database scaling: Upgrade Supabase plan
+
+**Supabase**:
+- Upgrade to Pro plan for more connections
+- Enable read replicas for read-heavy workloads
+- Optimize queries and add indexes
+
+## Conclusion
+
+This design document provides a comprehensive blueprint for deploying a MERN stack application to production using Vercel (frontend), Railway (backend), and Supabase (database). The architecture prioritizes developer experience, security, and scalability while minimizing operational complexity through managed platform services.
+
+Key implementation priorities:
+1. Secure environment variable management across all platforms
+2. Proper CORS and Socket.IO configuration for cross-origin communication
+3. Comprehensive testing strategy including unit, integration, and smoke tests
+4. Performance optimization for both frontend and backend
+5. Security best practices including HTTPS, authentication, and input validation
+
+The deployment process is designed to be automated through GitHub integration, enabling continuous deployment with minimal manual intervention. Regular maintenance and monitoring ensure the application remains secure, performant, and reliable in production.

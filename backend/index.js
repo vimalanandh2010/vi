@@ -13,7 +13,11 @@ const { router: communityChatRouter } = require('./community-chat/routes');
 
 const envResult = dotenv.config({ path: path.resolve(__dirname, '.env') });
 if (envResult.error) {
-    console.error('❌ Error loading .env file:', envResult.error);
+    if (process.env.NODE_ENV !== 'production') {
+        console.warn('⚠️ No .env file found. Using system environment variables.');
+    } else {
+        console.log('✅ Using Render Environment Variables');
+    }
 } else {
     console.log('✅ .env file loaded successfully');
 }
