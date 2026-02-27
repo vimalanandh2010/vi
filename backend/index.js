@@ -103,7 +103,7 @@ app.use(cors({
             /^http:\/\/127\.0\.0\.1:\d+$/,
             process.env.FRONTEND_URL,
             process.env.FRONTEND_URL?.replace(/\/$/, ""), // Remove trailing slash if present
-            "https://frontend-portal-xxxx.onrender.com" // Placeholder for your frontend
+            "https://frontend-portal-b2az.onrender.com" // Actual production frontend URL
         ].filter(Boolean);
 
         const isAllowed = allowedOrigins.some(pattern => {
