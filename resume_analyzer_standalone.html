@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ATS Resume Analyzer</title>
+    <script src="https://js.puter.com/v2/"></script>
+    <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f9fafb;
+            --card: #ffffff;
+            --text: #111827;
+            --text-muted: #6b7280;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            background: var(--card);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .upload-area {
+            border: 2px dashed #e5e7eb;
+            padding: 48px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #fafafa;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: #f5f3ff;
+        }
+
+        .upload-area.dragover {
+            border-color: var(--primary);
+            background-color: #f5f3ff;
+            transform: scale(1.01);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        button:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        #response {
+            margin-top: 32px;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .score-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-bottom: 24px;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 8px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .score-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 14px;
+        }
+
+        .file-name {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--primary);
+            background: #eef2ff;
+            padding: 8px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .analysis-card {
+            background: #fdfdfd;
+            border: 1px solid #f3f4f6;
+            padding: 16px;
+            border-radius: 10px;
+        }
+
+        .analysis-card h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .analysis-card ul {
+            padding-left: 20px;
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .analysis-card li {
+            margin-bottom: 6px;
+        }
+
+        .summary-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            margin-top: 20px;
+            border-radius: 4px;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>ATS Resume Analyzer</h1>
+        <p class="subtitle">Upload your resume to get an instant ATS compatibility score and professional feedback.</p>
+
+        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+            <svg style="margin: 0 auto 16px; display: block;" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="text-gray-400">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <p style="font-weight: 500;">Click to upload or drag and drop</p>
+            <p style="font-size: 12px; color: #9ca3af; margin-top: 4px;">PDF, DOCX, or TXT supported</p>
+            <input type="file" id="fileInput" accept=".pdf,.docx,.txt" />
+            <div class="file-name" id="fileName" style="display: none;"></div>
+        </div>
+
+        <button id="analyzeBtn" disabled>Analyze Resume</button>
+
+        <div id="response">
+            <div class="score-container">
+                <div class="score-circle" id="scoreValue">0</div>
+                <div class="score-label">ATS Match Score</div>
+            </div>
+
+            <div class="summary-box" id="summaryText"></div>
+
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <h3 style="color: var(--success);">âœ… Key Strengths</h3>
+                    <ul id="strengthsList"></ul>
+                </div>
+                <div class="analysis-card">
+                    <h3 style="color: var(--danger);">âš ï¸ Improvements</h3>
+                    <ul id="improvementsList"></ul>
+                </div>
+            </div>
+
+            <div class="analysis-card" style="margin-top: 20px;">
+                <h3 style="color: var(--warning);">ðŸ” Missing Keywords</h3>
+                <ul id="keywordsList" style="display: flex; flex-wrap: wrap; list-style: none; padding: 0; gap: 8px;">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let uploadedFile = null;
+        let extractedText = null;
+
+        const fileInput = document.getElementById('fileInput');
+        const uploadArea = document.querySelector('.upload-area');
+        const fileName = document.getElementById('fileName');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const responseDiv = document.getElementById('response');
+
+        fileInput.addEventListener('change', handleFileSelect);
+        uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', handleDrop);
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) handleFile(file);
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) handleFile(file);
+        }
+
+        async function handleFile(file) {
+            uploadedFile = file;
+            fileName.textContent = file.name;
+            fileName.style.display = 'inline-block';
+            analyzeBtn.disabled = false;
+
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (ext === "docx") {
+                const arrayBuffer = await file.arrayBuffer();
+                const result = await mammoth.extractRawText({ arrayBuffer });
+                extractedText = result.value;
+            } else if (ext === "txt") {
+                extractedText = await file.text();
+            } else {
+                extractedText = null;
+            }
+        }
+
+        analyzeBtn.addEventListener('click', async () => {
+            if (!uploadedFile) return;
+
+            analyzeBtn.disabled = true;
+            analyzeBtn.textContent = 'Crunching numbers...';
+            responseDiv.style.display = 'none';
+
+            try {
+                const ext = uploadedFile.name.split('.').pop().toLowerCase();
+                let aiResponse;
+
+                if (ext === "pdf") {
+                    const puterFile = await puter.fs.write(`res_${Date.now()}.pdf`, uploadedFile);
+                    aiResponse = await analyzeResume(puterFile.path, true);
+                    await puter.fs.delete(puterFile.path);
+                } else {
+                    aiResponse = await analyzeResume(extractedText || "", false);
+                }
+
+                displayResults(aiResponse);
+            } catch (err) {
+                alert("Error: " + err.message);
+            } finally {
+                analyzeBtn.disabled = false;
+                analyzeBtn.textContent = 'Analyze Resume';
+            }
+        });
+
+        async function analyzeResume(content, isPath) {
+            const prompt = `You are a professional ATS (Applicant Tracking System). Analyze this resume.
+            SCORING RULES:
+            1. Skills (40%): Match against industry standards.
+            2. Experience (30%): Relevance and impact.
+            3. Education (20%): Credentials.
+            4. Formatting (10%): Readability.
+            
+            Return ONLY JSON:
+            {
+                "score": 0-100,
+                "summary": "2-sentence professional bio",
+                "strengths": ["list"],
+                "improvements": ["list"],
+                "missingKeywords": ["list"]
+            }`;
+
+            const chatMessages = [
+                {
+                    role: "user",
+                    content: isPath
+                        ? [{ type: "file", puter_path: content }, { type: "text", text: prompt }]
+                        : [{ type: "text", text: `Resume Content:\n${content}\n\n${prompt}` }]
+                }
+            ];
+
+            const result = await puter.ai.chat(chatMessages, { model: "claude-haiku-4-5" });
+            const text = result.message.content[0].text;
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            return JSON.parse(jsonMatch[0]);
+        }
+
+        function displayResults(data) {
+            const scoreEl = document.getElementById('scoreValue');
+            const score = data.score || 0;
+            scoreEl.textContent = score;
+
+            // Color coding score
+            if (score >= 80) scoreEl.style.borderColor = 'var(--success)';
+            else if (score >= 50) scoreEl.style.borderColor = 'var(--warning)';
+            else scoreEl.style.borderColor = 'var(--danger)';
+
+            document.getElementById('summaryText').textContent = data.summary;
+
+            const strengthsList = document.getElementById('strengthsList');
+            strengthsList.innerHTML = data.strengths.map(s => `<li>${s}</li>`).join('');
+
+            const improvementsList = document.getElementById('improvementsList');
+            improvementsList.innerHTML = data.improvements.map(i => `<li>${i}</li>`).join('');
+
+            const keywordsList = document.getElementById('keywordsList');
+            keywordsList.innerHTML = data.missingKeywords.map(k =>
+                `<li style="background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">${k}</li>`
+            ).join('');
+
+            responseDiv.style.display = 'block';
+            responseDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>

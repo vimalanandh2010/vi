@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* Global Responsive Adjustments */
+
+/* Mobile Devices (phones, less than 768px) */
+@media (max-width: 767.98px) {
+
+  /* Add global mobile-specific overrides here if needed */
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+/* Tablet Devices (768px to 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Add global tablet-specific overrides here if needed */
+}
+
+/* Desktop Devices (greater than 1024px) */
+@media (min-width: 1024.01px) {
+  /* Add global desktop-specific overrides here if needed */
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

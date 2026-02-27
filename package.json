@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@google/genai": "^1.42.0",
+    "@react-oauth/google": "^0.13.4",
+    "cloudinary": "^2.9.0",
+    "firebase": "^12.9.0",
+    "firebase-admin": "^13.6.0",
+    "mammoth": "^1.11.0",
+    "multer": "^2.0.2",
+    "pdf-parse": "^2.4.5",
+    "tesseract.js": "^7.0.0"
+  },
+  "scripts": {
+    "build": "npm run build --prefix frontend"
+  }
+}
