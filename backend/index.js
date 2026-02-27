@@ -70,7 +70,19 @@ app.use(helmet({
             "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],
             "font-src": ["'self'", "https://fonts.gstatic.com", "https://fonts.googleapis.com", "data:"],
             "img-src": ["'self'", "data:", "https://lh3.googleusercontent.com", "https://*.supabase.co", "https://www.google.com"],
-            "connect-src": ["'self'", "http://localhost:5000", "http://localhost:5173", "ws://localhost:5000", "ws://localhost:5173", "https://accounts.google.com", "https://*.supabase.co"],
+            "connect-src": [
+                "'self'",
+                "http://localhost:5000",
+                "http://localhost:5173",
+                "ws://localhost:5000",
+                "ws://localhost:5173",
+                "https://accounts.google.com",
+                "https://*.supabase.co",
+                "https://*.onrender.com",
+                "wss://*.onrender.com",
+                process.env.FRONTEND_URL,
+                process.env.BACKEND_URL
+            ].filter(Boolean),
             "frame-src": ["'self'", "https://accounts.google.com", "https://*.supabase.co"],
             "object-src": ["'none'"],
         },
@@ -89,7 +101,9 @@ app.use(cors({
         const allowedOrigins = [
             /^http:\/\/localhost:\d+$/,
             /^http:\/\/127\.0\.0\.1:\d+$/,
-            process.env.FRONTEND_URL
+            process.env.FRONTEND_URL,
+            process.env.FRONTEND_URL?.replace(/\/$/, ""), // Remove trailing slash if present
+            "https://frontend-portal-xxxx.onrender.com" // Placeholder for your frontend
         ].filter(Boolean);
 
         const isAllowed = allowedOrigins.some(pattern => {
