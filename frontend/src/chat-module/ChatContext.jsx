@@ -50,14 +50,18 @@ export const ChatModuleProvider = ({ children }) => {
     const initSocket = () => {
         if (socketRef.current) return; // already connected
 
-        const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+        const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : window.location.origin);
 
         const token = user?.role === 'employer'
             ? localStorage.getItem('recruiterToken')
             : localStorage.getItem('seekerToken');
 
-        if (!token) return;
+        if (!token) {
+            console.warn('[CM] Skipping socket init: No auth token found');
+            return;
+        }
 
+        console.log('[CM] Connecting to socket at:', socketUrl);
         const socket = io(socketUrl, {
             auth: { token },
             transports: ['websocket', 'polling'],

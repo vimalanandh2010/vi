@@ -11,8 +11,8 @@ const QuickActions = ({ company }) => {
     const isVerified = company?.verificationStatus === 'verified';
 
     const handleNavigation = (path, label) => {
-        if ((label === 'Courses' || label === 'Jobs') && !isVerified) {
-            toast.error(`Your company must be verified to access ${label}.`);
+        if ((label === 'Courses' || label === 'Jobs') && !company) {
+            toast.error(`Please complete your company profile to access ${label}.`);
             return;
         }
         navigate(path);

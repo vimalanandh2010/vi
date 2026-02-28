@@ -22,7 +22,7 @@ export const ChatProvider = ({ children }) => {
     useEffect(() => {
         // Only connect if we have a user and we haven't already connected for this user
         if (user && !socketRef.current) {
-            const socketUrl = import.meta.env.VITE_SOCKET_URL || window.location.origin;
+            const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : window.location.origin);
             console.log('🔗 Attempting to connect to socket at:', socketUrl);
 
             const token = (user.role === 'employer' || user.role === 'recruiter')

@@ -24,9 +24,9 @@ const PostCourse = () => {
             try {
                 const response = await axiosClient.get('companies/my-company')
                 const company = response
-                if (!company || company.verificationStatus !== 'verified') {
-                    toast.error('Your company must be verified to post courses.')
-                    navigate('/recruiter/dashboard')
+                if (!company) {
+                    toast.error('Please complete your company profile before posting a course.')
+                    navigate('/recruiter/company-profile')
                 }
             } catch (err) {
                 console.error('[PostCourse] Verification check failed:', err)

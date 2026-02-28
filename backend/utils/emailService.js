@@ -12,24 +12,51 @@ if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     console.error('⚠️ ========================================');
 }
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // Use STARTTLS
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    tls: {
-        rejectUnauthorized: false,
-        minVersion: 'TLSv1.2'
-    },
-    pool: true,
-    maxConnections: 5,
-    maxMessages: 100,
-    logger: process.env.NODE_ENV !== 'production',
-    debug: process.env.NODE_ENV !== 'production'
-});
+// Auto-detect email provider from EMAIL_SERVICE env var
+const emailService = (process.env.EMAIL_SERVICE || 'gmail').toLowerCase();
+
+let transportConfig;
+if (emailService === 'brevo' || emailService === 'sendinblue') {
+    // Brevo (formerly Sendinblue) — works from cloud servers like Render
+    console.log('📧 Using Brevo SMTP relay for email delivery');
+    transportConfig = {
+        host: 'smtp-relay.brevo.com',
+        port: 587,
+        secure: false,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS  // This is the Brevo SMTP key
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    };
+} else {
+    // Gmail — works locally but may timeout on cloud servers
+    console.log('📧 Using Gmail SMTP for email delivery');
+    transportConfig = {
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        },
+        tls: {
+            rejectUnauthorized: false,
+            minVersion: 'TLSv1.2'
+        },
+        pool: true,
+        maxConnections: 5,
+        maxMessages: 100
+    };
+}
+
+// Disable verbose logging in production
+transportConfig.logger = process.env.NODE_ENV !== 'production';
+transportConfig.debug = process.env.NODE_ENV !== 'production';
+
+const transporter = nodemailer.createTransport(transportConfig);
 
 // Verify connection configuration
 transporter.verify(function (error, success) {

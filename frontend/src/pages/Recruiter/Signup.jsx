@@ -58,6 +58,18 @@ const RecruiterSignup = () => {
         e.preventDefault()
         if (isLoading) return;
 
+        // Domain validation helper
+        const isPublicDomain = (email) => {
+            const domain = email.split('@')[1]?.toLowerCase();
+            const publicDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com'];
+            return publicDomains.includes(domain);
+        };
+
+        if (isPublicDomain(formData.email)) {
+            toast.error("Recruiters must use an official company email. Gmail/Yahoo etc. are not allowed.");
+            return;
+        }
+
         if (formData.password !== formData.confirmPassword) {
             toast.error("Passwords do not match");
             return;
@@ -79,18 +91,22 @@ const RecruiterSignup = () => {
 
             console.log("✅ Recruiter Signup Success:", response);
             toast.success("Account created successfully!");
-            login(response.user, response.token);
-            // Use centralized redirection helper
-            navigate(getRedirectPath(response.user), { replace: true });
+
+            if (response.user && response.token) {
+                login(response.user, response.token);
+                navigate(getRedirectPath(response.user), { replace: true });
+            } else {
+                toast.info("Registration request submitted. Please check your email.");
+                navigate('/recruiter/login');
+            }
 
         } catch (error) {
+            console.error("❌ Signup Error Detail:", error);
             const apiError = error.response?.data || {};
-            console.warn("❌ Signup Failed:", apiError.message || error.message);
-
-            const errorMsg = apiError.message || (apiError.errors && apiError.errors[0]?.msg) || error.message || "Signup Failed";
+            const errorMsg = apiError.message || (apiError.errors && apiError.errors[0]?.msg) || error.message || "Signup failed. Please try again.";
 
             if (errorMsg.includes('User already exists') || errorMsg.includes('Account with this details already exists')) {
-                toast.info("User already exists! Redirecting to login...");
+                toast.info("Account already exists! Redirecting to login...");
                 navigate('/recruiter/login', { state: { email: formData.email } });
             } else {
                 toast.error(errorMsg);

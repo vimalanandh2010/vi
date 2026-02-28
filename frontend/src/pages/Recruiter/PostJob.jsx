@@ -29,9 +29,9 @@ const PostJob = () => {
             try {
                 const response = await axiosClient.get('companies/my-company')
                 const company = response
-                if (!company || company.verificationStatus !== 'verified') {
-                    alert('Your company must be verified to post jobs.')
-                    navigate('/recruiter/dashboard')
+                if (!company) {
+                    alert('Please complete your company profile before posting a job.')
+                    navigate('/recruiter/company-profile')
                 }
             } catch (err) {
                 console.error('[PostJob] Verification check failed:', err)

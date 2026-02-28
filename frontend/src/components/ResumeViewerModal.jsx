@@ -7,8 +7,9 @@ const ResumeViewerModal = ({ isOpen, onClose, resumeUrl, userName = 'Resume' }) 
     // Use the backend proxy to ensure proper headers and bypass CORS
     // Append token for authentication since iframes don't send headers easily
     const token = localStorage.getItem('seekerToken') || localStorage.getItem('recruiterToken');
+    const apiUrl = import.meta.env.VITE_API_URL || '/api';
     const viewUrl = resumeUrl
-        ? `/api/jobseeker/proxy-resume?url=${encodeURIComponent(resumeUrl)}${token ? `&token=${token}` : ''}`
+        ? `${apiUrl}/jobseeker/proxy-resume?url=${encodeURIComponent(resumeUrl)}${token ? `&token=${token}` : ''}`
         : null;
 
     return (

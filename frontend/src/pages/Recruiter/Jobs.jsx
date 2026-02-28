@@ -49,8 +49,8 @@ const RecruiterJobs = () => {
 
     const handlePostNavigation = (e, path, label) => {
         e.preventDefault();
-        if (!company || company.verificationStatus !== 'verified') {
-            toast.error(`Your company must be verified to ${label}.`);
+        if (!company) {
+            toast.error(`Please complete your company profile to ${label}.`);
             return;
         }
         navigate(path);

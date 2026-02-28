@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 const VerifyOtp = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { login, getRedirectPath } = useAuth();
 
     // Get email and role from router state or redirect if missing
     const email = location.state?.email;

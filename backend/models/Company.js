@@ -60,7 +60,7 @@ const companySchema = new mongoose.Schema({
     verificationStatus: {
         type: String,
         enum: ['unverified', 'pending', 'verified', 'rejected'],
-        default: 'unverified'
+        default: 'verified'
     },
     verificationLevel: {
         type: Number,
@@ -72,7 +72,7 @@ const companySchema = new mongoose.Schema({
     },
     verified: {
         type: Boolean,
-        default: false
+        default: true
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,

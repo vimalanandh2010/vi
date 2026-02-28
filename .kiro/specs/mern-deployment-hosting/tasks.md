@@ -6,7 +6,7 @@ This implementation plan covers the deployment of a MERN stack application to pr
 
 ## Tasks
 
-- [ ] 1. Prepare backend configuration files
+- [-] 1. Prepare backend configuration files
   - [ ] 1.1 Create environment variable template file
     - Create `.env.example` file in backend root with all required variables
     - Document each variable with comments explaining its purpose

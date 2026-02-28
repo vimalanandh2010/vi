@@ -21,10 +21,10 @@ const InterviewAlerts = () => {
             try {
                 let data = [];
                 if (user.role === 'employer' || user.role === 'recruiter') {
-                    const res = await axiosClient.get('/api/jobs/recruiter/applicants');
+                    const res = await axiosClient.get('jobs/recruiter/applicants');
                     data = res.data;
                 } else if (user.role === 'seeker') {
-                    const res = await axiosClient.get('/api/jobs/applied');
+                    const res = await axiosClient.get('jobs/applied');
                     data = res.data;
                 }
                 setApplications(data);
