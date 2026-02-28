@@ -115,8 +115,8 @@ const RecruiterCommunity = ({ openCreateModal = false }) => {
     const handleCreateCommunity = async (e) => {
         e.preventDefault()
         try {
-            if (!company || !['verified', 'pending'].includes(company.verificationStatus)) {
-                toast.error("Your company must be verified or pending verification to create a community. Please check your dashboard.")
+            if (!company) {
+                toast.error("You must complete your company profile to create a community. Please check your dashboard.")
                 return
             }
 

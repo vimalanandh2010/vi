@@ -66,9 +66,9 @@ router.post('/', recruiterAuth, async (req, res) => {
     const { name, description, isPrivate, tags, icon, member_ids } = req.body;
     try {
         const user = await User.findById(req.user.id).populate('company');
-        if (!user.company || !['verified', 'pending'].includes(user.company.verificationStatus)) {
+        if (!user.company) {
             return res.status(403).json({
-                message: 'Your company must be verified or pending verification before you can create a community. Please check your verification status in the dashboard.'
+                message: 'You must complete your company profile before you can create a community. Please check your profile in the dashboard.'
             });
         }
 
