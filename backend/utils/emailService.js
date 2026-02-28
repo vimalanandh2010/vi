@@ -3,22 +3,39 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+// Startup validation: warn clearly if email credentials are missing
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.error('⚠️ ========================================');
+    console.error('⚠️ EMAIL_USER or EMAIL_PASS is NOT SET!');
+    console.error('⚠️ OTP emails WILL NOT be sent.');
+    console.error('⚠️ Set these in your Render Environment Variables.');
+    console.error('⚠️ ========================================');
+}
+
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // Use SSL
+    port: 587,
+    secure: false, // Use STARTTLS
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
-    logger: true,
-    debug: true
+    tls: {
+        rejectUnauthorized: false,
+        minVersion: 'TLSv1.2'
+    },
+    pool: true,
+    maxConnections: 5,
+    maxMessages: 100,
+    logger: process.env.NODE_ENV !== 'production',
+    debug: process.env.NODE_ENV !== 'production'
 });
 
 // Verify connection configuration
 transporter.verify(function (error, success) {
     if (error) {
-        console.error('❌ Email Service Error:', error);
+        console.error('❌ Email Service Error:', error.message);
+        console.error('❌ Email delivery will fail. Check EMAIL_USER and EMAIL_PASS environment variables.');
     } else {
         console.log('✅ Email Service is ready to take our messages');
     }
@@ -151,87 +168,87 @@ const sendSelectionEmail = async (email, name, jobTitle, companyName) => {
 };
 
 const sendVerificationOTPEmail = async (email, otp) => {
-    try {
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: `Action Required: Verify your Company Domain`,
-            html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-                    <h2 style="color: #2563eb;">Company Verification</h2>
-                    <p>Hello,</p>
-                    <p>Use the following OTP to verify your official company email and complete your recruiter profile. This code is valid for 10 minutes.</p>
-                    <div style="background: #f3f4f6; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;">
-                        <span style="font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #1e293b;">${otp}</span>
-                    </div>
-                    <p>If you did not request this, please ignore this email.</p>
-                    <br>
-                    <p>Best Regards,<br>The Future Milestone Team</p>
-                </div>
-            `
-        };
+    // Always log OTP to server console as fallback
+    console.log(`[OTP-FALLBACK] Company Verification OTP for ${email}: ${otp}`);
 
-        await transporter.sendMail(mailOptions);
-        console.log(`OTP email sent to ${email}`);
-    } catch (error) {
-        console.error('Error sending OTP email:', error);
-    }
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: `Action Required: Verify your Company Domain`,
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <h2 style="color: #2563eb;">Company Verification</h2>
+                <p>Hello,</p>
+                <p>Use the following OTP to verify your official company email and complete your recruiter profile. This code is valid for 10 minutes.</p>
+                <div style="background: #f3f4f6; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;">
+                    <span style="font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #1e293b;">${otp}</span>
+                </div>
+                <p>If you did not request this, please ignore this email.</p>
+                <br>
+                <p>Best Regards,<br>The Future Milestone Team</p>
+            </div>
+        `
+    };
+
+    // Throw on failure so calling code can detect it
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Verification OTP email sent to ${email}`);
 };
 
 const sendOtpEmail = async (email, otp) => {
-    try {
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Your Login OTP - Future Milestone',
-            html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-                    <h2 style="color: #2563eb;">Login Verification</h2>
-                    <p>Hello,</p>
-                    <p>Use the following OTP to log in to your account. This code is valid for 5 minutes.</p>
-                    <div style="background: #f3f4f6; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;">
-                        <span style="font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #1e293b;">${otp}</span>
-                    </div>
-                    <p>If you did not request this, please ignore this email.</p>
-                    <br>
-                    <p>Best Regards,<br>The Future Milestone Team</p>
-                </div>
-            `
-        };
+    // Always log OTP to server console as fallback
+    console.log(`[OTP-FALLBACK] Login OTP for ${email}: ${otp}`);
 
-        await transporter.sendMail(mailOptions);
-        console.log(`Login OTP email sent to ${email}`);
-    } catch (error) {
-        console.error('Error sending login OTP email:', error);
-    }
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Your Login OTP - Future Milestone',
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <h2 style="color: #2563eb;">Login Verification</h2>
+                <p>Hello,</p>
+                <p>Use the following OTP to log in to your account. This code is valid for 5 minutes.</p>
+                <div style="background: #f3f4f6; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;">
+                    <span style="font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #1e293b;">${otp}</span>
+                </div>
+                <p>If you did not request this, please ignore this email.</p>
+                <br>
+                <p>Best Regards,<br>The Future Milestone Team</p>
+            </div>
+        `
+    };
+
+    // Throw on failure so calling code can detect it
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Login OTP email sent to ${email}`);
 };
 
 const sendResetPasswordEmail = async (email, otp) => {
-    try {
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Password Reset Code - Future Milestone',
-            html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-                    <h2 style="color: #2563eb;">Password Reset</h2>
-                    <p>Hello,</p>
-                    <p>We received a request to reset your password. Use the following OTP to complete the process. This code is valid for 10 minutes.</p>
-                    <div style="background: #f3f4f6; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;">
-                        <span style="font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #1e293b;">${otp}</span>
-                    </div>
-                    <p>If you did not request this, please ignore this email.</p>
-                    <br>
-                    <p>Best Regards,<br>The Future Milestone Team</p>
-                </div>
-            `
-        };
+    // Always log OTP to server console as fallback
+    console.log(`[OTP-FALLBACK] Reset Password OTP for ${email}: ${otp}`);
 
-        await transporter.sendMail(mailOptions);
-        console.log(`Reset password email sent to ${email}`);
-    } catch (error) {
-        console.error('Error sending reset password email:', error);
-    }
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Password Reset Code - Future Milestone',
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <h2 style="color: #2563eb;">Password Reset</h2>
+                <p>Hello,</p>
+                <p>We received a request to reset your password. Use the following OTP to complete the process. This code is valid for 10 minutes.</p>
+                <div style="background: #f3f4f6; padding: 15px; text-align: center; border-radius: 5px; margin: 20px 0;">
+                    <span style="font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #1e293b;">${otp}</span>
+                </div>
+                <p>If you did not request this, please ignore this email.</p>
+                <br>
+                <p>Best Regards,<br>The Future Milestone Team</p>
+            </div>
+        `
+    };
+
+    // Throw on failure so calling code can detect it
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Reset password OTP email sent to ${email}`);
 };
 
 const sendInterviewSlotEmail = async (email, candidateName, jobTitle, companyName, interviewDate, interviewTime, interviewNotes, applicationId, meetingLink = null) => {

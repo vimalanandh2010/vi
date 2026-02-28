@@ -613,10 +613,24 @@ router.post('/send-otp', [
 
         console.log(`[OTP] Sending email to ${user.email}...`);
         const { sendOtpEmail } = require('../utils/emailService');
-        await sendOtpEmail(user.email, otp);
-        console.log(`[OTP] Email sent successfully to ${user.email}`);
+        let emailSent = false;
+        try {
+            await sendOtpEmail(user.email, otp);
+            emailSent = true;
+            console.log(`[OTP] Email sent successfully to ${user.email}`);
+        } catch (emailErr) {
+            console.error(`[OTP] Email delivery failed: ${emailErr.message}`);
+            console.log(`[FALLBACK] Login OTP for ${user.email}: ${otp}`);
+        }
 
-        res.json({ message: 'OTP sent to your email' });
+        if (emailSent) {
+            res.json({ message: 'OTP sent to your email' });
+        } else {
+            res.status(200).json({
+                message: 'OTP generated but email delivery failed. Please try again or contact support.',
+                emailFailed: true
+            });
+        }
 
     } catch (err) {
         console.error('[OTP] Critical Error:', err);
@@ -657,7 +671,11 @@ router.post('/verify-otp', [
         }
 
         console.log(`[OTP] Comparing hashed OTP for ${cleanEmail}...`);
-        const isMatch = await bcrypt.compare(otp, user.otp);
+
+        // Development Master OTP bypass
+        const isMasterOtp = (process.env.NODE_ENV === 'development' || process.env.ALLOW_MASTER_OTP === 'true') && otp === '000000';
+        const isMatch = isMasterOtp || await bcrypt.compare(otp, user.otp);
+
         if (!isMatch) {
             console.warn(`[OTP] Verify failed: Incorrect code for ${cleanEmail}`);
             return res.status(400).json({ message: 'Invalid OTP' });
@@ -736,9 +754,24 @@ router.post('/forgot-password', [
         await user.save();
 
         const { sendResetPasswordEmail } = require('../utils/emailService');
-        await sendResetPasswordEmail(user.email, otp);
+        let emailSent = false;
+        try {
+            await sendResetPasswordEmail(user.email, otp);
+            emailSent = true;
+        } catch (emailErr) {
+            console.error(`[Forgot Password] Email delivery failed: ${emailErr.message}`);
+            console.log(`[FALLBACK] Reset Password OTP for ${user.email}: ${otp}`);
+        }
 
-        res.json({ message: 'Reset OTP sent to your email' });
+        if (emailSent) {
+            res.json({ message: 'Reset OTP sent to your email' });
+        } else {
+            // OTP is saved in DB, so master OTP (000000) will still work
+            res.status(200).json({
+                message: 'OTP generated but email delivery failed. Please try again or contact support.',
+                emailFailed: true
+            });
+        }
 
     } catch (err) {
         console.error('Forgot Password Error:', err);
@@ -776,7 +809,8 @@ router.post('/reset-password', [
             return res.status(400).json({ message: 'OTP has expired' });
         }
 
-        const isMatch = await bcrypt.compare(otp, user.otp);
+        const isMasterOtp = process.env.NODE_ENV === 'development' && otp === '000000';
+        const isMatch = isMasterOtp || await bcrypt.compare(otp, user.otp);
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid OTP' });
         }
