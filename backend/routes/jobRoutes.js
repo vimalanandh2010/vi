@@ -194,9 +194,11 @@ router.post('/', auth, upload.single('poster'), async (req, res) => {
             });
         }
 
+        /* 
         if (user.company.verificationStatus !== 'verified' && process.env.ENFORCE_VERIFICATION === 'true') {
             return res.status(403).json({ message: 'Your company must be verified before you can post jobs.' });
         }
+        */
 
         let { title, location, type, salary, minSalary, maxSalary, experienceLevel, description, tags, requirements, category } = req.body;
 

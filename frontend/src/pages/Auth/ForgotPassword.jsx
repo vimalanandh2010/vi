@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { Mail, ArrowRight, Loader2, AlertCircle, Key } from 'lucide-react';
+import { Mail, ArrowRight, Loader2, AlertCircle, Key, Lock, Eye, EyeOff } from 'lucide-react';
 import authApi from '../../api/modules/auth.api';
 import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 
 const ForgotPassword = () => {
     const navigate = useNavigate();
@@ -12,7 +13,10 @@ const ForgotPassword = () => {
     const initialRole = location.state?.role || 'seeker';
 
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [role, setRole] = useState(initialRole);
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -25,14 +29,28 @@ const ForgotPassword = () => {
             return;
         }
 
+        if (password.length < 6) {
+            setError('Password must be at least 6 characters');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+
         setLoading(true);
         try {
-            await authApi.forgotPassword(email, role);
-            // Navigate to reset page with email and role in state
-            navigate('/auth/reset-password', { state: { email, role } });
+            await authApi.forgotPassword(email, password, role);
+            toast.success('Password reset successful! You can now log in.');
+            
+            // Redirect to appropriate login page
+            setTimeout(() => {
+                navigate(role === 'seeker' ? '/seeker/login' : '/recruiter/login');
+            }, 2000);
         } catch (err) {
             console.error('Forgot Password Error:', err);
-            setError(err.response?.data?.message || 'Failed to send reset code. Please try again.');
+            setError(err.response?.data?.message || 'Failed to reset password. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -49,12 +67,12 @@ const ForgotPassword = () => {
                     <div className="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <Key className="text-blue-500" size={32} />
                     </div>
-                    <h1 className="text-2xl font-bold text-white mb-2">Forgot Password?</h1>
-                    <p className="text-slate-400">Enter your email and we'll send you a 6-digit code to reset your password.</p>
+                    <h1 className="text-2xl font-bold text-white mb-2">Reset Password</h1>
+                    <p className="text-slate-400">Enter your email and new password to reset your account.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Role Selection (in case someone lands here directly) */}
+                    {/* Role Selection */}
                     <div className="flex bg-slate-800/50 p-1 rounded-xl gap-1">
                         <button
                             type="button"
@@ -93,6 +111,43 @@ const ForgotPassword = () => {
                         </div>
                     </div>
 
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-slate-300">New Password</label>
+                        <div className="relative group">
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-400 transition-colors" size={20} />
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter new password"
+                                className="w-full bg-slate-800/50 border border-slate-700 rounded-xl py-3.5 pl-12 pr-12 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                            >
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-slate-300">Confirm Password</label>
+                        <div className="relative group">
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-400 transition-colors" size={20} />
+                            <input
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder="Confirm new password"
+                                className="w-full bg-slate-800/50 border border-slate-700 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                                required
+                            />
+                        </div>
+                    </div>
+
                     {error && (
                         <motion.div
                             initial={{ opacity: 0, height: 0 }}
@@ -113,7 +168,7 @@ const ForgotPassword = () => {
                             <Loader2 className="animate-spin" size={20} />
                         ) : (
                             <>
-                                Send Reset Code
+                                Reset Password
                                 <ArrowRight size={20} />
                             </>
                         )}

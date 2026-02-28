@@ -67,7 +67,6 @@ import RecruiterHelperChat from './components/RecruiterHelperChat'
 import EnterEmail from './pages/Auth/EnterEmail'
 import VerifyOtp from './pages/Auth/VerifyOtp'
 import ForgotPassword from './pages/Auth/ForgotPassword'
-import ResetPassword from './pages/Auth/ResetPassword'
 
 export default function App() {
   return (
@@ -87,7 +86,6 @@ export default function App() {
                 <Route path="/auth/login-otp" element={<EnterEmail />} />
                 <Route path="/auth/verify-otp" element={<VerifyOtp />} />
                 <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-                <Route path="/auth/reset-password" element={<ResetPassword />} />
                 <Route path="/interview/:applicationId" element={
                   <ErrorBoundary>
                     <InterviewRoom />

@@ -724,9 +724,10 @@ router.post('/verify-otp', [
 });
 
 // @route   POST /api/auth/forgot-password
-// @desc    Send OTP for Password Reset
+// @desc    Direct password reset without OTP
 router.post('/forgot-password', [
     check('email', 'Please include a valid email').isEmail(),
+    check('password', 'Password must be at least 6 characters').isLength({ min: 6 }),
     check('role', 'Role is required').exists()
 ], async (req, res) => {
     const errors = validationResult(req);
@@ -734,7 +735,7 @@ router.post('/forgot-password', [
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, role } = req.body;
+    const { email, password, role } = req.body;
     const cleanEmail = email.toLowerCase().trim();
 
     try {
@@ -744,34 +745,12 @@ router.post('/forgot-password', [
             return res.status(404).json({ message: `No ${role} account found with this email` });
         }
 
-        const otp = require('../utils/generateOtp')();
+        // Set New Password directly without OTP
         const salt = await bcrypt.genSalt(10);
-        const hashedOtp = await bcrypt.hash(otp, salt);
-        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
-        user.otp = hashedOtp;
-        user.otpExpiry = otpExpiry;
+        user.password = await bcrypt.hash(password, salt);
         await user.save();
 
-        const { sendResetPasswordEmail } = require('../utils/emailService');
-        let emailSent = false;
-        try {
-            await sendResetPasswordEmail(user.email, otp);
-            emailSent = true;
-        } catch (emailErr) {
-            console.error(`[Forgot Password] Email delivery failed: ${emailErr.message}`);
-            console.log(`[FALLBACK] Reset Password OTP for ${user.email}: ${otp}`);
-        }
-
-        if (emailSent) {
-            res.json({ message: 'Reset OTP sent to your email' });
-        } else {
-            // OTP is saved in DB, so master OTP (000000) will still work
-            res.status(200).json({
-                message: 'OTP generated but email delivery failed. Please try again or contact support.',
-                emailFailed: true
-            });
-        }
+        res.json({ message: 'Password has been reset successfully. You can now log in.' });
 
     } catch (err) {
         console.error('Forgot Password Error:', err);
@@ -780,10 +759,9 @@ router.post('/forgot-password', [
 });
 
 // @route   POST /api/auth/reset-password
-// @desc    Verify OTP and Reset Password
+// @desc    Reset Password (deprecated - use forgot-password instead)
 router.post('/reset-password', [
     check('email', 'Please include a valid email').isEmail(),
-    check('otp', 'OTP is required').exists(),
     check('password', 'Password must be at least 6 characters').isLength({ min: 6 }),
     check('role', 'Role is required').exists()
 ], async (req, res) => {
@@ -792,7 +770,7 @@ router.post('/reset-password', [
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, otp, password, role } = req.body;
+    const { email, password, role } = req.body;
     const cleanEmail = email.toLowerCase().trim();
 
     try {
@@ -801,27 +779,9 @@ router.post('/reset-password', [
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        if (!user.otp || !user.otpExpiry) {
-            return res.status(400).json({ message: 'No reset requested or OTP expired' });
-        }
-
-        if (user.otpExpiry < new Date()) {
-            return res.status(400).json({ message: 'OTP has expired' });
-        }
-
-        const isMasterOtp = process.env.NODE_ENV === 'development' && otp === '000000';
-        const isMatch = isMasterOtp || await bcrypt.compare(otp, user.otp);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid OTP' });
-        }
-
-        // Set New Password
+        // Set New Password directly
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
-
-        // Clear OTP
-        user.otp = undefined;
-        user.otpExpiry = undefined;
         await user.save();
 
         res.json({ message: 'Password has been reset successfully. You can now log in.' });

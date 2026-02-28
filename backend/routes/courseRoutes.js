@@ -31,9 +31,11 @@ router.post('/', auth, upload, async (req, res) => {
         }
 
         const populatedUser = await User.findById(req.user.id).populate('company');
+        /*
         if (!populatedUser.company || populatedUser.company.verificationStatus !== 'verified') {
             return res.status(403).json({ message: 'Your company must be verified before you can post courses.' });
         }
+        */
 
         const { title, description, level } = req.body;
 

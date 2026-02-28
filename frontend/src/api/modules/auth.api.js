@@ -17,9 +17,9 @@ const authApi = {
     sendOtp: (email, role) => axiosClient.post('auth/send-otp', { email, role }),
     verifyOtp: (email, otp, role) => axiosClient.post('auth/verify-otp', { email, otp, role }),
 
-    // Password Reset
-    forgotPassword: (email, role) => axiosClient.post('auth/forgot-password', { email, role }),
-    resetPassword: (email, otp, password, role) => axiosClient.post('auth/reset-password', { email, otp, password, role })
+    // Password Reset (No OTP required)
+    forgotPassword: (email, password, role) => axiosClient.post('auth/forgot-password', { email, password, role }),
+    resetPassword: (email, password, role) => axiosClient.post('auth/reset-password', { email, password, role })
 };
 
 export default authApi;
