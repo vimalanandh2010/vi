@@ -27,14 +27,15 @@ import {
     Home,
     Building2,
     Github,
-    Video
+    Video,
+    FileText
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import Navbar from '../../components/Navbar'
 import { toast } from 'react-toastify'
 import axiosClient from '../../api/axiosClient'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-
+import ResumeViewerModal from '../../components/ResumeViewerModal'
 
 const RecruiterCandidates = () => {
     const { user, logout } = useAuth()
@@ -56,6 +57,9 @@ const RecruiterCandidates = () => {
     const [showInterviewModal, setShowInterviewModal] = useState(false)
     const [interviewForm, setInterviewForm] = useState({ date: '', time: '', link: '', notes: '' })
     const [autoAssigning, setAutoAssigning] = useState(false)
+
+    // Resume Modal State
+    const [showResumeModal, setShowResumeModal] = useState(false)
 
     // Open interview modal:
     // - If candidate already has a slot → pre-fill for editing
@@ -528,6 +532,15 @@ const RecruiterCandidates = () => {
                                             </div>
                                         </div>
                                         <div className="flex gap-2">
+                                            {selectedApplication.resumeUrl && (
+                                                <button
+                                                    onClick={() => setShowResumeModal(true)}
+                                                    className="p-2.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-600 hover:text-white transition-colors rounded-xl flex items-center gap-2"
+                                                    title="View Candidate Resume"
+                                                >
+                                                    <FileText size={20} />
+                                                </button>
+                                            )}
                                             <button className="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-slate-400 hover:text-white transition-colors">
                                                 <MoreVertical size={20} />
                                             </button>
@@ -1109,6 +1122,13 @@ const RecruiterCandidates = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <ResumeViewerModal
+                isOpen={showResumeModal}
+                onClose={() => setShowResumeModal(false)}
+                resumeUrl={selectedApplication?.resumeUrl}
+                userName={selectedApplication?.user?.firstName || 'Candidate'}
+            />
         </div >
     )
 }

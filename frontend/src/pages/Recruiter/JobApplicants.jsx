@@ -31,6 +31,7 @@ import axios from 'axios'
 import axiosClient from '../../api/axiosClient'
 import { toast } from 'react-toastify'
 
+import ResumeViewerModal from '../../components/ResumeViewerModal'
 
 const JobApplicants = () => {
     const navigate = useNavigate()
@@ -43,6 +44,10 @@ const JobApplicants = () => {
     const [imagePreview, setImagePreview] = useState(null)
     const [isScreening, setIsScreening] = useState(false)
     const [screeningProgress, setScreeningProgress] = useState({ current: 0, total: 0 })
+
+    const [showResumeModal, setShowResumeModal] = useState(false)
+    const [resumeUrlToView, setResumeUrlToView] = useState(null)
+    const [resumeUserName, setResumeUserName] = useState('')
 
     // Scheduling Modal State
     const [showScheduleModal, setShowScheduleModal] = useState(false)
@@ -438,14 +443,16 @@ const JobApplicants = () => {
                                                 </span>
                                             )}
                                             {app.resumeUrl && (
-                                                <a
-                                                    href={app.resumeUrl}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
+                                                <button
+                                                    onClick={() => {
+                                                        setResumeUrlToView(app.resumeUrl)
+                                                        setResumeUserName(app.user?.firstName || 'Candidate')
+                                                        setShowResumeModal(true)
+                                                    }}
                                                     className="px-4 py-2 bg-slate-700/50 hover:bg-slate-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2 border border-slate-600/50"
                                                 >
                                                     <FileText size={16} /> Resume
-                                                </a>
+                                                </button>
                                             )}
 
                                             <div className="relative group/status">
@@ -876,6 +883,13 @@ const JobApplicants = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <ResumeViewerModal
+                isOpen={showResumeModal}
+                onClose={() => setShowResumeModal(false)}
+                resumeUrl={resumeUrlToView}
+                userName={resumeUserName}
+            />
         </div>
     )
 }
