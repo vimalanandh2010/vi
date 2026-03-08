@@ -272,4 +272,63 @@ router.post('/disconnect', auth, async (req, res) => {
     }
 });
 
+/**
+ * @route   GET /api/calendar/events
+ * @desc    Fetch events from Google Calendar
+ * @access  Private (Recruiter)
+ */
+router.get('/events', auth, async (req, res) => {
+    try {
+        // Get user's Google Calendar tokens
+        const user = await User.findById(req.user.id);
+        
+        if (!user.googleCalendarTokens || !user.googleCalendarTokens.access_token) {
+            return res.status(401).json({ 
+                success: false,
+                message: 'Google Calendar not connected. Please authorize first.',
+                requiresAuth: true,
+                events: []
+            });
+        }
+
+        // Optional date range parameters
+        const { startDate, endDate } = req.query;
+        let timeMin = startDate ? new Date(startDate) : null;
+        let timeMax = endDate ? new Date(endDate) : null;
+
+        // Fetch events from Google Calendar
+        const events = await googleCalendarService.fetchCalendarEvents(
+            user.googleCalendarTokens.access_token,
+            timeMin,
+            timeMax
+        );
+
+        res.json({
+            success: true,
+            events,
+            count: events.length
+        });
+
+    } catch (error) {
+        console.error('Error fetching calendar events:', error);
+        
+        // Check if token expired
+        if (error.message && error.message.includes('Authorization expired')) {
+            return res.status(401).json({ 
+                success: false,
+                message: 'Google Calendar authorization expired. Please reconnect.',
+                requiresAuth: true,
+                events: []
+            });
+        }
+
+        res.status(500).json({ 
+            success: false,
+            message: 'Failed to fetch calendar events',
+            error: error.message,
+            events: []
+        });
+    }
+});
+
 module.exports = router;

@@ -283,6 +283,63 @@ ${meetingLink ? `Meeting Link: ${meetingLink}` : 'In-person interview'}
             throw new Error(`Failed to delete calendar event: ${error.message}`);
         }
     }
+
+    /**
+     * Fetch events from Google Calendar
+     * @param {string} accessToken - User's Google access token
+     * @param {Date} timeMin - Minimum date to fetch from (optional)
+     * @param {Date} timeMax - Maximum date to fetch to (optional)
+     * @returns {Promise<Array>} - List of calendar events
+     */
+    async fetchCalendarEvents(accessToken, timeMin = null, timeMax = null) {
+        try {
+            this.initializeClient({ access_token: accessToken });
+
+            if (!this.calendar) {
+                throw new Error('Calendar not initialized');
+            }
+
+            // Default: fetch events from 3 months ago to 6 months ahead
+            const defaultTimeMin = timeMin || new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
+            const defaultTimeMax = timeMax || new Date(Date.now() + 180 * 24 * 60 * 60 * 1000);
+
+            const response = await this.calendar.events.list({
+                calendarId: 'primary',
+                timeMin: defaultTimeMin.toISOString(),
+                timeMax: defaultTimeMax.toISOString(),
+                maxResults: 100,
+                singleEvents: true,
+                orderBy: 'startTime'
+            });
+
+            const events = response.data.items || [];
+
+            // Format events for frontend
+            return events.map(event => ({
+                id: event.id,
+                title: event.summary || 'No Title',
+                description: event.description || '',
+                startDateTime: event.start.dateTime || event.start.date,
+                endDateTime: event.end.dateTime || event.end.date,
+                location: event.location || '',
+                attendees: event.attendees || [],
+                htmlLink: event.htmlLink,
+                meetingLink: event.hangoutLink || event.conferenceData?.entryPoints?.[0]?.uri || '',
+                creator: event.creator?.email || '',
+                status: event.status
+            }));
+
+        } catch (error) {
+            console.error('Error fetching Google Calendar events:', error);
+            
+            // More detailed error handling
+            if (error.response?.status === 401) {
+                throw new Error('Authorization expired. Please reconnect your Google Calendar.');
+            }
+            
+            throw new Error(`Failed to fetch calendar events: ${error.message}`);
+        }
+    }
 }
 
 module.exports = new GoogleCalendarService();

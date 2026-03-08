@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Send, X, Upload, MapPin, Briefcase, DollarSign, Tag, FileText, ChevronRight, AlertCircle, Sparkles } from 'lucide-react'
+import { Plus, Send, X, Upload, MapPin, Briefcase, DollarSign, Tag, FileText, ChevronRight, AlertCircle, Sparkles, Loader2 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate, Link } from 'react-router-dom'
 import RecruiterLayout from '../../components/RecruiterLayout'

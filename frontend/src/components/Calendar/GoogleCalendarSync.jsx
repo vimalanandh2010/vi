@@ -4,7 +4,7 @@ import { Calendar as CalendarIcon, Check, AlertCircle, Loader2, ExternalLink } f
 import axiosClient from '../../api/axiosClient';
 import { toast } from 'react-toastify';
 
-const GoogleCalendarSync = () => {
+const GoogleCalendarSync = ({ onSync }) => {
     const [isConnected, setIsConnected] = useState(false);
     const [loading, setLoading] = useState(true);
     const [syncing, setSyncing] = useState(false);
@@ -22,6 +22,8 @@ const GoogleCalendarSync = () => {
                 toast.success('Successfully connected to Google Calendar!');
                 setIsConnected(true);
                 checkConnectionStatus();
+                // Trigger refresh after successful connection
+                if (onSync) onSync();
             } else if (event.data.type === 'GOOGLE_CALENDAR_AUTH_ERROR') {
                 toast.error(event.data.error || 'Failed to connect Google Calendar');
             }
@@ -29,7 +31,7 @@ const GoogleCalendarSync = () => {
 
         window.addEventListener('message', handleMessage);
         return () => window.removeEventListener('message', handleMessage);
-    }, []);
+    }, [onSync]);
 
     const checkConnectionStatus = async () => {
         try {
@@ -71,6 +73,8 @@ const GoogleCalendarSync = () => {
             const data = await axiosClient.post('/calendar/sync-all');
             toast.success(data.message || `Synced ${data.syncedCount} interviews successfully!`);
             setShowModal(false);
+            // Trigger refresh after successful sync
+            if (onSync) onSync();
         } catch (error) {
             if (error.response?.data?.requiresAuth) {
                 toast.error('Please reconnect your Google Calendar');

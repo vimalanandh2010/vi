@@ -18,17 +18,27 @@ const RecruiterCalendar = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
     const [interviews, setInterviews] = useState([])
+    const [googleEvents, setGoogleEvents] = useState([])
+    const [allEvents, setAllEvents] = useState([])
     const [loading, setLoading] = useState(true)
     const [today] = useState(new Date())
     const [viewDate, setViewDate] = useState(new Date())
     const [selectedDay, setSelectedDay] = useState(null)
     const [selectedDayInterviews, setSelectedDayInterviews] = useState([])
     const [jobCount, setJobCount] = useState(0)
+    const [calendarConnected, setCalendarConnected] = useState(false)
 
     useEffect(() => {
         fetchInterviews()
         fetchJobCount()
+        fetchGoogleCalendarEvents()
     }, [])
+
+    useEffect(() => {
+        // Merge interviews and Google events
+        const merged = [...interviews, ...googleEvents]
+        setAllEvents(merged)
+    }, [interviews, googleEvents])
 
     const fetchInterviews = async () => {
         try {
@@ -46,6 +56,31 @@ const RecruiterCalendar = () => {
         }
     }
 
+    const fetchGoogleCalendarEvents = async () => {
+        try {
+            const res = await axiosClient.get('calendar/events')
+            if (res.success && res.events) {
+                setCalendarConnected(true)
+                // Transform Google Calendar events to match interview format
+                const transformedEvents = res.events.map(event => {
+                    const startDate = new Date(event.startDateTime)
+                    return {
+                        ...event,
+                        interviewDate: startDate.toISOString().split('T')[0],
+                        interviewTime: startDate.toTimeString().slice(0, 5),
+                        isGoogleEvent: true,
+                        user: { firstName: event.title },
+                        job: { title: event.description || '' }
+                    }
+                })
+                setGoogleEvents(transformedEvents)
+            }
+        } catch (err) {
+            console.log('Google Calendar not connected or failed to fetch:', err)
+            setCalendarConnected(false)
+        }
+    }
+
     const fetchJobCount = async () => {
         try {
             const res = await axiosClient.get('jobs/recruiter/jobs')
@@ -54,7 +89,7 @@ const RecruiterCalendar = () => {
     }
 
     const interviewMap = {}
-    interviews.forEach(iv => {
+    allEvents.forEach(iv => {
         const key = iv.interviewDate
         if (!interviewMap[key]) interviewMap[key] = []
         interviewMap[key].push(iv)
@@ -100,11 +135,17 @@ const RecruiterCalendar = () => {
                         <p className="text-slate-500 font-medium mt-2">Manage your upcoming candidate interview sessions</p>
                     </div>
                     <div className="flex items-center gap-4">
-                        <GoogleCalendarSync />
+                        <GoogleCalendarSync onSync={fetchGoogleCalendarEvents} />
                         <div className="flex items-center gap-4 bg-slate-50 border border-slate-100 rounded-2xl px-6 py-3 shadow-sm">
                             <div className="w-3 h-3 rounded-full bg-blue-600 animate-pulse"></div>
-                            <span className="text-sm text-black font-black uppercase tracking-widest">{interviews.length} Scheduled</span>
+                            <span className="text-sm text-black font-black uppercase tracking-widest">{allEvents.length} Total Events</span>
                         </div>
+                        {calendarConnected && (
+                            <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-2xl px-4 py-2">
+                                <div className="w-2 h-2 rounded-full bg-green-600"></div>
+                                <span className="text-xs text-green-700 font-bold">Google Calendar Connected</span>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -170,8 +211,14 @@ const RecruiterCalendar = () => {
                                                         </span>
                                                         <div className="space-y-1.5">
                                                             {dayInterviews.slice(0, 2).map((iv, i) => (
-                                                                <div key={i} className="w-full px-2 py-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[9px] font-bold text-black truncate shadow-sm">
-                                                                    <span className="text-blue-600">{formatTime(iv.interviewTime)}</span> {iv.user?.firstName}
+                                                                <div key={i} className={`w-full px-2 py-1.5 rounded-lg text-[9px] font-bold text-black truncate shadow-sm ${
+                                                                    iv.isGoogleEvent 
+                                                                        ? 'bg-green-50 border border-green-200' 
+                                                                        : 'bg-slate-50 border border-slate-100'
+                                                                }`}>
+                                                                    <span className={iv.isGoogleEvent ? 'text-green-600' : 'text-blue-600'}>
+                                                                        {formatTime(iv.interviewTime)}
+                                                                    </span> {iv.user?.firstName}
                                                                 </div>
                                                             ))}
                                                             {dayInterviews.length > 2 && (
@@ -203,11 +250,37 @@ const RecruiterCalendar = () => {
                             </div>
 
                             <div className="space-y-4 max-h-[700px] overflow-y-auto pr-2 custom-scrollbar">
-                                {(selectedDay ? selectedDayInterviews : interviews.slice(0, 10)).map((iv, i) => (
-                                    <InterviewCard key={i} iv={iv} index={i} />
+                                {(selectedDay ? selectedDayInterviews : allEvents.slice(0, 10)).map((iv, i) => (
+                                    iv.isGoogleEvent ? (
+                                        <div key={i} className="bg-green-50 border-2 border-green-200 rounded-2xl p-5 shadow-sm">
+                                            <div className="flex items-start justify-between mb-3">
+                                                <div className="flex-1">
+                                                    <div className="flex items-center gap-2 mb-2">
+                                                        <Calendar className="text-green-600" size={16} />
+                                                        <span className="text-xs font-black text-green-700 uppercase tracking-wider">Google Calendar</span>
+                                                    </div>
+                                                    <h4 className="font-black text-black text-sm mb-1">{iv.title}</h4>
+                                                    <p className="text-xs text-slate-600">{iv.description || 'No description'}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-4 text-xs text-slate-600 pt-3 border-t border-green-200">
+                                                <span className="font-bold">{iv.interviewDate}</span>
+                                                <span>•</span>
+                                                <span className="font-bold">{formatTime(iv.interviewTime)}</span>
+                                            </div>
+                                            {iv.htmlLink && (
+                                                <a href={iv.htmlLink} target="_blank" rel="noopener noreferrer" 
+                                                   className="inline-block mt-3 text-xs text-green-600 hover:text-green-700 font-bold underline">
+                                                    View in Google Calendar →
+                                                </a>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <InterviewCard key={i} iv={iv} index={i} />
+                                    )
                                 ))}
 
-                                {((selectedDay ? selectedDayInterviews : interviews).length === 0) && (
+                                {((selectedDay ? selectedDayInterviews : allEvents).length === 0) && (
                                     <div className="bg-slate-50 border border-dashed border-slate-200 rounded-[2rem] p-12 text-center">
                                         <Calendar className="mx-auto text-slate-200 mb-6" size={48} />
                                         <p className="text-black font-black uppercase text-xs tracking-widest opacity-30">No interviews scheduled</p>
