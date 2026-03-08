@@ -120,7 +120,7 @@ const compareJDAndResume = async (jdText, resumeText) => {
 
         console.log('[GeminiService] Sending request to Gemini using @google/generative-ai...');
 
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const text = response.text();
@@ -161,7 +161,7 @@ const extractTextFromFile = async (filePath) => {
             throw new Error('GEMINI_API_KEY is not defined');
         }
 
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const fileBuffer = fs.readFileSync(filePath);
         const mimeType = filePath.toLowerCase().endsWith('.pdf') ? 'application/pdf' : 'image/jpeg'; // Simplification
 
@@ -205,7 +205,7 @@ const extractSkillsFromText = async (text) => {
             """
         `;
 
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const resultText = response.text();
