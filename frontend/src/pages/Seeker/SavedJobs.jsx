@@ -72,18 +72,18 @@ const SavedJobs = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-900 pb-20">
+        <div className="min-h-screen bg-white pb-20">
             <Navbar />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
-                <Link to="/seeker/dashboard" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8 group">
+                <Link to="/seeker/dashboard" className="inline-flex items-center gap-2 text-slate-500 hover:text-black transition-colors mb-8 group">
                     <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                     Back to Dashboard
                 </Link>
 
                 <div className="mb-12">
-                    <h1 className="text-4xl font-bold text-white mb-2">Saved Jobs</h1>
-                    <p className="text-slate-400 italic">Your personal collection of interesting opportunities.</p>
+                    <h1 className="text-4xl font-bold text-slate-900 mb-2">Saved Jobs</h1>
+                    <p className="text-slate-500 font-medium italic">Your personal collection of interesting opportunities.</p>
                 </div>
 
                 {loading ? (
@@ -100,7 +100,7 @@ const SavedJobs = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.05 }}
-                                    className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 group hover:border-purple-500/30 transition-all relative"
+                                    className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-2xl hover:shadow-blue-900/20 hover:bg-blue-950 hover:border-blue-900 transition-all duration-300 group relative"
                                 >
                                     <button
                                         onClick={() => handleRemove(job._id)}
@@ -110,33 +110,33 @@ const SavedJobs = () => {
                                         <Trash2 size={18} />
                                     </button>
 
-                                    <div className="w-12 h-12 rounded-xl bg-slate-700/50 flex items-center justify-center text-2xl mb-4">
+                                    <div className="w-12 h-12 rounded-xl bg-slate-100 group-hover:bg-blue-900 flex items-center justify-center text-2xl mb-4 transition-all duration-300">
                                         🏢
                                     </div>
 
-                                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-purple-400 transition-colors pr-8">{job.title}</h3>
-                                    <p className="text-purple-400 font-medium mb-6">{job.company?.name || job.company}</p>
+                                    <h3 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-white transition-colors pr-8">{job.title}</h3>
+                                    <p className="text-slate-600 group-hover:text-blue-300 font-bold mb-6 transition-colors">{job.company?.name || job.company}</p>
 
                                     <div className="space-y-3 mb-8">
-                                        <div className="flex items-center gap-2 text-slate-400 text-sm">
-                                            <MapPin size={16} />
+                                        <div className="flex items-center gap-2 text-slate-500 group-hover:text-blue-200 text-sm font-medium transition-colors">
+                                            <MapPin size={16} className="text-slate-400 group-hover:text-white transition-colors" />
                                             {job.location}
                                         </div>
-                                        <div className="flex items-center gap-2 text-slate-400 text-sm">
-                                            <Briefcase size={16} />
+                                        <div className="flex items-center gap-2 text-slate-500 group-hover:text-blue-200 text-sm font-medium transition-colors">
+                                            <Briefcase size={16} className="text-slate-400 group-hover:text-white transition-colors" />
                                             {job.type}
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center justify-between pt-4 border-t border-slate-700/50">
+                                    <div className="flex items-center justify-between pt-4 border-t border-slate-100 group-hover:border-blue-900 transition-colors duration-300">
                                         <div className="flex flex-col">
-                                            <p className="text-white font-bold">{job.salary || 'Competitive'}</p>
+                                            <p className="text-slate-900 font-bold group-hover:text-white transition-colors">{job.salary || 'Competitive'}</p>
                                             {job.postedBy && (
                                                 <button
                                                     onClick={() => handleMessage(job.postedBy._id || job.postedBy)}
-                                                    className="flex items-center gap-1.5 text-purple-400 hover:text-purple-300 text-[10px] font-bold mt-1 uppercase tracking-wider"
+                                                    className="flex items-center gap-1.5 text-slate-500 group-hover:text-blue-400 hover:text-blue-200 text-xs font-bold mt-1 transition-colors"
                                                 >
-                                                    <MessageSquare size={14} />
+                                                    <MessageSquare size={14} className="group-hover:text-white transition-colors" />
                                                     Message
                                                 </button>
                                             )}

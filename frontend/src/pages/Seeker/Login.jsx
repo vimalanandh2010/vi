@@ -144,18 +144,17 @@ const SeekerLogin = () => {
     };
 
     return (
-        <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-slate-900">
+        <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-portal-bg">
 
             {/* Background Image */}
-            <div className="absolute inset-0 z-0">
-                <img src={background} alt="Background" className="w-full h-full object-cover opacity-20" />
-                <div className="absolute inset-0 bg-slate-900/90" />
+            <div className="absolute inset-0 z-0 opacity-10">
+                <img src={background} alt="Background" className="w-full h-full object-cover" />
             </div>
 
             {/* Background Gradients/Blobs */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/20 rounded-full blur-[120px]" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px]" />
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none opacity-50">
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-slate-200 rounded-full blur-[120px]" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-slate-300 rounded-full blur-[120px]" />
             </div>
 
             <div className="z-10 w-full max-w-6xl p-4 sm:p-6 lg:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -165,19 +164,19 @@ const SeekerLogin = () => {
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="bg-slate-800/40 border border-slate-700/50 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 sm:p-8 shadow-2xl"
+                    className="bg-white border border-slate-200 rounded-2xl md:rounded-3xl p-6 sm:p-8 shadow-lg"
                 >
                     {!isLinkingPassword ? (
                         <>
                             <div className="mb-6 md:mb-8">
-                                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">Welcome Back</h2>
-                                <p className="text-slate-400 text-sm md:text-base">Choose your preferred login method.</p>
+                                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Welcome Back</h2>
+                                <p className="text-slate-600 text-sm md:text-base">Choose your preferred login method.</p>
                             </div>
 
                             <div className="mb-6 md:mb-8">
                                 <div className="flex items-center gap-2 mb-4">
-                                    <Chrome className="text-blue-400" size={16} />
-                                    <span className="text-[10px] md:text-xs font-bold text-blue-400 uppercase tracking-widest">Quick Access</span>
+                                    <Chrome className="text-slate-500" size={16} />
+                                    <span className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest">Quick Access</span>
                                 </div>
                                 <button
                                     onClick={handleGoogleLogin}
@@ -191,10 +190,10 @@ const SeekerLogin = () => {
 
                             <div className="relative mb-8">
                                 <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-slate-700"></div>
+                                    <div className="w-full border-t border-slate-200"></div>
                                 </div>
                                 <div className="relative flex justify-center text-sm">
-                                    <span className="px-4 bg-slate-800 text-slate-500 font-medium italic">or use your credentials</span>
+                                    <span className="px-4 bg-white text-slate-500 font-medium italic">or use your credentials</span>
                                 </div>
                             </div>
 
@@ -214,7 +213,7 @@ const SeekerLogin = () => {
                                         placeholder="Email Address"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all placeholder:text-slate-500"
+                                        className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-slate-500/50 focus:border-slate-500 transition-all placeholder:text-slate-400"
                                         required
                                     />
                                 </div>
@@ -228,7 +227,7 @@ const SeekerLogin = () => {
                                         placeholder="Password"
                                         value={formData.password}
                                         onChange={handleChange}
-                                        className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl py-3 pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all placeholder:text-slate-500"
+                                        className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl py-3 pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-slate-500/50 focus:border-slate-500 transition-all placeholder:text-slate-400"
                                         required
                                     />
                                     <button
@@ -241,14 +240,14 @@ const SeekerLogin = () => {
                                 </div>
 
                                 <div className="flex items-center justify-between text-sm">
-                                    <label className="flex items-center text-slate-400 cursor-pointer hover:text-slate-300">
-                                        <input type="checkbox" className="mr-2 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0" />
+                                    <label className="flex items-center text-slate-400 cursor-pointer hover:text-slate-600">
+                                        <input type="checkbox" className="mr-2 rounded border-slate-300 bg-white text-slate-900 focus:ring-slate-500" />
                                         Remember me
                                     </label>
                                     <Link
                                         to="/auth/forgot-password"
                                         state={{ role: 'seeker' }}
-                                        className="text-blue-400 hover:text-blue-300 hover:underline"
+                                        className="text-slate-600 font-bold hover:text-slate-900 hover:underline"
                                     >
                                         Forgot Password?
                                     </Link>
@@ -256,7 +255,7 @@ const SeekerLogin = () => {
 
                                 <button
                                     type="submit"
-                                    className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-blue-900/20 transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
+                                    className="w-full py-4 bg-black hover:bg-zinc-900 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 active:scale-[0.98] flex items-center justify-center gap-2"
                                 >
                                     Sign In <ArrowRight size={20} />
                                 </button>
@@ -265,7 +264,7 @@ const SeekerLogin = () => {
                                     <Link
                                         to="/auth/login-otp"
                                         state={{ role: 'seeker' }}
-                                        className="text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                                        className="text-sm text-slate-500 font-bold hover:text-slate-900 transition-colors hover:underline"
                                     >
                                         Login via OTP instead
                                     </Link>
@@ -292,7 +291,7 @@ const SeekerLogin = () => {
                                         placeholder="New Password"
                                         value={formData.password}
                                         onChange={handleChange}
-                                        className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                                        className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                                         required
                                     />
                                 </div>
@@ -304,7 +303,7 @@ const SeekerLogin = () => {
                                         placeholder="Confirm Password"
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
-                                        className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                                        className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                                         required
                                     />
                                 </div>
@@ -326,20 +325,20 @@ const SeekerLogin = () => {
                         </motion.div>
                     )}
 
-                    <div className="mt-8 pt-6 border-t border-slate-700/50 text-center">
+                    <div className="mt-8 pt-6 border-t border-slate-200 text-center">
                         <p className="text-slate-500 text-sm mb-4 uppercase tracking-widest font-bold">Role Switching</p>
                         <Link
                             to="/recruiter/login"
-                            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 hover:bg-purple-500 hover:text-white transition-all duration-300 font-medium"
+                            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-all duration-300 font-bold"
                         >
                             Switch to Recruiter Account
                         </Link>
                     </div>
 
                     <div className="mt-6 text-center">
-                        <p className="text-slate-400">
+                        <p className="text-slate-500">
                             Don't have an account? {' '}
-                            <Link to="/seeker/signup" className="text-blue-400 hover:text-blue-300 font-medium hover:underline">
+                            <Link to="/seeker/signup" className="text-slate-700 font-bold hover:text-black hover:underline">
                                 Sign Up
                             </Link>
                         </p>
@@ -351,31 +350,31 @@ const SeekerLogin = () => {
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="hidden md:flex flex-col justify-center h-full text-white p-8"
+                    className="hidden md:flex flex-col justify-center h-full text-slate-900 p-8"
                 >
                     <div className="mb-6">
                         <img src={logo} alt="Logo" className="h-16 mb-6 opacity-90 drop-shadow-lg" />
                     </div>
 
-                    <h1 className="text-5xl font-bold mb-6 leading-tight">
+                    <h1 className="text-5xl font-bold mb-6 leading-tight text-slate-900">
                         Welcome back to <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                        <span className="text-black">
                             your future.
                         </span>
                     </h1>
 
-                    <div className="bg-slate-800/40 p-6 rounded-3xl border border-slate-700/50 backdrop-blur-sm relative">
-                        <div className="text-4xl text-blue-500 absolute -top-4 -left-2">"</div>
-                        <p className="text-lg text-slate-300 italic mb-4 relative z-10">
+                    <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-lg relative hover:-translate-y-1 transition-all group">
+                        <div className="text-4xl text-slate-300 absolute -top-4 -left-2">"</div>
+                        <p className="text-lg text-slate-700 italic mb-4 relative z-10">
                             Applying to jobs has never been easier. I found my current role within a week of creating my profile here.
                         </p>
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center text-lg font-bold">
+                            <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-lg font-bold text-white">
                                 JS
                             </div>
                             <div>
-                                <h4 className="font-bold">halfbrick</h4>
-                                <p className="text-sm text-slate-400">brick by brick only made a wall</p>
+                                <h4 className="font-bold text-slate-900">halfbrick</h4>
+                                <p className="text-sm text-slate-600">brick by brick only made a wall</p>
                             </div>
                         </div>
                     </div>

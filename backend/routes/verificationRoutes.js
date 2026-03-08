@@ -58,25 +58,22 @@ router.post('/send-otp', [recruiterAuth, validateCompanyEmail], async (req, res)
         });
         await otpDoc.save();
 
-        // Send Email
-        let emailSent = false;
-        try {
-            await sendVerificationOTPEmail(officialEmail, otp);
-            emailSent = true;
-        } catch (emailErr) {
-            console.error(`[Verification] Email delivery failed: ${emailErr.message}`);
-            console.log(`[FALLBACK] Company Verification OTP for ${officialEmail}: ${otp}`);
-        }
+        // Send Email (Backgrounded for speed)
+        setImmediate(async () => {
+            try {
+                await sendVerificationOTPEmail(officialEmail, otp);
+                console.log(`✅ [Verification] Background OTP sent to ${officialEmail}`);
+            } catch (emailErr) {
+                console.error(`[Verification] Background Email delivery failed: ${emailErr.message}`);
+                console.log(`[FALLBACK] Company Verification OTP for ${officialEmail}: ${otp}`);
+            }
+        });
 
-        if (emailSent) {
-            res.json({ message: `Verification OTP sent to ${officialEmail}` });
-        } else {
-            // OTP is saved in DB, so master OTP (000000) will still work
-            res.status(200).json({
-                message: `OTP generated but email delivery failed. Please check your email or contact support.`,
-                emailFailed: true
-            });
-        }
+        // Respond immediately
+        res.json({
+            message: `Verification OTP initiated for ${officialEmail}`,
+            emailStatus: 'queued'
+        });
     } catch (error) {
         console.error('Send OTP error:', error);
         res.status(500).json({ message: 'Error sending verification email' });

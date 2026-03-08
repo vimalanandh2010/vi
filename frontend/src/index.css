@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +8,11 @@ html,
 body,
 #root {
   height: 100%;
+  background-color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #000000;
 }
 
 /* Global Responsive Adjustments */
@@ -34,4 +41,75 @@ body,
   .no-print {
     display: none !important;
   }
+}
+
+/* Global Theme Overrides for "Full Portal" Yellow Theme */
+.bg-slate-950,
+.bg-\[\#0f172a\],
+.bg-slate-900,
+.bg-gray-950,
+.bg-slate-800 {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+/* Ensure text is readable on the new background */
+.text-white:not(button):not(button *),
+.text-slate-400,
+.text-slate-500 {
+  color: #64748B !important;
+  /* Forces a dark slate color */
+}
+
+/* Reset for components that should stay dark or have specific colors */
+.bg-blue-600 .text-white,
+.bg-purple-600 .text-white,
+.bg-indigo-600 .text-white,
+.bg-indigo-700 .text-white,
+.bg-red-600 .text-white,
+button.text-white,
+button .text-white,
+a.bg-blue-600,
+a.bg-purple-600 {
+  color: white !important;
+}
+
+.bg-blue-600,
+.bg-purple-600,
+.bg-indigo-600,
+.bg-red-600 {
+  background-color: revert-layer !important;
+  /* Try to preserve brand colors for buttons */
+}
+
+/* Global Input Field Styling */
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+textarea,
+select {
+  background-color: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  /* light gray border */
+  color: #374151 !important;
+  /* dark gray text */
+  border-radius: 0.5rem;
+  /* modern rounded look */
+  transition: all 0.2s ease-in-out;
+  letter-spacing: -0.02em !important;
+  font-weight: 500 !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"])::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;
+  /* gray-400 placeholder */
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):focus,
+textarea:focus,
+select:focus {
+  border-color: #2563eb !important;
+  /* royal blue border */
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2) !important;
+  /* subtle blue glow */
 }

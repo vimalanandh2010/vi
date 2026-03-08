@@ -19,8 +19,8 @@ const SummaryForm = ({ user, onUpdate }) => {
 
     return (
         <div className="space-y-8 max-w-4xl">
-            <div className="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-6 mb-8">
-                <p className="text-blue-400 text-sm font-medium leading-relaxed">
+            <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-8">
+                <p className="text-blue-700 text-sm font-medium leading-relaxed">
                     <span className="font-black">Pro Tip:</span> Your summary is the first thing recruiters read. Focus on your unique value proposition, key achievements, and what you’re looking for in your next role.
                 </p>
             </div>
@@ -35,7 +35,7 @@ const SummaryForm = ({ user, onUpdate }) => {
                 <textarea
                     value={user?.aboutMe || ''}
                     onChange={handleTextChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-[2rem] p-8 text-white placeholder:text-slate-600 focus:border-blue-500/50 focus:bg-blue-50/5 transition-all outline-none font-medium text-lg leading-relaxed min-h-[300px]"
+                    className="w-full bg-slate-50 border border-gray-200 rounded-3xl py-6 px-8 text-black placeholder:text-gray-400 focus:border-blue-500/50 focus:bg-blue-50 transition-all outline-none font-medium leading-relaxed resize-none custom-scrollbar"
                     placeholder="Write a compelling summary of your career journey..."
                 />
             </div>
@@ -48,7 +48,7 @@ const SummaryForm = ({ user, onUpdate }) => {
                             const newText = (user?.aboutMe || '') + (user?.aboutMe ? ' ' : '') + tag;
                             handleTextChange({ target: { value: newText.slice(0, charLimit) } });
                         }}
-                        className="p-3 bg-white/5 border border-white/5 rounded-xl text-[10px] font-black text-slate-500 uppercase tracking-widest hover:bg-white/10 transition-all text-center"
+                        className="p-3 bg-white border border-gray-200 rounded-xl text-[10px] font-black text-gray-500 uppercase tracking-widest hover:bg-gray-50 hover:text-gray-900 transition-all text-center"
                     >
                         + {tag}
                     </button>

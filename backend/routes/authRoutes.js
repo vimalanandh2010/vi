@@ -40,9 +40,16 @@ router.post('/signup', [
     const cleanEmail = email.toLowerCase().trim();
 
     try {
-        let user = await User.findOne({ email: cleanEmail, role });
+        // Check if user already exists with ANY role
+        let user = await User.findOne({ email: cleanEmail });
+
         if (user) {
-            return res.status(400).json({ message: `User already exists as a ${role}` });
+            console.log(`[Signup] User already exists with email ${cleanEmail} and role ${user.role}`);
+            return res.status(400).json({
+                message: `An account with this email already exists as a ${user.role}.`,
+                existingRole: user.role,
+                code: 'USER_EXISTS'
+            });
         }
 
         if (role === 'employer' || role === 'admin') {
@@ -71,12 +78,14 @@ router.post('/signup', [
 
         await user.save();
 
-        // Send Welcome Email
-        try {
-            await sendWelcomeEmail(user.email, user.firstName);
-        } catch (emailErr) {
-            console.error('Welcome email failed (non-fatal):', emailErr.message);
-        }
+        // Send Welcome Email (Backgrounded to prevent signup blocking)
+        setImmediate(async () => {
+            try {
+                await sendWelcomeEmail(user.email, user.firstName);
+            } catch (emailErr) {
+                console.error('Welcome email background failure:', emailErr.message);
+            }
+        });
 
         const payload = {
             user: {
@@ -611,26 +620,25 @@ router.post('/send-otp', [
         user.otpExpiry = otpExpiry;
         await user.save();
 
-        console.log(`[OTP] Sending email to ${user.email}...`);
+        console.log(`[OTP] Queueing email background task for ${user.email}...`);
         const { sendOtpEmail } = require('../utils/emailService');
-        let emailSent = false;
-        try {
-            await sendOtpEmail(user.email, otp);
-            emailSent = true;
-            console.log(`[OTP] Email sent successfully to ${user.email}`);
-        } catch (emailErr) {
-            console.error(`[OTP] Email delivery failed: ${emailErr.message}`);
-            console.log(`[FALLBACK] Login OTP for ${user.email}: ${otp}`);
-        }
 
-        if (emailSent) {
-            res.json({ message: 'OTP sent to your email' });
-        } else {
-            res.status(200).json({
-                message: 'OTP generated but email delivery failed. Please try again or contact support.',
-                emailFailed: true
-            });
-        }
+        // Background the email send to prevent request timeout on Render/Cloud
+        setImmediate(async () => {
+            try {
+                await sendOtpEmail(user.email, otp);
+                console.log(`[OTP] Background email sent successfully to ${user.email}`);
+            } catch (emailErr) {
+                console.error(`[OTP] Background email delivery failed for ${user.email}: ${emailErr.message}`);
+                console.log(`[FALLBACK] The OTP for ${user.email} was: ${otp}`);
+            }
+        });
+
+        // Respond immediately to the user so they see the input field
+        res.json({
+            message: 'OTP sent! Please check your email (it may take a few seconds to arrive).',
+            emailStatus: 'queued'
+        });
 
     } catch (err) {
         console.error('[OTP] Critical Error:', err);

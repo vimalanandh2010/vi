@@ -34,7 +34,7 @@ const CommunityCard = ({ community, isSeeker = true }) => {
     return (
         <HoverCard
             glowColor={getGlowColor()}
-            variant="glass"
+            variant="premium-light"
             revealPosition="overlay"
             className="cursor-pointer"
         >
@@ -56,7 +56,7 @@ const CommunityCard = ({ community, isSeeker = true }) => {
                     </div>
 
                     {/* Privacy Badge */}
-                    <div className="absolute top-4 right-4">
+                    <div className="absolute top-4 right-4 group-hover:opacity-0 transition-opacity duration-300">
                         {community.isPrivate ? (
                             <span className="px-2 py-1 bg-slate-900/80 text-slate-400 text-[10px] font-bold rounded-lg flex items-center gap-1 border border-slate-700/50">
                                 <Lock size={10} /> Private
@@ -71,22 +71,22 @@ const CommunityCard = ({ community, isSeeker = true }) => {
 
                 {/* Content */}
                 <div className="p-6">
-                    <h3 className="text-xl font-bold mb-2 text-white group-hover:text-blue-400 transition-colors truncate">
+                    <h3 className="text-xl font-bold mb-2 text-slate-900 group-hover:text-white transition-colors duration-300 truncate">
                         {community.name}
                     </h3>
-                    <p className="text-slate-400 text-sm line-clamp-2 mb-6">
+                    <p className="text-slate-600 group-hover:text-blue-200/60 text-sm line-clamp-2 mb-6 transition-colors duration-300 font-medium leading-relaxed">
                         {community.description}
                     </p>
 
-                    <div className="flex items-center justify-between pt-6 border-t border-slate-700/30">
+                    <div className="flex items-center justify-between pt-6 border-t border-slate-100 group-hover:border-blue-900 transition-colors duration-300">
                         <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-1.5 text-slate-500">
-                                <Users size={16} />
-                                <span className="text-xs font-bold">{memberCount}</span>
+                            <div className="flex items-center gap-1.5 text-slate-500 group-hover:text-blue-300 font-bold transition-colors">
+                                <Users size={16} className="text-slate-400 group-hover:text-white transition-colors" />
+                                <span className="text-xs">{memberCount}</span>
                             </div>
-                            <div className="flex items-center gap-1.5 text-slate-500">
-                                <MessageSquare size={16} />
-                                <span className="text-xs font-bold">{postCount}</span>
+                            <div className="flex items-center gap-1.5 text-slate-500 group-hover:text-blue-300 font-bold transition-colors">
+                                <MessageSquare size={16} className="text-slate-400 group-hover:text-white transition-colors" />
+                                <span className="text-xs">{postCount}</span>
                             </div>
                         </div>
                         <button

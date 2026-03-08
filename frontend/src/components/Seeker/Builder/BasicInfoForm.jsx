@@ -40,7 +40,7 @@ const BasicInfoForm = ({ user, onUpdate }) => {
             <div className="flex flex-col md:flex-row gap-12 items-start">
                 {/* Profile Photo Upload */}
                 <div className="relative group">
-                    <div className="w-48 h-48 rounded-[3rem] overflow-hidden bg-slate-800 border-4 border-white/5 shadow-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-[1.02]">
+                    <div className="w-48 h-48 rounded-[3rem] overflow-hidden bg-slate-100 border-4 border-white shadow-lg flex items-center justify-center transition-transform duration-500 group-hover:scale-[1.02]">
                         {user?.photoUrl ? (
                             <img src={user.photoUrl} alt="Profile" className="w-full h-full object-cover" />
                         ) : (
@@ -64,7 +64,7 @@ const BasicInfoForm = ({ user, onUpdate }) => {
                                 name="firstName"
                                 value={user?.firstName || ''}
                                 onChange={handleInputChange}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-slate-600 focus:border-blue-500/50 focus:bg-blue-500/5 transition-all outline-none font-bold"
+                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-4 text-black placeholder:text-gray-400 focus:border-blue-500/50 focus:bg-blue-50 transition-all outline-none font-bold"
                                 placeholder="John"
                             />
                         </div>
@@ -75,7 +75,7 @@ const BasicInfoForm = ({ user, onUpdate }) => {
                             name="lastName"
                             value={user?.lastName || ''}
                             onChange={handleInputChange}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 text-white placeholder:text-slate-600 focus:border-blue-500/50 focus:bg-blue-500/5 transition-all outline-none font-bold"
+                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black placeholder:text-gray-400 focus:border-blue-500/50 focus:bg-blue-50 transition-all outline-none font-bold"
                             placeholder="Doe"
                         />
                     </div>
@@ -87,7 +87,7 @@ const BasicInfoForm = ({ user, onUpdate }) => {
                                 name="preferredRole"
                                 value={user?.preferredRole || ''}
                                 onChange={handleInputChange}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-slate-600 focus:border-blue-500/50 focus:bg-blue-500/5 transition-all outline-none font-bold italic"
+                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-4 text-black placeholder:text-gray-400 focus:border-blue-500/50 focus:bg-blue-50 transition-all outline-none font-bold italic"
                                 placeholder="E.g. Senior MERN Stack Developer | UI/UX Enthusiast"
                             />
                         </div>
@@ -100,7 +100,7 @@ const BasicInfoForm = ({ user, onUpdate }) => {
                                 name="phoneNumber"
                                 value={user?.phoneNumber || ''}
                                 onChange={handleInputChange}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-slate-600 focus:border-blue-500/50 focus:bg-blue-500/5 transition-all outline-none font-bold"
+                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-4 text-black placeholder:text-gray-400 focus:border-blue-500/50 focus:bg-blue-50 transition-all outline-none font-bold"
                                 placeholder="+1 (555) 000-0000"
                             />
                         </div>
@@ -113,14 +113,14 @@ const BasicInfoForm = ({ user, onUpdate }) => {
                                 name="location"
                                 value={user?.location || ''}
                                 onChange={handleInputChange}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-slate-600 focus:border-blue-500/50 focus:bg-blue-500/5 transition-all outline-none font-bold"
+                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-4 text-black placeholder:text-gray-400 focus:border-blue-500/50 focus:bg-blue-50 transition-all outline-none font-bold"
                                 placeholder="San Francisco, CA"
                             />
                         </div>
                     </div>
                     <div className="col-span-1 md:col-span-2 space-y-2">
                         <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Experience Level</label>
-                        <div className="grid grid-cols-3 gap-3 p-1.5 bg-white/5 rounded-[1.5rem] border border-white/5">
+                        <div className="grid grid-cols-3 gap-3 p-1.5 bg-slate-50 rounded-[1.5rem] border border-gray-200">
                             {[
                                 { id: 'fresher', label: 'FRESHER', desc: 'Student / No Experience' },
                                 { id: 'entry', label: 'ENTRY LEVEL', desc: '0-1 Years Experience' },
@@ -132,10 +132,10 @@ const BasicInfoForm = ({ user, onUpdate }) => {
                                 <button
                                     key={opt.id}
                                     onClick={() => handleInputChange({ target: { name: 'experienceLevel', value: opt.id } })}
-                                    className={`p-3 rounded-2xl transition-all duration-500 border-2 ${user?.experienceLevel === opt.id ? 'bg-blue-600 border-blue-400 text-white shadow-lg' : 'bg-transparent border-transparent text-slate-500 hover:bg-white/5'}`}
+                                    className={`p-3 rounded-2xl transition-all duration-500 border-2 ${user?.experienceLevel === opt.id ? 'bg-blue-50 border-blue-400 text-black shadow-md' : 'bg-transparent border-transparent text-gray-500 hover:bg-gray-100 hover:text-black'}`}
                                 >
                                     <p className="text-[10px] font-black tracking-widest leading-none mb-1">{opt.label}</p>
-                                    <p className={`text-[8px] font-bold ${user?.experienceLevel === opt.id ? 'text-white/50' : 'text-slate-600'}`}>{opt.desc}</p>
+                                    <p className={`text-[8px] font-bold ${user?.experienceLevel === opt.id ? 'text-gray-800' : 'text-gray-400'}`}>{opt.desc}</p>
                                 </button>
                             ))}
                         </div>

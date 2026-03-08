@@ -189,7 +189,7 @@ const NonITJobs = () => {
     }
 
     return (
-        <div className="min-h-screen bg-slate-900 pb-20 overflow-x-hidden">
+        <div className="min-h-screen bg-white pb-20 overflow-x-hidden">
             <Navbar />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
@@ -204,11 +204,11 @@ const NonITJobs = () => {
                     <motion.h1
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="text-4xl md:text-6xl font-black text-white mb-4 tracking-tighter"
+                        className="text-4xl md:text-6xl font-black text-slate-900 mb-4 tracking-tighter"
                     >
                         Business & Beyond 💼
                     </motion.h1>
-                    <p className="text-slate-400 text-lg mb-8 max-w-2xl leading-relaxed font-medium">Find elite non-technical positions in management, marketing, and operations.</p>
+                    <p className="text-slate-600 text-lg mb-8 max-w-2xl leading-relaxed font-bold">Find elite non-technical positions in management, marketing, and operations.</p>
 
                     <div className="flex flex-col md:flex-row gap-4 items-stretch">
                         <div className="flex-1 relative group">
@@ -218,11 +218,11 @@ const NonITJobs = () => {
                                 placeholder="Search roles, brands, or departments..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full bg-slate-800/60 border border-slate-700/50 text-white rounded-2xl py-5 pl-14 pr-6 focus:ring-4 focus:ring-orange-500/20 focus:border-orange-500/50 focus:outline-none transition-all placeholder:text-slate-600 font-medium"
+                                className="w-full bg-white border border-slate-200 text-slate-900 rounded-2xl py-5 pl-14 pr-6 focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500/30 focus:outline-none transition-all placeholder:text-slate-400 font-bold shadow-sm"
                             />
                         </div>
-                        <button className="flex items-center justify-center gap-3 bg-slate-800/80 backdrop-blur-md hover:bg-slate-700 text-white px-8 py-5 rounded-2xl border border-slate-700 transition-all active:scale-95 shadow-xl shadow-black/20">
-                            <Filter size={20} />
+                        <button className="flex items-center justify-center gap-3 bg-white hover:bg-slate-50 text-slate-900 px-8 py-5 rounded-2xl border border-slate-200 transition-all active:scale-95 shadow-lg shadow-black/5">
+                            <Filter size={20} className="text-orange-500" />
                             <span className="font-black uppercase tracking-widest text-[11px]">Refine</span>
                         </button>
                     </div>
@@ -248,10 +248,10 @@ const NonITJobs = () => {
                                     exit={{ opacity: 0, scale: 0.9 }}
                                     transition={{ duration: 0.5, delay: idx * 0.05 }}
                                     onClick={() => handleCardClick(job)}
-                                    className="bg-slate-800/30 backdrop-blur-2xl border border-slate-700/30 rounded-[2.5rem] p-8 hover:border-orange-500/40 transition-all group flex flex-col h-full shadow-2xl shadow-black/20 cursor-pointer"
+                                    className="bg-white border border-slate-100 rounded-[2.5rem] p-8 hover:bg-blue-950 hover:border-blue-900 transition-all duration-300 group flex flex-col h-full shadow-xl shadow-black/[0.03] hover:shadow-2xl hover:shadow-blue-900/20 cursor-pointer"
                                 >
                                     <div className="flex justify-between items-start mb-8">
-                                        <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-3xl border border-white/10 shadow-inner">
+                                        <div className="w-14 h-14 rounded-2xl bg-slate-50 group-hover:bg-blue-900 flex items-center justify-center text-3xl border border-slate-100 group-hover:border-blue-800 shadow-inner transition-colors duration-300">
                                             {job?.icon || '🏢'}
                                         </div>
                                         <button
@@ -260,28 +260,28 @@ const NonITJobs = () => {
                                                 handleSave(job?._id);
                                             }}
                                             className={`p-3 rounded-2xl transition-all ${savedIds?.includes(job?._id)
-                                                ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30'
-                                                : 'bg-slate-700/30 text-slate-500 hover:text-white'}`}
+                                                ? 'bg-orange-600 text-white shadow-lg shadow-orange-600/30'
+                                                : 'bg-slate-100 group-hover:bg-blue-800 text-slate-400 group-hover:text-white hover:text-orange-500'}`}
                                         >
                                             <Bookmark size={20} fill={savedIds?.includes(job?._id) ? "currentColor" : "none"} />
                                         </button>
                                     </div>
 
                                     <div className="flex-1">
-                                        <h3 className="text-2xl font-black text-white mb-2 leading-tight group-hover:text-orange-400 transition-colors uppercase tracking-tight">
+                                        <h3 className="text-2xl font-black text-slate-900 mb-2 leading-tight group-hover:text-white transition-colors duration-300 uppercase tracking-tight">
                                             {job?.title || 'Professional Role'}
                                         </h3>
-                                        <p className="text-orange-500 font-black text-sm mb-8 tracking-widest uppercase">
+                                        <p className="text-orange-600 font-black text-sm mb-8 tracking-widest uppercase group-hover:text-orange-400 transition-colors">
                                             {job?.company?.name || job?.company || 'Opportunity'}
                                         </p>
 
                                         <div className="grid grid-cols-1 gap-4 mb-8">
-                                            <div className="flex items-center gap-4 text-slate-400 font-bold text-xs uppercase tracking-widest bg-slate-900/40 p-3 rounded-xl border border-white/5">
-                                                <MapPin size={16} className="text-slate-600" />
+                                            <div className="flex items-center gap-4 text-slate-600 group-hover:text-blue-100 font-bold text-xs uppercase tracking-widest bg-slate-50 group-hover:bg-blue-900/50 p-3 rounded-xl border border-slate-100 group-hover:border-blue-800 transition-all duration-300">
+                                                <MapPin size={16} className="text-slate-400 group-hover:text-white transition-colors" />
                                                 {job?.location || 'On-site'}
                                             </div>
-                                            <div className="flex items-center gap-4 text-slate-400 font-bold text-xs uppercase tracking-widest bg-slate-900/40 p-3 rounded-xl border border-white/5">
-                                                <Briefcase size={16} className="text-slate-600" />
+                                            <div className="flex items-center gap-4 text-slate-600 group-hover:text-blue-100 font-bold text-xs uppercase tracking-widest bg-slate-50 group-hover:bg-blue-900/50 p-3 rounded-xl border border-slate-100 group-hover:border-blue-800 transition-all duration-300">
+                                                <Briefcase size={16} className="text-slate-400 group-hover:text-white transition-colors" />
                                                 {job?.type || 'Full-time'}
                                             </div>
                                         </div>
@@ -295,10 +295,10 @@ const NonITJobs = () => {
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center justify-between pt-8 border-t border-white/5 mt-auto">
+                                    <div className="flex items-center justify-between pt-8 border-t border-slate-100 group-hover:border-blue-900 mt-auto transition-colors duration-300">
                                         <div>
-                                            <span className="text-[9px] text-slate-600 font-black uppercase tracking-[0.2em] block mb-1">Expectation</span>
-                                            <p className="text-white font-black text-xl tracking-tighter">{job?.salary || 'NDA'}</p>
+                                            <span className="text-[9px] text-slate-500 group-hover:text-blue-300 font-black uppercase tracking-[0.2em] block mb-1 transition-colors">Expectation</span>
+                                            <p className="text-slate-900 group-hover:text-white font-black text-xl tracking-tighter transition-colors">{job?.salary || 'NDA'}</p>
                                         </div>
                                         {appliedIds?.includes(job?._id) ? (
                                             <div className="flex items-center gap-2 text-emerald-500 font-black px-6 py-4 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/10">

@@ -18,7 +18,7 @@ const VerifyOtp = () => {
     const [otp, setOtp] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
+    const [countdown, setCountdown] = useState(30); // 30 seconds for easier testing
 
     useEffect(() => {
         if (!email) {
@@ -71,7 +71,7 @@ const VerifyOtp = () => {
         setLoading(true);
         try {
             await authApi.sendOtp(email, role);
-            setCountdown(300); // Reset timer
+            setCountdown(30); // Reset timer to 30s
             setError('');
             // Optional: Toast success
         } catch (err) {

@@ -46,9 +46,9 @@ const PreferencesForm = ({ user, onUpdate }) => {
                 <div className="space-y-6">
                     <div className="flex items-center gap-3 ml-1">
                         <Clock size={16} className="text-blue-500" />
-                        <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Job Type Interests</label>
+                        <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Job Type Interests</label>
                     </div>
-                    <p className="text-xs text-slate-600 font-medium ml-1 -mt-2">Select all that apply</p>
+                    <p className="text-xs text-gray-500 font-medium ml-1 -mt-2">Select all that apply</p>
                     <div className="grid grid-cols-2 gap-4">
                         {jobTypes.map((type) => {
                             const isSelected = (user?.jobPreferences?.jobTypes || []).includes(type);
@@ -58,10 +58,10 @@ const PreferencesForm = ({ user, onUpdate }) => {
                                     onClick={() => toggleSelection('jobTypes', type)}
                                     className={`p-6 rounded-3xl border transition-all text-center group ${isSelected
                                         ? 'bg-blue-600 border-blue-500 text-white shadow-xl scale-[1.02]'
-                                        : 'bg-white/5 border-white/5 text-slate-500 hover:border-blue-500/30 hover:text-white'
+                                        : 'bg-white border-gray-200 text-gray-500 hover:border-blue-500/50 hover:text-gray-900 shadow-sm'
                                         }`}
                                 >
-                                    <div className={`mb-3 flex justify-center ${isSelected ? 'text-white' : 'text-slate-600 group-hover:text-blue-400'}`}>
+                                    <div className={`mb-3 flex justify-center ${isSelected ? 'text-white' : 'text-gray-400 group-hover:text-blue-500'}`}>
                                         <CheckCircle2 size={24} strokeWidth={isSelected ? 3 : 1} />
                                     </div>
                                     <span className="text-sm font-black tracking-tight">{type}</span>
@@ -75,9 +75,9 @@ const PreferencesForm = ({ user, onUpdate }) => {
                 <div className="space-y-6">
                     <div className="flex items-center gap-3 ml-1">
                         <MapPin size={16} className="text-indigo-500" />
-                        <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Workplace Setup</label>
+                        <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Workplace Setup</label>
                     </div>
-                    <p className="text-xs text-slate-600 font-medium ml-1 -mt-2">Select all that apply</p>
+                    <p className="text-xs text-gray-500 font-medium ml-1 -mt-2">Select all that apply</p>
                     <div className="space-y-3">
                         {locations.map((loc) => {
                             const isSelected = (user?.jobPreferences?.workplacePreferences || []).includes(loc);
@@ -87,7 +87,7 @@ const PreferencesForm = ({ user, onUpdate }) => {
                                     onClick={() => toggleSelection('workplacePreferences', loc)}
                                     className={`w-full p-6 flex justify-between items-center rounded-3xl border transition-all ${isSelected
                                         ? 'bg-indigo-600 border-indigo-500 text-white shadow-xl translate-x-1'
-                                        : 'bg-white/5 border-white/5 text-slate-500 hover:border-indigo-500/30 hover:text-white'
+                                        : 'bg-white border-gray-200 text-gray-500 hover:border-indigo-500/50 hover:text-gray-900 shadow-sm'
                                         }`}
                                 >
                                     <span className="text-sm font-black tracking-tight uppercase tracking-widest">{loc}</span>
@@ -102,9 +102,9 @@ const PreferencesForm = ({ user, onUpdate }) => {
                 <div className="md:col-span-2 space-y-6">
                     <div className="flex items-center gap-3 ml-1">
                         <TrendingUp size={16} className="text-emerald-500" />
-                        <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Experience Level Interests</label>
+                        <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Experience Level Interests</label>
                     </div>
-                    <p className="text-xs text-slate-600 font-medium ml-1 -mt-2">Select all levels you're open to</p>
+                    <p className="text-xs text-gray-500 font-medium ml-1 -mt-2">Select all levels you're open to</p>
                     <div className="flex flex-wrap gap-3">
                         {experienceLevels.map((level) => {
                             const isSelected = (user?.jobPreferences?.experienceLevels || []).includes(level);
@@ -114,7 +114,7 @@ const PreferencesForm = ({ user, onUpdate }) => {
                                     onClick={() => toggleSelection('experienceLevels', level)}
                                     className={`px-6 py-4 rounded-2xl border-2 transition-all font-black text-xs uppercase tracking-wider ${isSelected
                                         ? 'bg-emerald-600 border-emerald-500 text-white shadow-lg scale-105'
-                                        : 'bg-white/5 border-white/10 text-slate-500 hover:border-emerald-500/50 hover:text-emerald-400'
+                                        : 'bg-white border-gray-200 text-gray-500 hover:border-emerald-500/50 hover:text-emerald-600 shadow-sm'
                                         }`}
                                 >
                                     {level}
@@ -128,13 +128,13 @@ const PreferencesForm = ({ user, onUpdate }) => {
                 <div className="md:col-span-2 space-y-6">
                     <div className="flex items-center gap-3 ml-1">
                         <DollarSign size={16} className="text-emerald-500" />
-                        <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Annual Salary Expectations (USD)</label>
+                        <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Annual Salary Expectations (USD)</label>
                     </div>
-                    <div className="bg-white/5 border border-white/5 rounded-[2.5rem] p-10 flex flex-col md:flex-row gap-10 items-center">
+                    <div className="bg-white border-2 border-gray-200 rounded-[2.5rem] p-10 flex flex-col md:flex-row gap-10 items-center shadow-md">
                         <div className="flex-1 w-full space-y-4">
                             <div className="flex justify-between font-black text-xs uppercase tracking-widest">
-                                <span className="text-slate-600">Minimum Range</span>
-                                <span className="text-emerald-400">${user?.jobPreferences?.minSalary || '80'}k - ${user?.jobPreferences?.maxSalary || '120'}k</span>
+                                <span className="text-gray-500">Minimum Range</span>
+                                <span className="text-emerald-600">${user?.jobPreferences?.minSalary || '80'}k - ${user?.jobPreferences?.maxSalary || '120'}k</span>
                             </div>
                             <input
                                 type="range"
@@ -143,16 +143,16 @@ const PreferencesForm = ({ user, onUpdate }) => {
                                 step="10"
                                 value={parseInt(user?.jobPreferences?.minSalary) || 80}
                                 onChange={(e) => handleUpdate('minSalary', e.target.value)}
-                                className="w-full h-3 bg-slate-800 rounded-full appearance-none cursor-pointer accent-emerald-500 hover:accent-emerald-400 transition-all shadow-inner"
+                                className="w-full h-3 bg-gray-200 rounded-full appearance-none cursor-pointer accent-emerald-500 hover:accent-emerald-400 transition-all shadow-inner"
                             />
-                            <div className="flex justify-between text-[10px] font-black text-slate-700">
+                            <div className="flex justify-between text-[10px] font-black text-gray-400">
                                 <span>$10k</span>
                                 <span>$500k+</span>
                             </div>
                         </div>
-                        <div className="w-full md:w-64 p-8 bg-emerald-500/10 border border-emerald-500/20 rounded-3xl text-center">
-                            <p className="text-emerald-500 text-[10px] font-black uppercase tracking-widest mb-2">Target Market Value</p>
-                            <h4 className="text-white text-3xl font-black italic tracking-tighter">${user?.jobPreferences?.minSalary || '80'}k<span className="text-emerald-500/50 not-italic ml-1">+</span></h4>
+                        <div className="w-full md:w-64 p-8 bg-emerald-50 border border-emerald-200 rounded-3xl text-center">
+                            <p className="text-emerald-600 text-[10px] font-black uppercase tracking-widest mb-2">Target Market Value</p>
+                            <h4 className="text-black text-3xl font-black italic tracking-tighter">${user?.jobPreferences?.minSalary || '80'}k<span className="text-emerald-500 not-italic ml-1">+</span></h4>
                         </div>
                     </div>
                 </div>

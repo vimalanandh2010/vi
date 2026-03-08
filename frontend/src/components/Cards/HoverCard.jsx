@@ -25,7 +25,9 @@ const HoverCard = ({
     const variantClasses = {
         glass: "bg-slate-800/30 backdrop-blur-xl border border-slate-700/30 hover:bg-slate-800/50",
         gradient: "bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50",
-        minimal: "bg-slate-900/50 border border-slate-800/50 hover:border-slate-700"
+        minimal: "bg-slate-900/50 border border-slate-800/50 hover:border-slate-700",
+        light: "bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-black/5 transition-all duration-500 hover:border-blue-100",
+        "premium-light": "bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:bg-blue-900 hover:border-blue-900 transition-all duration-500"
     };
 
     const glowColors = {
@@ -89,8 +91,8 @@ const HoverCard = ({
                 {isHovered && revealContent && (
                     <motion.div
                         className={`relative z-20 ${revealPosition === 'overlay'
-                                ? 'absolute inset-0 bg-slate-900/95 backdrop-blur-xl'
-                                : ''
+                            ? variant === 'light' ? 'absolute inset-0 bg-white/95 backdrop-blur-xl' : 'absolute inset-0 bg-slate-900/95 backdrop-blur-xl'
+                            : ''
                             }`}
                         initial="hidden"
                         animate="visible"

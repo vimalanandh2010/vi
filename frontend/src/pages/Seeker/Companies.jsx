@@ -56,37 +56,38 @@ const Companies = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white">
+        <div className="min-h-screen bg-white">
             <Navbar />
             {/* Hero Section */}
-            <div className="relative overflow-hidden bg-slate-900/50 border-b border-slate-800/50 py-16 sm:py-24">
-                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#1e293b,transparent)] opacity-50" />
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div className="relative overflow-hidden bg-white border-b border-slate-100 py-16 sm:py-28">
+                {/* Grid texture overlay */}
+                <div className="absolute inset-0 grid-texture opacity-30 pointer-events-none" />
+                <div className="max-w-full px-4 sm:px-6 lg:px-12 xl:px-20 relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="text-center"
                     >
-                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-white via-white to-slate-400 bg-clip-text text-transparent">
+                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight mb-6 text-slate-900 font-heading">
                             Discover Top Companies
                         </h1>
-                        <p className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                            Explore organizations, learn about their culture, and find your next dream role at the world's most innovative workplaces.
+                        <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-12 leading-relaxed font-medium">
+                            Explore dynamic organizations, learn about their engineering culture, and find your next dream role at the world's most innovative workplaces.
                         </p>
 
                         {/* Search Bar */}
-                        <form onSubmit={handleSearch} className="max-w-2xl mx-auto flex gap-3 p-2 bg-slate-800/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl">
-                            <div className="flex-1 relative">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
+                        <form onSubmit={handleSearch} className="max-w-2xl mx-auto flex flex-col sm:flex-row gap-3 p-2.5 bg-white border border-slate-200 rounded-3xl shadow-lg shadow-slate-200/50 hover:shadow-xl transition-shadow duration-300">
+                            <div className="flex-1 relative flex items-center">
+                                <Search className="absolute left-6 text-slate-400" size={24} />
                                 <input
                                     type="text"
-                                    placeholder="Search by company name..."
+                                    placeholder="Search by company name or domain..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full bg-transparent border-none text-white py-3 pl-12 pr-4 focus:outline-none placeholder:text-slate-600 font-medium"
+                                    className="w-full bg-transparent border-none text-slate-900 py-4 pl-16 pr-6 focus:outline-none placeholder:text-slate-400 font-bold text-lg"
                                 />
                             </div>
-                            <button type="submit" className="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold transition-all hover:scale-[1.02] active:scale-95">
+                            <button type="submit" className="px-10 py-4 bg-slate-50 border border-slate-200 hover:border-slate-300 hover:bg-slate-100 text-slate-900 rounded-2xl font-black uppercase tracking-widest text-sm transition-all hover:scale-105 active:scale-95 shadow-sm">
                                 Search
                             </button>
                         </form>
@@ -94,18 +95,18 @@ const Companies = () => {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="max-w-full px-4 sm:px-6 lg:px-12 xl:px-20 py-12">
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Filters Sidebar */}
                     <aside className="w-full lg:w-72 shrink-0">
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="bg-slate-900/50 border border-slate-800/50 rounded-3xl p-6 sticky top-28"
+                            className="bg-white border border-slate-200 rounded-3xl p-6 sticky top-28 shadow-sm"
                         >
-                            <div className="flex items-center gap-2 mb-8 border-b border-slate-800 pb-4">
-                                <Filter className="text-blue-500" size={20} />
-                                <h3 className="font-bold text-lg">Filters</h3>
+                            <div className="flex items-center gap-2 mb-8 border-b border-slate-100 pb-4">
+                                <Filter className="text-blue-600" size={20} />
+                                <h3 className="font-bold text-lg text-slate-900">Filters</h3>
                                 {Object.values(filters).some(v => Array.isArray(v) ? v.length > 0 : Boolean(v)) && (
                                     <button
                                         onClick={() => setFilters({ type: '', industry: '', location: '', skills: [] })}
@@ -119,19 +120,18 @@ const Companies = () => {
                             <div className="space-y-8">
                                 {/* Company Type */}
                                 <div>
-                                    <label className="text-sm font-bold text-slate-400 uppercase tracking-widest block mb-4">Company Type</label>
-                                    <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-4">Company Type</label>
+                                    <div className="flex flex-wrap gap-2">
                                         {companyTypes.map(type => (
                                             <button
                                                 key={type}
                                                 onClick={() => setFilters({ ...filters, type: filters.type === type ? '' : type })}
-                                                className={`w-full text-left px-4 py-2.5 rounded-xl text-sm transition-all flex items-center justify-between group ${filters.type === type
-                                                    ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20'
-                                                    : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+                                                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${filters.type === type
+                                                    ? 'bg-slate-900 border-slate-900 text-white shadow-md'
+                                                    : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-900'
                                                     }`}
                                             >
                                                 {type}
-                                                {filters.type === type && <CheckCircle size={14} />}
                                             </button>
                                         ))}
                                     </div>
@@ -139,19 +139,18 @@ const Companies = () => {
 
                                 {/* Industries */}
                                 <div>
-                                    <label className="text-sm font-bold text-slate-400 uppercase tracking-widest block mb-4">Industries</label>
-                                    <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-4">Industries</label>
+                                    <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
                                         {industriesList.map(industry => (
                                             <button
                                                 key={industry}
                                                 onClick={() => setFilters({ ...filters, industry: filters.industry === industry ? '' : industry })}
-                                                className={`w-full text-left px-4 py-2.5 rounded-xl text-sm transition-all flex items-center justify-between group ${filters.industry === industry
-                                                    ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20'
-                                                    : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+                                                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${filters.industry === industry
+                                                    ? 'bg-slate-900 border-slate-900 text-white shadow-md'
+                                                    : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-900'
                                                     }`}
                                             >
                                                 {industry}
-                                                {filters.industry === industry && <CheckCircle size={14} />}
                                             </button>
                                         ))}
                                     </div>
@@ -159,7 +158,7 @@ const Companies = () => {
 
                                 {/* Skills */}
                                 <div>
-                                    <label className="text-sm font-bold text-slate-400 uppercase tracking-widest block mb-4">Focus Skills</label>
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-4">Focus Skills</label>
                                     <div className="flex flex-wrap gap-2">
                                         {popularSkills.map(skill => {
                                             const isSelected = filters.skills.includes(skill);
@@ -173,8 +172,8 @@ const Companies = () => {
                                                         setFilters({ ...filters, skills: newSkills });
                                                     }}
                                                     className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${isSelected
-                                                        ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-900/40'
-                                                        : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:border-slate-600 hover:text-slate-200'
+                                                        ? 'bg-[#1e3a8a] border-[#1e3a8a] text-white shadow-md'
+                                                        : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-900'
                                                         }`}
                                                 >
                                                     {skill}
@@ -194,7 +193,7 @@ const Companies = () => {
                                             placeholder="London, remote..."
                                             value={filters.location}
                                             onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-                                            className="w-full bg-slate-800/50 border border-slate-700/50 text-white rounded-xl py-2.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm transition-all placeholder:text-slate-600"
+                                            className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl py-2.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm transition-all placeholder:text-slate-400"
                                         />
                                     </div>
                                 </div>
@@ -221,58 +220,63 @@ const Companies = () => {
                                             animate={{ opacity: 1, scale: 1 }}
                                             exit={{ opacity: 0, scale: 0.9 }}
                                             transition={{ duration: 0.2, delay: idx * 0.05 }}
-                                            className="group bg-slate-900/40 hover:bg-slate-900/60 backdrop-blur-sm border border-slate-800/50 hover:border-blue-500/30 rounded-3xl p-6 transition-all shadow-lg hover:shadow-blue-900/10"
+                                            className="group bg-white hover:bg-[#1e3a8a] border border-slate-200 rounded-3xl p-6 transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden"
                                         >
-                                            <div className="flex items-start justify-between mb-6">
-                                                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 flex items-center justify-center text-2xl font-bold text-white shadow-inner group-hover:scale-110 transition-transform">
+                                            <div className="flex items-start justify-between mb-6 relative z-10">
+                                                <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-2xl font-black text-slate-900 shadow-sm overflow-hidden shrink-0 transition-transform duration-500 group-hover:scale-105">
                                                     {company.logo ? (
-                                                        <img src={company.logo} alt={company.name} className="w-full h-full object-cover rounded-2xl" />
+                                                        <img src={company.logo} alt={company.name} className="w-full h-full object-cover" />
                                                     ) : (
                                                         company.name.charAt(0)
                                                     )}
                                                 </div>
                                                 <div className="flex flex-col items-end gap-2">
-                                                    <span className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                                                        {company.companyType}
-                                                    </span>
                                                     {company.verified && (
-                                                        <CheckCircle size={16} className="text-green-500" />
+                                                        <div className="flex items-center gap-1 px-2 py-1 bg-green-50 group-hover:bg-green-500/20 border border-green-200 group-hover:border-green-400/30 rounded-lg transition-colors">
+                                                            <CheckCircle size={10} className="text-green-500 group-hover:text-green-300" />
+                                                            <span className="text-[9px] font-black uppercase tracking-wider text-green-600 group-hover:text-green-200">Verified</span>
+                                                        </div>
                                                     )}
+                                                    <span className="px-3 py-1 bg-slate-100 group-hover:bg-white/10 border border-slate-200 group-hover:border-white/20 text-slate-700 group-hover:text-white rounded-lg text-[9px] font-black uppercase tracking-widest transition-colors duration-500">
+                                                        {company.companyType || 'Enterprise'}
+                                                    </span>
                                                 </div>
                                             </div>
 
-                                            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors uppercase tracking-tight">{company.name}</h3>
-                                            <p className="text-slate-400 text-sm line-clamp-2 mb-6 leading-relaxed">
-                                                {company.about}
-                                            </p>
+                                            <div className="relative z-10">
+                                                <h3 className="text-xl font-black text-slate-900 mb-1.5 group-hover:text-white transition-colors duration-500 tracking-tight">{company.name}</h3>
+                                                <p className="text-slate-500 group-hover:text-blue-100 text-sm line-clamp-2 mb-6 leading-relaxed font-medium transition-colors duration-500">
+                                                    {company.about || 'Innovative company shaping the future of the industry.'}
+                                                </p>
+                                            </div>
 
-                                            <div className="flex flex-wrap gap-2 mb-8">
-                                                {company.industries.slice(0, 3).map(industry => (
-                                                    <span key={industry} className="px-2 py-1 bg-slate-800/80 text-slate-300 rounded-md text-[10px] whitespace-nowrap">
+                                            <div className="flex flex-wrap gap-2 mb-8 relative z-10">
+                                                {company.industries?.slice(0, 3).map(industry => (
+                                                    <span key={industry} className="px-2.5 py-1 bg-slate-100 group-hover:bg-white/10 text-slate-600 group-hover:text-white border border-slate-200 group-hover:border-white/20 rounded-lg text-[9px] font-black uppercase tracking-wider whitespace-nowrap transition-colors duration-500">
                                                         {industry}
                                                     </span>
                                                 ))}
-                                                {company.industries.length > 3 && (
-                                                    <span className="text-[10px] text-slate-500 self-center">+{company.industries.length - 3}</span>
+                                                {company.industries?.length > 3 && (
+                                                    <span className="text-[10px] text-slate-500 group-hover:text-blue-200 self-center transition-colors">+{company.industries.length - 3}</span>
                                                 )}
                                             </div>
 
-                                            <div className="flex items-center justify-between border-t border-slate-800/50 pt-4">
-                                                <div className="flex items-center gap-4 text-slate-400 text-xs font-medium">
+                                            <div className="flex items-center justify-between border-t border-slate-100 group-hover:border-white/20 mt-auto pt-4 transition-colors duration-500 relative z-10">
+                                                <div className="flex items-center gap-4 text-slate-500 group-hover:text-white text-xs font-bold transition-colors duration-500">
                                                     <div className="flex items-center gap-1.5">
-                                                        <MapPin size={14} className="text-blue-500/60" />
-                                                        {company.location}
+                                                        <MapPin size={14} className="text-slate-400 group-hover:text-white transition-colors" />
+                                                        {company.location || 'Global'}
                                                     </div>
                                                     <div className="flex items-center gap-1.5">
-                                                        <Users size={14} className="text-blue-500/60" />
-                                                        {company.size}
+                                                        <Users size={14} className="text-slate-400 group-hover:text-white transition-colors" />
+                                                        {company.size || '10-50'}
                                                     </div>
                                                 </div>
                                                 <Link
                                                     to={`/seeker/company/${company._id}`}
-                                                    className="p-2 bg-blue-600/10 hover:bg-blue-600 text-blue-400 hover:text-white rounded-lg transition-all"
+                                                    className="px-4 py-2 bg-slate-900 group-hover:bg-white text-white group-hover:!text-slate-900 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm transition-all duration-300 hover:scale-105 active:scale-95"
                                                 >
-                                                    <ChevronRight size={18} />
+                                                    View
                                                 </Link>
                                             </div>
                                         </motion.div>
@@ -280,10 +284,12 @@ const Companies = () => {
                                 </AnimatePresence>
                             </div>
                         ) : (
-                            <div className="py-20 text-center bg-slate-900/20 rounded-3xl border border-dashed border-slate-800">
-                                <Building2 size={64} className="mx-auto text-slate-700 mb-6" />
-                                <h3 className="text-2xl font-bold text-white mb-2">No companies found</h3>
-                                <p className="text-slate-400">Try adjusting your filters or search terms.</p>
+                            <div className="py-24 text-center bg-white rounded-3xl border-2 border-dashed border-slate-200 shadow-sm">
+                                <div className="w-20 h-20 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                                    <Building2 size={32} className="text-slate-300" />
+                                </div>
+                                <h3 className="text-2xl font-black text-slate-900 mb-2 tracking-tight">No companies found</h3>
+                                <p className="text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">We couldn't find any companies matching your current filters or search terms.</p>
                             </div>
                         )}
                     </main>

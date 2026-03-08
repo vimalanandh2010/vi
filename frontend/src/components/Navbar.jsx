@@ -19,19 +19,15 @@ const Navbar = () => {
 
     const seekerLinks = [
         { name: 'Jobs', path: '/seeker/jobs', icon: Briefcase },
-        { name: 'Non-IT', path: '/seeker/non-it-jobs', icon: Building2 },
         { name: 'Companies', path: '/seeker/companies', icon: Users },
-        { name: 'Courses', path: '/seeker/courses', icon: BookOpen },
-        { name: 'Communities', path: '/seeker/community', icon: Users },
-        { name: 'Chat', path: '/seeker/chat', icon: MessageCircle },
+        { name: 'Message', path: '/seeker/chat', icon: MessageCircle },
     ]
 
     const recruiterLinks = [
         { name: 'Home', path: '/recruiter/home', icon: Home },
         { name: 'Jobs', path: '/recruiter/jobs', icon: Briefcase },
         { name: 'Candidates', path: '/recruiter/candidates', icon: Users },
-        { name: 'Communities', path: '/recruiter/community', icon: Users },
-        { name: 'Chat', path: '/recruiter/chat', icon: MessageCircle },
+        { name: 'Message', path: '/recruiter/chat', icon: MessageCircle },
     ]
 
     const navLinks = user?.role === 'employer' ? recruiterLinks : seekerLinks
@@ -45,46 +41,30 @@ const Navbar = () => {
     }
 
     return (
-        <nav className="bg-slate-800/60 backdrop-blur-xl border-b border-slate-700/50 sticky top-0 z-50">
+        <nav className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-md">
             <div className="max-w-[100vw] px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
-                <div className="flex items-center gap-2 sm:gap-4 h-16 sm:h-20">
+                <div className="flex items-center gap-3 sm:gap-6 h-20 sm:h-24">
                     {/* Left: Logo & Branding */}
-                    <Link to={user?.role === 'employer' ? "/recruiter/home" : "/seeker/home"} className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-                        <img src={logo} alt="Logo" className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg object-cover shadow-lg border border-slate-700/50" />
-                        <span className="text-white font-bold text-lg sm:text-xl lg:text-2xl tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent truncate max-w-[120px] sm:max-w-none">
-                            Future Milestone
-                        </span>
+                    <Link to={user?.role === 'employer' ? "/recruiter/home" : "/seeker/home"} className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+                        <img src={logo} alt="Logo" className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl object-cover shadow-lg border-2 border-slate-300/50 hover:scale-105 transition-transform" />
                     </Link>
 
                     {/* Middle: Desktop Navigation */}
-                    <div className="hidden md:flex items-center gap-0.5 lg:gap-2 xl:gap-4 ml-4 lg:ml-8">
+                    <div className="hidden md:flex items-center gap-1 lg:gap-3 xl:gap-5 ml-6 lg:ml-10">
                         {navLinks.map((link) => {
                             const Icon = link.icon
                             return (
                                 <Link
                                     key={`${link.path}-${link.name}`}
                                     to={link.path}
-                                    className="flex items-center gap-1.5 lg:gap-2 px-2 lg:px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all group whitespace-nowrap"
+                                    className="flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2.5 lg:py-3 text-slate-600 hover:text-white hover:bg-blue-950 rounded-xl transition-all group whitespace-nowrap"
                                 >
-                                    <Icon size={16} className={`lg:size-[18px] group-hover:scale-110 transition-transform ${user?.role === 'employer' ? 'text-purple-400' : 'text-blue-400'}`} />
-                                    <span className="text-xs lg:text-sm font-medium">{link.name}</span>
+                                    <Icon size={20} className={`lg:size-[22px] group-hover:scale-110 transition-transform text-slate-500 group-hover:text-white`} />
+                                    <span className="text-base lg:text-lg font-bold">{link.name}</span>
                                 </Link>
                             )
                         })}
                     </div>
-
-
-
-                    {/* Dashboard Shortcut (Logged In Only) */}
-                    {user && (
-                        <Link
-                            to={user.role === 'employer' ? "/recruiter/dashboard" : "/seeker/dashboard"}
-                            className="hidden xl:flex items-center gap-2 px-4 py-2 bg-slate-700/30 hover:bg-slate-700/50 border border-slate-700/50 text-white rounded-lg transition-all group ml-2"
-                        >
-                            <LayoutDashboard size={18} className={`group-hover:rotate-12 transition-transform ${user.role === 'employer' ? 'text-purple-400' : 'text-blue-400'}`} />
-                            <span className="text-sm font-semibold tracking-tight">Dashboard</span>
-                        </Link>
-                    )}
 
                     {/* Right: User Profile & Mobile Toggle */}
                     <div className="flex items-center gap-2 sm:gap-4 ml-auto">
@@ -93,14 +73,14 @@ const Navbar = () => {
                             <div className="relative">
                                 <button
                                     onClick={() => setShowProfileMenu(!showProfileMenu)}
-                                    className="flex items-center gap-2 bg-slate-700/30 hover:bg-slate-700/50 border border-slate-700/50 text-white rounded-xl px-1.5 sm:px-2 py-1.5 transition-all group"
+                                    className="flex items-center gap-2.5 bg-slate-100 hover:bg-blue-950 border border-slate-200 hover:border-blue-900 text-slate-700 hover:text-white rounded-xl px-2 sm:px-3 py-2 transition-all group"
                                 >
-                                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-xs sm:text-sm font-bold shadow-lg group-hover:scale-105 transition-transform">
+                                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-sm sm:text-base font-bold shadow-lg group-hover:scale-105 transition-transform">
                                         {user.firstName?.charAt(0) || 'U'}
                                     </div>
                                     <div className="hidden xs:flex sm:flex flex-col items-start pr-1 sm:pr-2">
-                                        <span className="text-[10px] text-slate-400 leading-tight">Welcome,</span>
-                                        <span className="text-xs sm:text-sm font-semibold text-white leading-tight truncate max-w-[60px] sm:max-w-[100px]">
+                                        <span className="text-xs text-slate-400 group-hover:text-blue-300 leading-tight transition-colors">Welcome,</span>
+                                        <span className="text-sm sm:text-base font-semibold text-slate-900 group-hover:text-white leading-tight truncate max-w-[80px] sm:max-w-[120px] transition-colors">
                                             {user.firstName || 'User'}
                                         </span>
                                     </div>
@@ -108,33 +88,33 @@ const Navbar = () => {
 
                                 {/* Profile Dropdown */}
                                 {showProfileMenu && (
-                                    <div className="absolute right-0 mt-2 w-56 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl overflow-hidden py-1 backdrop-blur-xl bg-slate-800/90">
-                                        <div className="px-4 py-3 border-b border-slate-700/50">
-                                            <p className="text-xs text-slate-400">Signed in as</p>
-                                            <p className="text-sm font-medium text-white truncate">{user.email}</p>
+                                    <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-xl shadow-2xl overflow-hidden py-2">
+                                        <div className="px-5 py-4 border-b border-slate-100">
+                                            <p className="text-sm text-slate-400 font-medium">Welcome,</p>
+                                            <p className="text-base font-semibold text-slate-900 truncate">{user.firstName || user.email}</p>
                                         </div>
                                         <Link
-                                            to={user.role === 'employer' ? "/recruiter/home" : "/seeker/home"}
-                                            className="flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700 transition-colors text-slate-300 hover:text-white"
+                                            to={user.role === 'employer' ? "/recruiter/dashboard" : "/seeker/dashboard"}
+                                            className="flex items-center gap-3 px-5 py-3 hover:bg-slate-100 transition-colors text-slate-700 hover:text-slate-900"
                                             onClick={() => setShowProfileMenu(false)}
                                         >
-                                            <Home size={18} className={user.role === 'employer' ? "text-purple-400" : "text-blue-400"} />
-                                            <span className="text-sm">My Home</span>
+                                            <LayoutDashboard size={20} className="text-slate-400" />
+                                            <span className="text-base font-medium">Go to Dashboard</span>
                                         </Link>
                                         <Link
                                             to={user.role === 'employer' ? "/recruiter/profile" : "/seeker/profile"}
-                                            className="flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700 transition-colors text-slate-300 hover:text-white"
+                                            className="flex items-center gap-3 px-5 py-3 hover:bg-slate-100 transition-colors text-slate-700 hover:text-slate-900"
                                             onClick={() => setShowProfileMenu(false)}
                                         >
-                                            <User size={18} className={user.role === 'employer' ? "text-purple-400" : "text-indigo-400"} />
-                                            <span className="text-sm">Account Settings</span>
+                                            <User size={20} className="text-slate-400" />
+                                            <span className="text-base font-medium">Account Settings</span>
                                         </Link>
                                         <button
                                             onClick={handleLogout}
-                                            className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-500/10 transition-colors text-slate-300 hover:text-red-400"
+                                            className="w-full flex items-center gap-3 px-5 py-3 hover:bg-red-50 transition-colors text-slate-500 hover:text-red-500"
                                         >
-                                            <LogOut size={18} />
-                                            <span className="text-sm">Log out</span>
+                                            <LogOut size={20} />
+                                            <span className="text-base font-medium">Log out</span>
                                         </button>
                                     </div>
                                 )}
@@ -142,7 +122,7 @@ const Navbar = () => {
                         ) : (
                             <Link
                                 to={location.pathname.startsWith('/recruiter') ? "/recruiter/login" : "/seeker/login"}
-                                className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-all"
+                                className="px-6 py-2.5 bg-black hover:bg-zinc-900 text-white rounded-xl text-base font-semibold transition-all hover:scale-105 active:scale-95"
                             >
                                 Login
                             </Link>
@@ -151,7 +131,7 @@ const Navbar = () => {
                         {/* Mobile Menu Button */}
                         <button
                             onClick={() => setShowMobileMenu(!showMobileMenu)}
-                            className="md:hidden text-white p-2 hover:bg-slate-700/50 rounded-lg transition-all"
+                            className="md:hidden text-slate-600 p-2 hover:bg-slate-100 rounded-lg transition-all"
                         >
                             {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -160,7 +140,7 @@ const Navbar = () => {
 
                 {/* Mobile Menu */}
                 {showMobileMenu && (
-                    <div className="md:hidden py-4 space-y-3 border-t border-slate-700/50">
+                    <div className="md:hidden py-4 space-y-3 border-t border-slate-200">
 
 
                         {/* Mobile Links */}
@@ -171,11 +151,11 @@ const Navbar = () => {
                                     <Link
                                         key={`${link.path}-${link.name}`}
                                         to={link.path}
-                                        className="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg px-3 py-2.5 transition-all"
+                                        className="flex items-center gap-3 text-slate-700 hover:text-white hover:bg-blue-950 rounded-lg px-3 py-2.5 transition-all group"
                                         onClick={() => setShowMobileMenu(false)}
                                     >
-                                        <Icon size={20} className={user?.role === 'employer' ? "text-purple-400" : "text-blue-400"} />
-                                        <span className="text-sm font-medium">{link.name}</span>
+                                        <Icon size={20} className="text-slate-400 group-hover:text-white transition-colors" />
+                                        <span className="text-sm font-bold">{link.name}</span>
                                     </Link>
                                 )
                             })}
@@ -183,21 +163,21 @@ const Navbar = () => {
 
                         {/* Mobile Profile Section */}
                         {user && (
-                            <div className="pt-4 border-t border-slate-700/50 space-y-1">
+                            <div className="pt-4 border-t border-slate-100 space-y-1">
                                 <Link
-                                    to={user.role === 'employer' ? "/recruiter/home" : "/seeker/home"}
-                                    className="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg px-3 py-2.5 transition-all"
+                                    to={user.role === 'employer' ? "/recruiter/dashboard" : "/seeker/dashboard"}
+                                    className="flex items-center gap-3 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg px-3 py-2.5 transition-all"
                                     onClick={() => setShowMobileMenu(false)}
                                 >
-                                    <Home size={20} className={user.role === 'employer' ? "text-purple-400" : "text-blue-400"} />
-                                    <span className="text-sm font-medium">My Home</span>
+                                    <LayoutDashboard size={20} className="text-slate-400" />
+                                    <span className="text-sm font-medium">Go to Dashboard</span>
                                 </Link>
                                 <Link
                                     to={user.role === 'employer' ? "/recruiter/profile" : "/seeker/profile"}
-                                    className="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg px-3 py-2.5 transition-all"
+                                    className="flex items-center gap-3 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg px-3 py-2.5 transition-all"
                                     onClick={() => setShowMobileMenu(false)}
                                 >
-                                    <User size={20} className={user.role === 'employer' ? "text-purple-400" : "text-indigo-400"} />
+                                    <User size={20} className="text-slate-400" />
                                     <span className="text-sm font-medium">Account Settings</span>
                                 </Link>
                                 <button
@@ -205,7 +185,7 @@ const Navbar = () => {
                                         handleLogout()
                                         setShowMobileMenu(false)
                                     }}
-                                    className="w-full flex items-center gap-3 text-slate-300 hover:text-red-400 hover:bg-red-500/10 rounded-lg px-3 py-2.5 transition-all"
+                                    className="w-full flex items-center gap-3 text-slate-500 hover:text-red-500 hover:bg-red-50 rounded-lg px-3 py-2.5 transition-all"
                                 >
                                     <LogOut size={20} />
                                     <span className="text-sm font-medium">Log out</span>

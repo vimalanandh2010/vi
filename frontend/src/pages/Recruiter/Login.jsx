@@ -71,7 +71,7 @@ const RecruiterLogin = () => {
         setIsLoading(true);
 
         try {
-            console.log("🚀 Attempting recruiter login for:", formData.email);
+            console.log(" Attempting recruiter login for:", formData.email);
             const response = await axiosClient.post('auth/login', {
                 email: formData.email,
                 password: formData.password,
@@ -140,12 +140,12 @@ const RecruiterLogin = () => {
     };
 
     return (
-        <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-[#0f172a]">
+        <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-portal-bg">
 
             {/* Background Gradients */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-                <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px]" />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px]" />
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none opacity-50">
+                <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-slate-200 rounded-full blur-[120px]" />
+                <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-slate-300 rounded-full blur-[120px]" />
             </div>
 
             <div className="z-10 w-full max-w-5xl p-4 sm:p-6 lg:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
@@ -154,13 +154,13 @@ const RecruiterLogin = () => {
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="hidden md:flex flex-col items-center justify-center p-12 bg-blue-600/10 border border-blue-500/20 rounded-[40px] text-center"
+                    className="hidden md:flex flex-col items-center justify-center p-12 bg-white border border-slate-200 rounded-[40px] text-center shadow-lg"
                 >
-                    <div className="w-20 h-20 bg-blue-600 rounded-3xl flex items-center justify-center mb-8 shadow-2xl shadow-blue-500/20">
+                    <div className="w-20 h-20 bg-slate-900 rounded-3xl flex items-center justify-center mb-8 shadow-xl">
                         <ShieldCheck size={40} className="text-white" />
                     </div>
-                    <h2 className="text-3xl font-bold text-white mb-4">Employer Central</h2>
-                    <p className="text-slate-400 mb-8 leading-relaxed">
+                    <h2 className="text-3xl font-bold text-slate-900 mb-4">Employer Central</h2>
+                    <p className="text-slate-600 mb-8 leading-relaxed">
                         Securely access your recruitment dashboard and manage your hiring pipeline with industry-leading precision.
                     </p>
                     <div className="flex -space-x-4 mb-4">
@@ -169,36 +169,36 @@ const RecruiterLogin = () => {
                                 {i}
                             </div>
                         ))}
-                        <div className="w-12 h-12 rounded-full border-4 border-[#0f172a] bg-blue-600 flex items-center justify-center text-xs font-bold text-white">
+                        <div className="w-12 h-12 rounded-full border-4 border-white bg-slate-900 flex items-center justify-center text-xs font-bold text-white">
                             +5k
                         </div>
                     </div>
-                    <p className="text-sm text-slate-500 font-medium">Joined by 5,000+ top companies</p>
+                    <p className="text-sm text-slate-500 font-bold">Joined by 5,000+ top companies</p>
                 </motion.div>
 
                 {/* Form Side */}
                 <motion.div
                     initial={{ opacity: 0, x: 30 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="bg-slate-800/40 border border-slate-700/50 backdrop-blur-xl rounded-2xl md:rounded-[32px] p-6 sm:p-8 md:p-10 shadow-2xl"
+                    className="bg-white border border-slate-200 rounded-2xl md:rounded-[32px] p-6 sm:p-8 md:p-10 shadow-lg"
                 >
                     {!isLinkingPassword ? (
                         <>
                             <div className="mb-10 text-center md:text-left">
                                 <img src={logo} alt="Logo" className="h-8 mb-6 mx-auto md:mx-0 rounded-lg" />
-                                <h2 className="text-3xl font-bold text-white mb-2">Recruiter Login</h2>
-                                <p className="text-slate-400">Choose your preferred access method.</p>
+                                <h2 className="text-3xl font-bold text-slate-900 mb-2">Recruiter Login</h2>
+                                <p className="text-slate-600">Choose your preferred access method.</p>
                             </div>
 
                             <div className="mb-8">
                                 <div className="flex items-center gap-2 mb-4">
-                                    <ShieldCheck className="text-blue-400" size={18} />
-                                    <span className="text-sm font-black text-blue-400 uppercase tracking-[0.2em]">Quick Auth</span>
+                                    <ShieldCheck className="text-slate-500" size={18} />
+                                    <span className="text-sm font-black text-slate-500 uppercase tracking-[0.2em]">Quick Auth</span>
                                 </div>
                                 <button
                                     onClick={handleGoogleLogin}
                                     disabled={isLoading}
-                                    className="w-full flex items-center justify-center gap-3 bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-[20px] px-6 py-4 font-bold transition-all shadow-xl hover:shadow-blue-500/10 active:scale-[0.98]"
+                                    className="w-full flex items-center justify-center gap-3 bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-[20px] px-6 py-4 font-bold transition-all shadow-xl hover:shadow-2xl active:scale-[0.98]"
                                 >
                                     <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
                                     <span>Continue with Google</span>
@@ -207,10 +207,10 @@ const RecruiterLogin = () => {
 
                             <div className="relative mb-8">
                                 <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-slate-700/50"></div>
+                                    <div className="w-full border-t border-slate-200"></div>
                                 </div>
                                 <div className="relative flex justify-center text-[10px] uppercase tracking-tighter">
-                                    <span className="px-4 bg-[#1e293b] text-slate-500 font-black">or secure login with credentials</span>
+                                    <span className="px-4 bg-white text-slate-500 font-black">or secure login with credentials</span>
                                 </div>
                             </div>
 
@@ -228,7 +228,7 @@ const RecruiterLogin = () => {
                                         placeholder="Business Email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all placeholder:text-slate-500"
+                                        className="w-full bg-white border border-slate-200 text-slate-900 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition-all placeholder:text-slate-400"
                                         required
                                     />
                                 </div>
@@ -241,7 +241,7 @@ const RecruiterLogin = () => {
                                         placeholder="Password"
                                         value={formData.password}
                                         onChange={handleChange}
-                                        className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-2xl py-4 pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all placeholder:text-slate-500"
+                                        className="w-full bg-white border border-slate-200 text-slate-900 rounded-2xl py-4 pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition-all placeholder:text-slate-400"
                                         required
                                     />
                                     <button
@@ -254,14 +254,14 @@ const RecruiterLogin = () => {
                                 </div>
 
                                 <div className="flex items-center justify-between text-sm">
-                                    <label className="flex items-center text-slate-400 cursor-pointer hover:text-slate-300">
-                                        <input type="checkbox" className="mr-2 rounded border-slate-700 bg-slate-800 text-blue-500 focus:ring-0" />
+                                    <label className="flex items-center text-slate-400 cursor-pointer hover:text-slate-600">
+                                        <input type="checkbox" className="mr-2 rounded border-slate-300 bg-white text-slate-900 focus:ring-slate-500" />
                                         Keep me signed in
                                     </label>
                                     <Link
                                         to="/auth/forgot-password"
                                         state={{ role: 'employer' }}
-                                        className="text-blue-400 hover:text-blue-300 hover:underline font-medium"
+                                        className="text-slate-600 font-bold hover:text-slate-900 hover:underline"
                                     >
                                         Forgot?
                                     </Link>
@@ -270,7 +270,7 @@ const RecruiterLogin = () => {
                                 <button
                                     type="submit"
                                     disabled={isLoading}
-                                    className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl shadow-xl shadow-blue-900/30 transition-all hover:scale-[1.01] active:scale-[0.98] flex items-center justify-center gap-2 mt-2"
+                                    className="w-full py-4 bg-black hover:bg-zinc-900 text-white font-bold rounded-2xl shadow-xl transition-all hover:-translate-y-1 active:scale-[0.98] flex items-center justify-center gap-2 mt-2"
                                 >
                                     {isLoading ? 'Signing in...' : (
                                         <>
@@ -283,7 +283,7 @@ const RecruiterLogin = () => {
                                     <Link
                                         to="/auth/login-otp"
                                         state={{ role: 'employer' }}
-                                        className="text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                                        className="text-sm text-slate-500 font-bold hover:text-slate-900 transition-colors hover:underline"
                                     >
                                         Login via OTP instead
                                     </Link>
@@ -310,7 +310,7 @@ const RecruiterLogin = () => {
                                         placeholder="New Access Password"
                                         value={formData.password}
                                         onChange={handleChange}
-                                        className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-2xl py-5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all"
+                                        className="w-full bg-white border border-slate-200 text-slate-900 rounded-2xl py-5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all"
                                         required
                                     />
                                 </div>
@@ -322,7 +322,7 @@ const RecruiterLogin = () => {
                                         placeholder="Confirm Password"
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
-                                        className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-2xl py-5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all"
+                                        className="w-full bg-white border border-slate-200 text-slate-900 rounded-2xl py-5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all"
                                         required
                                     />
                                 </div>
@@ -344,11 +344,11 @@ const RecruiterLogin = () => {
                         </motion.div>
                     )}
 
-                    <div className="mt-8 pt-6 border-t border-slate-700/50 text-center">
+                    <div className="mt-8 pt-6 border-t border-slate-200 text-center">
                         <p className="text-slate-500 text-xs mb-4 uppercase tracking-[0.2em] font-black">Role Switcher</p>
                         <Link
                             to="/seeker/login"
-                            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white transition-all duration-300 font-bold text-sm tracking-tight"
+                            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-all duration-300 font-bold text-sm tracking-tight"
                         >
                             Switch to Job Seeker Account
                         </Link>
@@ -356,7 +356,7 @@ const RecruiterLogin = () => {
 
                     <p className="mt-8 text-center text-slate-500 font-medium text-sm">
                         Need a recruiter account? {' '}
-                        <Link to="/recruiter/signup" className="text-blue-400 hover:text-blue-300 hover:underline">
+                        <Link to="/recruiter/signup" className="text-slate-700 font-bold hover:text-black hover:underline">
                             Signup today
                         </Link>
                     </p>

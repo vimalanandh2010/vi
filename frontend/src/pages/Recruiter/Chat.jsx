@@ -10,7 +10,7 @@ import { useChat } from '../../context/ChatContext'
 import { toast } from 'react-toastify'
 import axiosClient from '../../api/axiosClient'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
-import ChatIdModal from '../../components/ChatIdModal'
+import ChatIdModal from '../../components/Seeker/ChatIdModal'
 import EmojiPicker from 'emoji-picker-react'
 
 const RecruiterChat = () => {

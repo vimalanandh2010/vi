@@ -31,7 +31,12 @@ const uploadFile = async (file, folder) => {
             return supabaseUrl;
         }
 
-        // 2. Fallback to Local Storage only if Supabase fails
+        // 2. Fallback to Local Storage only if Supabase fails (DEV ONLY)
+        if (process.env.NODE_ENV === 'production') {
+            console.error('❌ [UploadService] Supabase upload failed in PRODUCTION. Local fallback is disabled to prevent file loss.');
+            throw new Error('Upload failed: Supabase storage is not configured or reachable. Please check your environment variables.');
+        }
+
         console.warn(`⚠️ [UploadService] Supabase upload failed for ${file.originalname}, falling back to Local storage...`);
         return await saveToLocal(file, folder);
 

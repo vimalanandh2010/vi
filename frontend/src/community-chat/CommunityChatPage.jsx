@@ -74,8 +74,16 @@ const CommunityChatPage = () => {
     // Socket Initialization
     useEffect(() => {
         if (profile?.chat_username) {
-            const socketUrl = import.meta.env.VITE_SOCKET_URL || API_URL.replace('/api', '');
-            const socket = io(socketUrl);
+            const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : window.location.origin);
+
+            const token = user?.role === 'employer'
+                ? localStorage.getItem('recruiterToken')
+                : localStorage.getItem('seekerToken');
+
+            const socket = io(socketUrl, {
+                auth: { token },
+                transports: ['websocket', 'polling']
+            });
 
             socket.on('connect', () => {
                 socket.emit('joinPrivateChat', profile.chat_username);

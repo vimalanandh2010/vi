@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const axios = require('axios');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -9,31 +10,28 @@ if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     console.error('⚠️ EMAIL_USER or EMAIL_PASS is NOT SET!');
     console.error('⚠️ OTP emails WILL NOT be sent.');
     console.error('⚠️ Set these in your Render Environment Variables.');
-    console.error('⚠️ ========================================');
+    console.error('⚠️ =======================================');
 }
 
-// Auto-detect email provider from EMAIL_SERVICE env var
+// Auto-detect email provider
 const emailService = (process.env.EMAIL_SERVICE || 'gmail').toLowerCase();
 
-let transportConfig;
+let transportConfig = {}; // Initialize to avoid undefined errors
 if (emailService === 'brevo' || emailService === 'sendinblue') {
-    // Brevo (formerly Sendinblue) — works from cloud servers like Render
-    console.log('📧 Using Brevo SMTP relay for email delivery');
     transportConfig = {
         host: 'smtp-relay.brevo.com',
         port: 587,
         secure: false,
         auth: {
             user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS  // This is the Brevo SMTP key
+            pass: process.env.EMAIL_PASS
         },
-        tls: {
-            rejectUnauthorized: false
-        }
+        tls: { rejectUnauthorized: false }
     };
+} else if (emailService === 'resend' || process.env.RESEND_API_KEY) {
+    console.log('📧 Using Resend REST API for email delivery (Optimized)');
+    // No SMTP config needed for Resend REST API
 } else {
-    // Gmail — works locally but may timeout on cloud servers
-    console.log('📧 Using Gmail SMTP for email delivery');
     transportConfig = {
         host: 'smtp.gmail.com',
         port: 587,
@@ -42,36 +40,75 @@ if (emailService === 'brevo' || emailService === 'sendinblue') {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
         },
-        tls: {
-            rejectUnauthorized: false,
-            minVersion: 'TLSv1.2'
-        },
+        tls: { rejectUnauthorized: false, minVersion: 'TLSv1.2' },
         pool: true,
         maxConnections: 5,
         maxMessages: 100
     };
 }
 
-// Disable verbose logging in production
-transportConfig.logger = process.env.NODE_ENV !== 'production';
-transportConfig.debug = process.env.NODE_ENV !== 'production';
+// Only setup transporter if we have a host (i.e., not using Resend API)
+let transporter = null;
+if (transportConfig.host) {
+    transportConfig.logger = process.env.NODE_ENV !== 'production';
+    transportConfig.debug = process.env.NODE_ENV !== 'production';
+    transporter = nodemailer.createTransport(transportConfig);
 
-const transporter = nodemailer.createTransport(transportConfig);
+    transporter.verify(function (error) {
+        if (error) {
+            console.error('❌ SMTP Service Error:', error.message);
+        } else {
+            console.log('✅ SMTP Service is ready');
+        }
+    });
+}
 
-// Verify connection configuration
-transporter.verify(function (error, success) {
-    if (error) {
-        console.error('❌ Email Service Error:', error.message);
-        console.error('❌ Email delivery will fail. Check EMAIL_USER and EMAIL_PASS environment variables.');
-    } else {
-        console.log('✅ Email Service is ready to take our messages');
+const sendResendEmail = async (mailOptions) => {
+    const startTime = Date.now();
+    try {
+        const { from, to, subject, html, text } = mailOptions;
+        const apiKey = process.env.RESEND_API_KEY || process.env.EMAIL_PASS;
+
+        if (!apiKey) throw new Error('Resend API key missing');
+
+        const payload = {
+            from: from || process.env.EMAIL_USER || 'onboarding@resend.dev',
+            to: Array.isArray(to) ? to : [to],
+            subject: subject,
+            html: html,
+            text: text
+        };
+
+        console.log(`[Resend DEBUG] Attempting API call to ${payload.to} from ${payload.from}`);
+
+        const response = await axios.post('https://api.resend.com/emails', payload, {
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        console.log(`✅ [Resend API] Success in ${Date.now() - startTime}ms. ID: ${response.data.id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`❌ [Resend API] Error after ${Date.now() - startTime}ms:`, error.response?.data || error.message);
+        throw error;
     }
-});
+};
+
+const sendEmail = async (mailOptions) => {
+    const service = (process.env.EMAIL_SERVICE || 'gmail').toLowerCase();
+    if (service === 'resend' || (process.env.RESEND_API_KEY && !process.env.EMAIL_SERVICE)) {
+        return await sendResendEmail(mailOptions);
+    }
+    if (!transporter) throw new Error('No email transporter configured for SMTP');
+    return await transporter.sendMail(mailOptions);
+};
 
 const sendWelcomeEmail = async (email, name) => {
     try {
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.EMAIL_USER || 'onboarding@resend.dev',
             to: email,
             subject: 'Welcome to Future Milestone Job Portal!',
             html: `
@@ -83,7 +120,7 @@ const sendWelcomeEmail = async (email, name) => {
             `
         };
 
-        await transporter.sendMail(mailOptions);
+        await sendEmail(mailOptions);
         console.log(`Welcome email sent to ${email}`);
     } catch (error) {
         console.error('Error sending welcome email:', error);
@@ -105,7 +142,7 @@ const sendApplicationEmail = async (email, name, jobTitle, companyName) => {
             `
         };
 
-        await transporter.sendMail(mailOptions);
+        await sendEmail(mailOptions);
         console.log(`Application email sent to ${email}`);
     } catch (error) {
         console.error('Error sending application email:', error);
@@ -148,8 +185,8 @@ const sendStatusUpdateEmail = async (email, name, jobTitle, companyName, status,
             `
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log(`[Email] Status update email sent to ${email}. Response: ${info.response}`);
+        await sendEmail(mailOptions);
+        console.log(`[Email] Status update email sent to ${email}`);
     } catch (error) {
         console.error(`[Email] Error sending status update email to ${email}:`, error);
     }
@@ -187,7 +224,7 @@ const sendSelectionEmail = async (email, name, jobTitle, companyName) => {
             `
         };
 
-        await transporter.sendMail(mailOptions);
+        await sendEmail(mailOptions);
         console.log(`Selection email sent to ${email}`);
     } catch (error) {
         console.error('Error sending selection email:', error);
@@ -218,7 +255,7 @@ const sendVerificationOTPEmail = async (email, otp) => {
     };
 
     // Throw on failure so calling code can detect it
-    await transporter.sendMail(mailOptions);
+    await sendEmail(mailOptions);
     console.log(`✅ Verification OTP email sent to ${email}`);
 };
 
@@ -246,7 +283,7 @@ const sendOtpEmail = async (email, otp) => {
     };
 
     // Throw on failure so calling code can detect it
-    await transporter.sendMail(mailOptions);
+    await sendEmail(mailOptions);
     console.log(`✅ Login OTP email sent to ${email}`);
 };
 
@@ -274,7 +311,7 @@ const sendResetPasswordEmail = async (email, otp) => {
     };
 
     // Throw on failure so calling code can detect it
-    await transporter.sendMail(mailOptions);
+    await sendEmail(mailOptions);
     console.log(`✅ Reset password OTP email sent to ${email}`);
 };
 
@@ -352,7 +389,7 @@ const sendInterviewSlotEmail = async (email, candidateName, jobTitle, companyNam
             `
         };
 
-        await transporter.sendMail(mailOptions);
+        await sendEmail(mailOptions);
         console.log(`[Email] Interview slot email sent to ${email}`);
     } catch (error) {
         console.error('[Email] Error sending interview slot email:', error);
@@ -392,45 +429,10 @@ const sendPostInterviewRejectionEmail = async (email, name, jobTitle, companyNam
             `
         };
 
-        await transporter.sendMail(mailOptions);
+        await sendEmail(mailOptions);
         console.log(`Post-interview rejection email sent to ${email}`);
     } catch (error) {
         console.error('Error sending post-interview rejection email:', error);
-    }
-};
-
-const sendCourseEnrollmentEmail = async (email, name, courseTitle, instructorName) => {
-    try {
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: `Enrollment Confirmed: ${courseTitle}`,
-            html: `
-                <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: auto; background: #f8fafc; color: #1e293b; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0;">
-                    <div style="background: linear-gradient(135deg, #3b82f6, #2563eb); padding: 40px 32px; text-align: center;">
-                        <h1 style="margin: 0; font-size: 28px; color: white; font-weight: 800;">📚 Enrollment Confirmed!</h1>
-                        <p style="margin: 8px 0 0; color: rgba(255,255,255,0.9); font-size: 15px;">Future Milestone Learning</p>
-                    </div>
-                    <div style="padding: 32px; background: white;">
-                        <p style="font-size: 16px; margin: 0 0 16px;">Hi <strong>${name}</strong>,</p>
-                        <p style="color: #475569; margin: 0 0 24px; line-height: 1.6; font-size: 15px;">
-                            You have successfully enrolled in the course: <strong>${courseTitle}</strong>.
-                        </p>
-                        <p style="color: #475569; margin: 0 0 24px; line-height: 1.6; font-size: 15px;">
-                            The instructor, <strong>${instructorName || 'the creator'}</strong>, is excited to have you on board! You can now access all the course materials directly from your Dashboard.
-                        </p>
-                        <div style="border-top: 1px solid #e2e8f0; padding-top: 24px;">
-                            <p style="color: #64748b; font-size: 14px; margin: 0;">Happy Learning!<br><strong style="color: #1e293b;">The Future Milestone Team</strong></p>
-                        </div>
-                    </div>
-                </div>
-            `
-        };
-
-        await transporter.sendMail(mailOptions);
-        console.log(`[Email] Course enrollment email sent to ${email}`);
-    } catch (error) {
-        console.error('[Email] Error sending course enrollment email:', error);
     }
 };
 
@@ -469,7 +471,7 @@ const sendInterviewReminderEmail = async (email, name, jobTitle, companyName, me
             `
         };
 
-        await transporter.sendMail(mailOptions);
+        await sendEmail(mailOptions);
         console.log(`[Email] Interview reminder email sent to ${email}`);
     } catch (error) {
         console.error('[Email] Error sending interview reminder email:', error);
@@ -503,7 +505,7 @@ const sendInterviewCancelledEmail = async (recruiterEmail, applicantName, jobTit
             `
         };
 
-        await transporter.sendMail(mailOptions);
+        await sendEmail(mailOptions);
         console.log(`[Email] Interview cancellation email sent to recruiter: ${recruiterEmail}`);
     } catch (error) {
         console.error('[Email] Error sending interview cancellation email:', error);
@@ -520,7 +522,6 @@ module.exports = {
     sendInterviewSlotEmail,
     sendSelectionEmail,
     sendPostInterviewRejectionEmail,
-    sendCourseEnrollmentEmail,
     sendInterviewReminderEmail,
     sendInterviewCancelledEmail
 };

@@ -85,7 +85,8 @@ app.use(helmet({
                 process.env.FRONTEND_URL?.trim().replace(/[\r\n]/g, ""),
                 process.env.BACKEND_URL?.trim().replace(/[\r\n]/g, "")
             ].filter(Boolean),
-            "frame-src": ["'self'", "https://accounts.google.com", "https://*.supabase.co"],
+            "frame-src": ["'self'", "https://accounts.google.com", "https://*.supabase.co", process.env.FRONTEND_URL?.trim().replace(/[\r\n]/g, "")].filter(Boolean),
+            "frame-ancestors": ["'self'", process.env.FRONTEND_URL?.trim().replace(/[\r\n]/g, "")].filter(Boolean),
             "object-src": ["'none'"],
         },
     },
@@ -104,8 +105,9 @@ app.use(cors({
             /^http:\/\/localhost:\d+$/,
             /^http:\/\/127\.0\.0\.1:\d+$/,
             process.env.FRONTEND_URL?.trim().replace(/[\r\n]/g, ""),
-            process.env.FRONTEND_URL?.trim().replace(/[\r\n]/g, "").replace(/\/$/, ""), // Remove trailing slash if present
-            "https://frontend-portal-b2az.onrender.com" // Actual production frontend URL
+            process.env.FRONTEND_URL?.trim().replace(/[\r\n]/g, "").replace(/\/$/, ""),
+            "https://frontend-portal-b2az.onrender.com",
+            "https://vi-jobportal.vercel.app" // Added common possible production origin
         ].filter(Boolean);
 
         const isAllowed = allowedOrigins.some(pattern => {
@@ -169,7 +171,6 @@ startInterviewReminders();
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/jobs', require('./routes/jobRoutes'));
-app.use('/api/courses', require('./routes/courseRoutes'));
 app.use('/api/jobseeker', require('./routes/jobseekerRoutes'));
 app.use('/api/employer', require('./routes/employerRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));

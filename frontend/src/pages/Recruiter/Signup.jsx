@@ -94,7 +94,8 @@ const RecruiterSignup = () => {
 
             if (response.user && response.token) {
                 login(response.user, response.token);
-                navigate(getRedirectPath(response.user), { replace: true });
+                // Go straight to home after signup as requested
+                navigate('/recruiter/home', { replace: true });
             } else {
                 toast.info("Registration request submitted. Please check your email.");
                 navigate('/recruiter/login');
@@ -105,9 +106,12 @@ const RecruiterSignup = () => {
             const apiError = error.response?.data || {};
             const errorMsg = apiError.message || (apiError.errors && apiError.errors[0]?.msg) || error.message || "Signup failed. Please try again.";
 
-            if (errorMsg.includes('User already exists') || errorMsg.includes('Account with this details already exists')) {
-                toast.info("Account already exists! Redirecting to login...");
-                navigate('/recruiter/login', { state: { email: formData.email } });
+            if (apiError.code === 'USER_EXISTS' || errorMsg.includes('User already exists') || errorMsg.includes('Account with this details already exists')) {
+                const role = apiError.existingRole || 'employer';
+                const loginPath = (role === 'seeker' || role === 'jobseeker') ? '/seeker/login' : '/recruiter/login';
+
+                toast.info(`Account already exists as a ${role}! Redirecting to login...`);
+                navigate(loginPath, { state: { email: formData.email } });
             } else {
                 toast.error(errorMsg);
             }
@@ -122,11 +126,11 @@ const RecruiterSignup = () => {
     };
 
     return (
-        <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-[#0f172a]">
+        <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-portal-bg">
             {/* Background Gradients */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px]" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px]" />
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none opacity-50">
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-slate-200 rounded-full blur-[120px]" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-slate-300 rounded-full blur-[120px]" />
             </div>
 
             <div className="z-10 w-full max-w-6xl p-4 sm:p-6 lg:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
@@ -138,11 +142,11 @@ const RecruiterSignup = () => {
                     className="hidden md:block"
                 >
                     <img src={logo} alt="Logo" className="h-12 mb-8 rounded-xl" />
-                    <h1 className="text-5xl font-bold text-white mb-6 leading-tight">
+                    <h1 className="text-5xl font-bold text-slate-900 mb-6 leading-tight">
                         Hire the best <br />
-                        <span className="text-blue-400">talent for your <br /> company.</span>
+                        <span className="text-black">talent for your <br /> company.</span>
                     </h1>
-                    <p className="text-slate-400 text-lg mb-8 max-w-md">
+                    <p className="text-slate-600 text-lg mb-8 max-w-md">
                         Join 500+ companies hiring from a pool of 50k+ vetted professionals worldwide.
                     </p>
 
@@ -152,8 +156,8 @@ const RecruiterSignup = () => {
                             "AI-powered candidate matching",
                             "Streamlined application management"
                         ].map((text, i) => (
-                            <div key={i} className="flex items-center gap-3 text-slate-300">
-                                <div className="w-6 h-6 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400">
+                            <div key={i} className="flex items-center gap-3 text-slate-700">
+                                <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-900">
                                     <ArrowRight size={14} />
                                 </div>
                                 <span className="font-medium">{text}</span>
@@ -166,22 +170,22 @@ const RecruiterSignup = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-slate-800/40 border border-slate-700/50 backdrop-blur-xl rounded-2xl md:rounded-[32px] p-6 sm:p-8 md:p-10 shadow-2xl"
+                    className="bg-white border border-slate-200 rounded-2xl md:rounded-[32px] p-6 sm:p-8 md:p-10 shadow-lg"
                 >
                     <div className="mb-8">
-                        <h2 className="text-3xl font-bold text-white mb-2 text-center md:text-left">Recruiter Signup</h2>
-                        <p className="text-slate-400 text-center md:text-left">Choose your gateway to global talent.</p>
+                        <h2 className="text-3xl font-bold text-slate-900 mb-2 text-center md:text-left">Recruiter Signup</h2>
+                        <p className="text-slate-600 text-center md:text-left">Choose your gateway to global talent.</p>
                     </div>
 
                     <div className="mb-8">
                         <div className="flex items-center gap-2 mb-4">
-                            <Chrome className="text-blue-400" size={18} />
-                            <span className="text-sm font-black text-blue-400 uppercase tracking-[0.2em]">One-Tap Setup</span>
+                            <Chrome className="text-slate-500" size={18} />
+                            <span className="text-sm font-black text-slate-500 uppercase tracking-[0.2em]">One-Tap Setup</span>
                         </div>
                         <button
                             onClick={handleGoogleSignup}
                             disabled={isLoading}
-                            className="w-full flex items-center justify-center gap-3 bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-[20px] px-6 py-4 font-bold transition-all shadow-xl hover:shadow-blue-500/10 active:scale-[0.98]"
+                            className="w-full flex items-center justify-center gap-3 bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-[20px] px-6 py-4 font-bold transition-all shadow-xl hover:shadow-2xl active:scale-[0.98]"
                         >
                             <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
                             <span>Continue with Google</span>
@@ -190,10 +194,10 @@ const RecruiterSignup = () => {
 
                     <div className="relative mb-8">
                         <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-slate-700/50"></div>
+                            <div className="w-full border-t border-slate-200"></div>
                         </div>
                         <div className="relative flex justify-center text-[10px] uppercase tracking-tighter">
-                            <span className="px-4 bg-[#1e293b] text-slate-500 font-black">or establish credentials manually</span>
+                            <span className="px-4 bg-white text-slate-500 font-black">or establish credentials manually</span>
                         </div>
                     </div>
 
@@ -210,7 +214,7 @@ const RecruiterSignup = () => {
                                 placeholder="Full Name"
                                 value={formData.fullName}
                                 onChange={handleChange}
-                                className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all placeholder:text-slate-500"
+                                className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition-all placeholder:text-slate-400"
                                 required
                             />
                         </div>
@@ -223,7 +227,7 @@ const RecruiterSignup = () => {
                                 placeholder="Phone Number"
                                 value={formData.phoneNumber}
                                 onChange={handleChange}
-                                className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all placeholder:text-slate-500"
+                                className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition-all placeholder:text-slate-400"
                                 required
                             />
                         </div>
@@ -235,7 +239,7 @@ const RecruiterSignup = () => {
                                 placeholder="Company Name"
                                 value={formData.companyName}
                                 onChange={handleChange}
-                                className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all placeholder:text-slate-500"
+                                className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition-all placeholder:text-slate-400"
                                 required
                             />
                         </div>
@@ -248,7 +252,7 @@ const RecruiterSignup = () => {
                                 placeholder="Business Email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all placeholder:text-slate-500"
+                                className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition-all placeholder:text-slate-400"
                                 required
                             />
                         </div>
@@ -262,7 +266,7 @@ const RecruiterSignup = () => {
                                     placeholder="Password"
                                     value={formData.password}
                                     onChange={handleChange}
-                                    className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl py-3.5 pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all placeholder:text-slate-500"
+                                    className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl py-3.5 pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition-all placeholder:text-slate-400"
                                     required
                                 />
                                 <button
@@ -281,7 +285,7 @@ const RecruiterSignup = () => {
                                     placeholder="Confirm"
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
-                                    className="w-full bg-slate-900/50 border border-slate-700 text-white rounded-xl py-3.5 pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all placeholder:text-slate-500"
+                                    className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl py-3.5 pl-12 pr-12 focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition-all placeholder:text-slate-400"
                                     required
                                 />
                                 <button
@@ -297,7 +301,7 @@ const RecruiterSignup = () => {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg shadow-blue-900/30 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
+                            className="w-full py-4 bg-black hover:bg-zinc-900 text-white font-bold rounded-xl shadow-lg transition-all hover:-translate-y-1 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
                         >
                             {isLoading ? 'Creating Account...' : 'Create Recruiter Account'}
                             <ArrowRight size={20} />
@@ -305,11 +309,11 @@ const RecruiterSignup = () => {
                     </form>
 
 
-                    <div className="mt-8 pt-6 border-t border-slate-700/50 text-center">
+                    <div className="mt-8 pt-6 border-t border-slate-200 text-center">
                         <p className="text-slate-500 text-xs mb-4 uppercase tracking-[0.2em] font-black">Role Switcher</p>
                         <Link
                             to="/seeker/signup"
-                            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white transition-all duration-300 font-bold text-sm tracking-tight"
+                            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-all duration-300 font-bold text-sm tracking-tight"
                         >
                             Switch to Job Seeker Account
                         </Link>
@@ -317,7 +321,7 @@ const RecruiterSignup = () => {
 
                     <p className="mt-8 text-center text-slate-500 font-medium">
                         Already have an account? {' '}
-                        <Link to="/recruiter/login" className="text-blue-400 hover:text-blue-300 hover:underline">
+                        <Link to="/recruiter/login" className="text-slate-700 font-bold hover:text-black hover:underline">
                             Login here
                         </Link>
                     </p>

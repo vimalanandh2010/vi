@@ -70,7 +70,7 @@ const Applications = () => {
         <div className="min-h-screen bg-slate-900 pb-20">
             <Navbar />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+            <div className="max-w-full px-4 sm:px-6 lg:px-12 xl:px-20 pt-12">
                 <Link to="/seeker/dashboard" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8 group">
                     <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                     Back to Dashboard

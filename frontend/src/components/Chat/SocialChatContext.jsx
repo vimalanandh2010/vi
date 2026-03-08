@@ -24,8 +24,10 @@ export const SocialChatProvider = ({ children }) => {
 
     useEffect(() => {
         if (profile?.chat_handle) {
-            const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000', {
-                auth: { token: localStorage.getItem('seekerToken') || localStorage.getItem('recruiterToken') }
+            const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000');
+            const socket = io(socketUrl, {
+                auth: { token: localStorage.getItem('seekerToken') || localStorage.getItem('recruiterToken') },
+                transports: ['websocket', 'polling']
             });
 
             socket.on('connect', () => {

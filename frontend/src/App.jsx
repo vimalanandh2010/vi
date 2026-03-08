@@ -14,7 +14,6 @@ import ProfileSetup from './pages/Seeker/ProfileSetup'
 import Jobs from './pages/Seeker/Jobs'
 import Applications from './pages/Seeker/Applications'
 import SavedJobs from './pages/Seeker/SavedJobs'
-import Courses from './pages/Seeker/Courses'
 import SeekerLanding from './pages/Seeker/Landing'
 import NonITJobs from './pages/Seeker/NonITJobs'
 import SeekerProfile from './pages/Seeker/Profile'
@@ -33,12 +32,9 @@ import CompanyProfile from './pages/Recruiter/CompanyProfile'
 import RecruiterDashboard from './pages/Recruiter/Dashboard'
 import PostJob from './pages/Recruiter/PostJob'
 import MyPostings from './pages/Recruiter/MyPostings'
-import MyCourses from './pages/Recruiter/MyCourses'
 import RecruiterLogin from './pages/Recruiter/Login'
 import RecruiterSignup from './pages/Recruiter/Signup'
-import PostCourse from './pages/Recruiter/PostCourse'
 import JobApplicants from './pages/Recruiter/JobApplicants'
-import CourseStudents from './pages/Recruiter/CourseStudents'
 import RecruiterLanding from './pages/Recruiter/Landing'
 import RecruiterChat from './pages/Recruiter/Chat'
 import RecruiterCommunity from './pages/Recruiter/Community'
@@ -74,7 +70,7 @@ export default function App() {
       <AuthProvider>
         <CompanyProvider>
           <ChatProvider>
-            <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
+            <div className="min-h-screen bg-white text-gray-900 font-sans">
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={
@@ -139,7 +135,6 @@ export default function App() {
                   <Route path="/seeker/jobs" element={<Jobs />} />
                   <Route path="/seeker/applications" element={<Applications />} />
                   <Route path="/seeker/saved-jobs" element={<SavedJobs />} />
-                  <Route path="/seeker/courses" element={<Courses />} />
                   <Route path="/seeker/non-it-jobs" element={<NonITJobs />} />
                   <Route path="/seeker/companies" element={<Companies />} />
                   <Route path="/seeker/company/:id" element={<CompanyDetail />} />
@@ -163,11 +158,8 @@ export default function App() {
                   <Route path="/recruiter/landing" element={<RecruiterDashboard />} />
                   <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
                   <Route path="/recruiter/post-job" element={<PostJob />} />
-                  <Route path="/recruiter/post-course" element={<PostCourse />} />
                   <Route path="/recruiter/my-jobs" element={<MyPostings />} />
-                  <Route path="/recruiter/my-courses" element={<MyCourses />} />
                   <Route path="/recruiter/job/:jobId/applicants" element={<JobApplicants />} />
-                  <Route path="/recruiter/course/:courseId/students" element={<CourseStudents />} />
                   <Route path="/recruiter/chat" element={<ChatPage />} />
                   <Route path="/recruiter/community" element={<CommunityList isSeeker={false} />} />
                   <Route path="/recruiter/communities" element={<CommunityList isSeeker={false} />} />

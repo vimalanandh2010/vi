@@ -39,7 +39,15 @@ const ChatPage = () => {
 
             // Connect to Socket.io
             const socketUrl = import.meta.env.VITE_SOCKET_URL || API_URL.replace('/api', '');
-            const socket = io(socketUrl);
+
+            const token = user?.role === 'employer'
+                ? localStorage.getItem('recruiterToken')
+                : localStorage.getItem('seekerToken');
+
+            const socket = io(socketUrl, {
+                auth: { token },
+                transports: ['websocket', 'polling']
+            });
             socket.on('connect', () => {
                 socket.emit('joinChat', profile.chat_username);
             });

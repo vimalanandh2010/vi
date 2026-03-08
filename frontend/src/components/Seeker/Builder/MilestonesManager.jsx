@@ -93,17 +93,17 @@ const MilestonesManager = ({ user, onUpdate }) => {
     return (
         <div className="space-y-10">
             {/* Tab Switcher */}
-            <div className="flex gap-4 p-1.5 bg-white/5 rounded-2xl border border-white/5 max-w-md mx-auto">
+            <div className="flex gap-4 p-1.5 bg-gray-50 rounded-2xl border border-gray-200 max-w-md mx-auto">
                 <button
                     onClick={() => setActiveTab('accomplishments')}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-500 font-black text-[10px] tracking-widest ${activeTab === 'accomplishments' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-500 font-black text-[10px] tracking-widest ${activeTab === 'accomplishments' ? 'bg-blue-50 text-black shadow-md border border-blue-200' : 'text-gray-500 hover:text-black'}`}
                 >
                     <Award size={14} />
                     ACCOMPLISHMENTS
                 </button>
                 <button
                     onClick={() => setActiveTab('certifications')}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-500 font-black text-[10px] tracking-widest ${activeTab === 'certifications' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-500 font-black text-[10px] tracking-widest ${activeTab === 'certifications' ? 'bg-indigo-50 text-black shadow-md border border-indigo-200' : 'text-gray-500 hover:text-black'}`}
                 >
                     <ShieldCheck size={14} />
                     CERTIFICATIONS
@@ -111,12 +111,12 @@ const MilestonesManager = ({ user, onUpdate }) => {
             </div>
 
             <div className="flex justify-between items-center px-4">
-                <h3 className="text-xl font-black text-white tracking-tight uppercase">
+                <h3 className="text-xl font-black text-black tracking-tight uppercase">
                     {activeTab === 'accomplishments' ? 'Key Milestones' : 'Professional Certs'}
                 </h3>
                 <button
                     onClick={() => handleOpen()}
-                    className={`p-4 ${activeTab === 'accomplishments' ? 'bg-blue-600' : 'bg-indigo-600'} text-white rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition-all`}
+                    className={`p-4 bg-gray-50 text-black border border-gray-200 rounded-2xl shadow-sm hover:scale-105 active:scale-95 transition-all`}
                 >
                     <Plus size={24} />
                 </button>
@@ -124,57 +124,57 @@ const MilestonesManager = ({ user, onUpdate }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {data.map((item, idx) => (
-                    <div key={idx} className="bg-white/5 border border-white/5 rounded-[2.5rem] p-8 group hover:bg-white/[0.08] transition-all relative">
+                    <div key={idx} className="bg-white border-2 border-gray-200 rounded-[2.5rem] p-8 group hover:shadow-lg transition-all relative">
                         <div className="flex items-start gap-6">
-                            <div className={`w-14 h-14 rounded-2xl ${activeTab === 'accomplishments' ? 'bg-blue-600/10 text-blue-400' : 'bg-indigo-600/10 text-indigo-400'} flex items-center justify-center text-xl`}>
+                            <div className={`w-14 h-14 rounded-2xl ${activeTab === 'accomplishments' ? 'bg-blue-50 text-blue-600' : 'bg-indigo-50 text-indigo-600'} flex items-center justify-center text-xl`}>
                                 {activeTab === 'accomplishments' ? (item.category === 'Hackathon' ? '🚀' : '🏆') : '📜'}
                             </div>
                             <div className="flex-1">
-                                <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">
+                                <p className="text-[9px] font-black text-gray-500 uppercase tracking-widest mb-1">
                                     {activeTab === 'accomplishments' ? item.category : item.issuer}
                                 </p>
-                                <h4 className="text-xl font-black text-white mb-2">{activeTab === 'accomplishments' ? item.title : item.name}</h4>
-                                <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold">
+                                <h4 className="text-xl font-black text-black mb-2">{activeTab === 'accomplishments' ? item.title : item.name}</h4>
+                                <div className="flex items-center gap-2 text-gray-500 text-[10px] font-bold">
                                     <Calendar size={12} />
                                     {item.date}
                                 </div>
                             </div>
                         </div>
                         <div className="absolute top-6 right-6 flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                            <button onClick={() => handleOpen(idx)} className="p-2 bg-white/5 text-slate-500 rounded-lg hover:text-white transition-all"><Edit3 size={16} /></button>
-                            <button onClick={() => handleDelete(idx)} className="p-2 bg-red-500/5 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all"><Trash2 size={16} /></button>
+                            <button onClick={() => handleOpen(idx)} className="p-2 bg-gray-100 text-gray-500 rounded-lg hover:bg-gray-200 hover:text-black transition-all"><Edit3 size={16} /></button>
+                            <button onClick={() => handleDelete(idx)} className="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all"><Trash2 size={16} /></button>
                         </div>
                     </div>
                 ))}
 
                 {data.length === 0 && (
-                    <div className="col-span-full text-center py-20 bg-white/[0.02] border border-dashed border-white/10 rounded-[3rem]">
-                        <p className="text-slate-600 font-bold italic">No records added for {activeTab}.</p>
+                    <div className="col-span-full text-center py-20 bg-gray-50 border border-dashed border-gray-200 rounded-[3rem]">
+                        <p className="text-gray-500 font-bold italic">No records added for {activeTab}.</p>
                     </div>
                 )}
             </div>
 
             <AnimatePresence>
                 {(isAdding || editingIdx >= 0) && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-xl">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-md">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9, y: 30 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 30 }}
-                            className="bg-[#15293E] border border-white/10 rounded-[3rem] w-full max-w-2xl shadow-2xl relative overflow-hidden"
+                            className="bg-white border border-gray-200 rounded-[3rem] w-full max-w-2xl shadow-xl relative overflow-hidden"
                         >
-                            <div className="px-10 py-8 border-b border-white/5 flex items-center justify-between">
-                                <h3 className="text-3xl font-black text-white tracking-tight">
+                            <div className="px-10 py-8 border-b border-gray-100 flex items-center justify-between">
+                                <h3 className="text-3xl font-black text-black tracking-tight">
                                     {activeTab === 'accomplishments' ? 'Milestone Details' : 'Certification Info'}
                                 </h3>
-                                <button onClick={() => { setIsAdding(false); setEditingIdx(-1); }} className="p-2 text-slate-500 hover:text-white"><X size={24} /></button>
+                                <button onClick={() => { setIsAdding(false); setEditingIdx(-1); }} className="p-2 text-gray-500 hover:text-black"><X size={24} /></button>
                             </div>
 
                             <div className="p-10 space-y-6">
                                 {activeTab === 'accomplishments' ? (
                                     <>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Title / Achievement</label>
+                                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Title / Achievement</label>
                                             <input
                                                 value={formData.title}
                                                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -184,25 +184,25 @@ const MilestonesManager = ({ user, onUpdate }) => {
                                         </div>
                                         <div className="grid grid-cols-2 gap-6">
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Category</label>
+                                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Category</label>
                                                 <select
                                                     value={formData.category}
                                                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 text-white focus:border-blue-500/50 outline-none appearance-none"
+                                                    className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-blue-500/50 focus:bg-white outline-none appearance-none"
                                                 >
-                                                    <option value="Hackathon" className="bg-[#15293E] text-white">Hackathon</option>
-                                                    <option value="Award" className="bg-[#15293E] text-white">Award</option>
-                                                    <option value="Publication" className="bg-[#15293E] text-white">Publication</option>
-                                                    <option value="Patent" className="bg-[#15293E] text-white">Patent</option>
-                                                    <option value="Other" className="bg-[#15293E] text-white">Other</option>
+                                                    <option value="Hackathon" className="bg-white text-black">Hackathon</option>
+                                                    <option value="Award" className="bg-white text-black">Award</option>
+                                                    <option value="Publication" className="bg-white text-black">Publication</option>
+                                                    <option value="Patent" className="bg-white text-black">Patent</option>
+                                                    <option value="Other" className="bg-white text-black">Other</option>
                                                 </select>
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Date</label>
+                                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Date</label>
                                                 <input
                                                     value={formData.date}
                                                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 text-white focus:border-blue-500/50 outline-none"
+                                                    className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-blue-500/50 focus:bg-white outline-none"
                                                     placeholder="E.g. March 2024"
                                                 />
                                             </div>
@@ -211,49 +211,49 @@ const MilestonesManager = ({ user, onUpdate }) => {
                                 ) : (
                                     <>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Certificate Name</label>
+                                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Certificate Name</label>
                                             <input
                                                 value={formData.name}
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 text-white focus:border-indigo-500/50 outline-none"
+                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-indigo-500/50 focus:bg-white outline-none"
                                                 placeholder="E.g. AWS Certified Solutions Architect"
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Issuing Organization</label>
+                                            <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Issuing Organization</label>
                                             <input
                                                 value={formData.issuer}
                                                 onChange={(e) => setFormData({ ...formData, issuer: e.target.value })}
-                                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 text-white focus:border-indigo-500/50 outline-none"
+                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-indigo-500/50 focus:bg-white outline-none"
                                                 placeholder="E.g. Amazon Web Services"
                                             />
                                         </div>
                                         <div className="grid grid-cols-2 gap-6">
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Issued Date</label>
+                                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Issued Date</label>
                                                 <input
                                                     value={formData.date}
                                                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 text-white focus:border-indigo-500/50 outline-none"
+                                                    className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-indigo-500/50 focus:bg-white outline-none"
                                                     placeholder="E.g. 2023"
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Verification Link / File</label>
+                                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Verification Link / File</label>
                                                 <div className="flex gap-2">
                                                     <input
                                                         value={formData.link}
                                                         onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-                                                        className="flex-1 bg-white/5 border border-white/10 rounded-2xl py-4 px-4 text-white focus:border-indigo-500/50 outline-none"
+                                                        className="flex-1 bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-indigo-500/50 focus:bg-white outline-none"
                                                         placeholder="https://..."
                                                     />
-                                                    <label className="p-4 bg-indigo-600/20 text-indigo-400 rounded-2xl border border-indigo-500/30 cursor-pointer hover:bg-indigo-600 hover:text-white transition-all">
+                                                    <label className="p-4 bg-indigo-50 text-indigo-600 rounded-2xl border border-indigo-200 cursor-pointer hover:bg-indigo-600 hover:text-white transition-all">
                                                         <Plus size={20} />
                                                         <input type="file" hidden onChange={handleFileUpload} accept=".pdf,image/*" />
                                                     </label>
                                                 </div>
                                                 {formData.link && (
-                                                    <p className="text-[9px] text-indigo-400 font-bold mt-1 truncate max-w-full">
+                                                    <p className="text-[9px] text-indigo-600 font-bold mt-1 truncate max-w-full">
                                                         Linked: {formData.link}
                                                     </p>
                                                 )}
@@ -263,8 +263,8 @@ const MilestonesManager = ({ user, onUpdate }) => {
                                 )}
                             </div>
 
-                            <div className="px-10 py-8 border-t border-white/5 flex gap-4">
-                                <button onClick={() => { setIsAdding(false); setEditingIdx(-1); }} className="flex-1 py-4 bg-white/5 text-slate-400 font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-white/10 transition-all">Cancel</button>
+                            <div className="px-10 py-8 border-t border-gray-100 bg-gray-50 flex gap-4">
+                                <button onClick={() => { setIsAdding(false); setEditingIdx(-1); }} className="flex-1 py-4 bg-white border border-gray-200 text-gray-600 font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-gray-100 transition-all">Cancel</button>
                                 <button onClick={handleSave} className={`flex-1 py-4 ${activeTab === 'accomplishments' ? 'bg-blue-600' : 'bg-indigo-600'} text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:opacity-90 transition-all flex items-center justify-center gap-2`}>
                                     <CheckCircle2 size={18} />
                                     Sync Data

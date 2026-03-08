@@ -123,7 +123,7 @@ const SeekerCommunity = () => {
 
     return (
         <div className="min-h-screen bg-slate-900 text-white p-6 md:p-12 font-sans selection:bg-blue-500/30">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-full px-4 sm:px-6 lg:px-12 xl:px-20">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
                     <div>

@@ -27,7 +27,7 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
     return (
         <div className="space-y-8">
             {/* Primary Profile Identity Card */}
-            <div className={`relative overflow-hidden ${isPremium ? 'bg-slate-900/60 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.4)]' : 'bg-white/80 backdrop-blur-2xl border border-white/40 shadow-[0_20px_50px_rgba(0,0,0,0.05)]'} rounded-[3rem] p-10 group`}>
+            <div className={`relative overflow-hidden ${isPremium ? 'bg-slate-900/60 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.4)]' : 'bg-white border-2 border-gray-200 shadow-md'} rounded-[3rem] p-10 group`}>
 
                 {/* Visual Accent */}
                 <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/10 rounded-full blur-[80px] -mr-20 -mt-20 group-hover:bg-blue-600/20 transition-all duration-700" />
@@ -173,14 +173,14 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
 
             {/* Verification Badge & Resume Download */}
             <div className="space-y-4">
-                <div className={`p-8 ${isPremium ? 'bg-slate-900/60 backdrop-blur-3xl border border-white/10' : 'bg-white/80'} rounded-[3rem] shadow-2xl group`}>
+                <div className={`p-8 ${isPremium ? 'bg-slate-900/60 backdrop-blur-3xl border border-white/10' : 'bg-white border-2 border-gray-200 shadow-md'} rounded-[3rem] group`}>
                     <div className="flex items-center gap-6">
                         <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 border border-emerald-500/20 group-hover:scale-110 transition-transform duration-500">
                             <ShieldCheck size={32} />
                         </div>
                         <div>
-                            <h4 className="text-white font-black text-sm tracking-tight mb-1">Identity Verified</h4>
-                            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Tier 1 Professional</p>
+                            <h4 className={`${isPremium ? 'text-white' : 'text-gray-900'} font-black text-sm tracking-tight mb-1`}>Identity Verified</h4>
+                            <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Tier 1 Professional</p>
                         </div>
                     </div>
                 </div>

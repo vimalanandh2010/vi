@@ -42,8 +42,8 @@ const SkillManager = ({ user, onUpdate }) => {
 
     return (
         <div className="space-y-12 max-w-5xl">
-            <div className="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-6 mb-8">
-                <p className="text-blue-400 text-sm font-medium leading-relaxed">
+            <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-8">
+                <p className="text-blue-700 text-sm font-medium leading-relaxed">
                     <span className="font-black">Recruiter Tip:</span> Profiles with at least 5 validated skills are 40% more likely to be shortlisted for technical roles.
                 </p>
             </div>
@@ -58,7 +58,7 @@ const SkillManager = ({ user, onUpdate }) => {
                             value={newSkill}
                             onChange={(e) => setNewSkill(e.target.value)}
                             onKeyDown={handleAddSkill}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-slate-600 focus:border-blue-500/50 focus:bg-blue-500/5 transition-all outline-none font-bold"
+                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-4 text-black placeholder:text-gray-400 focus:border-blue-500/50 focus:bg-blue-50 transition-all outline-none font-bold"
                             placeholder="E.g. React, Python, Product Management..."
                         />
                     </div>
@@ -79,13 +79,13 @@ const SkillManager = ({ user, onUpdate }) => {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         key={idx}
-                        className="bg-white/5 border border-white/5 rounded-2xl p-4 group hover:border-blue-500/30 transition-all duration-500 flex items-center justify-between"
+                        className="bg-white border border-gray-200 rounded-2xl p-4 group hover:border-blue-500/50 shadow-sm hover:shadow-md transition-all duration-500 flex items-center justify-between"
                     >
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
                                 <Target size={18} />
                             </div>
-                            <span className="text-white font-black text-lg tracking-tight">{skill}</span>
+                            <span className="text-black font-black text-lg tracking-tight">{skill}</span>
                         </div>
                         <button
                             onClick={() => handleDeleteSkill(skill)}
@@ -100,9 +100,9 @@ const SkillManager = ({ user, onUpdate }) => {
 
             {/* Empty State */}
             {(!user?.primarySkill || user.primarySkill.length === 0) && (
-                <div className="text-center py-20 bg-white/[0.02] border border-dashed border-white/10 rounded-[3rem]">
-                    <Cpu className="mx-auto text-slate-800 mb-4" size={48} />
-                    <p className="text-slate-600 font-bold italic">No skills added yet. Start by typing above.</p>
+                <div className="text-center py-20 bg-gray-50 border border-dashed border-gray-200 rounded-[3rem]">
+                    <Cpu className="mx-auto text-gray-300 mb-4" size={48} />
+                    <p className="text-gray-500 font-bold italic">No skills added yet. Start by typing above.</p>
                 </div>
             )}
         </div>

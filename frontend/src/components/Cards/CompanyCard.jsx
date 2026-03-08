@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-    MapPin, 
-    Building2, 
-    Users, 
-    Briefcase, 
-    Globe, 
+import {
+    MapPin,
+    Building2,
+    Users,
+    Briefcase,
+    Globe,
     ArrowRight,
     CheckCircle2,
     Star,
@@ -19,11 +19,11 @@ import VerificationBadge from '../Common/VerificationBadge';
  * CompanyCard - Beautiful card with hover reveal for company listings
  * Reveals: company size, industry, open positions, culture on hover
  */
-const CompanyCard = ({ 
-    company, 
+const CompanyCard = ({
+    company,
     isSaved = false,
-    onSave, 
-    onClick 
+    onSave,
+    onClick
 }) => {
     const formatCompanySize = (size) => {
         if (!size) return 'Not specified';
@@ -65,7 +65,7 @@ const CompanyCard = ({
     const defaultPerks = ['Remote Work', 'Health Insurance', 'Learning Budget', 'Flexible Hours', 'Stock Options', 'Free Meals'];
 
     return (
-        <HoverCard 
+        <HoverCard
             glowColor={getGlowColor(company.type)}
             variant="glass"
             revealPosition="overlay"
@@ -95,7 +95,7 @@ const CompanyCard = ({
                             </div>
                         </div>
                     </div>
-                    <button 
+                    <button
                         onClick={(e) => { e.stopPropagation(); onSave?.(company._id); }}
                         className={`p-2 rounded-xl transition-all ${isSaved ? 'text-rose-500 bg-rose-500/10' : 'text-slate-500 hover:text-rose-400 hover:bg-rose-500/10'}`}
                     >
@@ -134,8 +134,8 @@ const CompanyCard = ({
                             <span className="text-xs font-bold">{defaultOpenings} openings</span>
                         </div>
                     </div>
-                    
-                    <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/30">
+
+                    <button className="flex items-center gap-2 px-4 py-2 bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-900/30">
                         View Jobs <ArrowRight size={14} />
                     </button>
                 </div>
@@ -147,7 +147,7 @@ const CompanyCard = ({
                     <TrendingUp size={16} className="text-blue-400" />
                     <h4 className="text-sm font-bold text-white">Company Overview</h4>
                 </div>
-                
+
                 {/* Industry */}
                 <div className="flex items-center justify-between mb-3 p-3 bg-slate-800/50 rounded-xl">
                     <div className="flex items-center gap-2 text-slate-400">
@@ -188,9 +188,9 @@ const CompanyCard = ({
                             <Globe size={16} />
                             <span className="text-xs font-medium">Website</span>
                         </div>
-                        <a 
-                            href={company.website} 
-                            target="_blank" 
+                        <a
+                            href={company.website}
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm font-bold text-blue-400 hover:text-blue-300"
                             onClick={(e) => e.stopPropagation()}
@@ -243,9 +243,9 @@ const CompanyCard = ({
                 )}
 
                 {/* View Details Button */}
-                <button 
+                <button
                     onClick={(e) => { e.stopPropagation(); onClick?.(); }}
-                    className="w-full py-3 bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white text-sm font-bold rounded-xl border border-blue-500/30 hover:border-blue-500 transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-blue-900/20 hover:bg-blue-900 text-blue-400 hover:text-white text-sm font-bold rounded-xl border border-blue-900/30 hover:border-blue-900 transition-all flex items-center justify-center gap-2"
                 >
                     Explore Company <ArrowRight size={16} />
                 </button>

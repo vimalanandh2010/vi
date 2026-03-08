@@ -11,7 +11,7 @@ const QuickActions = ({ company }) => {
     const isVerified = company?.verificationStatus === 'verified';
 
     const handleNavigation = (path, label) => {
-        if ((label === 'Courses' || label === 'Jobs') && !company) {
+        if (label === 'Jobs' && !company) {
             toast.error(`Please complete your company profile to access ${label}.`);
             return;
         }
@@ -23,7 +23,6 @@ const QuickActions = ({ company }) => {
         { label: 'Calendar', icon: Calendar, path: '/recruiter/calendar' },
         { label: 'Community', icon: Globe, path: '/recruiter/community' },
         { label: 'Company', icon: Globe, path: '/recruiter/company-profile' },
-        { label: 'Courses', icon: BookOpen, path: '/recruiter/my-courses' },
         { label: 'Profile', icon: User, path: '/recruiter/profile' },
         { label: 'Jobs', icon: Briefcase, path: '/recruiter/my-jobs' },
     ];

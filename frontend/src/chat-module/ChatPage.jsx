@@ -31,8 +31,16 @@ const ChatPage = () => {
 
             // Connect socket explicitly using User_ID
             try {
-                const socketUrl = import.meta.env.VITE_SOCKET_URL || API_URL.replace('/api', '');
-                const socket = io(socketUrl);
+                const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : window.location.origin);
+
+                const token = user?.role === 'employer' || user?.role === 'recruiter'
+                    ? localStorage.getItem('recruiterToken')
+                    : localStorage.getItem('seekerToken');
+
+                const socket = io(socketUrl, {
+                    auth: { token },
+                    transports: ['websocket', 'polling']
+                });
 
                 socket.on('connect', () => {
                     socket.emit('joinPrivateChat', user._id);

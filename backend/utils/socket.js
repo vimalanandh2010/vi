@@ -90,4 +90,48 @@ const emitMessage = (recipientId, message) => {
     }
 };
 
-module.exports = { initSocket, getIO, emitMessage };
+// ============================================
+// JOB SEEKER REAL-TIME FEATURES
+// ============================================
+
+// Emit job count updates to all connected job seekers
+const emitJobCountUpdate = (categoryData) => {
+    if (io) {
+        io.emit('jobCountUpdate', categoryData);
+        console.log('📊 Broadcasted job count update to all clients');
+    }
+};
+
+// Emit application status update to specific user
+const emitApplicationStatusUpdate = (userId, applicationData) => {
+    if (io) {
+        io.to(userId).emit('applicationStatusUpdate', applicationData);
+        console.log(`📬 Sent application status update to user: ${userId}`);
+    }
+};
+
+// Emit new job posting notification to all job seekers
+const emitNewJobPosted = (jobData) => {
+    if (io) {
+        io.emit('newJobPosted', jobData);
+        console.log('🆕 Broadcasted new job posting to all clients');
+    }
+};
+
+// Emit profile view notification to specific user
+const emitProfileView = (userId, viewData) => {
+    if (io) {
+        io.to(userId).emit('profileView', viewData);
+        console.log(`👁️ Sent profile view notification to user: ${userId}`);
+    }
+};
+
+module.exports = { 
+    initSocket, 
+    getIO, 
+    emitMessage,
+    emitJobCountUpdate,
+    emitApplicationStatusUpdate,
+    emitNewJobPosted,
+    emitProfileView
+};

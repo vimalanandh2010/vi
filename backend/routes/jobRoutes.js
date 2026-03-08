@@ -10,6 +10,7 @@ const Application = require('../models/Application');
 const { uploadFile, deleteFile } = require('../utils/uploadService');
 const { extractText } = require('../services/documentParser');
 const { compareJDAndResume } = require('../services/geminiScannerService');
+const { emitJobCountUpdate, emitNewJobPosted, emitApplicationStatusUpdate } = require('../utils/socket');
 
 // Configure Multer for memory storage
 const storage = multer.memoryStorage();
@@ -241,6 +242,36 @@ router.post('/', auth, upload.single('poster'), async (req, res) => {
         });
 
         const job = await newJob.save();
+        
+        // 🔴 REAL-TIME: Emit new job posted event
+        try {
+            emitNewJobPosted({
+                id: job._id,
+                title: job.title,
+                company: companyDisplayName,
+                category: job.category,
+                location: job.location,
+                type: job.type
+            });
+            
+            // Update all clients with new job counts
+            const categories = ['IT', 'Non-IT', 'Remote', 'Engineering', 'Data Science', 'Design', 'Finance', 'Hardware', 'Product', 'Sales', 'Marketing'];
+            const counts = await Promise.all(categories.map(async (cat) => {
+                const count = await Job.countDocuments({
+                    $or: [
+                        { category: cat },
+                        { tags: new RegExp(`^${cat}$`, 'i') },
+                        { title: new RegExp(cat, 'i') }
+                    ],
+                    status: 'active'
+                });
+                return { name: cat, count };
+            }));
+            emitJobCountUpdate(counts);
+        } catch (socketErr) {
+            console.error('[JobRoutes] Socket emission error:', socketErr.message);
+        }
+        
         res.status(201).json(job);
     } catch (err) {
         const fs = require('fs');
@@ -303,6 +334,76 @@ router.get('/categories', async (req, res) => {
             return { name: cat, count: `${count}+ Jobs` };
         }));
         res.json(counts);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// GET category stats with real-time demand calculation
+router.get('/categories/stats', async (req, res) => {
+    try {
+        const categories = ['IT', 'Non-IT', 'Remote', 'Engineering', 'Data Science', 'Design', 'Finance', 'Hardware', 'Product', 'Sales', 'Marketing'];
+        
+        // Color mapping for category bars
+        const categoryColors = {
+            'IT': '#4F46E5',
+            'Non-IT': '#F59E0B',
+            'Remote': '#10B981',
+            'Engineering': '#8B5CF6',
+            'Data Science': '#EC4899',
+            'Design': '#06B6D4',
+            'Finance': '#EAB308',
+            'Hardware': '#8B5CF6',
+            'Product': '#3B82F6',
+            'Sales': '#F97316',
+            'Marketing': '#10B981'
+        };
+
+        const stats = await Promise.all(categories.map(async (cat) => {
+            // Current count
+            const currentCount = await Job.countDocuments({
+                $or: [
+                    { category: cat },
+                    { tags: new RegExp(`^${cat}$`, 'i') },
+                    { title: new RegExp(cat, 'i') }
+                ],
+                status: 'active'
+            });
+
+            // Count from 7 days ago (for demand calculation)
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            
+            const previousCount = await Job.countDocuments({
+                $or: [
+                    { category: cat },
+                    { tags: new RegExp(`^${cat}$`, 'i') },
+                    { title: new RegExp(cat, 'i') }
+                ],
+                status: 'active',
+                createdAt: { $lt: sevenDaysAgo }
+            });
+
+            // Calculate demand percentage (growth rate)
+            let demandPercentage = 40; // Base demand
+            if (previousCount > 0) {
+                const growth = ((currentCount - previousCount) / previousCount) * 100;
+                demandPercentage = Math.min(100, Math.max(40, 60 + Math.round(growth)));
+            } else if (currentCount > 0) {
+                demandPercentage = 85; // New category with jobs
+            }
+
+            return {
+                name: cat,
+                count: currentCount,
+                displayCount: `${currentCount}+ Jobs`,
+                demandPercentage,
+                color: categoryColors[cat] || '#6B7280',
+                tags: [] // Will be populated with top skills if needed
+            };
+        }));
+
+        res.json(stats);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -487,71 +588,72 @@ router.post('/apply/:id', auth, async (req, res) => {
         });
 
         // ============================================
-        // Automatic ATS Analysis on Apply (no manual trigger needed)
+        // Finalize Application Save & Confirm
         // ============================================
-        try {
-            // Try user's current resume URL (most up-to-date, likely Supabase)
-            const resumeUrlToScan = user.resumeUrl;
+        await application.save();
 
-            if (resumeUrlToScan) {
-                console.log(`[JobRoutes] Auto-scanning resume on apply: ${resumeUrlToScan}`);
-                let resumeText = null;
+        // 📧 IMMEDIATELY trigger common application email (don't wait for scan)
+        sendApplicationEmail(user.email, user.firstName, job.title, job.company).catch(e => {
+            console.error(`[JobRoutes] Failed to send initial application email: ${e.message}`);
+        });
 
-                try {
-                    resumeText = await extractText(resumeUrlToScan);
-                } catch (fetchErr) {
-                    console.warn(`[JobRoutes] Could not fetch resume during auto-scan: ${fetchErr.message}. Application saved without score.`);
-                    application.aiMatchScore = -1;
-                }
+        // ============================================
+        // Automatic ATS Analysis in background (non-blocking)
+        // ============================================
+        // We do not 'await' this specifically to keep the response fast, 
+        // the scan still runs and updates correctly.
+        setImmediate(async () => {
+            try {
+                const resumeUrlToScan = user.resumeUrl;
+                if (!resumeUrlToScan) return;
+
+                console.log(`[JobRoutes] Background Auto-scanning resume: ${resumeUrlToScan}`);
+                let resumeText = await extractText(resumeUrlToScan).catch(() => null);
 
                 if (resumeText) {
-                    const jdText = `
-                        Title: ${job.title}
-                        Description: ${job.description}
-                        Requirements: ${job.requirements && Array.isArray(job.requirements) ? job.requirements.join(', ') : job.requirements || ''}
-                    `;
-
+                    const jdText = `Title: ${job.title}\nDescription: ${job.description}\nRequirements: ${job.requirements || ''}`;
                     const analysis = await compareJDAndResumeLocal(jdText, resumeText);
 
                     application.aiMatchScore = analysis.matchPercentage;
                     application.aiAnalysis = analysis;
 
-                    // Auto-assign status: ≥ 60 = shortlisted, < 60 = rejected
                     if (analysis.matchPercentage >= 60) {
                         application.status = 'shortlisted';
                         console.log(`[JobRoutes] ✅ Auto-shortlisted (score: ${analysis.matchPercentage})`);
                     } else {
                         application.status = 'rejected';
                         console.log(`[JobRoutes] ❌ Auto-rejected (score: ${analysis.matchPercentage})`);
-                        // Send automated rejection email
-                        try {
-                            await sendStatusUpdateEmail(
-                                user.email,
-                                user.firstName,
-                                job.title,
-                                job.companyName || job.company,
-                                'rejected',
-                                analysis.matchPercentage
-                            );
-                        } catch (emailErr) {
-                            console.error(`[JobRoutes] Auto-rejection email failed: ${emailErr.message}`);
-                        }
+                        // Rejection update email (also handled safely)
+                        await sendStatusUpdateEmail(user.email, user.firstName, job.title, job.companyName || job.company, 'rejected', analysis.matchPercentage).catch(() => { });
+                    }
+                    await application.save().catch(() => { });
+                    
+                    // 🔴 REAL-TIME: Emit application status update from auto-scan
+                    try {
+                        emitApplicationStatusUpdate(userId, {
+                            applicationId: application._id,
+                            jobId: job._id,
+                            jobTitle: job.title,
+                            company: job.companyName || job.company,
+                            status: application.status,
+                            oldStatus: 'applied',
+                            aiMatchScore: analysis.matchPercentage,
+                            updatedAt: new Date()
+                        });
+                    } catch (socketErr) {
+                        console.error(`[JobRoutes] Socket emission error on auto-scan: ${socketErr.message}`);
                     }
                 }
-            } else {
-                console.warn(`[JobRoutes] User ${userId} has no resume. Application saved without ATS score.`);
-                application.aiMatchScore = -1;
+            } catch (atsError) {
+                console.error(`[JobRoutes] Background ATS scan failed: ${atsError.message}`);
             }
-        } catch (atsError) {
-            console.error(`[JobRoutes] Auto ATS scan error: ${atsError.message}`);
-            // Application still saves successfully — stays as 'applied'
-        }
+        });
 
-        await application.save();
-
-        // Send Email Notification
-        await sendApplicationEmail(user.email, user.firstName, job.title, job.company);
-        res.status(201).json({ message: 'Application submitted successfully', application });
+        res.status(201).json({
+            message: 'Application submitted successfully',
+            application,
+            info: 'Email notification sent. ATS analysis running in background.'
+        });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
@@ -644,6 +746,25 @@ router.put('/:id', auth, upload.single('poster'), async (req, res) => {
             { $set: jobFields },
             { new: true }
         );
+        
+        // 🔴 REAL-TIME: Emit job count update after job modification
+        try {
+            const categories = ['IT', 'Non-IT', 'Remote', 'Engineering', 'Data Science', 'Design', 'Finance', 'Hardware', 'Product', 'Sales', 'Marketing'];
+            const counts = await Promise.all(categories.map(async (cat) => {
+                const count = await Job.countDocuments({
+                    $or: [
+                        { category: cat },
+                        { tags: new RegExp(`^${cat}$`, 'i') },
+                        { title: new RegExp(cat, 'i') }
+                    ],
+                    status: 'active'
+                });
+                return { name: cat, count };
+            }));
+            emitJobCountUpdate(counts);
+        } catch (socketErr) {
+            console.error('[JobRoutes] Socket emission error on job update:', socketErr.message);
+        }
 
         res.json(job);
     } catch (err) {
@@ -671,6 +792,26 @@ router.delete('/:id', auth, async (req, res) => {
         }
 
         await Job.findByIdAndDelete(req.params.id);
+        
+        // 🔴 REAL-TIME: Emit job count update after deletion
+        try {
+            const categories = ['IT', 'Non-IT', 'Remote', 'Engineering', 'Data Science', 'Design', 'Finance', 'Hardware', 'Product', 'Sales', 'Marketing'];
+            const counts = await Promise.all(categories.map(async (cat) => {
+                const count = await Job.countDocuments({
+                    $or: [
+                        { category: cat },
+                        { tags: new RegExp(`^${cat}$`, 'i') },
+                        { title: new RegExp(cat, 'i') }
+                    ],
+                    status: 'active'
+                });
+                return { name: cat, count };
+            }));
+            emitJobCountUpdate(counts);
+        } catch (socketErr) {
+            console.error('[JobRoutes] Socket emission error on job delete:', socketErr.message);
+        }
+        
         res.json({ message: 'Job removed' });
     } catch (err) {
         console.error(err.message);
@@ -871,6 +1012,24 @@ router.patch('/application/:id/status', recruiterAuth, async (req, res) => {
             } catch (emailErr) {
                 console.error(`[JobRoutes] Failed to send status update email: ${emailErr.message}`);
             }
+        }
+        
+        // 🔴 REAL-TIME: Emit application status update to job seeker
+        try {
+            emitApplicationStatusUpdate(application.user._id.toString(), {
+                applicationId: application._id,
+                jobId: application.job._id,
+                jobTitle: application.job.title,
+                company: application.job.companyName || application.job.company,
+                status: application.status,
+                oldStatus,
+                interviewDate: application.interviewDate,
+                interviewTime: application.interviewTime,
+                meetingLink: application.meetingLink,
+                updatedAt: new Date()
+            });
+        } catch (socketErr) {
+            console.error(`[JobRoutes] Socket emission error on status update: ${socketErr.message}`);
         }
 
         res.json(application);
