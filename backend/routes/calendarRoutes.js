@@ -100,14 +100,18 @@ router.post('/sync-interview/:applicationId', auth, async (req, res) => {
             user.googleCalendarTokens.access_token
         );
 
-        // Store calendar event ID in application
+        // Store calendar event ID and auto-generated meeting link in application
         application.googleCalendarEventId = result.eventId;
+        if (result.meetingLink && !application.meetingLink) {
+            application.meetingLink = result.meetingLink;
+        }
         await application.save();
 
         res.json({
             success: true,
             message: 'Interview synced to Google Calendar',
-            eventLink: result.eventLink
+            eventLink: result.eventLink,
+            meetingLink: result.meetingLink
         });
 
     } catch (error) {
@@ -198,6 +202,9 @@ router.post('/sync-all', auth, async (req, res) => {
                 );
 
                 application.googleCalendarEventId = result.eventId;
+                if (result.meetingLink && !application.meetingLink) {
+                    application.meetingLink = result.meetingLink;
+                }
                 await application.save();
                 
                 syncedCount++;

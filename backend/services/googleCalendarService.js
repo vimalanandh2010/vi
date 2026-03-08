@@ -187,26 +187,33 @@ ${meetingLink ? `Meeting Link: ${meetingLink}` : 'In-person interview'}
                         { method: 'popup', minutes: 30 }, // 30 minutes before
                     ],
                 },
-                conferenceData: meetingLink ? {
-                    entryPoints: [{
-                        entryPointType: 'video',
-                        uri: meetingLink,
-                        label: 'Join Interview'
-                    }]
-                } : undefined
+                conferenceData: {
+                    createRequest: {
+                        requestId: `interview-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                        conferenceSolutionKey: {
+                            type: 'hangoutsMeet'
+                        }
+                    }
+                }
             };
 
             const response = await this.calendar.events.insert({
                 calendarId: 'primary',
                 resource: event,
                 sendUpdates: 'all', // Send email invites to attendees
-                conferenceDataVersion: meetingLink ? 1 : 0
+                conferenceDataVersion: 1 // Required for conference data
             });
+
+            // Extract the generated Google Meet link
+            const generatedMeetLink = response.data.conferenceData?.entryPoints?.find(
+                ep => ep.entryPointType === 'video'
+            )?.uri;
 
             return {
                 success: true,
                 eventId: response.data.id,
-                eventLink: response.data.htmlLink
+                eventLink: response.data.htmlLink,
+                meetingLink: generatedMeetLink || meetingLink // Use generated link or fallback to provided one
             };
 
         } catch (error) {
