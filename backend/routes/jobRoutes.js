@@ -11,6 +11,7 @@ const { uploadFile, deleteFile } = require('../utils/uploadService');
 const { extractText } = require('../services/documentParser');
 const { compareJDAndResume } = require('../services/geminiScannerService');
 const { emitJobCountUpdate, emitNewJobPosted, emitApplicationStatusUpdate } = require('../utils/socket');
+const { generateMeetingLink } = require('../utils/meetingGenerator');
 
 // Configure Multer for memory storage
 const storage = multer.memoryStorage();
@@ -985,9 +986,22 @@ router.patch('/application/:id/status', recruiterAuth, async (req, res) => {
         if (interviewDate) application.interviewDate = interviewDate;
         if (interviewTime) application.interviewTime = interviewTime;
         if (interviewNotes) application.interviewNotes = interviewNotes;
-        // Only store meetingLink when the status is 'interview'. For other statuses (e.g., shortlisted), clear any existing link.
-        if (status === 'interview' && meetingLink) {
-            application.meetingLink = meetingLink;
+        
+        // Handle meeting link for interview status
+        if (status === 'interview') {
+            if (meetingLink) {
+                // Use provided meeting link
+                application.meetingLink = meetingLink;
+            } else if (!application.meetingLink) {
+                // Auto-generate Jitsi Meet link if no link provided
+                const autoLink = generateMeetingLink({
+                    applicationId: application._id.toString(),
+                    candidateName: application.user.firstName,
+                    jobTitle: application.job.title
+                });
+                application.meetingLink = autoLink;
+                console.log(`🎥 Auto-generated Jitsi link for interview: ${autoLink}`);
+            }
         } else {
             // Ensure no stale meeting link remains for non-interview statuses
             application.meetingLink = '';
@@ -1216,10 +1230,15 @@ router.post('/application/:id/scan', recruiterAuth, async (req, res) => {
                         }
                     }
 
-                    // Provide a default meeting link if not set
+                    // Auto-generate Jitsi meeting link if not set
                     if (!application.meetingLink) {
-                        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-                        application.meetingLink = `${frontendUrl}/interview/${application._id}`;
+                        const autoLink = generateMeetingLink({
+                            applicationId: application._id.toString(),
+                            candidateName: application.user.firstName,
+                            jobTitle: application.job.title
+                        });
+                        application.meetingLink = autoLink;
+                        console.log(`🎥 Auto-generated Jitsi link during AI scan: ${autoLink}`);
                     }
 
                     console.log(`[JobRoutes] Auto-scheduled interview (score: ${application.aiMatchScore})`);
@@ -1557,10 +1576,15 @@ router.post('/recruiter/candidate-action', recruiterAuth, async (req, res) => {
                     responseData.interviewDate = nextSlot.date;
                     responseData.interviewTime = nextSlot.time;
 
-                    // Generate default meeting link for shortlist if missing
+                    // Auto-generate Jitsi Meet link for shortlist if missing
                     if (!application.meetingLink) {
-                        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-                        application.meetingLink = `${frontendUrl}/interview/${applicationId}`;
+                        const autoLink = generateMeetingLink({
+                            applicationId: application._id.toString(),
+                            candidateName: application.user.firstName,
+                            jobTitle: application.job.title
+                        });
+                        application.meetingLink = autoLink;
+                        console.log(`🎥 Auto-generated Jitsi link for shortlist: ${autoLink}`);
                     }
                 }
 
@@ -1609,15 +1633,26 @@ router.post('/recruiter/candidate-action', recruiterAuth, async (req, res) => {
                 application.interviewDate = assignedDate;
                 application.interviewTime = assignedTime;
 
-                // Use provided link OR generate default internal link
-                const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-                application.meetingLink = meetingLink || application.meetingLink || `${frontendUrl}/interview/${applicationId}`;
+                // Handle meeting link - use provided, existing, or auto-generate Jitsi link
+                if (meetingLink) {
+                    application.meetingLink = meetingLink;
+                } else if (!application.meetingLink) {
+                    // Auto-generate Jitsi Meet link
+                    const autoLink = generateMeetingLink({
+                        applicationId: application._id.toString(),
+                        candidateName: application.user.firstName,
+                        jobTitle: application.job.title
+                    });
+                    application.meetingLink = autoLink;
+                    console.log(`🎥 Auto-generated Jitsi link for interview: ${autoLink}`);
+                }
 
                 application.interviewNotes = interviewNotes || '';
                 await application.save();
                 responseData.applicationStatus = 'interview';
                 responseData.interviewDate = assignedDate;
                 responseData.interviewTime = assignedTime;
+                responseData.meetingLink = application.meetingLink;
 
                 // Send interview confirmation email to candidate
                 try {
