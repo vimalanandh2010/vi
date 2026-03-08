@@ -2,7 +2,16 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { v4: uuidv4 } = require('uuid');
-const pdfParse = require('pdf-parse');
+let pdfParse;
+try {
+    pdfParse = require('pdf-parse');
+    // Handle default export if it exists
+    if (pdfParse && pdfParse.default) {
+        pdfParse = pdfParse.default;
+    }
+} catch (err) {
+    console.error('[DocumentParser] Failed to load pdf-parse:', err.message);
+}
 const mammoth = require('mammoth');
 const { extractTextFromFile } = require('./geminiScannerService');
 
@@ -49,6 +58,9 @@ const extractText = async (url) => {
 
         if (lowerUrl.endsWith('.pdf')) {
             try {
+                if (!pdfParse || typeof pdfParse !== 'function') {
+                    throw new Error('pdf-parse is not available or not a function');
+                }
                 const result = await pdfParse(buffer);
                 extractedText = result.text;
                 console.log(`[DocumentParser] pdf-parse extracted ${extractedText.trim().length} chars.`);
@@ -77,12 +89,21 @@ const extractText = async (url) => {
             fs.writeFileSync(tempFilePath, buffer);
             extractedText = await extractTextFromFile(tempFilePath);
         } else {
-            // Default fallback: try as PDF
+            // Default fallback: try as PDF first, then use OCR
             try {
-                const result = await pdfParse(buffer);
-                extractedText = result.text;
+                if (pdfParse && typeof pdfParse === 'function') {
+                    const result = await pdfParse(buffer);
+                    extractedText = result.text;
+                } else {
+                    throw new Error('pdf-parse not available, using OCR');
+                }
             } catch (e) {
-                console.warn('[DocumentParser] Fallback PDF parse failed:', e.message);
+                console.warn('[DocumentParser] Fallback PDF parse failed, using Gemini OCR:', e.message);
+                // Use Gemini OCR as final fallback
+                const tempDir = os.tmpdir();
+                tempFilePath = path.join(tempDir, `document_${uuidv4()}.pdf`);
+                fs.writeFileSync(tempFilePath, buffer);
+                extractedText = await extractTextFromFile(tempFilePath);
             }
         }
 
