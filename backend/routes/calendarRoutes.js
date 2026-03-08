@@ -135,8 +135,8 @@ router.post('/sync-all', auth, async (req, res) => {
         const user = await User.findById(req.user.id);
         
         if (!user.googleCalendarTokens || !user.googleCalendarTokens.access_token) {
-            return res.status(401).json({ 
-                message: 'Google Calendar not connected. Please authorize first.',
+            return res.status(400).json({ 
+                message: 'Google Calendar not connected. Please connect first.',
                 requiresAuth: true
             });
         }
@@ -150,25 +150,46 @@ router.post('/sync-all', auth, async (req, res) => {
             .populate('user', 'firstName lastName email')
             .populate('job', 'title recruiter');
 
-        // Filter to only this recruiter's jobs
+        // Filter to only this recruiter's jobs (with safety checks)
         const recruiterInterviews = upcomingInterviews.filter(
-            app => app.job.recruiter.toString() === req.user.id
+            app => app.job && app.job.recruiter && app.job.recruiter.toString() === req.user.id
         );
+
+        // If no interviews to sync
+        if (recruiterInterviews.length === 0) {
+            return res.json({
+                success: true,
+                message: 'No new interviews to sync',
+                syncedCount: 0,
+                totalCount: 0
+            });
+        }
 
         let syncedCount = 0;
         const errors = [];
 
         for (const application of recruiterInterviews) {
             try {
+                // Validate required data
+                if (!application.user || !application.user.email) {
+                    console.warn(`Skipping application ${application._id}: No user data`);
+                    continue;
+                }
+
+                if (!application.interviewTime) {
+                    console.warn(`Skipping application ${application._id}: No interview time`);
+                    continue;
+                }
+
                 const interviewData = {
-                    candidateName: `${application.user.firstName} ${application.user.lastName}`,
+                    candidateName: `${application.user.firstName || 'Candidate'} ${application.user.lastName || ''}`.trim(),
                     candidateEmail: application.user.email,
                     jobTitle: application.job.title,
                     interviewDate: application.interviewDate,
                     interviewTime: application.interviewTime,
-                    meetingLink: application.meetingLink,
-                    notes: application.interviewNotes,
-                    recruiterEmail: req.user.email
+                    meetingLink: application.meetingLink || '',
+                    notes: application.interviewNotes || '',
+                    recruiterEmail: user.email
                 };
 
                 const result = await googleCalendarService.createInterviewEvent(
@@ -181,14 +202,16 @@ router.post('/sync-all', auth, async (req, res) => {
                 
                 syncedCount++;
             } catch (error) {
-                console.error(`Failed to sync application ${application._id}:`, error);
+                console.error(`Failed to sync application ${application._id}:`, error.message);
                 errors.push({ applicationId: application._id, error: error.message });
             }
         }
 
         res.json({
             success: true,
-            message: `Synced ${syncedCount} of ${recruiterInterviews.length} interviews`,
+            message: syncedCount > 0 
+                ? `Successfully synced ${syncedCount} interview${syncedCount === 1 ? '' : 's'}!` 
+                : 'No interviews could be synced',
             syncedCount,
             totalCount: recruiterInterviews.length,
             errors: errors.length > 0 ? errors : undefined
@@ -196,7 +219,10 @@ router.post('/sync-all', auth, async (req, res) => {
 
     } catch (error) {
         console.error('Error syncing all interviews:', error);
-        res.status(500).json({ message: 'Failed to sync interviews to Google Calendar' });
+        res.status(500).json({ 
+            message: 'Failed to sync interviews',
+            error: error.message 
+        });
     }
 });
 
