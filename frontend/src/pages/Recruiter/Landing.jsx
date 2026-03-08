@@ -40,7 +40,7 @@ const RecruiterLanding = () => {
                         </span>
                     </div>
                     <div className="flex items-center gap-8">
-                        {user ? (
+                        {user && (
                             <div className="flex items-center gap-6">
                                 <Link to="/recruiter/candidates" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">Candidates</Link>
                                 <Link to="/recruiter/community" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">Community</Link>
@@ -56,13 +56,6 @@ const RecruiterLanding = () => {
                                     <span className="hidden md:inline">Exit</span>
                                 </button>
                             </div>
-                        ) : (
-                            <>
-                                <Link to="/recruiter/login" className="text-slate-400 hover:text-white transition-colors font-medium">Login</Link>
-                                <Link to="/recruiter/signup" className="px-6 py-2.5 bg-black hover:bg-zinc-900 text-white rounded-xl font-bold transition-all hover:-translate-y-1 active:scale-95 shadow-lg">
-                                    Get Started
-                                </Link>
-                            </>
                         )}
                     </div>
                 </div>
@@ -121,10 +114,10 @@ const RecruiterLanding = () => {
                         </div>
                     </motion.div>
                 </div>
-            </div>
+            </div >
 
             {/* Features Grid */}
-            <div className="py-24 bg-transparent">
+            < div className="py-24 bg-transparent" >
                 <div className="max-w-[1400px] mx-auto px-6">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-bold mb-4 text-slate-900">Why Recruiters Love Us</h2>
@@ -154,10 +147,10 @@ const RecruiterLanding = () => {
                         ))}
                     </div>
                 </div>
-            </div>
+            </div >
 
             {/* Stats Section */}
-            <div className="py-24 border-y border-slate-800">
+            < div className="py-24 border-y border-slate-800" >
                 <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                     <div>
                         <div className="text-4xl font-bold text-black mb-2">50k+</div>
@@ -176,10 +169,10 @@ const RecruiterLanding = () => {
                         <div className="text-slate-500 uppercase tracking-widest text-xs font-bold">Client Satisfaction</div>
                     </div>
                 </div>
-            </div>
+            </div >
 
             {/* CTA Footer */}
-            <div className="py-24 text-center bg-black">
+            < div className="py-24 text-center bg-black" >
                 <div className="max-w-3xl mx-auto px-4">
                     <h2 className="text-4xl font-bold mb-6 text-white">Ready to scale your team?</h2>
                     <p className="text-slate-300 mb-10">Join thousands of companies building the future with our platform.</p>
@@ -187,12 +180,12 @@ const RecruiterLanding = () => {
                         Create Your Recruiter Account
                     </Link>
                 </div>
-            </div>
+            </div >
 
             <footer className="py-10 border-t border-slate-800 text-center text-slate-500 text-sm">
                 &copy; {new Date().getFullYear()} Future Milestone. All rights reserved.
             </footer>
-        </div>
+        </div >
     )
 }
 

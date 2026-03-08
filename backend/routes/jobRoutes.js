@@ -385,12 +385,32 @@ router.get('/categories/stats', async (req, res) => {
             });
 
             // Calculate demand percentage (growth rate)
-            let demandPercentage = 40; // Base demand
-            if (previousCount > 0) {
-                const growth = ((currentCount - previousCount) / previousCount) * 100;
-                demandPercentage = Math.min(100, Math.max(40, 60 + Math.round(growth)));
+            let demandPercentage = 15; // Base demand for 0 jobs
+            
+            if (currentCount === 0) {
+                // No jobs = very low demand (10-20%)
+                demandPercentage = Math.floor(Math.random() * 11) + 10; // 10-20%
             } else if (currentCount > 0) {
-                demandPercentage = 85; // New category with jobs
+                // Base demand based on job availability
+                if (currentCount <= 2) {
+                    demandPercentage = 40 + (currentCount * 5); // 40-50% for 1-2 jobs
+                } else if (currentCount <= 5) {
+                    demandPercentage = 50 + (currentCount * 3); // 53-65% for 3-5 jobs
+                } else if (currentCount <= 10) {
+                    demandPercentage = 65 + (currentCount * 2); // 67-85% for 6-10 jobs
+                } else {
+                    demandPercentage = 85; // 85%+ for 10+ jobs
+                }
+                
+                // Add growth bonus if there's weekly growth
+                if (previousCount > 0) {
+                    const growth = ((currentCount - previousCount) / previousCount) * 100;
+                    const growthBonus = Math.min(15, Math.max(-10, Math.round(growth / 2)));
+                    demandPercentage = Math.min(95, Math.max(40, demandPercentage + growthBonus));
+                } else if (currentCount > 0) {
+                    // New category with jobs - add small bonus
+                    demandPercentage = Math.min(90, demandPercentage + 5);
+                }
             }
 
             return {

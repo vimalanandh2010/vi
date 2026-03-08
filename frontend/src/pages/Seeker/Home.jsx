@@ -25,11 +25,14 @@ const Home = () => {
     const [loading, setLoading] = useState(true)
     const [stats, setStats] = useState(null)
     const socketRef = useRef(null)
+    const [totalJobsCount, setTotalJobsCount] = useState(0)
+    const [jobsAddedToday, setJobsAddedToday] = useState(0)
 
     useEffect(() => {
         const fetchHomeData = async () => {
             try {
                 const token = localStorage.getItem('seekerToken')
+                console.log('🔍 Fetching home data from:', import.meta.env.VITE_API_URL)
                 const promises = [
                     axiosClient.get('jobs/categories/stats'), // Using new stats endpoint with demand data
                     axiosClient.get('jobs/top-companies'),
@@ -37,12 +40,33 @@ const Home = () => {
                 ]
                 if (token) promises.push(axiosClient.get('dashboard/seeker'))
                 const results = await Promise.all(promises)
-                if (Array.isArray(results[0])) setLiveCategories(results[0])
+                
+                console.log('✅ Categories data received:', results[0])
+                console.log('✅ Companies data received:', results[1])
+                console.log('✅ Jobs data received:', results[2])
+                
+                if (Array.isArray(results[0])) {
+                    setLiveCategories(results[0])
+                    // Calculate total jobs count from all categories
+                    const total = results[0].reduce((sum, cat) => sum + (cat.count || 0), 0)
+                    setTotalJobsCount(total)
+                }
                 if (Array.isArray(results[1])) setTopCompanies(results[1])
-                if (Array.isArray(results[2])) setJobs(results[2].slice(0, 5))
+                if (Array.isArray(results[2])) {
+                    setJobs(results[2].slice(0, 5))
+                    // Count jobs added today
+                    const today = new Date()
+                    today.setHours(0, 0, 0, 0)
+                    const todayCount = results[2].filter(job => {
+                        const jobDate = new Date(job.createdAt)
+                        return jobDate >= today
+                    }).length
+                    setJobsAddedToday(todayCount)
+                }
                 if (token && results[3]) setStats(results[3].stats)
             } catch (err) {
-                console.error('Error fetching home data:', err)
+                console.error('❌ Error fetching home data:', err)
+                console.error('Error details:', err.response?.data || err.message)
             } finally {
                 setLoading(false)
             }
@@ -62,17 +86,21 @@ const Home = () => {
             socketRef.current.on('jobCountUpdate', (updatedCounts) => {
                 console.log('📊 Received real-time job count update:', updatedCounts)
                 setLiveCategories(prev => {
-                    return prev.map(cat => {
-                        const updated = updatedCounts.find(u => u.name === cat.name)
-                        if (updated) {
+                    const updated = prev.map(cat => {
+                        const updatedCat = updatedCounts.find(u => u.name === cat.name)
+                        if (updatedCat) {
                             return {
                                 ...cat,
-                                count: updated.count,
-                                displayCount: `${updated.count}+ Jobs`
+                                count: updatedCat.count,
+                                displayCount: `${updatedCat.count}+ Jobs`
                             }
                         }
                         return cat
                     })
+                    // Recalculate total jobs count
+                    const total = updated.reduce((sum, cat) => sum + (cat.count || 0), 0)
+                    setTotalJobsCount(total)
+                    return updated
                 })
             })
 
@@ -120,20 +148,23 @@ const Home = () => {
     const trendingJobs = ['ReactJS Developer', 'Data Analyst', 'Python Developer', 'UI/UX Designer', 'DevOps Engineer']
 
     const categoriesToDisplay = liveCategories.length > 0
-        ? liveCategories.map((cat, idx) => ({
-            id: cat._id || idx,
-            name: cat.name,
-            icon: categoryIcons[cat.name] || Code2,
-            count: cat.displayCount || `${cat.count}+ Jobs`,
-            colorConfig: {
-                icon: categoryColors[idx % categoryColors.length].icon,
-                card: cat.color || categoryColors[idx % categoryColors.length].card,
-                hot: cat.demandPercentage >= 80
-            },
-            description: 'Explore growing opportunities in this sector.',
-            skills: cat.tags || ['Analysis', 'Communication', 'Technical'],
-            demand: cat.demandPercentage || Math.floor(Math.random() * 60) + 40
-        }))
+        ? liveCategories.map((cat, idx) => {
+            console.log(`📦 Mapping category ${cat.name}:`, { count: cat.count, demand: cat.demandPercentage, color: cat.color })
+            return {
+                id: cat._id || idx,
+                name: cat.name,
+                icon: categoryIcons[cat.name] || Code2,
+                count: cat.displayCount || `${cat.count}+ Jobs`,
+                colorConfig: {
+                    icon: categoryColors[idx % categoryColors.length].icon,
+                    card: cat.color || categoryColors[idx % categoryColors.length].card,
+                    hot: cat.demandPercentage >= 80
+                },
+                description: 'Explore growing opportunities in this sector.',
+                skills: cat.tags || ['Analysis', 'Communication', 'Technical'],
+                demand: cat.demandPercentage || Math.floor(Math.random() * 60) + 40
+            }
+        })
         : [
             { id: 'm1', name: 'IT', count: '4+ Jobs', icon: MousePointer2, colorConfig: categoryColors[0], description: 'Software development, cloud computing & digital transformation.', skills: ['React', 'Node.js', 'AWS'], demand: 92 },
             { id: 'm2', name: 'Non-IT', count: '0+ Jobs', icon: Briefcase, colorConfig: categoryColors[1], description: 'Core industries, manufacturing, and operational excellence.', skills: ['Operations', 'Safety', 'Planning'], demand: 55 },
@@ -369,7 +400,10 @@ const Home = () => {
                         <h2 className="font-heading text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-3">
                             Popular Job Categories
                         </h2>
-                        <p className="text-slate-500 font-medium text-base">2,020 jobs live — 293 added today.</p>
+                        <p className="text-slate-500 font-medium text-base">
+                            <span className="font-bold text-blue-600">{totalJobsCount.toLocaleString()}</span> jobs live — 
+                            <span className="font-bold text-green-600">{jobsAddedToday}</span> added today.
+                        </p>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
