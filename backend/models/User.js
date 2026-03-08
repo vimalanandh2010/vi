@@ -96,6 +96,14 @@ const userSchema = new mongoose.Schema({
         date: { type: String, default: '' },
         link: { type: String, default: '' }
     }],
+    // Google Calendar Integration
+    googleCalendarTokens: {
+        access_token: { type: String },
+        refresh_token: { type: String },
+        scope: { type: String },
+        token_type: { type: String },
+        expiry_date: { type: Number }
+    }
 }, { timestamps: true });
 
 // Virtual for profile picture to maintain compatibility with profilePic/photoUrl naming

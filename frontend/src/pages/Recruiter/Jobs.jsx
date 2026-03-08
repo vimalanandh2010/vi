@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
 import {
     Briefcase,
@@ -13,23 +13,18 @@ import {
     Eye,
     Plus,
     Search,
-    Filter,
     Loader2,
     BarChart3,
     TrendingUp,
-    X,
-    ArrowRight,
-    CheckCircle2,
-    Sparkles
+    X
 } from 'lucide-react'
 import axiosClient from '../../api/axiosClient'
 import { toast } from 'react-toastify'
-import Navbar from '../../components/Navbar'
 import { useAuth } from '../../context/AuthContext'
 import useFetch from '../../hooks/useFetch'
 import recruiterApi from '../../api/modules/recruiter.api'
-import { AnimatePresence } from 'framer-motion'
 import VerificationBadge from '../../components/Common/VerificationBadge'
+import RecruiterLayout from '../../components/RecruiterLayout'
 
 const RecruiterJobs = () => {
     const { user } = useAuth()
@@ -71,7 +66,6 @@ const RecruiterJobs = () => {
     const fetchAnalyticsSummary = async () => {
         try {
             const res = await axiosClient.get('jobs/recruiter/analytics')
-            // Create a map of jobId to analytics
             const analyticsMap = {}
             res.jobs.forEach(job => {
                 analyticsMap[job.jobId] = job
@@ -106,33 +100,24 @@ const RecruiterJobs = () => {
     )
 
     return (
-        <div className="min-h-screen bg-slate-950">
-            <Navbar />
-
+        <RecruiterLayout jobCount={jobs.length}>
             <div className="max-w-7xl mx-auto px-6 py-8">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
-                            <h1 className="text-4xl font-bold text-white">My Job Postings</h1>
-                            <span className="px-4 py-1.5 bg-blue-600/20 border border-blue-500/30 text-blue-400 rounded-full text-sm font-bold">
+                            <h1 className="text-4xl font-black text-black">My Job Postings</h1>
+                            <span className="px-4 py-1.5 bg-blue-50 border border-blue-100 text-blue-600 rounded-full text-sm font-bold">
                                 {jobs.length} {jobs.length === 1 ? 'Job' : 'Jobs'}
                             </span>
                         </div>
-                        <p className="text-slate-400">Posted by {user?.email}</p>
+                        <p className="text-slate-500 font-medium">Manage and track your active job listings</p>
                     </div>
 
                     <div className="flex items-center gap-4">
                         <button
-                            onClick={(e) => handlePostNavigation(e, '/recruiter/post-course', 'post a course')}
-                            className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-indigo-900/30 active:scale-95"
-                        >
-                            <Plus size={20} />
-                            Post Course
-                        </button>
-                        <button
                             onClick={(e) => handlePostNavigation(e, '/recruiter/post-job', 'post a job')}
-                            className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-900/30 active:scale-95"
+                            className="flex items-center gap-2 px-6 py-3 bg-black hover:bg-slate-800 text-white rounded-xl font-bold transition-all shadow-xl shadow-black/10 active:scale-95"
                         >
                             <Plus size={20} />
                             Post New Job
@@ -140,77 +125,87 @@ const RecruiterJobs = () => {
                     </div>
                 </div>
 
-                {/* Search Bar */}
-                <div className="relative mb-8">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
-                    <input
-                        type="text"
-                        placeholder="Search jobs by title, company, or location..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-slate-900 border border-slate-800 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-                    />
-                </div>
-
                 {/* Dashboard Statistics */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-6 text-white">
-                        <div className="flex items-center justify-between mb-2">
-                            <Briefcase size={24} />
-                            <span className="text-blue-200 text-sm font-medium">Total</span>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                    <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                                <Briefcase size={20} />
+                            </div>
+                            <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Total</span>
                         </div>
-                        <h3 className="text-3xl font-bold mb-1">{jobs.length}</h3>
-                        <p className="text-blue-200 text-sm">Job Postings</p>
+                        <h3 className="text-3xl font-black text-black mb-1">{jobs.length}</h3>
+                        <p className="text-slate-400 text-xs font-bold uppercase tracking-tight">Job Postings</p>
                     </div>
 
-                    <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-6 text-white">
-                        <div className="flex items-center justify-between mb-2">
-                            <Users size={24} />
-                            <span className="text-purple-200 text-sm font-medium">Total</span>
+                    <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600">
+                                <Users size={20} />
+                            </div>
+                            <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Total</span>
                         </div>
-                        <h3 className="text-3xl font-bold mb-1">
+                        <h3 className="text-3xl font-black text-black mb-1">
                             {jobs.reduce((sum, job) => sum + (job.applicants?.length || 0), 0)}
                         </h3>
-                        <p className="text-purple-200 text-sm">Total Applicants</p>
+                        <p className="text-slate-400 text-xs font-bold uppercase tracking-tight">Total Applicants</p>
                     </div>
 
-                    <div className="bg-gradient-to-br from-green-600 to-green-700 rounded-2xl p-6 text-white">
-                        <div className="flex items-center justify-between mb-2">
-                            <Clock size={24} />
-                            <span className="text-green-200 text-sm font-medium">Active</span>
+                    <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-green-600">
+                                <Clock size={20} />
+                            </div>
+                            <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Active</span>
                         </div>
-                        <h3 className="text-3xl font-bold mb-1">
+                        <h3 className="text-3xl font-black text-black mb-1">
                             {jobs.filter(job => job.status !== 'closed').length}
                         </h3>
-                        <p className="text-green-200 text-sm">Active Jobs</p>
+                        <p className="text-slate-400 text-xs font-bold uppercase tracking-tight">Active Jobs</p>
                     </div>
 
-                    <div className="bg-gradient-to-br from-orange-600 to-orange-700 rounded-2xl p-6 text-white">
-                        <div className="flex items-center justify-between mb-2">
-                            <Calendar size={24} />
-                            <span className="text-orange-200 text-sm font-medium">Recent</span>
+                    <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-orange-600">
+                                <Calendar size={20} />
+                            </div>
+                            <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Recent</span>
                         </div>
-                        <h3 className="text-3xl font-bold mb-1">
+                        <h3 className="text-3xl font-black text-black mb-1">
                             {jobs.filter(job => {
                                 const daysDiff = (new Date() - new Date(job.createdAt)) / (1000 * 60 * 60 * 24);
                                 return daysDiff <= 7;
                             }).length}
                         </h3>
-                        <p className="text-orange-200 text-sm">Posted This Week</p>
+                        <p className="text-slate-400 text-xs font-bold uppercase tracking-tight">Posted This Week</p>
                     </div>
+                </div>
+
+                {/* Search Bar */}
+                <div className="relative mb-12">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                    <input
+                        type="text"
+                        placeholder="Search jobs by title, company, or location..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full bg-white border border-slate-200 rounded-2xl py-4 pl-12 pr-4 text-black focus:outline-none focus:ring-4 focus:ring-black/5 focus:border-black transition-all shadow-sm"
+                    />
                 </div>
 
                 {/* Jobs List */}
                 {loading ? (
-                    <div className="flex flex-col items-center justify-center h-64 text-slate-500">
+                    <div className="flex flex-col items-center justify-center h-64 text-slate-400">
                         <Loader2 className="animate-spin mb-4" size={32} />
-                        <p className="text-sm">Loading jobs...</p>
+                        <p className="text-sm font-bold uppercase tracking-widest">Loading jobs...</p>
                     </div>
                 ) : filteredJobs.length === 0 ? (
-                    <div className="text-center py-12 bg-slate-900/50 rounded-2xl border border-slate-800">
-                        <Briefcase className="mx-auto mb-4 text-slate-600" size={48} />
-                        <p className="text-slate-400 text-lg mb-2">No jobs found</p>
-                        <p className="text-slate-500 text-sm">
+                    <div className="text-center py-20 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                        <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <Briefcase className="text-slate-300" size={32} />
+                        </div>
+                        <p className="text-black text-xl font-bold mb-2">No jobs found</p>
+                        <p className="text-slate-500 font-medium">
                             {searchQuery ? 'Try a different search term' : 'Start by posting your first job'}
                         </p>
                     </div>
@@ -221,60 +216,62 @@ const RecruiterJobs = () => {
                                 key={job._id}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-slate-700 transition-all"
+                                className="bg-white border border-slate-100 rounded-3xl p-8 hover:shadow-xl hover:border-transparent transition-all group"
                             >
-                                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                                     <div className="flex-1">
-                                        <div className="flex items-start gap-4 mb-4">
-                                            <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shrink-0">
+                                        <div className="flex items-start gap-6 mb-6">
+                                            <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-black font-black text-2xl shrink-0 group-hover:bg-black group-hover:text-white transition-colors border border-slate-100">
                                                 {job.company?.[0] || 'J'}
                                             </div>
                                             <div
                                                 onClick={() => handleCardClick(job)}
-                                                className="flex-1 cursor-pointer group/title"
+                                                className="flex-1 cursor-pointer"
                                             >
-                                                <h3 className="text-xl font-bold text-white mb-1 group-hover/title:text-blue-400 transition-colors flex items-center gap-2">
+                                                <h3 className="text-2xl font-black text-black mb-1 group-hover:text-black transition-colors flex items-center gap-3">
                                                     {job.title}
-                                                    <Eye size={16} className="opacity-0 group-hover/title:opacity-100 text-slate-500 transition-all" />
+                                                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <BarChart3 size={18} className="text-slate-400" />
+                                                    </span>
                                                 </h3>
-                                                <p className="text-slate-400 text-sm">{job.company}</p>
+                                                <div className="flex items-center gap-3">
+                                                    <p className="text-slate-500 font-bold">{job.company}</p>
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-200" />
+                                                    <p className="text-slate-400 text-sm font-medium">{new Date(job.createdAt).toLocaleDateString()}</p>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                                            <div className="flex items-center gap-2 text-slate-400 text-sm">
-                                                <MapPin size={16} className="text-slate-600" />
+                                        <div className="flex flex-wrap gap-6 mb-6">
+                                            <div className="flex items-center gap-2 text-slate-500 text-sm font-bold">
+                                                <MapPin size={16} className="text-slate-300" />
                                                 {job.location || 'Remote'}
                                             </div>
-                                            <div className="flex items-center gap-2 text-slate-400 text-sm">
-                                                <Briefcase size={16} className="text-slate-600" />
+                                            <div className="flex items-center gap-2 text-slate-500 text-sm font-bold">
+                                                <Briefcase size={16} className="text-slate-300" />
                                                 {job.type || 'Full-time'}
                                             </div>
-                                            <div className="flex items-center gap-2 text-slate-400 text-sm">
-                                                <DollarSign size={16} className="text-slate-600" />
+                                            <div className="flex items-center gap-2 text-slate-500 text-sm font-bold">
+                                                <DollarSign size={16} className="text-slate-300" />
                                                 {job.salary || 'Not specified'}
-                                            </div>
-                                            <div className="flex items-center gap-2 text-slate-400 text-sm">
-                                                <Calendar size={16} className="text-slate-600" />
-                                                {new Date(job.createdAt).toLocaleDateString()}
                                             </div>
                                         </div>
 
                                         <div className="flex items-center gap-2 flex-wrap">
-                                            <span className="px-3 py-1 bg-blue-600/20 border border-blue-500/30 text-blue-400 rounded-full text-xs font-bold">
+                                            <span className="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-full text-xs font-black uppercase tracking-tight">
                                                 {job.applicants?.length || 0} Applicants
                                             </span>
-                                            <span className="px-3 py-1 bg-slate-800 border border-slate-700 text-slate-400 rounded-full text-xs font-bold capitalize">
+                                            <span className="px-4 py-1.5 bg-slate-50 text-slate-600 rounded-full text-xs font-black uppercase tracking-tight">
                                                 {job.experienceLevel || 'All Levels'}
                                             </span>
                                             {analyticsData[job._id] && (
                                                 <>
-                                                    <span className="px-3 py-1 bg-purple-600/20 border border-purple-500/30 text-purple-400 rounded-full text-xs font-bold">
-                                                        <Eye size={12} className="inline mr-1" />
+                                                    <span className="px-4 py-1.5 bg-purple-50 text-purple-600 rounded-full text-xs font-black uppercase tracking-tight flex items-center gap-1.5">
+                                                        <Eye size={12} />
                                                         {analyticsData[job._id].views} views
                                                     </span>
-                                                    <span className="px-3 py-1 bg-green-600/20 border border-green-500/30 text-green-400 rounded-full text-xs font-bold">
-                                                        <TrendingUp size={12} className="inline mr-1" />
+                                                    <span className="px-4 py-1.5 bg-green-50 text-green-600 rounded-full text-xs font-black uppercase tracking-tight flex items-center gap-1.5">
+                                                        <TrendingUp size={12} />
                                                         {analyticsData[job._id].viewToApplicationRate}% rate
                                                     </span>
                                                 </>
@@ -282,10 +279,10 @@ const RecruiterJobs = () => {
                                         </div>
                                     </div>
 
-                                    <div className="flex md:flex-col gap-2">
+                                    <div className="flex flex-wrap lg:flex-col gap-3">
                                         <Link
                                             to={`/recruiter/job-analytics/${job._id}`}
-                                            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white rounded-xl text-sm font-medium transition-all"
+                                            className="flex items-center gap-2 px-6 py-2.5 bg-slate-50 hover:bg-black hover:text-white text-black rounded-xl text-sm font-bold transition-all border border-slate-100"
                                         >
                                             <BarChart3 size={16} />
                                             Analyze
@@ -293,25 +290,25 @@ const RecruiterJobs = () => {
 
                                         <Link
                                             to={`/recruiter/job-applicants/${job._id}`}
-                                            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-medium transition-all"
+                                            className="flex items-center gap-2 px-6 py-2.5 bg-black text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-all shadow-lg shadow-black/5"
                                         >
                                             <Eye size={16} />
-                                            View
+                                            View Applicants
                                         </Link>
-                                        <Link
-                                            to={`/recruiter/edit-job/${job._id}`}
-                                            className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-sm font-medium transition-all"
-                                        >
-                                            <Edit size={16} />
-                                            Edit
-                                        </Link>
-                                        <button
-                                            onClick={() => handleDelete(job._id)}
-                                            className="flex items-center gap-2 px-4 py-2 bg-red-600/10 hover:bg-red-600/20 border border-red-500/30 text-red-400 rounded-xl text-sm font-medium transition-all"
-                                        >
-                                            <Trash2 size={16} />
-                                            Delete
-                                        </button>
+                                        <div className="flex gap-2">
+                                            <Link
+                                                to={`/recruiter/edit-job/${job._id}`}
+                                                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white border border-slate-200 hover:border-black text-slate-600 hover:text-black rounded-xl text-sm font-bold transition-all"
+                                            >
+                                                <Edit size={16} />
+                                            </Link>
+                                            <button
+                                                onClick={() => handleDelete(job._id)}
+                                                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-600 text-red-500 hover:text-white rounded-xl text-sm font-bold transition-all border border-red-100"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>
@@ -329,90 +326,60 @@ const RecruiterJobs = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsModalOpen(false)}
-                            className="absolute inset-0 bg-slate-950/80 backdrop-blur-md"
+                            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
                         />
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            className="relative w-full max-w-4xl max-h-[90vh] bg-slate-900 border border-slate-700/50 rounded-3xl shadow-2xl overflow-hidden flex flex-col"
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col"
                         >
-                            {/* Modal Banner Image */}
-                            {selectedJob.posterUrl && (
-                                <div className="w-full h-48 md:h-64 overflow-hidden relative border-b border-slate-700/50 flex-shrink-0">
-                                    <img src={selectedJob.posterUrl} alt="Job Banner" className="w-full h-full object-cover" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
-                                </div>
-                            )}
-
-                            {/* Modal Header */}
-                            <div className="p-8 border-b border-slate-700/50 bg-slate-800/20">
-                                <div className="flex justify-between items-start">
-                                    <div className="flex gap-6">
-                                        <div className="w-20 h-20 rounded-2xl bg-slate-700/50 flex items-center justify-center text-4xl shadow-lg border border-slate-600/30">
-                                            🏢
+                            <div className="p-8 border-b border-slate-50 flex justify-between items-start">
+                                <div className="flex gap-6">
+                                    <div className="w-20 h-20 rounded-2xl bg-slate-900 flex items-center justify-center text-4xl shadow-xl">
+                                        🏢
+                                    </div>
+                                    <div>
+                                        <div className="flex items-center gap-3 mb-2">
+                                            <span className="px-3 py-1 bg-black text-white rounded-full text-[10px] font-black uppercase tracking-widest">
+                                                Recruiter Preview
+                                            </span>
                                         </div>
-                                        <div>
-                                            <div className="flex items-center gap-3 mb-2">
-                                                <span className="px-3 py-1 bg-blue-600/20 border border-blue-500/30 text-blue-400 rounded-full text-[10px] font-black uppercase tracking-widest">
-                                                    Recruiter Preview
-                                                </span>
-                                            </div>
-                                            <h2 className="text-3xl font-bold text-white mb-2">{selectedJob.title}</h2>
-                                            <div className="flex items-center gap-3 mb-4">
-                                                <p className="text-blue-400 text-xl font-medium">{selectedJob.companyName || selectedJob.company?.name || selectedJob.company}</p>
-                                                <VerificationBadge
-                                                    level={selectedJob.company?.verificationLevel || 0}
-                                                    status={selectedJob.company?.verificationStatus || 'unverified'}
-                                                />
-                                            </div>
-                                            <div className="flex flex-wrap gap-4">
-                                                <div className="flex items-center gap-2 text-slate-400 px-3 py-1.5 bg-slate-800/50 rounded-lg border border-slate-700/50">
-                                                    <MapPin size={18} />
-                                                    {selectedJob.location}
-                                                </div>
-                                                <div className="flex items-center gap-2 text-slate-400 px-3 py-1.5 bg-slate-800/50 rounded-lg border border-slate-700/50">
-                                                    <Briefcase size={18} />
-                                                    {selectedJob.type}
-                                                </div>
-                                            </div>
+                                        <h2 className="text-3xl font-black text-black mb-1">{selectedJob.title}</h2>
+                                        <div className="flex items-center gap-3">
+                                            <p className="text-slate-600 font-bold">{selectedJob.company}</p>
+                                            <VerificationBadge
+                                                level={selectedJob.company?.verificationLevel || 0}
+                                                status={selectedJob.company?.verificationStatus || 'unverified'}
+                                            />
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={() => setIsModalOpen(false)}
-                                        className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all"
-                                    >
-                                        <X size={24} />
-                                    </button>
                                 </div>
+                                <button
+                                    onClick={() => setIsModalOpen(false)}
+                                    className="p-3 text-slate-400 hover:text-black hover:bg-slate-50 rounded-full transition-all"
+                                >
+                                    <X size={24} />
+                                </button>
                             </div>
 
-                            {/* Modal Content */}
-                            <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
-                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                                    <div className="lg:col-span-2 space-y-8">
-                                        {/* Description */}
+                            <div className="flex-1 overflow-y-auto p-10 custom-scrollbar">
+                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                                    <div className="lg:col-span-2 space-y-10">
                                         <section>
-                                            <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                                                <div className="w-1.5 h-6 bg-blue-500 rounded-full" />
-                                                Job Description
-                                            </h4>
-                                            <p className="text-slate-300 leading-relaxed whitespace-pre-line text-lg">
+                                            <h4 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Job Description</h4>
+                                            <p className="text-slate-600 leading-relaxed whitespace-pre-line text-lg font-medium">
                                                 {selectedJob.description || 'No description provided.'}
                                             </p>
                                         </section>
 
-                                        {/* Requirements */}
                                         {selectedJob.requirements && selectedJob.requirements.length > 0 && (
                                             <section>
-                                                <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                                                    <div className="w-1.5 h-6 bg-purple-500 rounded-full" />
-                                                    Requirements
-                                                </h4>
-                                                <ul className="space-y-3">
+                                                <h4 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Key Requirements</h4>
+                                                <ul className="grid gap-4">
                                                     {selectedJob.requirements.map((req, i) => (
-                                                        <li key={i} className="flex gap-3 text-slate-300 bg-slate-800/30 p-4 rounded-xl border border-slate-700/30">
-                                                            <div className="w-2 h-2 mt-2 rounded-full bg-slate-600 flex-shrink-0" />
+                                                        <li key={i} className="flex gap-4 text-slate-600 bg-slate-50 p-5 rounded-2xl font-medium border border-slate-100">
+                                                            <div className="w-2 h-2 mt-2.5 rounded-full bg-black shrink-0" />
                                                             {req}
                                                         </li>
                                                     ))}
@@ -421,32 +388,30 @@ const RecruiterJobs = () => {
                                         )}
                                     </div>
 
-                                    {/* Sidebar Info */}
                                     <div className="space-y-6">
-                                        <div className="bg-slate-800/40 p-6 rounded-2xl border border-slate-700/50">
-                                            <h5 className="text-white font-bold mb-4 uppercase text-xs tracking-widest text-slate-500">Overview</h5>
-                                            <div className="space-y-4">
+                                        <div className="bg-slate-50 p-8 rounded-[2rem] border border-slate-100">
+                                            <h5 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Details</h5>
+                                            <div className="space-y-6">
                                                 <div>
-                                                    <p className="text-slate-500 text-xs mb-1">Salary</p>
-                                                    <p className="text-white font-semibold">{selectedJob.salary || 'Competitive'}</p>
+                                                    <p className="text-slate-400 text-[10px] font-black uppercase mb-1">Salary Range</p>
+                                                    <p className="text-black font-black text-lg">{selectedJob.salary || 'Competitive'}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-slate-500 text-xs mb-1">Posted On</p>
-                                                    <p className="text-white font-semibold">{new Date(selectedJob.createdAt).toLocaleDateString()}</p>
+                                                    <p className="text-slate-400 text-[10px] font-black uppercase mb-1">Location</p>
+                                                    <p className="text-black font-black text-lg">{selectedJob.location || 'Remote'}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-slate-500 text-xs mb-1">Category</p>
-                                                    <p className="text-white font-semibold">{selectedJob.category || 'Standard'}</p>
+                                                    <p className="text-slate-400 text-[10px] font-black uppercase mb-1">Job Type</p>
+                                                    <p className="text-black font-black text-lg">{selectedJob.type || 'Full-time'}</p>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Tags */}
-                                        <div className="bg-slate-800/40 p-6 rounded-2xl border border-slate-700/50">
-                                            <h5 className="text-white font-bold mb-4 uppercase text-xs tracking-widest text-slate-500">Skills & Tags</h5>
+                                        <div className="bg-slate-50 p-8 rounded-[2rem] border border-slate-100">
+                                            <h5 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Tags</h5>
                                             <div className="flex flex-wrap gap-2">
                                                 {selectedJob.tags?.map(tag => (
-                                                    <span key={tag} className="px-3 py-1 bg-slate-700/50 text-slate-400 rounded-lg text-xs border border-slate-600/30">
+                                                    <span key={tag} className="px-3 py-1.5 bg-white text-slate-600 rounded-xl text-xs font-bold border border-slate-200">
                                                         {tag}
                                                     </span>
                                                 ))}
@@ -456,23 +421,22 @@ const RecruiterJobs = () => {
                                 </div>
                             </div>
 
-                            {/* Modal Footer */}
-                            <div className="p-8 border-t border-slate-700/50 bg-slate-800/20 flex flex-wrap gap-4 items-center justify-between">
-                                <p className="text-slate-500 text-xs italic">
-                                    * This is a preview of how candidates will see your job posting.
+                            <div className="p-8 border-t border-slate-50 flex items-center justify-between bg-slate-50/50">
+                                <p className="text-slate-400 text-xs font-medium italic">
+                                    This is how candidates see your post
                                 </p>
                                 <div className="flex gap-4">
                                     <button
                                         onClick={() => setIsModalOpen(false)}
-                                        className="px-8 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition-all"
+                                        className="px-8 py-3 bg-white hover:bg-slate-100 text-black rounded-2xl font-black text-sm transition-all border border-slate-200"
                                     >
-                                        Close Preview
+                                        Close
                                     </button>
                                     <Link
                                         to={`/recruiter/edit-job/${selectedJob._id}`}
-                                        className="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-900/40"
+                                        className="px-8 py-3 bg-black text-white rounded-2xl font-black text-sm transition-all shadow-xl shadow-black/10"
                                     >
-                                        Edit Job
+                                        Update Job
                                     </Link>
                                 </div>
                             </div>
@@ -480,7 +444,7 @@ const RecruiterJobs = () => {
                     </div>
                 )}
             </AnimatePresence>
-        </div>
+        </RecruiterLayout>
     )
 }
 

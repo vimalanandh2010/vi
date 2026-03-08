@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import RoleSelection from './pages/RoleSelection'
 import AuthCallback from './pages/AuthCallback'
+import GoogleCalendarCallback from './pages/Auth/GoogleCalendarCallback'
 
 import SeekerSignup from './pages/Seeker/Signup'
 import SeekerLogin from './pages/Seeker/Login'
@@ -37,12 +38,13 @@ import RecruiterSignup from './pages/Recruiter/Signup'
 import JobApplicants from './pages/Recruiter/JobApplicants'
 import RecruiterLanding from './pages/Recruiter/Landing'
 import RecruiterChat from './pages/Recruiter/Chat'
-import RecruiterCommunity from './pages/Recruiter/Community'
 import RecruiterCandidates from './pages/Recruiter/Candidates'
 import RecruiterJobs from './pages/Recruiter/Jobs'
 import JobAnalytics from './pages/Recruiter/JobAnalytics'
 import RecruiterCalendar from './pages/Recruiter/Calendar'
+import CalendarSettings from './pages/Recruiter/CalendarSettings'
 import JobDetails from './pages/Recruiter/JobDetails'
+import EditJob from './pages/Recruiter/EditJob'
 
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { CompanyProvider } from './context/CompanyContext'
@@ -79,6 +81,7 @@ export default function App() {
                   </ErrorBoundary>
                 } />
                 <Route path="/auth/callback" element={<AuthCallback />} />
+                <Route path="/auth/google/callback" element={<GoogleCalendarCallback />} />
                 <Route path="/auth/login-otp" element={<EnterEmail />} />
                 <Route path="/auth/verify-otp" element={<VerifyOtp />} />
                 <Route path="/auth/forgot-password" element={<ForgotPassword />} />
@@ -161,9 +164,6 @@ export default function App() {
                   <Route path="/recruiter/my-jobs" element={<MyPostings />} />
                   <Route path="/recruiter/job/:jobId/applicants" element={<JobApplicants />} />
                   <Route path="/recruiter/chat" element={<ChatPage />} />
-                  <Route path="/recruiter/community" element={<CommunityList isSeeker={false} />} />
-                  <Route path="/recruiter/communities" element={<CommunityList isSeeker={false} />} />
-                  <Route path="/recruiter/communities/:id" element={<CommunityDetail isSeeker={false} />} />
                   <Route path="/recruiter/candidates" element={<RecruiterCandidates />} />
                   <Route path="/recruiter/jobs" element={<RecruiterJobs />} />
                   <Route path="/recruiter/job-analytics/:jobId" element={<JobAnalytics />} />
@@ -171,7 +171,9 @@ export default function App() {
                   <Route path="/recruiter/profile" element={<RecruiterProfile />} />
                   <Route path="/recruiter/company-profile" element={<CompanyProfile />} />
                   <Route path="/recruiter/calendar" element={<RecruiterCalendar />} />
+                  <Route path="/recruiter/calendar-settings" element={<CalendarSettings />} />
                   <Route path="/recruiter/job-details/:jobId" element={<JobDetails />} />
+                  <Route path="/recruiter/edit-job/:jobId" element={<EditJob />} />
 
                 </Route>
 

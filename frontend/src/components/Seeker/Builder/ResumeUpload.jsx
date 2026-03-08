@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, FileText, CheckCircle2, AlertCircle, Loader2, RefreshCw } from 'lucide-react';
+import { Upload, FileText, CheckCircle2, AlertCircle, Loader2, RefreshCw, Eye, ExternalLink } from 'lucide-react';
 import axiosClient from '../../../api/axiosClient';
 import { toast } from 'react-toastify';
 
@@ -74,14 +74,26 @@ const ResumeUpload = ({ user, onUpdate }) => {
                                 </div>
                             </div>
                             <div className="flex gap-2">
-
                                 <label className="p-3 bg-gray-50 text-gray-500 border border-gray-200 rounded-xl hover:bg-blue-500 hover:text-white transition-all cursor-pointer">
                                     <RefreshCw size={18} />
                                     <input type="file" hidden onChange={handleFileChange} />
                                 </label>
                             </div>
                         </div>
-                        <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">Recruiters will see this file</p>
+
+                        {/* View Resume Button */}
+                        <a
+                            href={user.resumeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-black rounded-2xl p-4 flex items-center justify-center gap-3 font-bold shadow-lg hover:shadow-xl transition-all group"
+                        >
+                            <Eye size={20} className="group-hover:scale-110 transition-transform" />
+                            <span>View Resume in Browser</span>
+                            <ExternalLink size={16} className="opacity-70" />
+                        </a>
+
+                        <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.2em] text-center">Recruiters will see this file</p>
                     </div>
                 )}
             </div>

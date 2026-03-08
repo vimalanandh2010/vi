@@ -182,6 +182,7 @@ app.use('/api/companies', require('./routes/companyRoutes'));
 app.use('/api/verification', require('./routes/verificationRoutes'));
 app.use('/api/community-hub', require('./community-module/routes')); // Community Feed based on prompt
 app.use('/api/bot-chat', require('./routes/chatbotRoutes')); // Seeker AI Helper Chatbot
+app.use('/api/calendar', require('./routes/calendarRoutes')); // Google Calendar Integration
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {

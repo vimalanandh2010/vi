@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Send, X, Upload, MapPin, Briefcase, DollarSign, Tag, FileText, ChevronRight, AlertCircle, Sparkles } from 'lucide-react'
+import { Plus, Send, X, Upload, MapPin, Briefcase, DollarSign, Tag, FileText, ChevronRight, AlertCircle, Sparkles, Loader2 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 import RecruiterLayout from '../../components/RecruiterLayout'
 import axiosClient from '../../api/axiosClient'
 import { toast } from 'react-toastify'
-import LocationAutocomplete from '../../components/Maps/LocationAutocomplete'
 
-const PostJob = () => {
+const EditJob = () => {
+    const { jobId } = useParams()
     const navigate = useNavigate()
     const { user } = useAuth()
     const [loading, setLoading] = useState(false)
+    const [fetching, setFetching] = useState(true)
     const [formData, setFormData] = useState({
         title: '',
         location: '',
@@ -26,25 +27,38 @@ const PostJob = () => {
         category: 'IT'
     })
 
-    React.useEffect(() => {
-        const checkVerification = async () => {
+    useEffect(() => {
+        const fetchJobData = async () => {
             try {
-                const response = await axiosClient.get('companies/my-company')
-                const company = response
-                if (!company) {
-                    toast.error('Please complete your company profile before posting a job.')
-                    navigate('/recruiter/company-profile')
+                const res = await axiosClient.get(`jobs/${jobId}`)
+                if (res) {
+                    // Pre-fill form
+                    // Salary usually comes in string format, we might need to parse it back if possible, 
+                    // but for now let's just use the values if they exist or leave them blank
+                    setFormData({
+                        title: res.title || '',
+                        location: res.location || '',
+                        type: res.type || 'Full Time',
+                        minSalary: '', // Handled if we have a way to parse, otherwise leave for user to update
+                        maxSalary: '',
+                        experienceLevel: res.experienceLevel || 'Entry Level',
+                        description: res.description || '',
+                        tags: Array.isArray(res.tags) ? res.tags.join(', ') : (res.tags || ''),
+                        requirements: Array.isArray(res.requirements) ? res.requirements.join('\n') : (res.requirements || ''),
+                        poster: null, // Don't pre-fill file
+                        category: res.category || 'IT'
+                    })
                 }
             } catch (err) {
-                console.error('[PostJob] Verification check failed:', err)
-                if (err.response?.status === 404 || err.response?.status === 403) {
-                    toast.error('Please complete your company profile before posting a job.')
-                    navigate('/recruiter/company-profile')
-                }
+                console.error('Failed to fetch job:', err)
+                toast.error('Failed to load job data')
+                navigate('/recruiter/jobs')
+            } finally {
+                setFetching(false)
             }
         }
-        checkVerification()
-    }, [navigate])
+        fetchJobData()
+    }, [jobId, navigate])
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -84,18 +98,29 @@ const PostJob = () => {
                 postData.append('salary', salaryString)
             }
 
-            await axiosClient.post('jobs', postData, {
+            await axiosClient.put(`jobs/${jobId}`, postData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
 
-            toast.success('Position successfully launched!')
-            navigate('/recruiter/dashboard')
+            toast.success('Job updated successfully!')
+            navigate('/recruiter/jobs')
         } catch (err) {
-            console.error('[PostJob] Submit Error:', err)
-            toast.error(err.response?.data?.message || err.message || 'Failed to post job')
+            console.error('[EditJob] Submit Error:', err)
+            toast.error(err.response?.data?.message || err.message || 'Failed to update job')
         } finally {
             setLoading(false)
         }
+    }
+
+    if (fetching) {
+        return (
+            <RecruiterLayout>
+                <div className="flex flex-col items-center justify-center min-h-[60vh] text-slate-400">
+                    <Loader2 className="animate-spin mb-4" size={32} />
+                    <p className="text-sm font-black uppercase tracking-widest">Retrieving Mandate...</p>
+                </div>
+            </RecruiterLayout>
+        )
     }
 
     return (
@@ -104,14 +129,14 @@ const PostJob = () => {
                 {/* Minimalist Header */}
                 <header className="mb-16">
                     <div className="flex items-center gap-3 mb-6">
-                        <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-blue-100">Talent Acquisition</span>
+                        <span className="px-3 py-1 bg-black text-white rounded-lg text-[10px] font-black uppercase tracking-widest border border-black/10">Refinement Mode</span>
                         <ChevronRight size={14} className="text-slate-300" />
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Global Sourcing</span>
+                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Iterative Optimization</span>
                     </div>
                     <h1 className="text-6xl font-black text-black tracking-tighter mb-4 leading-tight">
-                        Launch a New <br />Professional Mandate
+                        Optimize Professional <br />Mandate
                     </h1>
-                    <p className="text-slate-400 text-xl font-medium tracking-tight">Deploy high-performance roles to our elite network of candidates.</p>
+                    <p className="text-slate-400 text-xl font-medium tracking-tight">Refine parameters for maximum candidate precision.</p>
                 </header>
 
                 <form onSubmit={handleSubmit} className="space-y-12 pb-24">
@@ -145,20 +170,17 @@ const PostJob = () => {
                             </div>
                             <div className="space-y-3">
                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Deployment Location *</label>
-                                <LocationAutocomplete
-                                    value={formData.location}
-                                    onChange={(value) => setFormData({ ...formData, location: value })}
-                                    onPlaceSelect={(data) => {
-                                        setFormData({ 
-                                            ...formData, 
-                                            location: data.address,
-                                            coordinates: data.coordinates // Store coordinates for future use
-                                        });
-                                    }}
-                                    placeholder="City, State, or Country"
-                                    className="w-full bg-slate-50 border border-transparent focus:border-black/10 focus:bg-white text-black font-bold rounded-2xl py-5 pl-14 pr-6 outline-none transition-all placeholder:text-slate-300"
-                                    required
-                                />
+                                <div className="relative">
+                                    <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                                    <input
+                                        name="location"
+                                        value={formData.location}
+                                        onChange={handleChange}
+                                        placeholder="City, Distributed, or Hybrid"
+                                        className="w-full bg-slate-50 border border-transparent focus:border-black/10 focus:bg-white text-black font-bold rounded-2xl py-5 pl-14 pr-6 outline-none transition-all placeholder:text-slate-300"
+                                        required
+                                    />
+                                </div>
                             </div>
                             <div className="space-y-3">
                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Engagement Framework</label>
@@ -236,7 +258,7 @@ const PostJob = () => {
                                 </div>
                                 <div className="flex items-start gap-3 p-4 bg-emerald-50/50 rounded-2xl">
                                     <AlertCircle size={14} className="text-emerald-600 mt-1" />
-                                    <p className="text-[10px] font-bold text-emerald-700 leading-relaxed uppercase tracking-tight">Figures are analyzed as annual compensation in Lakhs (INR) unless specified otherwise.</p>
+                                    <p className="text-[10px] font-bold text-emerald-700 leading-relaxed uppercase tracking-tight">Updating these values will overwrite the existing compensation string.</p>
                                 </div>
                             </div>
                         </motion.section>
@@ -355,8 +377,8 @@ const PostJob = () => {
                                     <Upload size={36} className="text-black" strokeWidth={2.5} />
                                 </div>
                                 <div>
-                                    <p className="text-xl font-black text-black">{formData.poster ? formData.poster.name : 'Ingest Role Canvas'}</p>
-                                    <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-2">Dynamic imagery increases engagement by up to 40%</p>
+                                    <p className="text-xl font-black text-black">{formData.poster ? formData.poster.name : 'Update Role Canvas'}</p>
+                                    <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-2">Uploading a new asset will replace the existing one.</p>
                                 </div>
                             </div>
                         </div>
@@ -368,13 +390,13 @@ const PostJob = () => {
                             to="/recruiter/jobs"
                             className="px-10 py-5 bg-slate-50 hover:bg-black hover:text-white text-black rounded-[2rem] font-black uppercase tracking-[0.2em] text-[10px] transition-all"
                         >
-                            Cancel Mission
+                            Cancel Optimization
                         </Link>
 
                         <div className="flex items-center gap-6">
                             <div className="hidden lg:flex flex-col items-end">
                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Validation Ready</p>
-                                <p className="text-xs font-black text-emerald-500 uppercase">System Optimized</p>
+                                <p className="text-xs font-black text-blue-500 uppercase">System Calibrated</p>
                             </div>
                             <button
                                 type="submit"
@@ -385,7 +407,7 @@ const PostJob = () => {
                                     <Loader2 className="animate-spin" size={20} />
                                 ) : (
                                     <>
-                                        Deployment Active
+                                        Update Active Mandate
                                         <Sparkles size={18} className="group-hover:animate-pulse" />
                                     </>
                                 )}
@@ -415,4 +437,4 @@ const ChevronDown = ({ className, size }) => (
     </svg>
 )
 
-export default PostJob
+export default EditJob

@@ -60,36 +60,36 @@ const RecruiterHelperChat = () => {
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
             {/* Chat Window */}
             {isOpen && (
-                <div className="mb-4 w-[340px] sm:w-[380px] h-[500px] max-h-[70vh] bg-slate-910 border border-slate-700/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
+                <div className="mb-4 w-[340px] sm:w-[380px] h-[500px] max-h-[70vh] bg-white border border-gray-200 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
 
-                    {/* Header - Purple Theme for Recruiters */}
-                    <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-purple-600 to-indigo-700 text-white">
+                    {/* Header - Minimalist Light */}
+                    <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100 text-black">
                         <div className="flex items-center gap-2">
-                            <Bot size={20} />
-                            <h3 className="font-bold tracking-wide text-sm">Recruitment Assistant</h3>
+                            <Bot size={20} className="text-black" />
+                            <h3 className="font-black tracking-tight text-sm text-black">Recruitment Assistant</h3>
                         </div>
                         <button
                             onClick={() => setIsOpen(false)}
-                            className="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/20 transition-colors"
+                            className="text-gray-500 hover:text-black p-1 rounded-lg hover:bg-gray-100 transition-colors"
                         >
                             <X size={18} />
                         </button>
                     </div>
 
                     {/* Messages Area */}
-                    <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-900/50 scrollbar-thin scrollbar-thumb-slate-700">
+                    <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 scrollbar-thin scrollbar-thumb-gray-300">
                         {messages.map((msg, index) => (
                             <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} w-full`}>
                                 <div className={`flex gap-2 max-w-[85%] ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                                     {/* Avatar */}
-                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ${msg.role === 'user' ? 'bg-indigo-500' : 'bg-purple-600'}`}>
-                                        {msg.role === 'user' ? <User size={12} className="text-white" /> : <Bot size={12} className="text-white" />}
+                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ${msg.role === 'user' ? 'bg-black' : 'bg-white border border-gray-200'}`}>
+                                        {msg.role === 'user' ? <User size={12} className="text-white" /> : <Bot size={12} className="text-gray-600" />}
                                     </div>
 
                                     {/* Bubble */}
-                                    <div className={`px-3 py-2 rounded-2xl text-[13px] leading-relaxed ${msg.role === 'user'
-                                        ? 'bg-indigo-600 text-white rounded-tr-sm'
-                                        : 'bg-slate-800 border border-slate-700 text-slate-200 rounded-tl-sm'
+                                    <div className={`px-4 py-3 rounded-2xl text-[13px] leading-relaxed font-medium ${msg.role === 'user'
+                                        ? 'bg-black text-white rounded-tr-sm'
+                                        : 'bg-white border border-gray-200 text-black rounded-tl-sm shadow-sm'
                                         }`}>
                                         {msg.text.split('\n').map((line, i) => (
                                             <p key={i} className={i !== 0 ? 'mt-1' : ''}>{line.replace(/\*\*(.*?)\*\*/g, '$1')}</p>
@@ -102,13 +102,13 @@ const RecruiterHelperChat = () => {
                         {isLoading && (
                             <div className="flex justify-start w-full">
                                 <div className="flex gap-2 max-w-[85%] flex-row">
-                                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 bg-purple-600">
-                                        <Bot size={12} className="text-white" />
+                                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 bg-white border border-gray-200">
+                                        <Bot size={12} className="text-gray-600" />
                                     </div>
-                                    <div className="px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 rounded-tl-sm flex items-center gap-1">
-                                        <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                        <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                        <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                    <div className="px-5 py-4 rounded-2xl bg-white border border-gray-200 text-black rounded-tl-sm shadow-sm flex items-center gap-1">
+                                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                                     </div>
                                 </div>
                             </div>
@@ -117,21 +117,21 @@ const RecruiterHelperChat = () => {
                     </div>
 
                     {/* Input Area */}
-                    <form onSubmit={handleSend} className="p-3 bg-slate-800 border-t border-slate-700/50 flex gap-2">
+                    <form onSubmit={handleSend} className="p-3 bg-white border-t border-gray-100 flex gap-2">
                         <input
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Ask about hiring..."
                             disabled={isLoading}
-                            className="flex-1 bg-slate-900 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 disabled:opacity-50"
+                            className="flex-1 bg-slate-50 border border-gray-200 text-black placeholder:text-gray-400 font-medium rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-gray-400 focus:bg-white transition-all disabled:opacity-50"
                         />
                         <button
                             type="submit"
                             disabled={!input.trim() || isLoading}
-                            className="bg-purple-600 hover:bg-purple-500 disabled:bg-purple-600/50 text-white p-2 rounded-xl transition-all flex items-center justify-center disabled:cursor-not-allowed"
+                            className="bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:text-gray-500 text-white p-2 rounded-xl transition-all flex items-center justify-center disabled:cursor-not-allowed"
                         >
-                            {isLoading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+                            {isLoading ? <Loader2 size={18} className="animate-spin text-white" /> : <Send size={18} />}
                         </button>
                     </form>
                 </div>
@@ -140,13 +140,13 @@ const RecruiterHelperChat = () => {
             {/* Floating Action Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 z-50 ${isOpen
-                    ? 'bg-slate-700 text-white rotate-90'
-                    : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white'
+                className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl border-2 transition-all duration-300 hover:scale-110 active:scale-95 z-50 ${isOpen
+                    ? 'bg-gray-900 text-white rotate-90 border-transparent shadow-[0_10px_20px_rgba(0,0,0,0.3)]'
+                    : 'bg-white text-black border-gray-200 hover:border-gray-900 group'
                     }`}
                 aria-label="Toggle Recruitment Assistant"
             >
-                {isOpen ? <X size={24} /> : <MessageSquare size={24} />}
+                {isOpen ? <X size={24} /> : <MessageSquare size={24} className="group-hover:text-black text-gray-700 transition-colors" />}
             </button>
         </div>
     );

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axiosClient from '../../api/axiosClient';
 import { toast } from 'react-toastify';
-import { Building2, MapPin, Globe, Users, Briefcase, Save, Info, ArrowRight } from 'lucide-react';
+import { Building2, MapPin, Globe, Users, Briefcase, Save, Info, ArrowRight, ChevronRight, Target, Sparkles, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import VerificationBadge from '../../components/Common/VerificationBadge';
 import { useCompany } from '../../context/CompanyContext';
+import RecruiterLayout from '../../components/RecruiterLayout';
 
 const CompanyProfile = () => {
     const navigate = useNavigate();
@@ -32,31 +33,11 @@ const CompanyProfile = () => {
 
     useEffect(() => {
         if (!contextLoading && company) {
-            // Auto-redirect if company exists, but allow staying if we are explicitly editing?
-            // User requirement: "If company exists → auto redirect to: /recruiter/dashboard"
-            // We should probably check if query param ?edit=true exists to override this, 
-            // but strict requirement says auto redirect.
-            // However, the task also says "Update Profile button", implying editing is possible here.
-            // I will assume for the "New Recruiter" flow, they land here. If they have a company, they go to dashboard.
-            // If they want to EDIT, they might click "Manage Company" from somewhere else.
-            // Let's stick to the strict requirement first: Auto redirect.
-            // But wait, Page 1 is "Manage Company Profile". If I redirect, how do they edit?
-            // "EXISTING RECRUITER: Login → Company exists → Auto redirect to Dashboard"
-            // "PROFILE PAGE: Auto fetch company → Auto fill → Update → Save" (This refers to Page 2 /recruiter/profile)
-            // It seems Page 1 is primarily for INITIAL setup?
-            // "PAGE 1 ... Fields ... Update Profile button"
-            // If I redirect, they can't edit here.
-
-            // Let's IMPLEMENT: If company exists, redirect.
-            // BUT, add a check: if they navigated here INTENTIONALLY to edit, maybe we shouldn't redirect?
-            // The requirement says: "When opening /recruiter/company-profile ... If company exists → auto redirect to /recruiter/dashboard"
-
             navigate('/recruiter/dashboard');
-            toast.info('Company profile already exists. Redirecting to dashboard...');
+            toast.info('Mandate active for existing organization.');
         }
     }, [company, contextLoading, navigate]);
 
-    // Handle form changes...
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -79,11 +60,9 @@ const CompanyProfile = () => {
         e.preventDefault();
         setSaving(true);
         try {
-            // Use UPSERT endpoint
             const res = await axiosClient.put('/companies/update', formData);
-
             updateCompanyContext(res);
-            toast.success('Company profile saved successfully');
+            toast.success('Organization data synchronized');
             navigate('/recruiter/dashboard');
         } catch (err) {
             console.error('Error saving company:', err);
@@ -93,201 +72,261 @@ const CompanyProfile = () => {
         }
     };
 
-    if (contextLoading) return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">Loading...</div>;
+    if (contextLoading) {
+        return (
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+                <Loader2 className="animate-spin text-black mb-4" size={48} />
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Validating Infrastructure...</p>
+            </div>
+        );
+    }
 
-    // If company exists, we are redirecting, so return null or loader
-    if (company) return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">Redirecting...</div>;
+    if (company) {
+        return (
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+                <Loader2 className="animate-spin text-black mb-4" size={48} />
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Rerouting to Command Center...</p>
+            </div>
+        );
+    }
 
     return (
-        <div className="min-h-screen bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10"
-                >
-                    <div className="p-8 border-b border-slate-700/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <h2 className="text-3xl font-bold text-white flex items-center gap-3">
-                                <Building2 className="text-blue-500" size={32} />
-                                Manage Company Profile
-                            </h2>
-                            <p className="text-slate-400 mt-2">Introduce your organization to potential candidates</p>
-                        </div>
-                        {/* Status badge would go here if we had company data, but we redirect if we do */}
+        <RecruiterLayout>
+            <main className="p-8 md:p-12 lg:p-16 max-w-5xl mx-auto bg-white min-h-full">
+                {/* Strategic Header */}
+                <header className="mb-20">
+                    <div className="flex items-center gap-2 mb-6 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
+                        Governance <ChevronRight size={12} /> Organizational Architect
                     </div>
+                    <h1 className="text-6xl font-black text-black tracking-tighter mb-4 leading-tight">
+                        Register Your <br />Corporate Entity
+                    </h1>
+                    <p className="text-slate-400 text-xl font-medium tracking-tight">Establish your brand presence to attract top-tier global talent.</p>
+                </header>
 
-                    <form onSubmit={handleSubmit} className="p-8 space-y-8">
-                        {/* Basic Info */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-300">Company Name</label>
-                                <div className="relative group">
-                                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={20} />
+                <form onSubmit={handleSubmit} className="space-y-12 pb-24">
+                    {/* Fundamental Info */}
+                    <motion.section
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-white border border-slate-100 rounded-[3.5rem] p-10 lg:p-16 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden relative group"
+                    >
+                        <div className="flex items-center gap-6 mb-12">
+                            <div className="p-5 bg-black text-white rounded-3xl group-hover:bg-blue-600 transition-colors">
+                                <Building2 size={28} strokeWidth={2.5} />
+                            </div>
+                            <div>
+                                <h2 className="text-2xl font-black text-black">Entity Fundamentals</h2>
+                                <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-1">Core Identity Parameters</p>
+                            </div>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-10">
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Legal Entity Name *</label>
+                                <div className="relative group/input">
+                                    <Building2 className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within/input:text-black transition-colors" size={20} />
                                     <input
                                         type="text"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        placeholder="Epic Tech Solutions"
-                                        className="w-full bg-slate-800/50 border border-slate-700/50 text-white rounded-2xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all placeholder:text-slate-600"
+                                        placeholder="e.g. Atlas Systems"
+                                        className="w-full bg-slate-50 border border-transparent focus:border-black/5 focus:bg-white text-black font-bold rounded-2xl py-5 pl-14 pr-6 outline-none transition-all placeholder:text-slate-300"
                                         required
                                     />
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-300">Website URL</label>
-                                <div className="relative group">
-                                    <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={20} />
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Digital Domain (URL)</label>
+                                <div className="relative group/input">
+                                    <Globe className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within/input:text-black transition-colors" size={20} />
                                     <input
                                         type="url"
                                         name="website"
                                         value={formData.website}
                                         onChange={handleChange}
-                                        placeholder="https://company.com"
-                                        className="w-full bg-slate-800/50 border border-slate-700/50 text-white rounded-2xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all placeholder:text-slate-600"
+                                        placeholder="https://atlas.io"
+                                        className="w-full bg-slate-50 border border-transparent focus:border-black/5 focus:bg-white text-black font-bold rounded-2xl py-5 pl-14 pr-6 outline-none transition-all placeholder:text-slate-300"
                                     />
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-300">Headquarters Location</label>
-                                <div className="relative group">
-                                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={20} />
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Operational Headquarters *</label>
+                                <div className="relative group/input">
+                                    <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within/input:text-black transition-colors" size={20} />
                                     <input
                                         type="text"
                                         name="location"
                                         value={formData.location}
                                         onChange={handleChange}
-                                        placeholder="Bangalore, India"
-                                        className="w-full bg-slate-800/50 border border-slate-700/50 text-white rounded-2xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all placeholder:text-slate-600"
+                                        placeholder="City, Country"
+                                        className="w-full bg-slate-50 border border-transparent focus:border-black/5 focus:bg-white text-black font-bold rounded-2xl py-5 pl-14 pr-6 outline-none transition-all placeholder:text-slate-300"
                                         required
                                     />
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-300">Company Size</label>
-                                <div className="relative group">
-                                    <Users className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={20} />
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Force Scale (Employees)</label>
+                                <div className="relative group/input">
+                                    <Users className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 transition-colors" size={20} />
                                     <select
                                         name="size"
                                         value={formData.size}
                                         onChange={handleChange}
-                                        className="w-full bg-slate-800/50 border border-slate-700/50 text-white rounded-2xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all appearance-none cursor-pointer"
+                                        className="w-full bg-slate-50 border border-transparent focus:border-black/5 focus:bg-white text-black font-bold rounded-2xl py-5 pl-14 pr-6 outline-none transition-all appearance-none cursor-pointer"
                                         required
                                     >
-                                        <option value="1-10">1-10 Employees</option>
-                                        <option value="11-50">11-50 Employees</option>
-                                        <option value="51-200">51-200 Employees</option>
-                                        <option value="201-500">201-500 Employees</option>
-                                        <option value="501-1000">501-1000 Employees</option>
-                                        <option value="1000+">1000+ Employees</option>
+                                        <option value="1-10">1-10 Members</option>
+                                        <option value="11-50">11-50 Members</option>
+                                        <option value="51-200">51-200 Members</option>
+                                        <option value="201-500">201-500 Members</option>
+                                        <option value="501-1000">501-1000 Members</option>
+                                        <option value="1000+">1000+ Members</option>
                                     </select>
+                                    <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" size={18} />
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-300">Company Type</label>
-                                <div className="relative group">
-                                    <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={20} />
-                                    <select
-                                        name="companyType"
-                                        value={formData.companyType}
-                                        onChange={handleChange}
-                                        className="w-full bg-slate-800/50 border border-slate-700/50 text-white rounded-2xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all appearance-none cursor-pointer"
-                                        required
-                                    >
-                                        {companyTypes.map(type => (
-                                            <option key={type} value={type}>{type}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className="space-y-2 md:col-span-2">
-                                <label className="text-sm font-semibold text-slate-300">About the Company</label>
-                                <textarea
-                                    name="about"
-                                    value={formData.about}
-                                    onChange={handleChange}
-                                    placeholder="Briefly describe what your company does and its mission..."
-                                    rows="4"
-                                    className="w-full bg-slate-800/50 border border-slate-700/50 text-white rounded-2xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all placeholder:text-slate-600 resize-none"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        {/* Industries Select */}
-                        <div className="space-y-4">
-                            <label className="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                                Industries <span className="text-xs text-slate-500 font-normal">(Select all that apply)</span>
-                            </label>
-                            <div className="flex flex-wrap gap-2">
-                                {industriesList.map((industry) => {
-                                    const isSelected = formData.industries.includes(industry);
-                                    return (
+                            <div className="space-y-3 md:col-span-2">
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Structural Framework</label>
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                    {companyTypes.map(type => (
                                         <button
                                             type="button"
-                                            key={industry}
-                                            onClick={() => handleIndustryToggle(industry)}
-                                            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${isSelected
-                                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40 scale-105'
-                                                : 'bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-700 hover:text-white'
+                                            key={type}
+                                            onClick={() => setFormData({ ...formData, companyType: type })}
+                                            className={`py-4 px-2 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${formData.companyType === type
+                                                    ? 'bg-black text-white border-black shadow-xl scale-105'
+                                                    : 'bg-slate-50 text-slate-400 border-transparent hover:border-slate-100 hover:bg-white hover:text-black'
                                                 }`}
                                         >
-                                            {industry}
+                                            {type}
                                         </button>
-                                    );
-                                })}
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </motion.section>
+
+                    {/* Operational Narrative */}
+                    <motion.section
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-white border border-slate-100 rounded-[3.5rem] p-10 lg:p-16 shadow-sm hover:shadow-xl transition-all group"
+                    >
+                        <div className="flex items-center gap-6 mb-12">
+                            <div className="p-5 bg-blue-50 text-blue-600 rounded-3xl group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                <Target size={28} strokeWidth={2.5} />
+                            </div>
+                            <div>
+                                <h2 className="text-2xl font-black text-black">Mission Statement</h2>
+                                <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-1">Refining the narrative</p>
                             </div>
                         </div>
 
-                        {/* Actions */}
-                        <div className="pt-4 flex flex-col-reverse md:flex-row items-center justify-end gap-4">
-                            <button
-                                type="button"
-                                onClick={() => navigate('/recruiter/dashboard')}
-                                className="w-full md:w-auto px-6 py-4 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-2xl font-semibold transition-all flex items-center justify-center gap-2"
-                            >
-                                Already Added? Go to Dashboard
-                            </button>
+                        <div className="space-y-3">
+                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Corporate Mandate & Vision *</label>
+                            <textarea
+                                name="about"
+                                value={formData.about}
+                                onChange={handleChange}
+                                placeholder="Articulate your company's vision, culture, and technological stack..."
+                                rows="6"
+                                className="w-full bg-slate-50 border border-transparent focus:border-black/5 focus:bg-white text-black font-bold rounded-[2rem] py-8 px-10 outline-none transition-all placeholder:text-slate-300 resize-none leading-relaxed"
+                                required
+                            />
+                        </div>
+                    </motion.section>
+
+                    {/* Domain Expertise */}
+                    <motion.section
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-white border border-slate-100 rounded-[3.5rem] p-10 lg:p-16 shadow-sm hover:shadow-xl transition-all group"
+                    >
+                        <div className="flex items-center gap-6 mb-12">
+                            <div className="p-5 bg-emerald-50 text-emerald-600 rounded-3xl group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                                <Sparkles size={28} strokeWidth={2.5} />
+                            </div>
+                            <div>
+                                <h2 className="text-2xl font-black text-black">Domain Expertise</h2>
+                                <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-1">Market Positioning</p>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-4">
+                            {industriesList.map((industry) => {
+                                const isSelected = formData.industries.includes(industry);
+                                return (
+                                    <button
+                                        type="button"
+                                        key={industry}
+                                        onClick={() => handleIndustryToggle(industry)}
+                                        className={`px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${isSelected
+                                                ? 'bg-emerald-600 text-white border-emerald-600 shadow-xl scale-105'
+                                                : 'bg-slate-50 text-slate-400 border-transparent hover:border-slate-100 hover:bg-white hover:text-black'
+                                            }`}
+                                    >
+                                        {industry}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </motion.section>
+
+                    {/* Meta Insight */}
+                    <div className="p-10 bg-black text-white rounded-[3rem] shadow-2xl flex flex-col md:flex-row gap-8 items-center">
+                        <div className="p-6 bg-white/10 rounded-[2rem]">
+                            <Info className="text-white" size={32} />
+                        </div>
+                        <div>
+                            <h4 className="text-xl font-black mb-2 tracking-tight">Trust Calibration</h4>
+                            <p className="text-white/60 text-sm font-medium leading-relaxed max-w-xl">
+                                High-fidelity organizational profiles correlate with a 40% increase in senior-level engagement. Ensure all parameters represent the latest strategic vision.
+                            </p>
+                        </div>
+                        <div className="ml-auto">
                             <button
                                 type="submit"
                                 disabled={saving}
-                                className="w-full md:w-auto group inline-flex items-center justify-center gap-3 px-10 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold text-lg shadow-2xl shadow-blue-900/40 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="group flex items-center gap-4 px-12 py-6 bg-white hover:bg-blue-600 text-black hover:text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-xs transition-all shadow-xl active:scale-95 disabled:opacity-50"
                             >
-                                {saving ? 'Saving...' : (
+                                {saving ? (
+                                    <Loader2 size={18} className="animate-spin" />
+                                ) : (
                                     <>
-                                        <Save size={20} className="group-hover:rotate-12 transition-transform" />
-                                        Update Profile
+                                        Calibrate Identity
+                                        <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
                                     </>
                                 )}
                             </button>
                         </div>
-                    </form>
-                </motion.div>
-
-                {/* Info Card */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                    className="mt-8 p-6 bg-blue-500/10 border border-blue-500/20 rounded-3xl flex gap-4 items-start"
-                >
-                    <Info className="text-blue-400 shrink-0 mt-1" size={24} />
-                    <div>
-                        <h4 className="text-white font-bold mb-1">Why complete your company profile?</h4>
-                        <p className="text-blue-200/60 text-sm leading-relaxed">
-                            A complete company profile increases candidate trust and improves job application rates by up to 40%. It's your space to showcase your culture and mission.
-                        </p>
                     </div>
-                </motion.div>
-            </div>
-        </div>
+                </form>
+            </main>
+        </RecruiterLayout>
     );
 };
+
+// Helper SVG for custom selects
+const ChevronDown = ({ className, size }) => (
+    <svg
+        className={className}
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+    >
+        <path d="m6 9 6 6 6-6" />
+    </svg>
+)
 
 export default CompanyProfile;

@@ -2,7 +2,6 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import axiosClient from '../../api/axiosClient'
-import CommunityCard from '../../components/Community/CommunityCard'
 import {
     Users,
     Briefcase,
@@ -24,7 +23,6 @@ import logo from '../../assets/logo.jpeg'
 const RecruiterHome = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
-    const [communities, setCommunities] = useState([])
     const [searchSkills, setSearchSkills] = useState('')
     const [searchLocation, setSearchLocation] = useState('')
 
@@ -38,15 +36,6 @@ const RecruiterHome = () => {
     }
 
     useEffect(() => {
-        const fetchCommunities = async () => {
-            try {
-                const res = await axiosClient.get('community')
-                setCommunities(Array.isArray(res) ? res.slice(0, 3) : [])
-            } catch (err) {
-                console.error('Error fetching communities:', err)
-            }
-        }
-        fetchCommunities()
     }, [])
 
     const features = [
@@ -94,113 +83,117 @@ const RecruiterHome = () => {
     ]
 
     return (
-        <div className="min-h-screen bg-[#0f172a] text-white selection:bg-blue-500/30">
+        <div className="min-h-screen bg-[#F8FAFC] text-slate-900 selection:bg-blue-500/30 overflow-x-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
+
+            {/* ── Custom Styles ── */}
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+                .font-heading { font-family: 'Poppins', sans-serif; }
+                .grid-texture {
+                    background-image: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+                                      linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+                    background-size: 20px 20px;
+                }
+            `}</style>
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none">
-                    <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-600/20 rounded-full blur-[120px] animate-pulse" />
-                    <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-purple-600/20 rounded-full blur-[120px] animate-pulse" />
-                </div>
+            <section className="relative pt-32 pb-24 px-6 overflow-hidden">
+                {/* Subtle background blobs */}
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/10 rounded-full blur-[120px] pointer-events-none animate-pulse" />
+                <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[30%] bg-purple-400/10 rounded-full blur-[100px] pointer-events-none" />
 
                 <div className="max-w-7xl mx-auto text-center relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
+                        transition={{ duration: 0.8 }}
                     >
-                        <span className="px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-bold tracking-wider uppercase mb-8 inline-block">
+                        <span className="px-5 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-[10px] font-black tracking-widest uppercase mb-10 inline-block shadow-sm">
                             Recruiter Platform 2.0
                         </span>
-                        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1]">
-                            Hire the <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500">Best Talent</span> <br />
-                            Faster Than Ever.
+                        <h1 className="font-heading text-6xl md:text-8xl font-black tracking-tight mb-8 leading-[1.05] text-black">
+                            Hire the Best Talent <br />
+                            Faster Than Ever
                         </h1>
-                        <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+                        <p className="text-xl text-slate-500 max-w-3xl mx-auto mb-12 leading-relaxed font-medium">
                             Stop chasing candidates. Start building teams. Future Milestone provides you with the precision tools to find, track, and hire the world's most ambitious talent.
                         </p>
 
-                        {/* Dual Input Search Bar */}
+                        {/* Dual Input Search Bar — Premium Light Glass */}
                         <motion.form
                             onSubmit={handleSearch}
-                            initial={{ opacity: 0, scale: 0.95 }}
+                            initial={{ opacity: 0, scale: 0.98 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.2, duration: 0.5 }}
-                            className="max-w-4xl mx-auto mb-12 bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 rounded-full p-2 flex flex-col md:flex-row items-center gap-2 shadow-2xl shadow-blue-900/20"
+                            transition={{ delay: 0.2, duration: 0.6 }}
+                            className="max-w-4xl mx-auto mb-16 bg-white border border-slate-200 rounded-[32px] p-2.5 flex flex-col md:flex-row items-center gap-2 shadow-[0_20px_50px_rgba(0,0,0,0.06)]"
                         >
-                            <div className="flex-1 flex items-center px-4 py-2 w-full">
-                                <Search className="text-blue-400 mr-3 shrink-0" size={20} />
+                            <div className="flex-1 flex items-center px-6 py-3 w-full group">
+                                <Search className="text-slate-400 group-focus-within:text-black transition-colors mr-4 shrink-0" size={22} />
                                 <input
                                     type="text"
-                                    placeholder="Skills, roles, or keywords (e.g. React, Python)"
+                                    placeholder="Skills, roles, or keywords"
                                     value={searchSkills}
                                     onChange={(e) => setSearchSkills(e.target.value)}
-                                    className="bg-transparent border-none text-white focus:outline-none w-full placeholder:text-slate-500 text-lg"
+                                    className="bg-transparent border-none text-slate-900 focus:outline-none w-full placeholder:text-slate-400 text-lg font-medium"
                                 />
                             </div>
 
-                            <div className="hidden md:block w-px h-10 bg-slate-700/50"></div>
-                            <div className="w-full md:hidden h-px bg-slate-700/50 my-2"></div>
+                            <div className="hidden md:block w-px h-10 bg-slate-200"></div>
+                            <div className="w-[90%] md:hidden h-px bg-slate-100 my-1"></div>
 
-                            <div className="flex-1 flex items-center px-4 py-2 w-full">
-                                <MapPin className="text-purple-400 mr-3 shrink-0" size={20} />
+                            <div className="flex-1 flex items-center px-6 py-3 w-full group">
+                                <MapPin className="text-slate-400 group-focus-within:text-black transition-colors mr-4 shrink-0" size={22} />
                                 <input
                                     type="text"
                                     placeholder="City, state, or country"
                                     value={searchLocation}
                                     onChange={(e) => setSearchLocation(e.target.value)}
-                                    className="bg-transparent border-none text-white focus:outline-none w-full placeholder:text-slate-500 text-lg"
+                                    className="bg-transparent border-none text-slate-900 focus:outline-none w-full placeholder:text-slate-400 text-lg font-medium"
                                 />
                             </div>
 
                             <button
                                 type="submit"
-                                className="w-full md:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold text-lg transition-all active:scale-95 flex items-center justify-center shrink-0"
+                                className="w-full md:w-auto px-10 py-4 bg-black hover:bg-slate-800 text-white rounded-[22px] font-bold text-lg transition-all active:scale-95 flex items-center justify-center shrink-0 shadow-lg"
                             >
                                 Search Candidates
                             </button>
                         </motion.form>
 
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
                             {user ? (
                                 user.role === 'employer' ? (
-                                    <Link to="/recruiter/candidates" className="w-full sm:w-auto px-8 py-3 bg-slate-800/50 hover:bg-slate-800 text-white border border-slate-700/50 rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2">
-                                        View All Talent <ArrowRight size={18} />
+                                    <Link to="/recruiter/candidates" className="w-full sm:w-auto px-10 py-4 bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-2xl font-bold transition-all flex items-center justify-center gap-3 shadow-sm hover:shadow-md">
+                                        View All Talent <ArrowRight size={20} />
                                     </Link>
                                 ) : (
-                                    <Link to="/seeker/dashboard" className="w-full sm:w-auto px-8 py-3 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/30 rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2">
-                                        Go to Seeker Dashboard <ArrowRight size={18} />
+                                    <Link to="/seeker/dashboard" className="w-full sm:w-auto px-10 py-4 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-2xl font-bold transition-all flex items-center justify-center gap-3">
+                                        Go to Seeker Dashboard <ArrowRight size={20} />
                                     </Link>
                                 )
                             ) : (
                                 <>
-                                    <Link to="/recruiter/signup" className="w-full sm:w-auto px-8 py-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 text-white rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center">
+                                    <Link to="/recruiter/signup" className="w-full sm:w-auto px-10 py-4 bg-black text-white rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center shadow-xl">
                                         Create Free Account
                                     </Link>
-                                    <Link to="/recruiter/login" className="w-full sm:w-auto px-8 py-3 text-slate-400 hover:text-white rounded-2xl font-bold transition-colors flex items-center justify-center">
+                                    <Link to="/recruiter/login" className="w-full sm:w-auto px-10 py-4 text-slate-500 hover:text-slate-900 rounded-2xl font-bold transition-colors flex items-center justify-center">
                                         Log In
                                     </Link>
                                 </>
                             )}
                         </div>
 
-                        <div className="mt-16 flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                            {/* Brand placeholders */}
-                            <span className="font-bold text-2xl tracking-tighter">TECHFLOW</span>
-                            <span className="font-bold text-2xl tracking-tighter">VORTEX</span>
-                            <span className="font-bold text-2xl tracking-tighter">PRISM</span>
-                            <span className="font-bold text-2xl tracking-tighter">NEXUS</span>
-                        </div>
                     </motion.div>
                 </div>
             </section>
 
             {/* Core Features */}
-            <section className="py-24 px-6 bg-slate-900/30">
-                <div className="max-w-7xl mx-auto">
+            <section className="py-24 px-6 bg-white relative">
+                <div className="absolute inset-0 grid-texture opacity-30 pointer-events-none" />
+                <div className="max-w-7xl mx-auto relative z-10">
                     <div className="text-center mb-20">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-6">Designed for Modern Teams</h2>
-                        <p className="text-slate-400 max-w-2xl mx-auto text-lg">Everything you need to scale your engineering, product, and design teams seamlessly.</p>
+                        <h2 className="font-heading text-4xl md:text-5xl font-black mb-6 text-slate-900">Designed for Modern Teams</h2>
+                        <p className="text-slate-500 max-w-2xl mx-auto text-lg font-medium">Everything you need to scale your engineering, product, and design teams seamlessly.</p>
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -211,13 +204,14 @@ const RecruiterHome = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
-                                className="p-8 rounded-3xl bg-slate-800/20 border border-slate-700/30 backdrop-blur-xl hover:bg-slate-800/40 transition-all group"
+                                whileHover={{ y: -8 }}
+                                className="p-10 rounded-[32px] bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgb(0,0,0,0.08)] transition-all group cursor-default"
                             >
-                                <div className={`w-14 h-14 rounded-2xl bg-${f.color}-500/10 flex items-center justify-center text-${f.color}-400 mb-6 group-hover:scale-110 transition-transform`}>
-                                    <f.icon size={28} />
+                                <div className={`w-16 h-16 rounded-2xl bg-${f.color}-50 flex items-center justify-center text-${f.color}-600 mb-8 group-hover:rotate-6 transition-transform`}>
+                                    <f.icon size={30} />
                                 </div>
-                                <h3 className="text-xl font-bold mb-4">{f.title}</h3>
-                                <p className="text-slate-400 text-sm leading-relaxed">{f.description}</p>
+                                <h3 className="font-heading text-xl font-black mb-4 text-slate-900">{f.title}</h3>
+                                <p className="text-slate-500 text-sm leading-relaxed font-medium">{f.description}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -226,24 +220,24 @@ const RecruiterHome = () => {
 
 
 
-            {/* Testimonials */}
-            <section className="py-24 px-6 bg-slate-900/20 shadow-inner">
-                <div className="max-w-7xl mx-auto">
+            {/* Testimonials — Clean & Modern */}
+            <section className="py-24 px-6 bg-white overflow-hidden relative">
+                <div className="max-w-4xl mx-auto relative">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold mb-2">Loved by Talent Acquisition Teams</h2>
+                        <h2 className="font-heading text-3xl md:text-4xl font-black text-slate-900">Loved by TA Teams</h2>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div className="grid md:grid-cols-2 gap-8">
                         {testimonials.map((t, i) => (
-                            <div key={i} className="p-8 rounded-3xl bg-slate-800/40 border border-slate-700/50 relative">
-                                <Star className="absolute top-8 right-8 text-yellow-500/20" size={40} />
-                                <p className="text-slate-300 italic mb-8 relative z-10">"{t.content}"</p>
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-white shadow-lg">
+                            <div key={i} className="p-10 rounded-[40px] bg-slate-50 border border-slate-100 relative group">
+                                <Star className="absolute top-10 right-10 text-slate-200 group-hover:text-yellow-400/20 transition-colors" size={40} />
+                                <p className="text-slate-600 font-medium italic mb-10 text-lg leading-relaxed relative z-10">"{t.content}"</p>
+                                <div className="flex items-center gap-5">
+                                    <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center font-black text-white shadow-xl text-lg">
                                         {t.avatar}
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-white leading-none mb-1">{t.name}</h4>
-                                        <p className="text-xs text-slate-500">{t.role}</p>
+                                        <h4 className="font-heading font-black text-slate-900">{t.name}</h4>
+                                        <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">{t.role}</p>
                                     </div>
                                 </div>
                             </div>
@@ -252,63 +246,38 @@ const RecruiterHome = () => {
                 </div>
             </section>
 
-            {/* New Communities Section */}
-            <section className="py-24 px-6 bg-slate-900/40">
-                <div className="max-w-7xl mx-auto">
-                    <div className="flex justify-between items-end mb-12">
-                        <div>
-                            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">Professional Communities</h2>
-                            <p className="text-slate-400 max-w-xl">Join circles of recruiter experts and industry leaders.</p>
-                        </div>
-                        <Link to="/recruiter/communities" className="text-blue-400 font-bold hover:text-blue-300 transition-colors flex items-center gap-2 mb-2">
-                            Explore All <ArrowRight size={18} />
-                        </Link>
-                    </div>
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {communities.map((community) => (
-                            <CommunityCard key={community._id} community={community} isSeeker={false} />
-                        ))}
-                        {communities.length === 0 && (
-                            <div className="col-span-3 text-center py-12 border border-dashed border-slate-700 rounded-3xl">
-                                <p className="text-slate-500">No communities found. Be the first to start one!</p>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </section>
-
-            {/* Final CTA */}
-            <section className="py-24 px-6 relative overflow-hidden">
-                <div className="max-w-4xl mx-auto rounded-[40px] bg-gradient-to-br from-blue-600 to-indigo-700 p-12 md:p-20 text-center relative shadow-2xl shadow-blue-900/20">
-                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+            {/* Final CTA — High Contrast Premium */}
+            <section className="py-24 px-6 bg-[#F8FAFC]">
+                <div className="max-w-6xl mx-auto rounded-[50px] bg-black p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
+                    <div className="absolute top-[-20%] right-[-10%] w-[40%] h-[100%] bg-blue-500/10 rounded-full blur-[100px]" />
                     <div className="relative z-10">
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Ready to scale your team?</h2>
-                        <p className="text-blue-100/80 text-lg mb-10 max-w-xl mx-auto">Join 500+ companies hiring from a pool of 50k+ vetted professionals worldwide.</p>
+                        <h2 className="font-heading text-4xl md:text-6xl font-black text-white mb-8">Ready to scale your team?</h2>
+                        <p className="text-slate-400 text-xl mb-12 max-w-2xl mx-auto font-medium">Join 500+ companies hiring from a pool of 50k+ vetted professionals worldwide.</p>
                         {user && user.role === 'employer' ? (
-                            <Link to="/recruiter/candidates" className="inline-flex items-center gap-2 px-10 py-4 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:bg-slate-100 transition-all shadow-xl active:scale-95 leading-none">
-                                Explore Talent Hub <ArrowRight size={20} />
+                            <Link to="/recruiter/candidates" className="inline-flex items-center gap-3 px-12 py-5 bg-white text-black rounded-2xl font-black text-xl hover:bg-slate-100 transition-all shadow-xl active:scale-95">
+                                Explore Talent Hub <ArrowRight size={22} />
                             </Link>
                         ) : (
-                            <Link to="/recruiter/signup" className="inline-flex items-center gap-2 px-10 py-4 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:bg-slate-100 transition-all shadow-xl active:scale-95 leading-none">
-                                Start Hiring <ArrowRight size={20} />
+                            <Link to="/recruiter/signup" className="inline-flex items-center gap-3 px-12 py-5 bg-white text-black rounded-2xl font-black text-xl hover:bg-slate-100 transition-all shadow-xl active:scale-95">
+                                Start Hiring Now <ArrowRight size={22} />
                             </Link>
                         )}
                     </div>
                 </div>
             </section>
 
-            {/* Footer Simple */}
-            <footer className="py-12 px-6 border-t border-slate-800">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            {/* Footer — Minimalist */}
+            <footer className="py-16 px-6 bg-white border-t border-slate-100">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
                     <div className="flex items-center gap-3">
-                        <img src={logo} alt="Logo" className="h-8 rounded-lg" />
-                        <span className="font-bold text-xl tracking-tight">Future Milestone</span>
+                        <img src={logo} alt="Logo" className="h-10 w-10 rounded-xl" />
+                        <span className="font-heading font-black text-2xl tracking-tighter text-slate-900">Future Milestone</span>
                     </div>
-                    <p className="text-slate-500 text-sm">© 2026 Future Milestone Inc. All rights reserved.</p>
-                    <div className="flex gap-6 text-slate-400 text-sm">
-                        <a href="#" className="hover:text-blue-400 transition-colors">Privacy</a>
-                        <a href="#" className="hover:text-blue-400 transition-colors">Terms</a>
-                        <a href="#" className="hover:text-blue-400 transition-colors">Support</a>
+                    <p className="text-slate-400 text-sm font-bold uppercase tracking-widest">© {new Date().getFullYear()} Future Milestone. Built for scale.</p>
+                    <div className="flex gap-8 text-slate-400 text-sm font-black uppercase tracking-widest">
+                        <a href="#" className="hover:text-black transition-colors">Privacy</a>
+                        <a href="#" className="hover:text-black transition-colors">Terms</a>
+                        <a href="#" className="hover:text-black transition-colors">Support</a>
                     </div>
                 </div>
             </footer>
@@ -317,4 +286,4 @@ const RecruiterHome = () => {
     )
 }
 
-export default RecruiterHome
+export default RecruiterHome;

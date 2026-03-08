@@ -14,12 +14,12 @@ import {
     MapPin,
     Briefcase,
     DollarSign,
-    BarChart3,
-    PieChart,
     Activity,
-    Loader2
+    Loader2,
+    BarChart3,
+    PieChart as PieChartIcon
 } from 'lucide-react'
-import Navbar from '../../components/Navbar'
+import RecruiterLayout from '../../components/RecruiterLayout'
 
 const JobAnalytics = () => {
     const { jobId } = useParams()
@@ -43,13 +43,10 @@ const JobAnalytics = () => {
         try {
             const res = await axiosClient.get('jobs/recruiter/jobs')
             setAllJobs(res)
-
-            // Find current job index
             const index = res.findIndex(job => job._id === jobId)
             if (index >= 0) setCurrentJobIndex(index)
         } catch (err) {
             console.error('Failed to fetch jobs:', err)
-            toast.error('Failed to load jobs')
         }
     }
 
@@ -82,27 +79,25 @@ const JobAnalytics = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-                <Navbar />
-                <div className="text-center">
-                    <Loader2 className="animate-spin text-blue-500 mx-auto mb-4" size={48} />
-                    <p className="text-slate-400">Loading analytics...</p>
+            <RecruiterLayout>
+                <div className="flex flex-col items-center justify-center h-[80vh] bg-white">
+                    <Loader2 className="animate-spin text-black mb-4" size={48} />
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Loading Intelligence...</p>
                 </div>
-            </div>
+            </RecruiterLayout>
         )
     }
 
     if (!analytics) {
         return (
-            <div className="min-h-screen bg-slate-950">
-                <Navbar />
-                <div className="max-w-7xl mx-auto px-6 py-8 text-center">
-                    <p className="text-slate-400">No analytics data available</p>
-                    <Link to="/recruiter/jobs" className="text-blue-400 hover:text-blue-300 mt-4 inline-block">
+            <RecruiterLayout>
+                <div className="flex flex-col items-center justify-center h-[80vh] bg-white">
+                    <p className="text-slate-400 font-bold mb-4">No analytics data available</p>
+                    <Link to="/recruiter/jobs" className="px-6 py-2 bg-black text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all">
                         Back to Jobs
                     </Link>
                 </div>
-            </div>
+            </RecruiterLayout>
         )
     }
 
@@ -110,187 +105,204 @@ const JobAnalytics = () => {
     const totalApplicants = Object.values(applicantQuality).reduce((sum, val) => sum + val, 0)
 
     return (
-        <div className="min-h-screen bg-slate-950">
-            <Navbar />
-
-            <div className="max-w-7xl mx-auto px-6 py-8">
+        <RecruiterLayout>
+            <main className="p-8 md:p-12 lg:p-16 max-w-7xl mx-auto bg-white min-h-full">
                 {/* Header with Navigation */}
-                <div className="flex items-center justify-between mb-8">
-                    <div className="flex items-center gap-4">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+                    <div className="flex items-center gap-6">
                         <Link
                             to="/recruiter/jobs"
-                            className="p-2 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl transition-all"
+                            className="p-4 bg-slate-50 hover:bg-black hover:text-white text-slate-400 rounded-2xl transition-all shadow-sm"
                         >
-                            <ArrowLeft size={20} />
+                            <ArrowLeft size={24} />
                         </Link>
                         <div>
-                            <h1 className="text-3xl font-bold text-white">{analytics.jobTitle}</h1>
-                            <p className="text-slate-400">{analytics.company}</p>
+                            <div className="flex items-center gap-3">
+                                <h1 className="text-4xl font-black text-black tracking-tight">{analytics.jobTitle}</h1>
+                                <span className="px-3 py-1 bg-blue-50 text-blue-600 border border-blue-100 rounded-full text-[10px] font-bold uppercase tracking-widest">Analytics</span>
+                            </div>
+                            <p className="text-slate-400 text-lg font-bold mt-1">{analytics.company}</p>
                         </div>
                     </div>
 
-                    {/* Job Navigation */}
-                    <div className="flex items-center gap-4">
+                    {/* Job Stepper */}
+                    <div className="flex items-center gap-4 bg-slate-50 border border-slate-100 p-2 rounded-2xl shadow-sm">
                         <button
                             onClick={() => navigateToJob('prev')}
                             disabled={currentJobIndex === 0}
-                            className="p-2 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="p-3 bg-white hover:bg-black hover:text-white text-slate-400 rounded-xl transition-all disabled:opacity-20 shadow-sm"
                         >
-                            <ArrowLeft size={20} />
+                            <ArrowLeft size={18} />
                         </button>
-                        <span className="text-slate-400 text-sm">
+                        <span className="text-[10px] font-black text-black uppercase tracking-widest px-4">
                             Job {currentJobIndex + 1} of {allJobs.length}
                         </span>
                         <button
                             onClick={() => navigateToJob('next')}
                             disabled={currentJobIndex === allJobs.length - 1}
-                            className="p-2 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="p-3 bg-white hover:bg-black hover:text-white text-slate-400 rounded-xl transition-all disabled:opacity-20 shadow-sm"
                         >
-                            <ArrowRight size={20} />
+                            <ArrowRight size={18} />
                         </button>
                     </div>
                 </div>
 
-                {/* Key Metrics */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-6 text-white"
-                    >
-                        <div className="flex items-center justify-between mb-2">
-                            <Eye size={24} />
-                            <span className="text-blue-200 text-sm font-medium">Total</span>
+                {/* Key Metrics Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 bg-blue-600 rounded-[2.5rem] text-white shadow-2xl shadow-blue-600/20 relative overflow-hidden group">
+                        <div className="relative z-10 flex flex-col justify-between h-full">
+                            <div>
+                                <Eye className="text-blue-100 mb-6" size={32} />
+                                <h3 className="text-6xl font-black tracking-tighter mb-2">{analytics.totalViews}</h3>
+                                <p className="text-sm font-black uppercase tracking-widest opacity-80">Total Views</p>
+                            </div>
+                            <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-bold">
+                                <span>Unique</span>
+                                <span className="bg-white/10 px-2 py-0.5 rounded-lg">{analytics.uniqueViews}</span>
+                            </div>
                         </div>
-                        <h3 className="text-3xl font-bold mb-1">{analytics.totalViews}</h3>
-                        <p className="text-blue-200 text-sm">Total Views</p>
-                        <p className="text-blue-300 text-xs mt-2">{analytics.uniqueViews} unique</p>
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors" />
                     </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-6 text-white"
-                    >
-                        <div className="flex items-center justify-between mb-2">
-                            <Users size={24} />
-                            <span className="text-purple-200 text-sm font-medium">Total</span>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="p-8 bg-purple-600 rounded-[2.5rem] text-white shadow-2xl shadow-purple-600/20 relative overflow-hidden group">
+                        <div className="relative z-10">
+                            <Users className="text-purple-100 mb-6" size={32} />
+                            <h3 className="text-6xl font-black tracking-tighter mb-2">{analytics.totalApplications}</h3>
+                            <p className="text-sm font-black uppercase tracking-widest opacity-80">Total Applications</p>
                         </div>
-                        <h3 className="text-3xl font-bold mb-1">{analytics.totalApplications}</h3>
-                        <p className="text-purple-200 text-sm">Applications</p>
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors" />
                     </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="bg-gradient-to-br from-green-600 to-green-700 rounded-2xl p-6 text-white"
-                    >
-                        <div className="flex items-center justify-between mb-2">
-                            <TrendingUp size={24} />
-                            <span className="text-green-200 text-sm font-medium">Rate</span>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="p-8 bg-emerald-600 rounded-[2.5rem] text-white shadow-2xl shadow-emerald-600/20 relative overflow-hidden group">
+                        <div className="relative z-10">
+                            <TrendingUp className="text-emerald-100 mb-6" size={32} />
+                            <h3 className="text-6xl font-black tracking-tighter mb-2">{analytics.viewToApplicationRate}%</h3>
+                            <p className="text-sm font-black uppercase tracking-widest opacity-80">Conversion Rate</p>
                         </div>
-                        <h3 className="text-3xl font-bold mb-1">{analytics.viewToApplicationRate}%</h3>
-                        <p className="text-green-200 text-sm">Conversion Rate</p>
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors" />
                     </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="bg-gradient-to-br from-orange-600 to-orange-700 rounded-2xl p-6 text-white"
-                    >
-                        <div className="flex items-center justify-between mb-2">
-                            <Clock size={24} />
-                            <span className="text-orange-200 text-sm font-medium">Average</span>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-8 bg-orange-600 rounded-[2.5rem] text-white shadow-2xl shadow-orange-600/20 relative overflow-hidden group">
+                        <div className="relative z-10">
+                            <Clock className="text-orange-100 mb-6" size={32} />
+                            <h3 className="text-6xl font-black tracking-tighter mb-2">{analytics.averageTimeToApply}h</h3>
+                            <p className="text-sm font-black uppercase tracking-widest opacity-80">Avg. Time to Apply</p>
                         </div>
-                        <h3 className="text-3xl font-bold mb-1">{analytics.averageTimeToApply}h</h3>
-                        <p className="text-orange-200 text-sm">Time to Apply</p>
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors" />
                     </motion.div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Job Details */}
-                    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-                        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                            <Briefcase size={20} className="text-blue-400" />
-                            Job Details
-                        </h3>
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-3 text-slate-400">
-                                <MapPin size={18} className="text-slate-600" />
-                                <span>{analytics.location}</span>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    {/* Job Details Card */}
+                    <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="bg-white border border-slate-100 rounded-[3rem] p-10 shadow-sm hover:shadow-xl transition-all duration-300">
+                        <div className="flex items-center gap-4 mb-10">
+                            <div className="p-4 bg-blue-50 text-blue-600 rounded-2xl">
+                                <Briefcase size={24} strokeWidth={2.5} />
                             </div>
-                            <div className="flex items-center gap-3 text-slate-400">
-                                <Briefcase size={18} className="text-slate-600" />
-                                <span>{analytics.type}</span>
+                            <h3 className="text-2xl font-black text-black">Job Parameters</h3>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-3">
+                                    <MapPin size={20} className="text-slate-300" />
+                                    <div>
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Location</p>
+                                        <p className="text-black font-bold uppercase">{analytics.location}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <Briefcase size={20} className="text-slate-300" />
+                                    <div>
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Type</p>
+                                        <p className="text-black font-bold uppercase">{analytics.type}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-3 text-slate-400">
-                                <DollarSign size={18} className="text-slate-600" />
-                                <span>{analytics.salary || 'Not specified'}</span>
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-3">
+                                    <DollarSign size={20} className="text-slate-300" />
+                                    <div>
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Salary</p>
+                                        <p className="text-black font-bold uppercase">{analytics.salary || 'Competitive'}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <Calendar size={20} className="text-slate-300" />
+                                    <div>
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Posted On</p>
+                                        <p className="text-black font-bold uppercase">{new Date(analytics.postedDate).toLocaleDateString(undefined, { dateStyle: 'long' })}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-3 text-slate-400">
-                                <Calendar size={18} className="text-slate-600" />
-                                <span>Posted {new Date(analytics.postedDate).toLocaleDateString()}</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <Activity size={18} className="text-slate-600" />
-                                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${analytics.status === 'active'
-                                    ? 'bg-green-500/10 text-green-400 border border-green-500/20'
-                                    : 'bg-slate-700 text-slate-400'
-                                    }`}>
+                        </div>
+                        
+                        <div className="mt-10 pt-10 border-t border-slate-50 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <Activity size={18} className="text-slate-400" />
+                                <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border shadow-sm ${
+                                    analytics.status === 'active' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-slate-50 text-slate-400 border-slate-100'
+                                }`}>
                                     {analytics.status}
                                 </span>
                             </div>
+                            <div className="flex items-center gap-2 text-slate-400">
+                                <span className="text-[10px] font-black uppercase tracking-widest">Job ID:</span>
+                                <span className="font-mono text-[10px] bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">{analytics.jobId.slice(-8).toUpperCase()}</span>
+                            </div>
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Applicant Quality Distribution */}
-                    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-                        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                            <PieChart size={20} className="text-purple-400" />
-                            Applicant Experience Level
-                        </h3>
-                        <div className="space-y-4">
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white border border-slate-100 rounded-[3rem] p-10 shadow-sm hover:shadow-xl transition-all duration-300">
+                        <div className="flex items-center gap-4 mb-10">
+                            <div className="p-4 bg-purple-50 text-purple-600 rounded-2xl">
+                                <PieChartIcon size={24} strokeWidth={2.5} />
+                            </div>
+                            <h3 className="text-2xl font-black text-black">Talent Distribution</h3>
+                        </div>
+
+                        <div className="space-y-6">
                             {[
-                                { label: 'Entry Level', value: applicantQuality.entry, color: 'bg-blue-500' },
-                                { label: 'Mid-Senior Level', value: applicantQuality.mid, color: 'bg-purple-500' },
-                                { label: 'Senior Level', value: applicantQuality.senior, color: 'bg-green-500' },
-                                { label: 'Expert/Principal', value: applicantQuality.expert, color: 'bg-orange-500' }
+                                { label: 'Entry Level', value: applicantQuality.entry, color: 'bg-blue-600' },
+                                { label: 'Mid-Senior', value: applicantQuality.mid, color: 'bg-purple-600' },
+                                { label: 'Senior Tier', value: applicantQuality.senior, color: 'bg-emerald-600' },
+                                { label: 'Expert Class', value: applicantQuality.expert, color: 'bg-orange-600' }
                             ].map((item) => {
                                 const percentage = totalApplicants > 0 ? ((item.value / totalApplicants) * 100).toFixed(1) : 0
                                 return (
-                                    <div key={item.label}>
-                                        <div className="flex items-center justify-between mb-2">
-                                            <span className="text-slate-400 text-sm">{item.label}</span>
-                                            <span className="text-white font-bold">{item.value} ({percentage}%)</span>
+                                    <div key={item.label} className="group cursor-default">
+                                        <div className="flex items-center justify-between mb-3">
+                                            <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest">{item.label}</span>
+                                            <span className="text-sm font-black text-black">{item.value} <span className="text-slate-300 font-bold ml-1">({percentage}%)</span></span>
                                         </div>
-                                        <div className="w-full bg-slate-800 rounded-full h-2">
-                                            <div
-                                                className={`${item.color} h-2 rounded-full transition-all`}
-                                                style={{ width: `${percentage}%` }}
+                                        <div className="w-full bg-slate-50 rounded-full h-3 overflow-hidden border border-slate-100 shadow-inner">
+                                            <motion.div
+                                                initial={{ width: 0 }}
+                                                animate={{ width: `${percentage}%` }}
+                                                transition={{ duration: 1, ease: 'easeOut' }}
+                                                className={`${item.color} h-full rounded-full shadow-lg group-hover:brightness-110 transition-all`}
                                             />
                                         </div>
                                     </div>
                                 )
                             })}
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
 
-                {/* View Applicants Button */}
-                <div className="mt-8 text-center">
+                {/* Footer Action */}
+                <div className="mt-16 text-center">
                     <Link
                         to={`/recruiter/job-applicants/${analytics.jobId}`}
-                        className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-900/30 active:scale-95"
+                        className="inline-flex items-center gap-6 px-12 py-6 bg-black hover:bg-slate-800 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-xs transition-all shadow-2xl active:scale-95 group"
                     >
-                        <Users size={20} />
-                        View All Applicants
+                        <Users size={20} className="group-hover:scale-125 transition-transform" />
+                        View Full Talent Pool
                     </Link>
                 </div>
-            </div>
-        </div>
+            </main>
+        </RecruiterLayout>
     )
 }
 

@@ -186,26 +186,50 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
                 </div>
 
                 {user?.resumeUrl && (
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            onViewResume && onViewResume();
-                        }}
-                        className={`w-full p-6 ${isPremium ? 'bg-blue-600 hover:bg-blue-500 text-white' : 'bg-blue-600 text-white'} rounded-[2.5rem] flex items-center justify-between group transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1`}
-                    >
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" /></svg>
+                    <div className="space-y-3">
+                        {/* View Resume in Browser Button */}
+                        <a
+                            href={user.resumeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`w-full p-6 ${isPremium ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'} rounded-[2.5rem] flex items-center justify-between group transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1`}
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </div>
+                                <div className="text-left">
+                                    <p className="font-black text-xs uppercase tracking-widest opacity-80">📄 View in Browser</p>
+                                    <p className="font-bold text-sm">Open Resume</p>
+                                </div>
                             </div>
-                            <div className="text-left">
-                                <p className="font-black text-xs uppercase tracking-widest opacity-80">Curriculum Vitae</p>
-                                <p className="font-bold text-sm">Download Resume</p>
+                            <div className="w-10 h-10 bg-white text-blue-600 rounded-full flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
                             </div>
-                        </div>
-                        <div className="w-10 h-10 bg-white text-blue-600 rounded-full flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
-                        </div>
-                    </button>
+                        </a>
+
+                        {/* Download Resume Button */}
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onViewResume && onViewResume();
+                            }}
+                            className={`w-full p-5 ${isPremium ? 'bg-slate-800/60 hover:bg-slate-800 border border-white/10 text-white' : 'bg-white border-2 border-gray-200 text-gray-900 hover:border-blue-500'} rounded-[2rem] flex items-center justify-between group transition-all hover:shadow-lg`}
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className={`w-10 h-10 ${isPremium ? 'bg-white/10' : 'bg-blue-50'} rounded-xl flex items-center justify-center ${isPremium ? 'text-blue-400' : 'text-blue-600'}`}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" /></svg>
+                                </div>
+                                <div className="text-left">
+                                    <p className={`font-bold text-sm ${isPremium ? 'text-white' : 'text-gray-900'}`}>Preview & Download</p>
+                                    <p className={`text-[10px] font-medium ${isPremium ? 'text-slate-400' : 'text-gray-500'}`}>Quick view modal</p>
+                                </div>
+                            </div>
+                            <div className={`text-xs font-bold ${isPremium ? 'text-slate-400' : 'text-gray-400'} group-hover:translate-x-1 transition-transform`}>
+                                →
+                            </div>
+                        </button>
+                    </div>
                 )}
             </div>
         </div>

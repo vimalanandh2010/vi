@@ -43,7 +43,6 @@ const RecruiterLanding = () => {
                         {user && (
                             <div className="flex items-center gap-6">
                                 <Link to="/recruiter/candidates" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">Candidates</Link>
-                                <Link to="/recruiter/community" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">Community</Link>
                                 <Link to="/recruiter/chat" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">Chat</Link>
                                 <Link to={user.role === 'employer' ? "/recruiter/landing" : "/seeker/dashboard"} className="px-6 py-2 bg-black hover:bg-zinc-900 text-white rounded-xl font-bold transition-all shadow-lg active:scale-95">
                                     Dashboard

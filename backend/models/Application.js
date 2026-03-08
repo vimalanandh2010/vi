@@ -11,7 +11,8 @@ const applicationSchema = new mongoose.Schema({
     interviewTime: { type: String, default: '' },
     interviewNotes: { type: String, default: '' },
     meetingLink: { type: String, default: '' },
-    reminderSent: { type: Boolean, default: false }
+    reminderSent: { type: Boolean, default: false },
+    googleCalendarEventId: { type: String, default: '' }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Application', applicationSchema);
