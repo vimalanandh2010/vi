@@ -104,6 +104,7 @@ const compareJDAndResume = async (jdText, resumeText) => {
               "role": "", 
               "experience_level": "Fresher / Experienced", 
               "ats_score": 0, 
+              "matchPercentage": 0,
               "skills_match_percentage": 0, 
               "matched_skills": [], 
               "missing_skills": [], 
@@ -113,6 +114,7 @@ const compareJDAndResume = async (jdText, resumeText) => {
               "final_verdict": "Strong Match / Moderate Match / Weak Match" 
             }
 
+            Note: ats_score and matchPercentage should have the same value (0-100).
             Return ONLY the raw JSON object. No markdown, no intro, no outro.
         `;
 
@@ -127,7 +129,12 @@ const compareJDAndResume = async (jdText, resumeText) => {
         const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
 
         try {
-            return JSON.parse(cleanJson);
+            const result = JSON.parse(cleanJson);
+            // Ensure matchPercentage is set for backward compatibility
+            if (!result.matchPercentage && result.ats_score) {
+                result.matchPercentage = result.ats_score;
+            }
+            return result;
         } catch (parseError) {
             console.error('[GeminiService] JSON Parse Error:', parseError.message);
             console.error('[GeminiService] Raw Result:', text);

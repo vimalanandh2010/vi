@@ -634,17 +634,25 @@ router.post('/apply/:id', auth, async (req, res) => {
                     const jdText = `Title: ${job.title}\nDescription: ${job.description}\nRequirements: ${job.requirements || ''}`;
                     const analysis = await compareJDAndResumeLocal(jdText, resumeText);
 
-                    application.aiMatchScore = analysis.matchPercentage;
+                    const atsScore = analysis.ats_score || analysis.matchPercentage || 0;
+                    application.aiMatchScore = atsScore;
                     application.aiAnalysis = analysis;
 
-                    if (analysis.matchPercentage >= 60) {
+                    // ATS Score-based Status Logic:
+                    // >= 70%: Auto-shortlisted for interview
+                    // 50-69%: Shortlisted (needs manual review)
+                    // < 50%: Rejected
+                    if (atsScore >= 70) {
+                        application.status = 'interview';
+                        console.log(`[JobRoutes] ✅ Auto-shortlisted for INTERVIEW (score: ${atsScore})`);
+                    } else if (atsScore >= 50) {
                         application.status = 'shortlisted';
-                        console.log(`[JobRoutes] ✅ Auto-shortlisted (score: ${analysis.matchPercentage})`);
+                        console.log(`[JobRoutes] 📋 Shortlisted for manual review (score: ${atsScore})`);
                     } else {
                         application.status = 'rejected';
-                        console.log(`[JobRoutes] ❌ Auto-rejected (score: ${analysis.matchPercentage})`);
+                        console.log(`[JobRoutes] ❌ Auto-rejected (score: ${atsScore})`);
                         // Rejection update email (also handled safely)
-                        await sendStatusUpdateEmail(user.email, user.firstName, job.title, job.companyName || job.company, 'rejected', analysis.matchPercentage).catch(() => { });
+                        await sendStatusUpdateEmail(user.email, user.firstName, job.title, job.companyName || job.company, 'rejected', atsScore).catch(() => { });
                     }
                     await application.save().catch(() => { });
                     
@@ -657,7 +665,7 @@ router.post('/apply/:id', auth, async (req, res) => {
                             company: job.companyName || job.company,
                             status: application.status,
                             oldStatus: 'applied',
-                            aiMatchScore: analysis.matchPercentage,
+                            aiMatchScore: atsScore,
                             updatedAt: new Date()
                         });
                     } catch (socketErr) {
