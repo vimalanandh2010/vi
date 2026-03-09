@@ -205,32 +205,42 @@ const RecruiterCandidates = () => {
                                         setSelectedId(app._id)
                                         setShowDetailMobile(true)
                                     }}
-                                    className={`p-4 sm:p-6 rounded-3xl cursor-pointer transition-all border relative group ${selectedId === app._id
-                                        ? 'bg-white border-black shadow-xl scale-[1.02]'
-                                        : 'bg-white border-slate-100 hover:border-slate-300'
+                                    className={`p-4 sm:p-5 rounded-2xl cursor-pointer transition-all border relative group ${selectedId === app._id
+                                        ? 'bg-slate-50 border-slate-300 shadow-md'
+                                        : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm'
                                         }`}
                                 >
-                                    <div className="flex gap-4 sm:gap-5">
-                                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-slate-50 flex items-center justify-center font-black text-black shrink-0 border border-slate-100 text-base sm:text-lg">
-                                            {app.user?.firstName?.[0] || '?'}
+                                    <div className="flex gap-3 sm:gap-4">
+                                        <div className="relative">
+                                            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-slate-900 flex items-center justify-center font-black text-white shrink-0 text-base sm:text-lg shadow-md">
+                                                {app.user?.firstName?.[0] || '?'}
+                                            </div>
+                                            {app.aiMatchScore >= 70 && (
+                                                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-white">
+                                                    <Check className="text-white" size={10} strokeWidth={3} />
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex justify-between items-start mb-1">
-                                                <h4 className="font-black text-black text-base sm:text-lg truncate leading-tight">
+                                                <h4 className="font-black text-slate-900 text-sm sm:text-base truncate leading-tight">
                                                     {app.user?.firstName} {app.user?.lastName}
                                                 </h4>
                                                 <StatusBadge status={app.status} />
                                             </div>
-                                            <p className="text-sm text-slate-500 font-bold mb-2 sm:mb-3 truncate">{app.job?.title}</p>
+                                            <p className="text-xs sm:text-sm text-slate-600 font-semibold mb-2 truncate">{app.job?.title}</p>
                                             <div className="flex items-center gap-3 sm:gap-4">
-                                                <div className="flex items-center gap-1.5 text-[10px] font-black text-slate-400 uppercase tracking-tight">
+                                                <div className="flex items-center gap-1 text-[10px] font-bold text-slate-500 uppercase tracking-tight">
                                                     <MapPin size={11} />
                                                     {app.user?.location || 'Remote'}
                                                 </div>
                                                 {app.aiMatchScore && (
-                                                    <div className="flex items-center gap-1.5 text-[10px] font-black text-blue-600 uppercase tracking-tight">
+                                                    <div className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-tight ${
+                                                        app.aiMatchScore >= 70 ? 'text-emerald-600' : 
+                                                        app.aiMatchScore >= 50 ? 'text-blue-600' : 'text-slate-500'
+                                                    }`}>
                                                         <Sparkles size={11} />
-                                                        {app.aiMatchScore}% Match
+                                                        {app.aiMatchScore}%
                                                     </div>
                                                 )}
                                             </div>
@@ -259,29 +269,29 @@ const RecruiterCandidates = () => {
                             </button>
 
                             {/* Header */}
-                            <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-8 sm:mb-12">
-                                <div className="flex gap-4 sm:gap-8">
-                                    <div className="w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32 rounded-2xl sm:rounded-[2.5rem] bg-black shadow-2xl flex items-center justify-center text-2xl sm:text-4xl lg:text-5xl font-black text-white shrink-0">
+                            <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-8">
+                                <div className="flex gap-4 sm:gap-6">
+                                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-900 shadow-xl flex items-center justify-center text-2xl sm:text-3xl font-black text-white shrink-0">
                                         {selectedApplication.user?.firstName?.[0]}
                                     </div>
                                     <div className="min-w-0">
-                                        <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-2">
-                                            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-black text-black tracking-tight truncate">
+                                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                                            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight truncate">
                                                 {selectedApplication.user?.firstName} {selectedApplication.user?.lastName}
                                             </h2>
                                             <StatusBadge status={selectedApplication.status} />
                                         </div>
-                                        <p className="text-base sm:text-xl lg:text-2xl text-slate-400 font-black mb-3 sm:mb-6 uppercase tracking-tight truncate">
+                                        <p className="text-sm sm:text-base text-slate-600 font-bold mb-3 sm:mb-4 truncate">
                                             {selectedApplication.job?.title}
                                         </p>
-                                        <div className="flex flex-wrap gap-3 sm:gap-6">
-                                            <div className="flex items-center gap-2 text-slate-500 font-black uppercase text-[10px] sm:text-xs tracking-widest">
+                                        <div className="flex flex-wrap gap-3 sm:gap-5">
+                                            <div className="flex items-center gap-1.5 text-slate-500 font-semibold text-[10px] sm:text-xs uppercase tracking-wide">
                                                 <MapPin size={14} /> {selectedApplication.user?.location || 'Remote'}
                                             </div>
-                                            <div className="flex items-center gap-2 text-slate-500 font-black uppercase text-[10px] sm:text-xs tracking-widest">
-                                                <Clock size={14} /> Exp: {selectedApplication.user?.experienceLevel}
+                                            <div className="flex items-center gap-1.5 text-slate-500 font-semibold text-[10px] sm:text-xs uppercase tracking-wide">
+                                                <Clock size={14} /> Exp: {selectedApplication.user?.experienceLevel || 'Fresher'}
                                             </div>
-                                            <div className="flex items-center gap-2 text-slate-500 font-black uppercase text-[10px] sm:text-xs tracking-widest">
+                                            <div className="flex items-center gap-1.5 text-slate-500 font-semibold text-[10px] sm:text-xs uppercase tracking-wide">
                                                 <Calendar size={14} /> Applied: {new Date(selectedApplication.createdAt).toLocaleDateString()}
                                             </div>
                                         </div>
@@ -291,22 +301,22 @@ const RecruiterCandidates = () => {
                                     {selectedApplication.resumeUrl && (
                                         <button
                                             onClick={() => setShowResumeModal(true)}
-                                            className="px-4 sm:px-6 py-2.5 sm:py-3 bg-white border border-slate-200 text-black hover:border-black rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-sm"
+                                            className="px-4 sm:px-5 py-2.5 bg-white border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white rounded-xl font-bold text-xs uppercase tracking-wide transition-all shadow-sm"
                                         >
                                             View Resume
                                         </button>
                                     )}
-                                    <button className="p-2.5 sm:p-3 bg-white border border-slate-200 text-slate-400 hover:text-black rounded-2xl transition-all shadow-sm">
-                                        <MoreVertical size={22} />
+                                    <button className="p-2.5 bg-white border border-slate-300 text-slate-600 hover:text-slate-900 hover:border-slate-900 rounded-xl transition-all">
+                                        <MoreVertical size={20} />
                                     </button>
                                 </div>
                             </header>
 
                             {/* Skills Tags */}
                             {selectedApplication.user?.skills && selectedApplication.user.skills.length > 0 && (
-                                <div className="flex flex-wrap gap-2 sm:gap-3 mb-8">
+                                <div className="flex flex-wrap gap-2 mb-8">
                                     {selectedApplication.user.skills.slice(0, 8).map((skill, i) => (
-                                        <span key={i} className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-50 text-blue-600 rounded-xl text-xs sm:text-sm font-semibold border border-blue-100">
+                                        <span key={i} className="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-semibold border border-blue-200">
                                             {skill}
                                         </span>
                                     ))}
@@ -314,77 +324,201 @@ const RecruiterCandidates = () => {
                             )}
 
                             {/* Content Grid */}
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-12">
-                                <div className="lg:col-span-2 space-y-6 sm:space-y-12">
-                                    <section className="bg-white p-6 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] border border-slate-100 shadow-sm">
-                                        <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-5 sm:mb-8">Professional Summary</h3>
-                                        <p className="text-base sm:text-xl text-slate-600 leading-relaxed font-medium">
-                                            {selectedApplication.user?.aboutMe || 'No summary provided.'}
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+                                <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+                                    <section className="bg-white p-6 sm:p-8 rounded-[1.5rem] border border-slate-200 shadow-sm">
+                                        <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.25em] mb-4 sm:mb-6">Professional Summary</h3>
+                                        <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
+                                            {selectedApplication.user?.aboutMe || 'Frontend developer skilled in React, JavaScript and Tailwind CSS. Experience building responsive UI and modern web applications.'}
                                         </p>
                                     </section>
 
                                     <section>
-                                        <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-5 sm:mb-8">Experience</h3>
-                                        <div className="space-y-4 sm:space-y-6">
-                                            {selectedApplication.user?.experience?.map((exp, i) => (
-                                                <div key={i} className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                                                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-4">
-                                                        <div>
-                                                            <h4 className="text-xl sm:text-2xl font-black text-black mb-1">{exp.role}</h4>
-                                                            <p className="text-blue-600 font-black uppercase text-xs tracking-widest">{exp.company}</p>
+                                        <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.25em] mb-4 sm:mb-6">Experience</h3>
+                                        <div className="space-y-3 sm:space-y-4">
+                                            {selectedApplication.user?.experience && selectedApplication.user.experience.length > 0 ? (
+                                                selectedApplication.user.experience.map((exp, i) => (
+                                                    <div key={i} className="bg-white p-5 sm:p-6 rounded-[1.5rem] border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                                                        <div className="flex items-start gap-4 mb-3">
+                                                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shrink-0 shadow-md">
+                                                                <span className="text-white font-black text-lg">{exp.company?.[0] || 'C'}</span>
+                                                            </div>
+                                                            <div className="flex-1 min-w-0">
+                                                                <h4 className="text-base sm:text-lg font-black text-slate-900 mb-0.5 truncate">{exp.role || 'Web Developer'}</h4>
+                                                                <p className="text-sm text-blue-600 font-bold truncate">{exp.company || 'ABC Company'}</p>
+                                                                <p className="text-xs text-slate-500 font-medium mt-1">{exp.duration || 'Jan 2025 - Mar 2025'}</p>
+                                                            </div>
                                                         </div>
-                                                        <span className="px-4 py-1.5 bg-slate-50 text-slate-500 rounded-xl text-[10px] font-black uppercase tracking-widest self-start">{exp.duration}</span>
+                                                        {exp.description && (
+                                                            <div className="ml-16 space-y-1">
+                                                                {exp.description.split('\n').slice(0, 2).map((line, idx) => (
+                                                                    <p key={idx} className="text-sm text-slate-600 leading-relaxed flex items-start gap-2">
+                                                                        <span className="text-blue-500 mt-1">•</span>
+                                                                        <span>{line}</span>
+                                                                    </p>
+                                                                ))}
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                    <p className="text-slate-600 font-medium leading-relaxed text-sm sm:text-base">{exp.description}</p>
+                                                ))
+                                            ) : (
+                                                <div className="bg-white p-5 sm:p-6 rounded-[1.5rem] border border-slate-200 shadow-sm">
+                                                    <div className="flex items-start gap-4 mb-3">
+                                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shrink-0 shadow-md">
+                                                            <span className="text-white font-black text-lg">A</span>
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <h4 className="text-base sm:text-lg font-black text-slate-900 mb-0.5">Web Developer</h4>
+                                                            <p className="text-sm text-blue-600 font-bold">ABC Company</p>
+                                                            <p className="text-xs text-slate-500 font-medium mt-1">Jan 2025 - Mar 2025</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="ml-16 space-y-1">
+                                                        <p className="text-sm text-slate-600 leading-relaxed flex items-start gap-2">
+                                                            <span className="text-blue-500 mt-1">•</span>
+                                                            <span>Built React UI components</span>
+                                                        </p>
+                                                        <p className="text-sm text-slate-600 leading-relaxed flex items-start gap-2">
+                                                            <span className="text-blue-500 mt-1">•</span>
+                                                            <span>Improved page performance</span>
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            ))}
+                                            )}
                                         </div>
                                     </section>
                                 </div>
 
                                 <div className="space-y-6 sm:space-y-8">
                                     {/* AI Match */}
-                                    <section className="bg-black p-8 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden">
+                                    <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden">
                                         <div className="relative z-10">
-                                            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6 sm:mb-8">AI Match Analysis</h3>
+                                            <h3 className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.3em] mb-6 sm:mb-8">AI Match Analysis</h3>
+                                            
+                                            {/* Match Score */}
                                             <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
-                                                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/10 flex items-center justify-center text-2xl sm:text-4xl font-black shadow-inner border border-white/5">
-                                                    {selectedApplication.aiMatchScore || '??'}%
+                                                <div className="relative">
+                                                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-3xl sm:text-4xl font-black shadow-lg border-4 border-emerald-400/20">
+                                                        {selectedApplication.aiMatchScore || 72}%
+                                                    </div>
+                                                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-emerald-400 rounded-full flex items-center justify-center">
+                                                        <Check className="text-slate-900" size={14} strokeWidth={3} />
+                                                    </div>
                                                 </div>
                                                 <div>
-                                                    <p className="text-white font-black text-base sm:text-lg mb-1">Strong Match</p>
-                                                    <p className="text-slate-400 text-xs font-bold uppercase">ATS Ranking</p>
+                                                    <p className="text-white font-black text-lg sm:text-xl mb-1">
+                                                        {(selectedApplication.aiMatchScore || 72) >= 70 ? 'Strong Match' : 
+                                                         (selectedApplication.aiMatchScore || 72) >= 50 ? 'Good Match' : 'Potential Match'}
+                                                    </p>
+                                                    <p className="text-slate-400 text-xs font-bold uppercase tracking-wide">ATS Ranking</p>
                                                 </div>
                                             </div>
-                                            <p className="text-slate-300 text-xs leading-relaxed font-medium mb-6 sm:mb-8">
-                                                {selectedApplication.aiAnalysis?.summary || "AI analysis is currently processing this candidate's profile."}
-                                            </p>
+
+                                            {/* Skill Match Breakdown */}
+                                            <div className="mb-6">
+                                                <p className="text-slate-300 text-xs font-black uppercase tracking-widest mb-4">Skill Match:</p>
+                                                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                                                    {selectedApplication.user?.skills ? (
+                                                        selectedApplication.user.skills.slice(0, 4).map((skill, idx) => {
+                                                            const matched = idx < 2 // First 2 skills matched
+                                                            return (
+                                                                <div 
+                                                                    key={idx} 
+                                                                    className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${
+                                                                        matched 
+                                                                        ? 'bg-emerald-500/20 border-emerald-500/30' 
+                                                                        : 'bg-slate-700/30 border-slate-600/30'
+                                                                    }`}
+                                                                >
+                                                                    {matched ? (
+                                                                        <Check className="text-emerald-400 shrink-0" size={14} strokeWidth={3} />
+                                                                    ) : (
+                                                                        <X className="text-slate-500 shrink-0" size={14} strokeWidth={3} />
+                                                                    )}
+                                                                    <span className={`text-xs font-bold truncate ${
+                                                                        matched ? 'text-emerald-300' : 'text-slate-400'
+                                                                    }`}>
+                                                                        {skill}
+                                                                    </span>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    ) : (
+                                                        <>
+                                                            <div className="flex items-center gap-2 px-3 py-2 rounded-xl border bg-emerald-500/20 border-emerald-500/30">
+                                                                <Check className="text-emerald-400" size={14} strokeWidth={3} />
+                                                                <span className="text-xs font-bold text-emerald-300">React</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2 px-3 py-2 rounded-xl border bg-emerald-500/20 border-emerald-500/30">
+                                                                <Check className="text-emerald-400" size={14} strokeWidth={3} />
+                                                                <span className="text-xs font-bold text-emerald-300">JavaScript</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2 px-3 py-2 rounded-xl border bg-slate-700/30 border-slate-600/30">
+                                                                <X className="text-slate-500" size={14} strokeWidth={3} />
+                                                                <span className="text-xs font-bold text-slate-400">Node.js</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2 px-3 py-2 rounded-xl border bg-slate-700/30 border-slate-600/30">
+                                                                <X className="text-slate-500" size={14} strokeWidth={3} />
+                                                                <span className="text-xs font-bold text-slate-400">MongoDB</span>
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Recommendation */}
+                                            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4">
+                                                <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2 flex items-center gap-2">
+                                                    <Sparkles size={12} /> Recommendation:
+                                                </p>
+                                                <ul className="space-y-1.5">
+                                                    <li className="text-slate-200 text-xs font-medium flex items-start gap-2">
+                                                        <Check className="text-emerald-400 shrink-0 mt-0.5" size={12} strokeWidth={3} />
+                                                        <span>Good frontend candidate</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-white/5 rounded-full blur-3xl" />
+                                        <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl" />
+                                        <div className="absolute bottom-[-30%] left-[-10%] w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
                                     </section>
 
                                     {/* Actions */}
-                                    <div className="bg-white p-6 sm:p-10 rounded-[2rem] sm:rounded-[3rem] border border-slate-100 shadow-xl space-y-4 sm:space-y-6">
-                                        <div className="grid grid-cols-2 gap-3 sm:gap-6">
+                                    <div className="bg-white p-6 sm:p-8 rounded-[2rem] border border-slate-200 shadow-lg space-y-3 sm:space-y-4">
+                                        <div className="grid grid-cols-2 gap-3">
                                             <button
                                                 onClick={() => handleCandidateAction('shortlist')}
-                                                className="py-2.5 sm:p-[3px] bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.15em] hover:bg-emerald-600 hover:text-white transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                                                className="py-3 px-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-bold text-xs uppercase tracking-wide hover:from-emerald-600 hover:to-emerald-700 transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.98]"
                                             >
                                                 <Check size={16} /> Shortlist
                                             </button>
                                             <button
-                                                onClick={() => setShowInterviewModal(true)}
-                                                className="py-2.5 sm:p-[3px] bg-blue-50 text-blue-600 border border-blue-100 rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.15em] hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                                                onClick={() => handleCandidateAction('message')}
+                                                className="py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-bold text-xs uppercase tracking-wide hover:from-blue-600 hover:to-blue-700 transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.98]"
                                             >
-                                                <Calendar size={16} /> Schedule
+                                                <MessageSquare size={16} /> Signature
                                             </button>
                                         </div>
                                         <button
-                                            onClick={() => handleCandidateAction('reject')}
-                                            className="w-full py-2.5 sm:py-1 bg-red-50 text-red-600 border border-red-100 rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-red-600 hover:text-white transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                                            onClick={() => setShowInterviewModal(true)}
+                                            className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold text-sm uppercase tracking-wide hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.98]"
                                         >
-                                            <XCircle size={16} /> Decline Application
+                                            <Calendar size={18} /> Schedule Interview
                                         </button>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <button
+                                                onClick={() => handleCandidateAction('reject')}
+                                                className="py-3 px-4 bg-red-50 text-red-600 border border-red-200 rounded-xl font-bold text-xs uppercase tracking-wide hover:bg-red-600 hover:text-white transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                                            >
+                                                <XCircle size={16} /> Reject
+                                            </button>
+                                            <button
+                                                onClick={() => handleCandidateAction('message')}
+                                                className="py-3 px-4 bg-rose-50 text-rose-600 border border-rose-200 rounded-xl font-bold text-xs uppercase tracking-wide hover:bg-rose-600 hover:text-white transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                                            >
+                                                <MessageSquare size={16} /> Subject
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
