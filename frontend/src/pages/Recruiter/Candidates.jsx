@@ -341,21 +341,23 @@ const RecruiterCandidates = () => {
                                                     <div key={i} className="bg-white p-5 sm:p-6 rounded-[1.5rem] border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                                                         <div className="flex items-start gap-4 mb-3">
                                                             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shrink-0 shadow-md">
-                                                                <span className="text-white font-black text-lg">{exp.company?.[0] || 'C'}</span>
+                                                                <span className="text-white font-black text-lg">{exp.company?.[0] || exp.role?.[0] || 'E'}</span>
                                                             </div>
                                                             <div className="flex-1 min-w-0">
-                                                                <h4 className="text-base sm:text-lg font-black text-slate-900 mb-0.5 truncate">{exp.role || 'Web Developer'}</h4>
-                                                                <p className="text-sm text-blue-600 font-bold truncate">{exp.company || 'ABC Company'}</p>
-                                                                <p className="text-xs text-slate-500 font-medium mt-1">{exp.duration || 'Jan 2025 - Mar 2025'}</p>
+                                                                <h4 className="text-base sm:text-lg font-black text-slate-900 mb-0.5 truncate">{exp.role || 'Position not specified'}</h4>
+                                                                <p className="text-sm text-blue-600 font-bold truncate">{exp.company || 'Company not specified'}</p>
+                                                                <p className="text-xs text-slate-500 font-medium mt-1">{exp.duration || 'Duration not specified'}</p>
                                                             </div>
                                                         </div>
                                                         {exp.description && (
                                                             <div className="ml-16 space-y-1">
                                                                 {exp.description.split('\n').slice(0, 2).map((line, idx) => (
-                                                                    <p key={idx} className="text-sm text-slate-600 leading-relaxed flex items-start gap-2">
-                                                                        <span className="text-blue-500 mt-1">•</span>
-                                                                        <span>{line}</span>
-                                                                    </p>
+                                                                    line.trim() && (
+                                                                        <p key={idx} className="text-sm text-slate-600 leading-relaxed flex items-start gap-2">
+                                                                            <span className="text-blue-500 mt-1">•</span>
+                                                                            <span>{line}</span>
+                                                                        </p>
+                                                                    )
                                                                 ))}
                                                             </div>
                                                         )}
@@ -363,25 +365,12 @@ const RecruiterCandidates = () => {
                                                 ))
                                             ) : (
                                                 <div className="bg-white p-5 sm:p-6 rounded-[1.5rem] border border-slate-200 shadow-sm">
-                                                    <div className="flex items-start gap-4 mb-3">
-                                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shrink-0 shadow-md">
-                                                            <span className="text-white font-black text-lg">A</span>
+                                                    <div className="flex flex-col items-center justify-center py-8 text-center">
+                                                        <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
+                                                            <Clock className="text-slate-400" size={28} />
                                                         </div>
-                                                        <div className="flex-1">
-                                                            <h4 className="text-base sm:text-lg font-black text-slate-900 mb-0.5">Web Developer</h4>
-                                                            <p className="text-sm text-blue-600 font-bold">ABC Company</p>
-                                                            <p className="text-xs text-slate-500 font-medium mt-1">Jan 2025 - Mar 2025</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="ml-16 space-y-1">
-                                                        <p className="text-sm text-slate-600 leading-relaxed flex items-start gap-2">
-                                                            <span className="text-blue-500 mt-1">•</span>
-                                                            <span>Built React UI components</span>
-                                                        </p>
-                                                        <p className="text-sm text-slate-600 leading-relaxed flex items-start gap-2">
-                                                            <span className="text-blue-500 mt-1">•</span>
-                                                            <span>Improved page performance</span>
-                                                        </p>
+                                                        <p className="text-slate-400 font-bold text-sm">No experience added yet</p>
+                                                        <p className="text-slate-300 text-xs mt-1">Candidate hasn't added work experience to their profile</p>
                                                     </div>
                                                 </div>
                                             )}
@@ -472,10 +461,62 @@ const RecruiterCandidates = () => {
                                                     <Sparkles size={12} /> Recommendation:
                                                 </p>
                                                 <ul className="space-y-1.5">
-                                                    <li className="text-slate-200 text-xs font-medium flex items-start gap-2">
-                                                        <Check className="text-emerald-400 shrink-0 mt-0.5" size={12} strokeWidth={3} />
-                                                        <span>Good frontend candidate</span>
-                                                    </li>
+                                                    {(() => {
+                                                        const status = selectedApplication.status.toLowerCase();
+                                                        const matchScore = selectedApplication.aiMatchScore || 72;
+                                                        
+                                                        if (status === 'selected') {
+                                                            return (
+                                                                <li className="text-emerald-300 text-xs font-medium flex items-start gap-2">
+                                                                    <Check className="text-emerald-400 shrink-0 mt-0.5" size={12} strokeWidth={3} />
+                                                                    <span>✓ Recommended for selection - Excellent match</span>
+                                                                </li>
+                                                            );
+                                                        }
+                                                        
+                                                        if (status === 'rejected') {
+                                                            return (
+                                                                <li className="text-red-300 text-xs font-medium flex items-start gap-2">
+                                                                    <X className="text-red-400 shrink-0 mt-0.5" size={12} strokeWidth={3} />
+                                                                    <span>Not eligible - Requirements not met</span>
+                                                                </li>
+                                                            );
+                                                        }
+                                                        
+                                                        if (matchScore >= 80) {
+                                                            return (
+                                                                <li className="text-emerald-300 text-xs font-medium flex items-start gap-2">
+                                                                    <Check className="text-emerald-400 shrink-0 mt-0.5" size={12} strokeWidth={3} />
+                                                                    <span>Highly recommended for selection</span>
+                                                                </li>
+                                                            );
+                                                        }
+                                                        
+                                                        if (matchScore >= 70) {
+                                                            return (
+                                                                <li className="text-blue-300 text-xs font-medium flex items-start gap-2">
+                                                                    <Check className="text-blue-400 shrink-0 mt-0.5" size={12} strokeWidth={3} />
+                                                                    <span>Recommended - Good skill match</span>
+                                                                </li>
+                                                            );
+                                                        }
+                                                        
+                                                        if (matchScore >= 50) {
+                                                            return (
+                                                                <li className="text-yellow-300 text-xs font-medium flex items-start gap-2">
+                                                                    <Check className="text-yellow-400 shrink-0 mt-0.5" size={12} strokeWidth={3} />
+                                                                    <span>Potential match - Needs review</span>
+                                                                </li>
+                                                            );
+                                                        }
+                                                        
+                                                        return (
+                                                            <li className="text-slate-300 text-xs font-medium flex items-start gap-2">
+                                                                <X className="text-slate-400 shrink-0 mt-0.5" size={12} strokeWidth={3} />
+                                                                <span>Not eligible - Low match score</span>
+                                                            </li>
+                                                        );
+                                                    })()}
                                                 </ul>
                                             </div>
                                         </div>
