@@ -392,16 +392,15 @@ const PostJob = () => {
                             disabled={loading}
                             className="px-16 py-6 bg-black hover:bg-blue-600 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-xs shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex items-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95 group"
                         >
-                                {loading ? (
-                                    <Loader2 className="animate-spin" size={20} />
-                                ) : (
-                                    <>
-                                        Deployment Active
-                                        <Sparkles size={18} className="group-hover:animate-pulse" />
-                                    </>
-                                )}
-                            </button>
-                        </div>
+                            {loading ? (
+                                <Loader2 className="animate-spin" size={20} />
+                            ) : (
+                                <>
+                                    Deployment Active
+                                    <Sparkles size={18} className="group-hover:animate-pulse" />
+                                </>
+                            )}
+                        </button>
                     </div>
                 </form>
             </main>
