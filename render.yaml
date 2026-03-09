@@ -22,10 +22,12 @@ services:
         sync: false
       - key: GEMINI_API_KEY
         sync: false
+      - key: EMAIL_SERVICE
+        value: gmail
       - key: EMAIL_USER
-        sync: false
+        value: ceitvimalanandh27@gmail.com
       - key: EMAIL_PASS
-        sync: false
+        value: tepxfrxikmtcchyq
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_ANON_KEY
