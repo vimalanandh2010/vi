@@ -92,16 +92,16 @@ const CompanyProfile = () => {
 
     return (
         <RecruiterLayout>
-            <main className="p-8 md:p-12 lg:p-16 max-w-5xl mx-auto bg-white min-h-full">
+            <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-5xl mx-auto bg-white min-h-full">
                 {/* Strategic Header */}
                 <header className="mb-20">
                     <div className="flex items-center gap-2 mb-6 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
                         Governance <ChevronRight size={12} /> Organizational Architect
                     </div>
-                    <h1 className="text-6xl font-black text-black tracking-tighter mb-4 leading-tight">
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black tracking-tighter mb-4 leading-tight">
                         Register Your <br />Corporate Entity
                     </h1>
-                    <p className="text-slate-400 text-xl font-medium tracking-tight">Establish your brand presence to attract top-tier global talent.</p>
+                    <p className="text-slate-400 text-base sm:text-xl font-medium tracking-tight">Establish your brand presence to attract top-tier global talent.</p>
                 </header>
 
                 <form onSubmit={handleSubmit} className="space-y-12 pb-24">
@@ -109,7 +109,7 @@ const CompanyProfile = () => {
                     <motion.section
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white border border-slate-100 rounded-[3.5rem] p-10 lg:p-16 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden relative group"
+                        className="bg-white border border-slate-100 rounded-[2rem] sm:rounded-[3.5rem] p-6 sm:p-10 lg:p-16 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden relative group"
                     >
                         <div className="flex items-center gap-6 mb-12">
                             <div className="p-5 bg-black text-white rounded-3xl group-hover:bg-blue-600 transition-colors">
@@ -200,8 +200,8 @@ const CompanyProfile = () => {
                                             key={type}
                                             onClick={() => setFormData({ ...formData, companyType: type })}
                                             className={`py-4 px-2 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${formData.companyType === type
-                                                    ? 'bg-black text-white border-black shadow-xl scale-105'
-                                                    : 'bg-slate-50 text-slate-400 border-transparent hover:border-slate-100 hover:bg-white hover:text-black'
+                                                ? 'bg-black text-white border-black shadow-xl scale-105'
+                                                : 'bg-slate-50 text-slate-400 border-transparent hover:border-slate-100 hover:bg-white hover:text-black'
                                                 }`}
                                         >
                                             {type}
@@ -267,8 +267,8 @@ const CompanyProfile = () => {
                                         key={industry}
                                         onClick={() => handleIndustryToggle(industry)}
                                         className={`px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${isSelected
-                                                ? 'bg-emerald-600 text-white border-emerald-600 shadow-xl scale-105'
-                                                : 'bg-slate-50 text-slate-400 border-transparent hover:border-slate-100 hover:bg-white hover:text-black'
+                                            ? 'bg-emerald-600 text-white border-emerald-600 shadow-xl scale-105'
+                                            : 'bg-slate-50 text-slate-400 border-transparent hover:border-slate-100 hover:bg-white hover:text-black'
                                             }`}
                                     >
                                         {industry}
@@ -279,7 +279,7 @@ const CompanyProfile = () => {
                     </motion.section>
 
                     {/* Meta Insight */}
-                    <div className="p-10 bg-black text-white rounded-[3rem] shadow-2xl flex flex-col md:flex-row gap-8 items-center">
+                    <div className="p-6 sm:p-10 bg-black text-white rounded-[2rem] sm:rounded-[3rem] shadow-2xl flex flex-col md:flex-row gap-8 items-start sm:items-center">
                         <div className="p-6 bg-white/10 rounded-[2rem]">
                             <Info className="text-white" size={32} />
                         </div>

@@ -52,7 +52,7 @@ const GoogleCalendarSync = ({ onSync }) => {
             const height = 700;
             const left = window.screen.width / 2 - width / 2;
             const top = window.screen.height / 2 - height / 2;
-            
+
             window.open(
                 data.authUrl,
                 'Google Calendar Authorization',
@@ -111,7 +111,7 @@ const GoogleCalendarSync = ({ onSync }) => {
             ) : (
                 <button
                     onClick={connectGoogleCalendar}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition-all shadow-lg"
+                    className="flex items-center gap-2 px-4 py-2 bg-black hover:bg-slate-800 text-white rounded-xl font-bold text-sm transition-all shadow-lg"
                 >
                     <CalendarIcon size={16} />
                     Connect Google Calendar

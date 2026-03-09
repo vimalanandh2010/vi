@@ -85,11 +85,11 @@ const RecruiterDashboard = () => {
 
     return (
         <RecruiterLayout jobCount={stats.activeJobs}>
-            <div className="p-8 md:p-12 lg:p-16 bg-[#FDFDFD] min-h-full">
+            <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-[#FDFDFD] min-h-full">
                 <div className="max-w-[1600px] mx-auto">
 
                     {/* Header */}
-                    <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 mb-16">
+                    <header className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-end lg:justify-between mb-8 sm:mb-12 lg:mb-16">
                         <div className="space-y-4">
                             <div className="flex items-center gap-4">
                                 <motion.div
@@ -104,7 +104,7 @@ const RecruiterDashboard = () => {
                                         <motion.h1
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            className="text-5xl font-black tracking-tight text-black"
+                                            className="text-2xl sm:text-3xl lg:text-5xl font-black tracking-tight text-black"
                                         >
                                             Hello, {user?.firstName || 'Recruiter'}
                                         </motion.h1>
@@ -165,7 +165,7 @@ const RecruiterDashboard = () => {
                     </header>
 
                     {/* Main Stats */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12 lg:mb-16">
                         <StatsCard icon={Briefcase} label="Active Jobs" value={stats.activeJobs || 0} color="blue" trend="+12%" />
                         <StatsCard icon={Users} label="Total Applicants" value={stats.totalApplications || 0} color="purple" trend="+24%" />
                         <StatsCard icon={Clock} label="Reviews Pending" value={stats.appointments || 0} color="orange" trend="-5%" />
@@ -183,7 +183,7 @@ const RecruiterDashboard = () => {
                         stats={stats}
                     />
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 mt-8 sm:mt-12">
                         {/* Recent Content */}
                         <div className="lg:col-span-2 space-y-12">
                             <UpcomingInterviews />
@@ -192,7 +192,7 @@ const RecruiterDashboard = () => {
 
                         {/* Sidebar / Quick Actions */}
                         <div className="space-y-12">
-                            <section className="bg-black rounded-[3rem] p-12 relative overflow-hidden shadow-2xl group">
+                            <section className="bg-black rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-12 relative overflow-hidden shadow-2xl group">
                                 <div className="relative z-10">
                                     <h3 className="text-3xl font-black text-white mb-4 tracking-tight">Hire Smarter.</h3>
                                     <p className="text-slate-400 text-sm font-bold leading-relaxed mb-10">Deploy AI-powered matching to scan thousands of resumes in seconds and find your perfect fit.</p>

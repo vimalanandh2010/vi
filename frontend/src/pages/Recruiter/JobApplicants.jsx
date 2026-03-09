@@ -247,7 +247,7 @@ const JobApplicants = () => {
 
     return (
         <RecruiterLayout>
-            <main className="p-8 md:p-12 lg:p-16 max-w-7xl mx-auto bg-[#FDFDFD] min-h-full">
+            <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-7xl mx-auto bg-[#FDFDFD] min-h-full">
                 {/* Header Section */}
                 <div className="mb-16">
                     <Link to="/recruiter/jobs" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-black mb-10 transition-all group">
@@ -258,7 +258,7 @@ const JobApplicants = () => {
                     <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
                         <div>
                             <div className="flex items-center gap-4 mb-3">
-                                <h1 className="text-5xl font-black text-black tracking-tighter">
+                                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-black tracking-tighter">
                                     Applicants
                                 </h1>
                                 <span className="px-3 py-1 bg-black text-white rounded-lg text-[10px] font-black uppercase tracking-widest">
@@ -309,8 +309,8 @@ const JobApplicants = () => {
                                 >
                                     <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
                                         {/* Candidate Primary Info */}
-                                        <div className="flex items-center gap-8">
-                                            <div className="w-20 h-20 rounded-3xl bg-slate-50 border border-slate-100 flex items-center justify-center text-3xl font-black text-black shadow-sm group-hover:bg-black group-hover:text-white transition-all overflow-hidden shrink-0">
+                                        <div className="flex items-center gap-4 sm:gap-8">
+                                            <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl sm:text-3xl font-black text-black shadow-sm group-hover:bg-black group-hover:text-white transition-all overflow-hidden shrink-0">
                                                 {app.user?.photoUrl ? (
                                                     <img src={app.user.photoUrl} alt="" className="w-full h-full object-cover" />
                                                 ) : (
@@ -338,7 +338,7 @@ const JobApplicants = () => {
                                         </div>
 
                                         {/* ATS & Actions Section */}
-                                        <div className="flex flex-wrap items-center gap-8 w-full lg:w-auto border-t lg:border-t-0 lg:border-l border-slate-100 pt-8 lg:pt-0 lg:pl-8">
+                                        <div className="flex flex-wrap items-center gap-4 sm:gap-8 w-full lg:w-auto border-t lg:border-t-0 lg:border-l border-slate-100 pt-4 sm:pt-8 lg:pt-0 lg:pl-8">
                                             {/* AI Match Score */}
                                             <div className="text-center group/score pr-8 border-r border-slate-50">
                                                 {app.aiMatchScore === -1 ? (

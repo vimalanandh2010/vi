@@ -95,7 +95,7 @@ const RecruiterProfile = () => {
 
     return (
         <RecruiterLayout>
-            <main className="p-8 md:p-12 lg:p-16 max-w-5xl mx-auto bg-white min-h-full">
+            <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-5xl mx-auto bg-white min-h-full">
                 {/* Elite Header */}
                 <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 mb-20">
                     <div>
@@ -103,7 +103,7 @@ const RecruiterProfile = () => {
                             User Control <ChevronRight size={12} /> Identity Management
                         </div>
                         <div className="flex items-center gap-6 mb-4">
-                            <h1 className="text-6xl font-black text-black tracking-tighter">
+                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black tracking-tighter">
                                 Professional <br />Profile
                             </h1>
                             {company && (
@@ -119,7 +119,7 @@ const RecruiterProfile = () => {
                     </div>
                     <button
                         onClick={logout}
-                        className="group flex items-center gap-4 px-10 py-5 bg-slate-50 hover:bg-black hover:text-white text-black rounded-[2rem] font-black uppercase tracking-[0.2em] text-[10px] transition-all border border-slate-100 shadow-sm"
+                        className="group flex items-center gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-slate-50 hover:bg-black hover:text-white text-black rounded-[1.5rem] sm:rounded-[2rem] font-black uppercase tracking-[0.2em] text-[10px] transition-all border border-slate-100 shadow-sm"
                     >
                         Deactivate Session
                         <LogOut size={16} className="group-hover:translate-x-1 transition-transform" />

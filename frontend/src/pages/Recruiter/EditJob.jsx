@@ -125,7 +125,7 @@ const EditJob = () => {
 
     return (
         <RecruiterLayout>
-            <main className="p-8 md:p-12 lg:p-16 max-w-5xl mx-auto bg-white min-h-full">
+            <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-5xl mx-auto bg-white min-h-full">
                 {/* Minimalist Header */}
                 <header className="mb-16">
                     <div className="flex items-center gap-3 mb-6">
@@ -133,10 +133,10 @@ const EditJob = () => {
                         <ChevronRight size={14} className="text-slate-300" />
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Iterative Optimization</span>
                     </div>
-                    <h1 className="text-6xl font-black text-black tracking-tighter mb-4 leading-tight">
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black tracking-tighter mb-4 leading-tight">
                         Optimize Professional <br />Mandate
                     </h1>
-                    <p className="text-slate-400 text-xl font-medium tracking-tight">Refine parameters for maximum candidate precision.</p>
+                    <p className="text-slate-400 text-base sm:text-xl font-medium tracking-tight">Refine parameters for maximum candidate precision.</p>
                 </header>
 
                 <form onSubmit={handleSubmit} className="space-y-12 pb-24">
@@ -221,7 +221,7 @@ const EditJob = () => {
                     </motion.section>
 
                     {/* Monetary & Experience Spectrum */}
-                    <div className="grid md:grid-cols-2 gap-12">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12">
                         <motion.section
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -385,10 +385,10 @@ const EditJob = () => {
                     </motion.section>
 
                     {/* Transactional Actions */}
-                    <div className="flex items-center justify-between gap-8 pt-12 border-t border-slate-50">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-10 border-t border-slate-50">
                         <Link
                             to="/recruiter/jobs"
-                            className="px-10 py-5 bg-slate-50 hover:bg-black hover:text-white text-black rounded-[2rem] font-black uppercase tracking-[0.2em] text-[10px] transition-all"
+                            className="px-6 sm:px-10 py-4 sm:py-5 bg-slate-50 hover:bg-black hover:text-white text-black rounded-[1.5rem] sm:rounded-[2rem] font-black uppercase tracking-[0.2em] text-[10px] transition-all text-center"
                         >
                             Cancel Optimization
                         </Link>

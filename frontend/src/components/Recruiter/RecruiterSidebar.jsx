@@ -9,7 +9,7 @@ import {
     Building2,
     Home,
     LogOut,
-    Bot
+    X
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -34,7 +34,7 @@ const SidebarItem = ({ icon: Icon, label, path, active, badge, onClick, classNam
     </Link>
 );
 
-const RecruiterSidebar = ({ jobCount = 0 }) => {
+const RecruiterSidebar = ({ jobCount = 0, onClose }) => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -46,10 +46,27 @@ const RecruiterSidebar = ({ jobCount = 0 }) => {
 
     const isActive = (path) => location.pathname === path;
 
+    const handleNavClick = () => {
+        if (onClose) onClose();
+    };
+
     return (
-        <aside className="w-80 bg-white border-r border-slate-100 p-8 flex flex-col h-full shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-[60] overflow-y-auto custom-scrollbar">
+        <aside className="w-72 sm:w-80 bg-white border-r border-slate-100 p-6 sm:p-8 flex flex-col h-full shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.05)] overflow-y-auto custom-scrollbar">
+            {/* Mobile Close Button */}
+            <div className="flex items-center justify-between mb-6 lg:hidden">
+                <span className="text-sm font-black text-slate-400 uppercase tracking-[0.2em]">Menu</span>
+                {onClose && (
+                    <button
+                        onClick={onClose}
+                        className="p-2 rounded-xl text-slate-400 hover:bg-slate-100 hover:text-black transition-all"
+                    >
+                        <X size={20} />
+                    </button>
+                )}
+            </div>
+
             <div className="space-y-1.5 flex-1">
-                <div className="mb-8 px-2">
+                <div className="mb-6 px-2 hidden lg:block">
                     <span className="text-sm font-black text-slate-400 uppercase tracking-[0.2em]">Recruiter Menu</span>
                 </div>
 
@@ -58,12 +75,14 @@ const RecruiterSidebar = ({ jobCount = 0 }) => {
                     label="Dashboard"
                     path="/recruiter/dashboard"
                     active={isActive('/recruiter/dashboard')}
+                    onClick={handleNavClick}
                 />
                 <SidebarItem
                     icon={Users}
                     label="Candidates"
                     path="/recruiter/candidates"
                     active={isActive('/recruiter/candidates')}
+                    onClick={handleNavClick}
                 />
                 <SidebarItem
                     icon={Briefcase}
@@ -71,12 +90,14 @@ const RecruiterSidebar = ({ jobCount = 0 }) => {
                     path="/recruiter/jobs"
                     active={isActive('/recruiter/jobs')}
                     badge={jobCount}
+                    onClick={handleNavClick}
                 />
                 <SidebarItem
                     icon={Calendar}
                     label="Interview Calendar"
                     path="/recruiter/calendar"
                     active={isActive('/recruiter/calendar')}
+                    onClick={handleNavClick}
                 />
 
                 <div className="pt-6 mt-6 border-t border-slate-100 space-y-1.5">
@@ -88,19 +109,21 @@ const RecruiterSidebar = ({ jobCount = 0 }) => {
                         label="Messages"
                         path="/recruiter/chat"
                         active={isActive('/recruiter/chat')}
+                        onClick={handleNavClick}
                     />
                     <SidebarItem
                         icon={Building2}
                         label="Company Profile"
                         path="/recruiter/company-profile"
                         active={isActive('/recruiter/company-profile')}
+                        onClick={handleNavClick}
                     />
                 </div>
             </div>
 
             <div className="space-y-1.5 mt-auto pt-6 border-t border-slate-100">
                 <button
-                    onClick={() => navigate('/recruiter/home')}
+                    onClick={() => { navigate('/recruiter/home'); handleNavClick(); }}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-black transition-all"
                 >
                     <Home size={20} />
@@ -115,7 +138,7 @@ const RecruiterSidebar = ({ jobCount = 0 }) => {
                 </button>
 
                 <div className="mt-6 pt-6 border-t border-slate-100 flex items-center gap-3 px-2">
-                    <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center font-bold text-white shadow-md">
+                    <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center font-bold text-white shadow-md shrink-0">
                         {user?.firstName?.charAt(0) || 'R'}
                     </div>
                     <div className="min-w-0">

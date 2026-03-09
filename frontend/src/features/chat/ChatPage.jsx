@@ -262,9 +262,6 @@ const ChatPage = () => {
                             Chats
                         </h2>
                         <div className="flex items-center gap-3">
-                            <button className="w-8 h-8 rounded-full bg-[#6d28d9] text-white flex items-center justify-center hover:bg-[#5b21b6] shadow-md transition-all">
-                                <Plus size={18} strokeWidth={3} />
-                            </button>
                         </div>
                     </div>
 
@@ -543,7 +540,7 @@ const ChatPage = () => {
                         </div>
                         <h3 className="text-3xl font-black text-slate-900 mb-3 tracking-tight relative z-10">Your Conversations</h3>
                         <p className="text-slate-500 text-sm mb-8 max-w-sm leading-relaxed font-medium relative z-10">Select a conversation from the sidebar or search to connect with employers and peers.</p>
-                        <button className="bg-slate-900 hover:bg-[#1e3a8a] text-white font-black text-sm py-3 px-8 rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 relative z-10 uppercase tracking-widest" onClick={() => document.querySelector('input[placeholder="Search contacts..."]')?.focus()}>
+                        <button className="bg-white hover:bg-slate-50 text-black border border-slate-200 font-black text-sm py-3 px-8 rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 relative z-10 uppercase tracking-widest" onClick={() => document.querySelector('input[placeholder="Search contacts..."]')?.focus()}>
                             Start a New Chat
                         </button>
                     </div>

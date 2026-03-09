@@ -101,12 +101,12 @@ const RecruiterJobs = () => {
 
     return (
         <RecruiterLayout jobCount={jobs.length}>
-            <div className="max-w-7xl mx-auto px-6 py-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 sm:py-8">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-12">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
-                            <h1 className="text-4xl font-black text-black">My Job Postings</h1>
+                            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-black">My Job Postings</h1>
                             <span className="px-4 py-1.5 bg-blue-50 border border-blue-100 text-blue-600 rounded-full text-sm font-bold">
                                 {jobs.length} {jobs.length === 1 ? 'Job' : 'Jobs'}
                             </span>
@@ -126,7 +126,7 @@ const RecruiterJobs = () => {
                 </div>
 
                 {/* Dashboard Statistics */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
                     <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between mb-4">
                             <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
@@ -218,7 +218,7 @@ const RecruiterJobs = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 className="bg-white border border-slate-100 rounded-3xl p-8 hover:shadow-xl hover:border-transparent transition-all group"
                             >
-                                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                                <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 sm:gap-8">
                                     <div className="flex-1">
                                         <div className="flex items-start gap-6 mb-6">
                                             <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-black font-black text-2xl shrink-0 group-hover:bg-black group-hover:text-white transition-colors border border-slate-100">
@@ -279,7 +279,7 @@ const RecruiterJobs = () => {
                                         </div>
                                     </div>
 
-                                    <div className="flex flex-wrap lg:flex-col gap-3">
+                                    <div className="flex flex-wrap sm:flex-row xl:flex-col gap-3">
                                         <Link
                                             to={`/recruiter/job-analytics/${job._id}`}
                                             className="flex items-center gap-2 px-6 py-2.5 bg-slate-50 hover:bg-black hover:text-white text-black rounded-xl text-sm font-bold transition-all border border-slate-100"

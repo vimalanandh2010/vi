@@ -72,15 +72,15 @@ const MyPostings = () => {
 
     return (
         <RecruiterLayout>
-            <main className="p-8 md:p-12 lg:p-16 max-w-7xl mx-auto bg-white min-h-full">
+            <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-7xl mx-auto bg-white min-h-full">
                 {/* Tactical Header */}
                 <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-20">
                     <div>
                         <div className="flex items-center gap-2 mb-6 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
                             Governance <ChevronRight size={12} /> Resource Allocation
                         </div>
-                        <div className="flex items-center gap-6 mb-4">
-                            <h1 className="text-6xl font-black text-black tracking-tighter">
+                        <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-4">
+                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black tracking-tighter">
                                 Current <br />Mandates
                             </h1>
                             <div className="px-6 py-2 bg-black text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-2xl">
@@ -92,7 +92,7 @@ const MyPostings = () => {
 
                     <Link
                         to="/recruiter/post-job"
-                        className="inline-flex items-center gap-4 px-10 py-6 bg-black hover:bg-blue-600 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-center text-xs transition-all shadow-[0_20px_50px_rgba(0,0,0,0.1)] active:scale-95 group"
+                        className="inline-flex items-center gap-3 px-6 sm:px-10 py-4 sm:py-6 bg-black hover:bg-blue-600 text-white rounded-[1.5rem] sm:rounded-[2rem] font-black uppercase tracking-[0.2em] text-center text-xs transition-all shadow-[0_20px_50px_rgba(0,0,0,0.1)] active:scale-95 group"
                     >
                         Initiate Deployment
                         <Plus size={18} className="group-hover:rotate-90 transition-transform" />
@@ -121,7 +121,7 @@ const MyPostings = () => {
                         <p className="text-slate-400 font-bold">No active mandates currently align with your filter parameters.</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-10">
                         <AnimatePresence>
                             {filteredJobs.map((job, idx) => (
                                 <motion.div

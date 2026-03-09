@@ -4,7 +4,7 @@ import { Briefcase, Building2, BookOpen, Users, MessageCircle, User, LogOut, Men
 import { useAuth } from '../context/AuthContext'
 import logo from '../assets/logo.jpeg'
 
-const Navbar = () => {
+const Navbar = ({ onSidebarToggle, showSidebarToggle = false }) => {
     const { user, logout } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
@@ -63,6 +63,16 @@ const Navbar = () => {
 
                     {/* Right: User Profile & Mobile Toggle */}
                     <div className="flex items-center gap-2 sm:gap-4 ml-auto">
+                        {/* Recruiter Sidebar Toggle (mobile only) */}
+                        {showSidebarToggle && (
+                            <button
+                                onClick={onSidebarToggle}
+                                className="lg:hidden text-slate-600 p-2 hover:bg-slate-100 rounded-lg transition-all"
+                                aria-label="Toggle sidebar"
+                            >
+                                <Menu size={24} />
+                            </button>
+                        )}
                         {/* Profile Section */}
                         {user ? (
                             <div className="relative">
