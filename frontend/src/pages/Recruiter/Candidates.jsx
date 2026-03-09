@@ -395,23 +395,45 @@ const RecruiterCandidates = () => {
                                             <h3 className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.3em] mb-6 sm:mb-8">AI Match Analysis</h3>
                                             
                                             {/* Match Score */}
-                                            <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
-                                                <div className="relative">
-                                                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-3xl sm:text-4xl font-black shadow-lg border-4 border-emerald-400/20">
-                                                        {selectedApplication.aiMatchScore || 72}%
+                                            {selectedApplication.aiMatchScore !== null && selectedApplication.aiMatchScore !== undefined && selectedApplication.aiMatchScore !== -1 ? (
+                                                <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+                                                    <div className="relative">
+                                                        <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl font-black shadow-lg border-4 ${
+                                                            selectedApplication.aiMatchScore >= 70 
+                                                                ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 border-emerald-400/20'
+                                                                : selectedApplication.aiMatchScore >= 50
+                                                                ? 'bg-gradient-to-br from-blue-500 to-blue-600 border-blue-400/20'
+                                                                : 'bg-gradient-to-br from-orange-500 to-orange-600 border-orange-400/20'
+                                                        }`}>
+                                                            {selectedApplication.aiMatchScore}%
+                                                        </div>
+                                                        {selectedApplication.aiMatchScore >= 70 && (
+                                                            <div className="absolute -top-1 -right-1 w-6 h-6 bg-emerald-400 rounded-full flex items-center justify-center">
+                                                                <Check className="text-slate-900" size={14} strokeWidth={3} />
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-emerald-400 rounded-full flex items-center justify-center">
-                                                        <Check className="text-slate-900" size={14} strokeWidth={3} />
+                                                    <div>
+                                                        <p className="text-white font-black text-lg sm:text-xl mb-1">
+                                                            {selectedApplication.aiMatchScore >= 70 ? 'Strong Match' : 
+                                                             selectedApplication.aiMatchScore >= 50 ? 'Good Match' : 'Weak Match'}
+                                                        </p>
+                                                        <p className="text-slate-400 text-xs font-bold uppercase tracking-wide">✓ AI Verified Score</p>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <p className="text-white font-black text-lg sm:text-xl mb-1">
-                                                        {(selectedApplication.aiMatchScore || 72) >= 70 ? 'Strong Match' : 
-                                                         (selectedApplication.aiMatchScore || 72) >= 50 ? 'Good Match' : 'Potential Match'}
-                                                    </p>
-                                                    <p className="text-slate-400 text-xs font-bold uppercase tracking-wide">ATS Ranking</p>
+                                            ) : (
+                                                <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+                                                    <div className="relative">
+                                                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-600 flex items-center justify-center shadow-lg border-4 border-slate-500/20">
+                                                            <Loader2 className="animate-spin text-slate-300" size={32} />
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-white font-black text-lg sm:text-xl mb-1">Analyzing Resume...</p>
+                                                        <p className="text-slate-400 text-xs font-bold uppercase tracking-wide">⏳ Please wait</p>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            )}
 
                                             {/* Skill Match Breakdown */}
                                             <div className="mb-6">
@@ -458,7 +480,17 @@ const RecruiterCandidates = () => {
                                                 <ul className="space-y-1.5">
                                                     {(() => {
                                                         const status = selectedApplication.status.toLowerCase();
-                                                        const matchScore = selectedApplication.aiMatchScore || 72;
+                                                        const matchScore = selectedApplication.aiMatchScore;
+                                                        
+                                                        // If no ATS score yet, show pending
+                                                        if (matchScore === null || matchScore === undefined || matchScore === -1) {
+                                                            return (
+                                                                <li className="text-slate-300 text-xs font-medium flex items-start gap-2">
+                                                                    <Loader2 className="animate-spin text-slate-400 shrink-0 mt-0.5" size={12} strokeWidth={3} />
+                                                                    <span>⏳ Analyzing candidate profile...</span>
+                                                                </li>
+                                                            );
+                                                        }
                                                         
                                                         if (status === 'selected') {
                                                             return (
