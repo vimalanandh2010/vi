@@ -5,6 +5,12 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Startup validation: warn clearly if email credentials are missing
+console.log('🔍 [EMAIL CONFIG DEBUG] ===========================================');
+console.log('📧 EMAIL_SERVICE:', process.env.EMAIL_SERVICE || 'NOT SET (defaults to gmail)');
+console.log('📧 EMAIL_USER:', process.env.EMAIL_USER ? `${process.env.EMAIL_USER.substring(0, 10)}...` : 'NOT SET');
+console.log('📧 EMAIL_PASS:', process.env.EMAIL_PASS ? `${process.env.EMAIL_PASS.substring(0, 20)}... (length: ${process.env.EMAIL_PASS.length})` : 'NOT SET');
+console.log('🔍 =============================================================');
+
 if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     console.error('⚠️ ========================================');
     console.error('⚠️ EMAIL_USER or EMAIL_PASS is NOT SET!');
@@ -15,6 +21,7 @@ if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
 
 // Auto-detect email provider
 const emailService = (process.env.EMAIL_SERVICE || 'gmail').toLowerCase();
+console.log('📧 Selected Email Service:', emailService);
 
 let transportConfig = {}; // Initialize to avoid undefined errors
 if (emailService === 'brevo' || emailService === 'sendinblue') {
@@ -67,17 +74,33 @@ if (emailService === 'brevo' || emailService === 'sendinblue') {
 // Only setup transporter if we have a host (i.e., not using Resend API)
 let transporter = null;
 if (transportConfig.host) {
+    console.log('📧 Creating SMTP transporter with config:', {
+        host: transportConfig.host,
+        port: transportConfig.port,
+        user: transportConfig.auth?.user?.substring(0, 15) + '...',
+        secure: transportConfig.secure
+    });
+    
     transportConfig.logger = true; // Always log in production for debugging
     transportConfig.debug = true;  // Always debug in production for debugging
+    transportConfig.connectionTimeout = 10000; // 10 second timeout
+    transportConfig.greetingTimeout = 5000;    // 5 second greeting timeout
+    transportConfig.socketTimeout = 15000;      // 15 second socket timeout
+    
     transporter = nodemailer.createTransport(transportConfig);
 
     transporter.verify(function (error) {
         if (error) {
             console.error('❌ SMTP Service Error:', error.message);
+            console.error('❌ Error Code:', error.code);
+            console.error('❌ Full Error:', JSON.stringify(error, null, 2));
         } else {
             console.log('✅ SMTP Service is ready');
+            console.log('✅ Connected to:', transportConfig.host);
         }
     });
+} else {
+    console.log('📧 No SMTP transporter created (using API-based service)');
 }
 
 const sendResendEmail = async (mailOptions) => {
@@ -132,17 +155,20 @@ const sendResendEmail = async (mailOptions) => {
 };
 
 const sendEmail = async (mailOptions) => {
+    const emailStartTime = Date.now();
     console.log('='.repeat(80));
-    console.log('📧 [EMAIL DEBUG] sendEmail() called');
+    console.log('📧 [EMAIL DEBUG] sendEmail() called at', new Date().toISOString());
     console.log('To:', mailOptions.to);
     console.log('Subject:', mailOptions.subject);
     console.log('From:', mailOptions.from);
+    console.log('HTML length:', mailOptions.html?.length || 0);
     console.log('='.repeat(80));
     
     const service = (process.env.EMAIL_SERVICE || 'gmail').toLowerCase();
     console.log('📧 Email Service:', service);
     console.log('📧 RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY);
     console.log('📧 EMAIL_SERVICE env:', process.env.EMAIL_SERVICE);
+    console.log('📧 Transporter exists:', !!transporter);
     
     if (service === 'resend' || (process.env.RESEND_API_KEY && !process.env.EMAIL_SERVICE)) {
         console.log('📧 Using Resend API...');
@@ -150,26 +176,39 @@ const sendEmail = async (mailOptions) => {
     }
     
     console.log('📧 Using SMTP transporter...');
-    if (!transporter) throw new Error('No email transporter configured for SMTP');
+    if (!transporter) {
+        console.error('❌ No transporter available!');
+        throw new Error('No email transporter configured for SMTP');
+    }
+    
+    console.log('📧 Attempting to send email via SMTP...');
     
     try {
         const result = await transporter.sendMail(mailOptions);
-        console.log('✅ [SMTP] Email sent successfully!');
+        const duration = Date.now() - emailStartTime;
+        console.log('✅ [SMTP] Email sent successfully in', duration, 'ms!');
         console.log('✅ Message ID:', result.messageId);
         console.log('✅ Response:', result.response);
+        console.log('✅ Accepted:', result.accepted);
+        console.log('✅ Rejected:', result.rejected);
         console.log('='.repeat(80));
         return result;
     } catch (error) {
-        console.error('❌ [SMTP] Email send FAILED!');
-        console.error('❌ Error:', error.message);
-        console.error('❌ Code:', error.code);
+        const duration = Date.now() - emailStartTime;
+        console.error('❌ [SMTP] Email send FAILED after', duration, 'ms!');
+        console.error('❌ Error Message:', error.message);
+        console.error('❌ Error Code:', error.code);
+        console.error('❌ Error Command:', error.command);
         console.error('❌ Response:', error.response);
+        console.error('❌ Response Code:', error.responseCode);
+        console.error('❌ Stack:', error.stack);
         console.error('='.repeat(80));
         throw error;
     }
 };
 
 const sendWelcomeEmail = async (email, name) => {
+    console.log('🎉 [WELCOME EMAIL] Preparing to send welcome email to:', email, 'Name:', name);
     try {
         const mailOptions = {
             from: process.env.EMAIL_USER || 'onboarding@resend.dev',
@@ -185,13 +224,15 @@ const sendWelcomeEmail = async (email, name) => {
         };
 
         await sendEmail(mailOptions);
-        console.log(`Welcome email sent to ${email}`);
+        console.log(`✅ Welcome email sent successfully to ${email}`);
     } catch (error) {
-        console.error('Error sending welcome email:', error);
+        console.error('❌ Error sending welcome email to', email, ':', error.message);
+        console.error('❌ Full error:', error);
     }
 };
 
 const sendApplicationEmail = async (email, name, jobTitle, companyName) => {
+    console.log('📝 [APPLICATION EMAIL] Preparing to send application email to:', email);
     try {
         const mailOptions = {
             from: process.env.EMAIL_USER,
