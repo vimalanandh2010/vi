@@ -211,8 +211,29 @@ const EditJob = () => {
                                         onChange={handleChange}
                                         className="w-full bg-slate-50 border border-transparent focus:border-black/10 focus:bg-white text-black font-bold rounded-2xl py-5 px-6 outline-none transition-all appearance-none cursor-pointer"
                                     >
-                                        <option value="IT">Technical / Engineering</option>
-                                        <option value="Non-IT">Strategic / Management</option>
+                                        <option value="IT">Technology / IT</option>
+                                        <option value="Engineering">Engineering</option>
+                                        <option value="Healthcare">Healthcare / Medical</option>
+                                        <option value="Finance">Finance / Banking</option>
+                                        <option value="Sales">Sales / Marketing</option>
+                                        <option value="HR">Human Resources</option>
+                                        <option value="CustomerService">Customer Service / Support</option>
+                                        <option value="Education">Education / Training</option>
+                                        <option value="Design">Design / Creative</option>
+                                        <option value="Operations">Operations / Logistics</option>
+                                        <option value="Legal">Legal / Compliance</option>
+                                        <option value="Consulting">Consulting</option>
+                                        <option value="Manufacturing">Manufacturing / Production</option>
+                                        <option value="Construction">Construction</option>
+                                        <option value="Retail">Retail / E-commerce</option>
+                                        <option value="Hospitality">Hospitality / Tourism</option>
+                                        <option value="Media">Media / Entertainment</option>
+                                        <option value="RealEstate">Real Estate</option>
+                                        <option value="Administration">Administration / Office Support</option>
+                                        <option value="Research">Research / Science</option>
+                                        <option value="Agriculture">Agriculture / Environment</option>
+                                        <option value="Management">Strategic / Management</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                     <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
                                 </div>
