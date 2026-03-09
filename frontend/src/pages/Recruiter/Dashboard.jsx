@@ -179,18 +179,6 @@ const RecruiterDashboard = () => {
 
                         {/* Sidebar / Quick Actions */}
                         <div className="space-y-12">
-                            <section className="bg-black rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-12 relative overflow-hidden shadow-2xl group">
-                                <div className="relative z-10">
-                                    <h3 className="text-3xl font-black text-white mb-4 tracking-tight">Hire Smarter.</h3>
-                                    <p className="text-slate-400 text-sm font-bold leading-relaxed mb-10">Deploy AI-powered matching to scan thousands of resumes in seconds and find your perfect fit.</p>
-                                    <button className="w-full py-5 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-slate-100 transition-all active:scale-95 shadow-xl">
-                                        Unlock AI Tools
-                                    </button>
-                                </div>
-                                <div className="absolute top-[-20%] right-[-20%] w-64 h-64 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors" />
-                                <div className="absolute bottom-[-10%] left-[-10%] w-32 h-32 bg-blue-500/10 rounded-full blur-2xl" />
-                            </section>
-
                             <QuickActions company={companyData} />
                         </div>
                     </div>
