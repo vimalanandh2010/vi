@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Send, X, Upload, MapPin, Briefcase, DollarSign, Tag, FileText, ChevronRight, AlertCircle, Sparkles, Loader2 } from 'lucide-react'
+import { Plus, Send, X, Upload, MapPin, Briefcase, DollarSign, Tag, FileText, AlertCircle, Sparkles, Loader2 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate, Link } from 'react-router-dom'
 import RecruiterLayout from '../../components/RecruiterLayout'
@@ -103,11 +103,6 @@ const PostJob = () => {
             <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-5xl mx-auto bg-white min-h-full">
                 {/* Minimalist Header */}
                 <header className="mb-16">
-                    <div className="flex items-center gap-3 mb-6">
-                        <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-blue-100">Talent Acquisition</span>
-                        <ChevronRight size={14} className="text-slate-300" />
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Global Sourcing</span>
-                    </div>
                     <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black tracking-tighter mb-4 leading-tight">
                         Launch a New <br />Professional Mandate
                     </h1>
@@ -392,16 +387,11 @@ const PostJob = () => {
                             Cancel Mission
                         </Link>
 
-                        <div className="flex items-center gap-6">
-                            <div className="hidden lg:flex flex-col items-end">
-                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Validation Ready</p>
-                                <p className="text-xs font-black text-emerald-500 uppercase">System Optimized</p>
-                            </div>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="px-16 py-6 bg-black hover:bg-blue-600 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-xs shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex items-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95 group"
-                            >
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="px-16 py-6 bg-black hover:bg-blue-600 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-xs shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex items-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95 group"
+                        >
                                 {loading ? (
                                     <Loader2 className="animate-spin" size={20} />
                                 ) : (
