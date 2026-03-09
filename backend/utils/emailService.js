@@ -28,9 +28,26 @@ if (emailService === 'brevo' || emailService === 'sendinblue') {
         },
         tls: { rejectUnauthorized: false }
     };
-} else if (emailService === 'resend' || process.env.RESEND_API_KEY) {
+} else if (emailService === 'resend') {
     console.log('📧 Using Resend REST API for email delivery (Optimized)');
     // No SMTP config needed for Resend REST API
+} else if (emailService === 'gmail') {
+    transportConfig = {
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        },
+        tls: { rejectUnauthorized: false, minVersion: 'TLSv1.2' },
+        pool: true,
+        maxConnections: 5,
+        maxMessages: 100
+    };
+} else if (process.env.RESEND_API_KEY) {
+    console.log('📧 Using Resend REST API for email delivery (Optimized)');
+    // No SMTP config needed for Resend REST API - fallback when no EMAIL_SERVICE set
 } else {
     transportConfig = {
         host: 'smtp.gmail.com',
