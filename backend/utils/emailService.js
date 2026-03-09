@@ -67,8 +67,8 @@ if (emailService === 'brevo' || emailService === 'sendinblue') {
 // Only setup transporter if we have a host (i.e., not using Resend API)
 let transporter = null;
 if (transportConfig.host) {
-    transportConfig.logger = process.env.NODE_ENV !== 'production';
-    transportConfig.debug = process.env.NODE_ENV !== 'production';
+    transportConfig.logger = true; // Always log in production for debugging
+    transportConfig.debug = true;  // Always debug in production for debugging
     transporter = nodemailer.createTransport(transportConfig);
 
     transporter.verify(function (error) {
@@ -151,10 +151,22 @@ const sendEmail = async (mailOptions) => {
     
     console.log('📧 Using SMTP transporter...');
     if (!transporter) throw new Error('No email transporter configured for SMTP');
-    const result = await transporter.sendMail(mailOptions);
-    console.log('✅ [SMTP] Email sent successfully:', result.messageId);
-    console.log('='.repeat(80));
-    return result;
+    
+    try {
+        const result = await transporter.sendMail(mailOptions);
+        console.log('✅ [SMTP] Email sent successfully!');
+        console.log('✅ Message ID:', result.messageId);
+        console.log('✅ Response:', result.response);
+        console.log('='.repeat(80));
+        return result;
+    } catch (error) {
+        console.error('❌ [SMTP] Email send FAILED!');
+        console.error('❌ Error:', error.message);
+        console.error('❌ Code:', error.code);
+        console.error('❌ Response:', error.response);
+        console.error('='.repeat(80));
+        throw error;
+    }
 };
 
 const sendWelcomeEmail = async (email, name) => {
