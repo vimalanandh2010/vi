@@ -154,6 +154,61 @@ const sendResendEmail = async (mailOptions) => {
     }
 };
 
+const sendBrevoEmail = async (mailOptions) => {
+    const startTime = Date.now();
+    try {
+        const { from, to, subject, html, text } = mailOptions;
+        const apiKey = process.env.EMAIL_PASS; // Brevo uses EMAIL_PASS as API key
+
+        if (!apiKey) throw new Error('Brevo API key missing');
+
+        const payload = {
+            sender: {
+                email: from || 'ceitvimalanandh27@gmail.com',
+                name: 'Future Milestone Job Portal'
+            },
+            to: [{ email: to }],
+            subject: subject,
+            htmlContent: html,
+            textContent: text || 'Email content'
+        };
+
+        console.log('='.repeat(80));
+        console.log('📧 [BREVO API] Email Details:');
+        console.log('='.repeat(80));
+        console.log('From:', payload.sender.email);
+        console.log('To:', payload.to[0].email);
+        console.log('Subject:', payload.subject);
+        console.log('API Key (first 20 chars):', apiKey.substring(0, 20) + '...');
+        console.log('HTML Length:', html?.length || 0, 'characters');
+        console.log('Timestamp:', new Date().toISOString());
+        console.log('='.repeat(80));
+
+        const response = await axios.post('https://api.brevo.com/v3/smtp/email', payload, {
+            headers: {
+                'api-key': apiKey,
+                'Content-Type': 'application/json',
+                'accept': 'application/json'
+            }
+        });
+
+        console.log('✅ [Brevo API] SUCCESS in', Date.now() - startTime, 'ms');
+        console.log('✅ Message ID:', response.data.messageId);
+        console.log('✅ Response:', JSON.stringify(response.data, null, 2));
+        console.log('='.repeat(80));
+        return response.data;
+    } catch (error) {
+        console.error('='.repeat(80));
+        console.error('❌ [BREVO API] FAILED after', Date.now() - startTime, 'ms');
+        console.error('❌ Error Message:', error.message);
+        console.error('❌ Error Response:', JSON.stringify(error.response?.data, null, 2));
+        console.error('❌ Status Code:', error.response?.status);
+        console.error('❌ To Address:', mailOptions.to);
+        console.error('='.repeat(80));
+        throw error;
+    }
+};
+
 const sendEmail = async (mailOptions) => {
     const emailStartTime = Date.now();
     console.log('='.repeat(80));
@@ -169,6 +224,17 @@ const sendEmail = async (mailOptions) => {
     console.log('📧 RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY);
     console.log('📧 EMAIL_SERVICE env:', process.env.EMAIL_SERVICE);
     console.log('📧 Transporter exists:', !!transporter);
+    console.log('📧 NODE_ENV:', process.env.NODE_ENV);
+    
+    // Use Brevo API in production to avoid SMTP port blocking on Render
+    if (service === 'brevo' || service === 'sendinblue') {
+        if (process.env.NODE_ENV === 'production') {
+            console.log('📧 Using Brevo REST API (production mode - SMTP blocked)...');
+            return await sendBrevoEmail(mailOptions);
+        } else {
+            console.log('📧 Using Brevo SMTP (development mode)...');
+        }
+    }
     
     if (service === 'resend' || (process.env.RESEND_API_KEY && !process.env.EMAIL_SERVICE)) {
         console.log('📧 Using Resend API...');
