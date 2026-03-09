@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, Video, User, Mail, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axiosClient from '../../../api/axiosClient';
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 
 const InterviewCard = ({ iv, index, onDelete }) => {
     const [deleting, setDeleting] = useState(false);
