@@ -1745,7 +1745,7 @@ router.get('/recruiter/interviews', recruiterAuth, async (req, res) => {
 
         const interviews = await Application.find({
             job: { $in: jobIds },
-            status: { $in: ['interview', 'scheduled'] },
+            status: { $in: ['interview', 'scheduled', 'shortlisted'] },
             interviewDate: { $exists: true, $ne: '' }
         })
             .populate('user', 'firstName lastName email photoUrl experienceLevel')

@@ -108,9 +108,10 @@ router.get('/interviews', recruiterAuth, async (req, res) => {
         const jobIds = jobs.map(j => j._id);
 
         // 2. Get all applications with interview scheduled for these jobs
+        // Include both 'interview' and 'shortlisted' status with interview dates
         const interviews = await Application.find({
             job: { $in: jobIds },
-            status: 'interview',
+            status: { $in: ['interview', 'shortlisted'] },
             interviewDate: { $exists: true, $ne: null }
         })
             .populate('user', 'firstName lastName email photoUrl')
