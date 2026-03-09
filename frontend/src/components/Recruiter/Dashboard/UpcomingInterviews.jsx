@@ -65,9 +65,9 @@ const UpcomingInterviews = () => {
 
                             <div className="flex-1 min-w-0">
                                 <h4 className="text-lg font-black text-black truncate group-hover:text-blue-600 transition-colors">
-                                    {iv.user?.firstName} {iv.user?.lastName}
+                                    {iv.candidate?.name || 'Anonymous'}
                                 </h4>
-                                <p className="text-xs text-slate-500 font-bold mb-2 truncate uppercase tracking-tight">{iv.job?.title}</p>
+                                <p className="text-xs text-slate-500 font-bold mb-2 truncate uppercase tracking-tight">{iv.job?.title || 'Unknown Position'}</p>
                                 <div className="flex flex-wrap gap-4 text-[10px] font-black text-slate-400 uppercase tracking-tight">
                                     <div className="flex items-center gap-1.5">
                                         <Clock size={12} className="text-slate-300" /> {formatTime(iv.interviewTime)}
@@ -95,7 +95,7 @@ const UpcomingInterviews = () => {
 
                             <div className="hidden sm:block">
                                 <Link
-                                    to={`/recruiter/job-applicants/${iv.jobId}`}
+                                    to={`/recruiter/job-applicants/${iv.job?.id}`}
                                     className="p-3 bg-white border border-slate-200 text-slate-400 hover:text-black hover:border-black rounded-xl transition-all shadow-sm"
                                 >
                                     <ChevronRight size={18} />
