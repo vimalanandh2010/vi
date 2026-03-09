@@ -23,11 +23,11 @@ services:
       - key: GEMINI_API_KEY
         sync: false
       - key: EMAIL_SERVICE
-        value: gmail
+        value: brevo
       - key: EMAIL_USER
-        value: ceitvimalanandh27@gmail.com
+        sync: false
       - key: EMAIL_PASS
-        value: tepxfrxikmtcchyq
+        sync: false
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_ANON_KEY
