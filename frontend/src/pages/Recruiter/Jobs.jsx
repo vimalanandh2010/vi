@@ -32,6 +32,7 @@ const RecruiterJobs = () => {
     const [jobs, setJobs] = useState([])
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState('')
+    const [selectedCategory, setSelectedCategory] = useState('All Categories')
     const [analyticsData, setAnalyticsData] = useState({})
     const [selectedJob, setSelectedJob] = useState(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -92,11 +93,42 @@ const RecruiterJobs = () => {
         setIsModalOpen(true)
     }
 
-    const filteredJobs = jobs.filter(job =>
-        job.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.company?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.location?.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    const categories = [
+        { value: 'All Categories', label: 'All Categories', icon: '🔍' },
+        { value: 'IT', label: 'Technology / IT', icon: '💻' },
+        { value: 'Engineering', label: 'Engineering', icon: '⚙️' },
+        { value: 'Healthcare', label: 'Healthcare / Medical', icon: '🏥' },
+        { value: 'Finance', label: 'Finance / Banking', icon: '💰' },
+        { value: 'Sales', label: 'Marketing / Sales', icon: '📊' },
+        { value: 'HR', label: 'Human Resources', icon: '👥' },
+        { value: 'CustomerService', label: 'Customer Service', icon: '📞' },
+        { value: 'Education', label: 'Education / Training', icon: '📚' },
+        { value: 'Design', label: 'Design / Creative', icon: '🎨' },
+        { value: 'Operations', label: 'Operations / Logistics', icon: '📦' },
+        { value: 'Legal', label: 'Legal / Compliance', icon: '⚖️' },
+        { value: 'Consulting', label: 'Consulting', icon: '💼' },
+        { value: 'Manufacturing', label: 'Manufacturing', icon: '🏭' },
+        { value: 'Construction', label: 'Construction', icon: '🏗️' },
+        { value: 'Retail', label: 'Retail / E-commerce', icon: '🛍️' },
+        { value: 'Hospitality', label: 'Hospitality / Travel', icon: '🏨' },
+        { value: 'Media', label: 'Media / Entertainment', icon: '🎬' },
+        { value: 'RealEstate', label: 'Real Estate', icon: '🏢' },
+        { value: 'Administration', label: 'Administration', icon: '📋' },
+        { value: 'Research', label: 'Research / Science', icon: '🔬' },
+        { value: 'Agriculture', label: 'Agriculture', icon: '🌾' },
+        { value: 'Management', label: 'Strategic / Management', icon: '📈' },
+        { value: 'Other', label: 'Other', icon: '📌' }
+    ]
+
+    const filteredJobs = jobs.filter(job => {
+        const matchesSearch = job.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            job.company?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            job.location?.toLowerCase().includes(searchQuery.toLowerCase())
+        
+        const matchesCategory = selectedCategory === 'All Categories' || job.category === selectedCategory
+        
+        return matchesSearch && matchesCategory
+    })
 
     return (
         <RecruiterLayout jobCount={jobs.length}>
@@ -181,7 +213,7 @@ const RecruiterJobs = () => {
                 </div>
 
                 {/* Search Bar */}
-                <div className="relative mb-12">
+                <div className="relative mb-6">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                     <input
                         type="text"
@@ -190,6 +222,34 @@ const RecruiterJobs = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full bg-white border border-slate-200 rounded-2xl py-4 pl-12 pr-4 text-black focus:outline-none focus:ring-4 focus:ring-black/5 focus:border-black transition-all shadow-sm"
                     />
+                </div>
+
+                {/* Category Filter */}
+                <div className="mb-12">
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="text-sm font-black text-slate-400 uppercase tracking-widest">Filter by Category</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        {categories.map((cat) => (
+                            <button
+                                key={cat.value}
+                                onClick={() => setSelectedCategory(cat.value)}
+                                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all border ${
+                                    selectedCategory === cat.value
+                                        ? 'bg-black text-white border-black shadow-lg'
+                                        : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400 hover:bg-slate-50'
+                                }`}
+                            >
+                                <span>{cat.icon}</span>
+                                <span>{cat.label}</span>
+                                {selectedCategory === cat.value && jobs.filter(j => cat.value === 'All Categories' || j.category === cat.value).length > 0 && (
+                                    <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs">
+                                        {jobs.filter(j => cat.value === 'All Categories' ? true : j.category === cat.value).length}
+                                    </span>
+                                )}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Jobs List */}
