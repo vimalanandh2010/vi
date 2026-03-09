@@ -546,20 +546,12 @@ const RecruiterCandidates = () => {
                                         >
                                             <Calendar size={18} /> Schedule Interview
                                         </button>
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <button
-                                                onClick={() => handleCandidateAction('reject')}
-                                                className="py-3 px-4 bg-red-50 text-red-600 border border-red-200 rounded-xl font-bold text-xs uppercase tracking-wide hover:bg-red-600 hover:text-white transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
-                                            >
-                                                <XCircle size={16} /> Reject
-                                            </button>
-                                            <button
-                                                onClick={() => handleCandidateAction('message')}
-                                                className="py-3 px-4 bg-rose-50 text-rose-600 border border-rose-200 rounded-xl font-bold text-xs uppercase tracking-wide hover:bg-rose-600 hover:text-white transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
-                                            >
-                                                <MessageSquare size={16} /> Subject
-                                            </button>
-                                        </div>
+                                        <button
+                                            onClick={() => handleCandidateAction('reject')}
+                                            className="w-full py-3.5 bg-red-50 text-red-600 border border-red-200 rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-red-600 hover:text-white transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                                        >
+                                            <XCircle size={16} /> Reject
+                                        </button>
                                     </div>
                                 </div>
                             </div>
