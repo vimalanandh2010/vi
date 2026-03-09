@@ -23,18 +23,75 @@ if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
 const emailService = (process.env.EMAIL_SERVICE || 'gmail').toLowerCase();
 console.log('📧 Selected Email Service:', emailService);
 
+// Helper function to send email via Brevo REST API (bypasses SMTP port blocking)
+const sendBrevoAPIEmail = async (mailOptions) => {
+    const startTime = Date.now();
+    try {
+        console.log('📧 [BREVO API] Sending email via Brevo REST API...');
+        
+        const apiKey = process.env.BREVO_API_KEY || process.env.EMAIL_PASS;
+        if (!apiKey) {
+            throw new Error('Brevo API key missing. Set BREVO_API_KEY or EMAIL_PASS environment variable.');
+        }
+
+        const payload = {
+            sender: {
+                name: "Future Milestone",
+                email: process.env.SENDER_EMAIL || "ceitvimalanandh27@gmail.com"
+            },
+            to: [
+                { email: mailOptions.to }
+            ],
+            subject: mailOptions.subject,
+            htmlContent: mailOptions.html || mailOptions.text
+        };
+
+        console.log('📧 [BREVO API] Payload:', JSON.stringify(payload, null, 2));
+        console.log('📧 [BREVO API] API Key (first 20 chars):', apiKey.substring(0, 20) + '...');
+
+        const response = await axios.post('https://api.brevo.com/v3/smtp/email', payload, {
+            headers: {
+                'api-key': apiKey,
+                'Content-Type': 'application/json',
+                'accept': 'application/json'
+            },
+            timeout: 10000
+        });
+
+        const duration = Date.now() - startTime;
+        console.log('✅ [BREVO API] Email sent successfully in', duration, 'ms!');
+        console.log('✅ Message ID:', response.data.messageId);
+        console.log('✅ Response:', JSON.stringify(response.data, null, 2));
+        return response.data;
+    } catch (error) {
+        const duration = Date.now() - startTime;
+        console.error('❌ [BREVO API] Failed after', duration, 'ms');
+        console.error('❌ Error:', error.message);
+        console.error('❌ Response:', JSON.stringify(error.response?.data, null, 2));
+        console.error('❌ Status:', error.response?.status);
+        throw error;
+    }
+};
+
 let transportConfig = {}; // Initialize to avoid undefined errors
 if (emailService === 'brevo' || emailService === 'sendinblue') {
-    transportConfig = {
-        host: 'smtp-relay.brevo.com',
-        port: 587,
-        secure: false,
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        },
-        tls: { rejectUnauthorized: false }
-    };
+    // Use REST API in production (SMTP ports blocked on Render free tier)
+    if (process.env.NODE_ENV === 'production' || process.env.USE_BREVO_API === 'true') {
+        console.log('📧 Using Brevo REST API (production mode - SMTP ports blocked)');
+        transportConfig = null; // Will use API instead
+    } else {
+        // SMTP for local development only
+        transportConfig = {
+            host: 'smtp-relay.brevo.com',
+            port: 587,
+            secure: false,
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            },
+            tls: { rejectUnauthorized: false }
+        };
+    }
 } else if (emailService === 'resend') {
     console.log('📧 Using Resend REST API for email delivery (Optimized)');
     // No SMTP config needed for Resend REST API
