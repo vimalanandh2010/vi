@@ -6,7 +6,7 @@ const RecruiterLayout = ({ children, jobCount = 0 }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="flex h-screen overflow-hidden bg-white">
+        <div className="flex h-screen overflow-hidden bg-white font-poppins">
             {/* Mobile Overlay */}
             {sidebarOpen && (
                 <div
@@ -30,7 +30,7 @@ const RecruiterLayout = ({ children, jobCount = 0 }) => {
                 <Navbar onSidebarToggle={() => setSidebarOpen(!sidebarOpen)} showSidebarToggle={true} />
 
                 {/* Scrollable Content */}
-                <main className="flex-1 overflow-y-auto bg-[#FDFDFD] custom-scrollbar">
+                <main className="flex-1 overflow-y-auto bg-[#FDFDFD] custom-scrollbar recruiter-content">
                     {children}
                 </main>
             </div>

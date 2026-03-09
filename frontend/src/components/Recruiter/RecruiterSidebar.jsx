@@ -6,7 +6,6 @@ import {
     Briefcase,
     Calendar,
     MessageSquare,
-    Building2,
     Home,
     LogOut,
     X
@@ -109,13 +108,6 @@ const RecruiterSidebar = ({ jobCount = 0, onClose }) => {
                         label="Messages"
                         path="/recruiter/chat"
                         active={isActive('/recruiter/chat')}
-                        onClick={handleNavClick}
-                    />
-                    <SidebarItem
-                        icon={Building2}
-                        label="Company Profile"
-                        path="/recruiter/company-profile"
-                        active={isActive('/recruiter/company-profile')}
                         onClick={handleNavClick}
                     />
                 </div>
