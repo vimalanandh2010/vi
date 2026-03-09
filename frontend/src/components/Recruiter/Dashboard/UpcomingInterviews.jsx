@@ -80,6 +80,17 @@ const UpcomingInterviews = () => {
                                         )}
                                     </div>
                                 </div>
+                                {iv.meetingLink && (
+                                    <a
+                                        href={iv.meetingLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-xl text-[10px] font-black uppercase tracking-wider hover:from-blue-700 hover:to-blue-600 transition-all shadow-md hover:shadow-lg active:scale-95"
+                                    >
+                                        <Video size={14} />
+                                        Join Meeting
+                                    </a>
+                                )}
                             </div>
 
                             <div className="hidden sm:block">

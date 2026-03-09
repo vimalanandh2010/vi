@@ -108,18 +108,12 @@ const RecruiterDashboard = () => {
                                         >
                                             Hello, {user?.firstName || 'Recruiter'}
                                         </motion.h1>
-                                        {company && (
-                                            <VerificationBadge
-                                                level={company.verificationLevel}
-                                                status={company.verificationStatus}
-                                            />
-                                        )}
                                     </div>
                                     <p className="text-slate-400 mt-2 text-lg font-bold">Here's the latest from your recruitment pipeline.</p>
                                 </div>
                             </div>
 
-                            {(company?.verificationStatus === 'unverified' || !company) && !companyLoading && (
+                            {!company && !companyLoading && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -130,22 +124,15 @@ const RecruiterDashboard = () => {
                                             <Shield size={24} strokeWidth={2.5} />
                                         </div>
                                         <div>
-                                            <p className="text-xl font-black text-white">
-                                                {!company ? 'Complete Your Profile' : 'Verify Your Business'}
-                                            </p>
-                                            <p className="text-sm text-blue-100 font-medium">
-                                                {!company ? 'Set up your company details to start posting jobs.' : 'Build trust with candidates and unlock premium hiring tools.'}
-                                            </p>
+                                            <p className="text-xl font-black text-white">Complete Your Profile</p>
+                                            <p className="text-sm text-blue-100 font-medium">Set up your company details to start posting jobs.</p>
                                         </div>
                                     </div>
                                     <button
-                                        onClick={() => {
-                                            if (!company) navigate('/recruiter/company-profile');
-                                            else setShowVerifyModal(true);
-                                        }}
+                                        onClick={() => navigate('/recruiter/company-profile')}
                                         className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-blue-600 text-xs font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl active:scale-95 relative z-10"
                                     >
-                                        {!company ? 'Setup Profile' : 'Begin Verification'}
+                                        Setup Profile
                                     </button>
                                     <div className="absolute top-[-50%] right-[-10%] w-64 h-64 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors" />
                                 </motion.div>
