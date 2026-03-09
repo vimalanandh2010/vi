@@ -328,9 +328,19 @@ const RecruiterCandidates = () => {
                                 <div className="lg:col-span-2 space-y-6 sm:space-y-8">
                                     <section className="bg-white p-6 sm:p-8 rounded-[1.5rem] border border-slate-200 shadow-sm">
                                         <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.25em] mb-4 sm:mb-6">Professional Summary</h3>
-                                        <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
-                                            {selectedApplication.user?.aboutMe || 'Frontend developer skilled in React, JavaScript and Tailwind CSS. Experience building responsive UI and modern web applications.'}
-                                        </p>
+                                        {selectedApplication.user?.aboutMe ? (
+                                            <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
+                                                {selectedApplication.user.aboutMe}
+                                            </p>
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center py-8 text-center">
+                                                <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
+                                                    <Users className="text-slate-400" size={28} />
+                                                </div>
+                                                <p className="text-slate-400 font-bold text-sm">No professional summary added yet</p>
+                                                <p className="text-slate-300 text-xs mt-1">Candidate hasn't added a professional summary</p>
+                                            </div>
+                                        )}
                                     </section>
 
                                     <section>
@@ -407,7 +417,7 @@ const RecruiterCandidates = () => {
                                             <div className="mb-6">
                                                 <p className="text-slate-300 text-xs font-black uppercase tracking-widest mb-4">Skill Match:</p>
                                                 <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                                                    {selectedApplication.user?.skills ? (
+                                                    {selectedApplication.user?.skills && selectedApplication.user.skills.length > 0 ? (
                                                         selectedApplication.user.skills.slice(0, 4).map((skill, idx) => {
                                                             const matched = idx < 2 // First 2 skills matched
                                                             return (
@@ -433,24 +443,9 @@ const RecruiterCandidates = () => {
                                                             )
                                                         })
                                                     ) : (
-                                                        <>
-                                                            <div className="flex items-center gap-2 px-3 py-2 rounded-xl border bg-emerald-500/20 border-emerald-500/30">
-                                                                <Check className="text-emerald-400" size={14} strokeWidth={3} />
-                                                                <span className="text-xs font-bold text-emerald-300">React</span>
-                                                            </div>
-                                                            <div className="flex items-center gap-2 px-3 py-2 rounded-xl border bg-emerald-500/20 border-emerald-500/30">
-                                                                <Check className="text-emerald-400" size={14} strokeWidth={3} />
-                                                                <span className="text-xs font-bold text-emerald-300">JavaScript</span>
-                                                            </div>
-                                                            <div className="flex items-center gap-2 px-3 py-2 rounded-xl border bg-slate-700/30 border-slate-600/30">
-                                                                <X className="text-slate-500" size={14} strokeWidth={3} />
-                                                                <span className="text-xs font-bold text-slate-400">Node.js</span>
-                                                            </div>
-                                                            <div className="flex items-center gap-2 px-3 py-2 rounded-xl border bg-slate-700/30 border-slate-600/30">
-                                                                <X className="text-slate-500" size={14} strokeWidth={3} />
-                                                                <span className="text-xs font-bold text-slate-400">MongoDB</span>
-                                                            </div>
-                                                        </>
+                                                        <div className="col-span-2 text-center py-4 px-3 bg-slate-700/20 border border-slate-600/30 rounded-xl">
+                                                            <p className="text-slate-400 text-xs font-medium">No skills listed by candidate</p>
+                                                        </div>
                                                     )}
                                                 </div>
                                             </div>
