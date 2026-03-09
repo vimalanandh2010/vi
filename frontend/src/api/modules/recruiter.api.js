@@ -4,6 +4,9 @@ const recruiterApi = {
     // Dashboard Stats
     getDashboardStats: () => axiosClient.get('employer/dashboard-stats'),
 
+    // Interviews
+    getInterviews: () => axiosClient.get('employer/interviews'),
+
     // Jobs
     getJobs: () => axiosClient.get('employer/jobs'),
     createJob: (jobData) => axiosClient.post('jobs', jobData),

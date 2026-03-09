@@ -99,4 +99,57 @@ router.get('/dashboard-stats', recruiterAuth, async (req, res) => {
     }
 });
 
+// @route   GET /api/employer/interviews
+// @desc    Get upcoming interviews for employer's jobs
+router.get('/interviews', recruiterAuth, async (req, res) => {
+    try {
+        // 1. Get all jobs posted by this employer
+        const jobs = await Job.find({ postedBy: req.user.id });
+        const jobIds = jobs.map(j => j._id);
+
+        // 2. Get all applications with interview scheduled for these jobs
+        const interviews = await Application.find({
+            job: { $in: jobIds },
+            status: 'interview',
+            interviewDate: { $exists: true, $ne: null }
+        })
+            .populate('user', 'firstName lastName email photoUrl')
+            .populate('job', 'title location')
+            .sort({ interviewDate: 1 }); // Sort by date ascending
+
+        // Format response
+        const formattedInterviews = interviews.map(app => ({
+            _id: app._id,
+            candidate: {
+                id: app.user?._id,
+                name: `${app.user?.firstName || ''} ${app.user?.lastName || ''}`.trim() || 'Anonymous',
+                email: app.user?.email,
+                avatar: app.user?.photoUrl
+            },
+            job: {
+                id: app.job?._id,
+                title: app.job?.title || 'Unknown Position',
+                location: app.job?.location
+            },
+            interviewDate: app.interviewDate,
+            interviewTime: app.interviewTime,
+            meetingLink: app.meetingLink,
+            status: app.status
+        }));
+
+        res.json({
+            success: true,
+            message: 'Interviews fetched successfully',
+            interviews: formattedInterviews
+        });
+    } catch (err) {
+        console.error('Fetch interviews error:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching interviews',
+            error: err.message
+        });
+    }
+});
+
 module.exports = router;
