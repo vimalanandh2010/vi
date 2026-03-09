@@ -79,7 +79,16 @@ const sendResendEmail = async (mailOptions) => {
             text: text
         };
 
-        console.log(`[Resend DEBUG] Attempting API call to ${payload.to} from ${payload.from}`);
+        console.log('='.repeat(80));
+        console.log('📧 [EMAIL DEBUG] Resend API Email Details:');
+        console.log('='.repeat(80));
+        console.log('From:', payload.from);
+        console.log('To:', payload.to);
+        console.log('Subject:', payload.subject);
+        console.log('API Key (first 10 chars):', apiKey.substring(0, 10) + '...');
+        console.log('HTML Length:', html?.length || 0, 'characters');
+        console.log('Timestamp:', new Date().toISOString());
+        console.log('='.repeat(80));
 
         const response = await axios.post('https://api.resend.com/emails', payload, {
             headers: {
@@ -88,21 +97,47 @@ const sendResendEmail = async (mailOptions) => {
             }
         });
 
-        console.log(`✅ [Resend API] Success in ${Date.now() - startTime}ms. ID: ${response.data.id}`);
+        console.log('✅ [Resend API] SUCCESS in', Date.now() - startTime, 'ms');
+        console.log('✅ Email ID:', response.data.id);
+        console.log('✅ Response:', JSON.stringify(response.data, null, 2));
+        console.log('='.repeat(80));
         return response.data;
     } catch (error) {
-        console.error(`❌ [Resend API] Error after ${Date.now() - startTime}ms:`, error.response?.data || error.message);
+        console.error('='.repeat(80));
+        console.error('❌ [EMAIL DEBUG] Resend API FAILED after', Date.now() - startTime, 'ms');
+        console.error('❌ Error Message:', error.message);
+        console.error('❌ Error Response:', JSON.stringify(error.response?.data, null, 2));
+        console.error('❌ Status Code:', error.response?.status);
+        console.error('❌ To Address:', mailOptions.to);
+        console.error('='.repeat(80));
         throw error;
     }
 };
 
 const sendEmail = async (mailOptions) => {
+    console.log('='.repeat(80));
+    console.log('📧 [EMAIL DEBUG] sendEmail() called');
+    console.log('To:', mailOptions.to);
+    console.log('Subject:', mailOptions.subject);
+    console.log('From:', mailOptions.from);
+    console.log('='.repeat(80));
+    
     const service = (process.env.EMAIL_SERVICE || 'gmail').toLowerCase();
+    console.log('📧 Email Service:', service);
+    console.log('📧 RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY);
+    console.log('📧 EMAIL_SERVICE env:', process.env.EMAIL_SERVICE);
+    
     if (service === 'resend' || (process.env.RESEND_API_KEY && !process.env.EMAIL_SERVICE)) {
+        console.log('📧 Using Resend API...');
         return await sendResendEmail(mailOptions);
     }
+    
+    console.log('📧 Using SMTP transporter...');
     if (!transporter) throw new Error('No email transporter configured for SMTP');
-    return await transporter.sendMail(mailOptions);
+    const result = await transporter.sendMail(mailOptions);
+    console.log('✅ [SMTP] Email sent successfully:', result.messageId);
+    console.log('='.repeat(80));
+    return result;
 };
 
 const sendWelcomeEmail = async (email, name) => {
