@@ -152,4 +152,47 @@ router.get('/interviews', recruiterAuth, async (req, res) => {
     }
 });
 
+// @route   DELETE /api/employer/interviews/:id
+// @desc    Cancel/delete an interview
+router.delete('/interviews/:id', recruiterAuth, async (req, res) => {
+    try {
+        const application = await Application.findById(req.params.id).populate('job');
+        
+        if (!application) {
+            return res.status(404).json({
+                success: false,
+                message: 'Interview not found'
+            });
+        }
+
+        // Verify the job belongs to this recruiter
+        if (application.job.postedBy.toString() !== req.user.id) {
+            return res.status(403).json({
+                success: false,
+                message: 'Not authorized to cancel this interview'
+            });
+        }
+
+        // Update application status back to shortlisted and clear interview details
+        application.status = 'shortlisted';
+        application.interviewDate = null;
+        application.interviewTime = null;
+        application.meetingLink = null;
+        application.interviewNotes = null;
+        await application.save();
+
+        res.json({
+            success: true,
+            message: 'Interview cancelled successfully'
+        });
+    } catch (err) {
+        console.error('Cancel interview error:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Error cancelling interview',
+            error: err.message
+        });
+    }
+});
+
 module.exports = router;

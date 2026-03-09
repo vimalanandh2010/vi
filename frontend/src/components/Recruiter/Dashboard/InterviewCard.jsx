@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Video, User, Mail } from 'lucide-react';
+import { Calendar, Clock, Video, User, Mail, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import axiosClient from '../../../api/axiosClient';
+import toast from 'react-hot-toast';
 
-const InterviewCard = ({ iv, index }) => {
+const InterviewCard = ({ iv, index, onDelete }) => {
+    const [deleting, setDeleting] = useState(false);
     const formatTime = (t) => {
         if (!t) return '';
         const [hh, mm] = t.split(':');
         const h = parseInt(hh, 10);
         return `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${mm} ${h >= 12 ? 'PM' : 'AM'}`;
+    };
+
+    const handleDelete = async () => {
+        if (!window.confirm('Are you sure you want to cancel this interview?')) return;
+        
+        setDeleting(true);
+        try {
+            await axiosClient.delete(`employer/interviews/${iv._id}`);
+            toast.success('Interview cancelled successfully');
+            if (onDelete) onDelete(iv._id);
+        } catch (err) {
+            console.error('Delete interview error:', err);
+            toast.error('Failed to cancel interview');
+        } finally {
+            setDeleting(false);
+        }
     };
 
     return (
@@ -45,6 +64,14 @@ const InterviewCard = ({ iv, index }) => {
                         </div>
                     </div>
                 </div>
+                <button
+                    onClick={handleDelete}
+                    disabled={deleting}
+                    className="p-3 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Cancel Interview"
+                >
+                    <Trash2 size={18} />
+                </button>
             </div>
 
             <p className="text-slate-400 font-bold text-sm mb-6 uppercase tracking-tight flex items-center gap-2">

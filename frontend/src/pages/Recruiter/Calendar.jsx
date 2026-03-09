@@ -48,12 +48,17 @@ const RecruiterCalendar = () => {
     const fetchInterviews = async () => {
         try {
             const res = await axiosClient.get('jobs/recruiter/interviews')
-            const sortedInterviews = (res.interviews || []).sort((a, b) => {
+            const now = new Date();
+            // Filter out past interviews automatically
+            const upcomingInterviews = (res.interviews || []).filter(interview => {
+                const interviewDateTime = new Date(`${interview.interviewDate}T${interview.interviewTime}`);
+                return interviewDateTime >= now;
+            }).sort((a, b) => {
                 const dateA = new Date(`${a.interviewDate}T${a.interviewTime}`);
                 const dateB = new Date(`${b.interviewDate}T${b.interviewTime}`);
                 return dateA - dateB;
             });
-            setInterviews(sortedInterviews)
+            setInterviews(upcomingInterviews)
         } catch (err) {
             console.error('Failed to fetch interviews:', err)
         } finally {
@@ -149,19 +154,6 @@ const RecruiterCalendar = () => {
                     <div>
                         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-black">Interview Calendar</h1>
                         <p className="text-slate-500 font-medium mt-1 sm:mt-2 text-sm sm:text-base">Manage your upcoming candidate interview sessions</p>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-3">
-                        <GoogleCalendarSync onSync={fetchGoogleCalendarEvents} />
-                        <div className="flex items-center gap-4 bg-slate-50 border border-slate-100 rounded-2xl px-6 py-3 shadow-sm">
-                            <div className="w-3 h-3 rounded-full bg-black animate-pulse"></div>
-                            <span className="text-sm text-black font-black uppercase tracking-widest">{allEvents.length} Total Events</span>
-                        </div>
-                        {calendarConnected && (
-                            <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-2xl px-4 py-2">
-                                <div className="w-2 h-2 rounded-full bg-green-600"></div>
-                                <span className="text-xs text-green-700 font-bold">Google Calendar Connected</span>
-                            </div>
-                        )}
                     </div>
                 </div>
 
@@ -291,7 +283,14 @@ const RecruiterCalendar = () => {
                                             )}
                                         </div>
                                     ) : (
-                                        <InterviewCard key={i} iv={iv} index={i} />
+                                        <InterviewCard 
+                                            key={i} 
+                                            iv={iv} 
+                                            index={i} 
+                                            onDelete={(id) => {
+                                                setInterviews(prev => prev.filter(interview => interview._id !== id));
+                                            }}
+                                        />
                                     )
                                 ))}
 

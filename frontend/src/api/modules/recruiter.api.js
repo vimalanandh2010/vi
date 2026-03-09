@@ -6,6 +6,7 @@ const recruiterApi = {
 
     // Interviews
     getInterviews: () => axiosClient.get('employer/interviews'),
+    deleteInterview: (id) => axiosClient.delete(`employer/interviews/${id}`),
 
     // Jobs
     getJobs: () => axiosClient.get('employer/jobs'),
