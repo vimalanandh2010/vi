@@ -23,7 +23,6 @@ import { toast } from 'react-toastify'
 import { useAuth } from '../../context/AuthContext'
 import useFetch from '../../hooks/useFetch'
 import recruiterApi from '../../api/modules/recruiter.api'
-import VerificationBadge from '../../components/Common/VerificationBadge'
 import RecruiterLayout from '../../components/RecruiterLayout'
 
 const RecruiterJobs = () => {
@@ -335,25 +334,9 @@ const RecruiterJobs = () => {
                             className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col"
                         >
                             <div className="p-8 border-b border-slate-50 flex justify-between items-start">
-                                <div className="flex gap-6">
-                                    <div className="w-20 h-20 rounded-2xl bg-slate-900 flex items-center justify-center text-4xl shadow-xl">
-                                        🏢
-                                    </div>
-                                    <div>
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <span className="px-3 py-1 bg-black text-white rounded-full text-[10px] font-black uppercase tracking-widest">
-                                                Recruiter Preview
-                                            </span>
-                                        </div>
-                                        <h2 className="text-3xl font-black text-black mb-1">{selectedJob.title}</h2>
-                                        <div className="flex items-center gap-3">
-                                            <p className="text-slate-600 font-bold">{selectedJob.company}</p>
-                                            <VerificationBadge
-                                                level={selectedJob.company?.verificationLevel || 0}
-                                                status={selectedJob.company?.verificationStatus || 'unverified'}
-                                            />
-                                        </div>
-                                    </div>
+                                <div className="flex-1">
+                                    <h2 className="text-3xl font-black text-black mb-2">{selectedJob.title}</h2>
+                                    <p className="text-slate-600 font-bold">{selectedJob.company}</p>
                                 </div>
                                 <button
                                     onClick={() => setIsModalOpen(false)}
