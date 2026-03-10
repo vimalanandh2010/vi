@@ -117,12 +117,14 @@ const JobAnalytics = () => {
                             <ArrowLeft size={20} />
                         </Link>
                         <div>
-                                <h1 className="text-4xl font-black text-black tracking-tight">{analytics.jobTitle}</h1>
-                                <span className="px-3 py-1 bg-blue-50 text-blue-600 border border-blue-100 rounded-full text-[10px] font-bold uppercase tracking-widest">Analytics</span>
+                            <div className="flex items-center gap-3 mb-1">
+                                <h1 className="text-3xl font-bold text-gray-900">{analytics.jobTitle}</h1>
+                                <span className="px-3 py-1 bg-blue-50 text-blue-600 border border-blue-100 rounded-full text-xs font-semibold">Analytics</span>
                             </div>
-                            <p className="text-slate-400 text-lg font-bold mt-1">{analytics.company}</p>
+                            <p className="text-gray-600 text-sm font-medium">{analytics.company}</p>
                         </div>
                     </div>
+                </div>
 
                     {/* Job Stepper */}
                     <div className="flex items-center gap-4 bg-slate-50 border border-slate-100 p-2 rounded-2xl shadow-sm">
