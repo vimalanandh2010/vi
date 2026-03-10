@@ -57,7 +57,6 @@ const SeekerLanding = () => {
     const { user, loginWithGoogle, getRedirectPath } = useAuth()
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
-    const [searchQuery, setSearchQuery] = useState('')
 
     const googleLogin = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
@@ -154,38 +153,6 @@ const SeekerLanding = () => {
                             Join thousands of professionals who've found their perfect role. Browse verified opportunities, upskill with free courses, and take control of your career journey.
                         </p>
 
-                        {/* Search Bar */}
-                        <div className="max-w-3xl mx-auto mb-8">
-                            <div className="relative">
-                                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={24} />
-                                <input
-                                    type="text"
-                                    placeholder="Search jobs, skills, or companies..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && navigate(`/seeker/jobs?search=${searchQuery}`)}
-                                    className="w-full pl-16 pr-32 py-5 rounded-2xl border-2 border-slate-200 focus:border-blue-500 outline-none text-lg shadow-lg"
-                                />
-                                <button 
-                                    onClick={() => navigate(`/seeker/jobs?search=${searchQuery}`)}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 px-8 py-3 bg-black text-white rounded-xl font-bold hover:bg-slate-800 transition-all"
-                                >
-                                    Search
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Trust Badge */}
-                        <motion.p 
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.8 }}
-                            className="text-slate-500 text-sm flex items-center justify-center gap-2 mb-8"
-                        >
-                            <Users size={16} />
-                            <span>Join <strong>50,000+</strong> professionals finding their dream jobs</span>
-                        </motion.p>
-
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             {user ? (
                                 user.role === 'seeker' ? (
@@ -232,29 +199,6 @@ const SeekerLanding = () => {
 
 
                     </motion.div>
-                </div>
-            </section>
-
-            {/* Trusted Companies Strip */}
-            <section className="py-16 px-6 bg-white border-y border-slate-100">
-                <div className="max-w-7xl mx-auto">
-                    <p className="text-center text-slate-500 text-sm font-semibold uppercase tracking-wider mb-8">
-                        Trusted by professionals at
-                    </p>
-                    <div className="flex flex-wrap items-center justify-center gap-12 opacity-60">
-                        {['Google', 'Microsoft', 'Amazon', 'TCS', 'Infosys', 'Wipro'].map((company, idx) => (
-                            <motion.div 
-                                key={idx}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 0.6, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: idx * 0.1 }}
-                                className="text-2xl font-black text-slate-800"
-                            >
-                                {company}
-                            </motion.div>
-                        ))}
-                    </div>
                 </div>
             </section>
 
