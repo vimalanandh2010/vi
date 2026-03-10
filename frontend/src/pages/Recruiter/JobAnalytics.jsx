@@ -124,7 +124,6 @@ const JobAnalytics = () => {
                             <p className="text-gray-600 text-sm font-medium">{analytics.company}</p>
                         </div>
                     </div>
-                </div>
 
                     {/* Job Stepper */}
                     <div className="flex items-center gap-4 bg-slate-50 border border-slate-100 p-2 rounded-2xl shadow-sm">
