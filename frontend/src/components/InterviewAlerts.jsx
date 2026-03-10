@@ -67,7 +67,7 @@ const InterviewAlerts = () => {
                                 <p className="text-xs mb-3 text-slate-600">You have an interview in {diffMins} minutes.</p>
                                 <button
                                     onClick={() => navigate(`/interview/${app._id}`)}
-                                    className="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-2 rounded-lg w-full font-bold shadow-md transition-all active:scale-95"
+                                    className="bg-black hover:bg-gray-800 text-white text-xs px-3 py-2 rounded-lg w-full font-bold shadow-md transition-all active:scale-95"
                                 >
                                     Join Video Call
                                 </button>
