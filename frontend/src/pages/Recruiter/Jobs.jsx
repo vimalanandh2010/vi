@@ -120,16 +120,6 @@ const RecruiterJobs = () => {
         { value: 'Other', label: 'Other', icon: '📌' }
     ]
 
-    const filteredJobs = jobs.filter(job => {
-        const matchesSearch = job.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            job.company?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            job.location?.toLowerCase().includes(searchQuery.toLowerCase())
-        
-        const matchesCategory = selectedCategory === 'All Categories' || job.category === selectedCategory
-        
-        return matchesSearch && matchesCategory
-    })
-
     return (
         <RecruiterLayout jobCount={jobs.length}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 sm:py-8">
@@ -212,65 +202,25 @@ const RecruiterJobs = () => {
                     </div>
                 </div>
 
-                {/* Search Bar */}
-                <div className="relative mb-6">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                    <input
-                        type="text"
-                        placeholder="Search jobs by title, company, or location..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-2xl py-4 pl-12 pr-4 text-black focus:outline-none focus:ring-4 focus:ring-black/5 focus:border-black transition-all shadow-sm"
-                    />
-                </div>
-
-                {/* Category Filter */}
-                <div className="mb-12">
-                    <div className="flex items-center gap-3 mb-4">
-                        <span className="text-sm font-black text-slate-400 uppercase tracking-widest">Filter by Category</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                        {categories.map((cat) => (
-                            <button
-                                key={cat.value}
-                                onClick={() => setSelectedCategory(cat.value)}
-                                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all border ${
-                                    selectedCategory === cat.value
-                                        ? 'bg-blue-600 text-white border-blue-600 shadow-lg'
-                                        : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400 hover:bg-slate-50'
-                                }`}
-                            >
-                                <span>{cat.icon}</span>
-                                <span>{cat.label}</span>
-                                {selectedCategory === cat.value && jobs.filter(j => cat.value === 'All Categories' || j.category === cat.value).length > 0 && (
-                                    <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs">
-                                        {jobs.filter(j => cat.value === 'All Categories' ? true : j.category === cat.value).length}
-                                    </span>
-                                )}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
                 {/* Jobs List */}
                 {loading ? (
                     <div className="flex flex-col items-center justify-center h-64 text-slate-400">
                         <Loader2 className="animate-spin mb-4" size={32} />
                         <p className="text-sm font-bold uppercase tracking-widest">Loading jobs...</p>
                     </div>
-                ) : filteredJobs.length === 0 ? (
+                ) : jobs.length === 0 ? (
                     <div className="text-center py-20 bg-white rounded-3xl border border-slate-100 shadow-sm">
                         <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
                             <Briefcase className="text-slate-300" size={32} />
                         </div>
                         <p className="text-black text-xl font-bold mb-2">No jobs found</p>
                         <p className="text-slate-500 font-medium">
-                            {searchQuery ? 'Try a different search term' : 'Start by posting your first job'}
+                            Start by posting your first job
                         </p>
                     </div>
                 ) : (
                     <div className="grid gap-6">
-                        {filteredJobs.map((job) => (
+                        {jobs.map((job) => (
                             <motion.div
                                 key={job._id}
                                 initial={{ opacity: 0, y: 20 }}

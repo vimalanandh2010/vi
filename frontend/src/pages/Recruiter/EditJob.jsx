@@ -428,7 +428,6 @@ const EditJob = () => {
                                     </>
                                 )}
                             </button>
-                        </div>
                     </div>
                 </form>
             </main>
