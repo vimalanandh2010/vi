@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
     LayoutDashboard,
-    Users,
     Briefcase,
     Calendar,
     MessageSquare,
@@ -74,13 +73,6 @@ const RecruiterSidebar = ({ jobCount = 0, onClose }) => {
                     label="Dashboard"
                     path="/recruiter/dashboard"
                     active={isActive('/recruiter/dashboard')}
-                    onClick={handleNavClick}
-                />
-                <SidebarItem
-                    icon={Users}
-                    label="Candidates"
-                    path="/recruiter/candidates"
-                    active={isActive('/recruiter/candidates')}
                     onClick={handleNavClick}
                 />
                 <SidebarItem

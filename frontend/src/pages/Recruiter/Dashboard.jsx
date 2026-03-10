@@ -5,7 +5,6 @@ import {
     Users,
     Briefcase,
     Clock,
-    Search,
     CheckCircle,
     Shield,
     X
@@ -137,17 +136,6 @@ const RecruiterDashboard = () => {
                                     <div className="absolute top-[-50%] right-[-10%] w-64 h-64 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors" />
                                 </motion.div>
                             )}
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-6">
-                            <div className="relative group w-full lg:w-80">
-                                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black transition-colors" size={20} />
-                                <input
-                                    type="text"
-                                    placeholder="Search applicants..."
-                                    className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-14 pr-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm text-gray-900 font-medium shadow-sm"
-                                />
-                            </div>
                         </div>
                     </header>
 
