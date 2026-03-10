@@ -236,7 +236,7 @@ const sendBrevoEmail = async (mailOptions) => {
 
         const payload = {
             sender: {
-                email: from || 'ceitvimalanandh27@gmail.com',
+                email: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
                 name: 'Future Milestone Job Portal'
             },
             to: [{ email: to }],
@@ -349,7 +349,7 @@ const sendWelcomeEmail = async (email, name) => {
     console.log('🎉 [WELCOME EMAIL] Preparing to send welcome email to:', email, 'Name:', name);
     try {
         const mailOptions = {
-            from: process.env.EMAIL_USER || 'onboarding@resend.dev',
+            from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
             to: email,
             subject: 'Welcome to Future Milestone Job Portal!',
             html: `
@@ -373,7 +373,7 @@ const sendApplicationEmail = async (email, name, jobTitle, companyName) => {
     console.log('📝 [APPLICATION EMAIL] Preparing to send application email to:', email);
     try {
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
             to: email,
             subject: `Application Received: ${jobTitle}`,
             html: `
@@ -417,7 +417,7 @@ const sendStatusUpdateEmail = async (email, name, jobTitle, companyName, status,
         }
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
             to: email,
             subject: subject,
             html: `
@@ -438,7 +438,7 @@ const sendStatusUpdateEmail = async (email, name, jobTitle, companyName, status,
 const sendSelectionEmail = async (email, name, jobTitle, companyName) => {
     try {
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
             to: email,
             subject: `🎉 Congratulations! You've been selected for ${jobTitle}`,
             html: `
@@ -479,7 +479,7 @@ const sendVerificationOTPEmail = async (email, otp) => {
     console.log(`[OTP-FALLBACK] Company Verification OTP for ${email}: ${otp}`);
 
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
         to: email,
         subject: `Action Required: Verify your Company Domain`,
         html: `
@@ -507,7 +507,7 @@ const sendOtpEmail = async (email, otp) => {
     console.log(`[OTP-FALLBACK] Login OTP for ${email}: ${otp}`);
 
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
         to: email,
         subject: 'Your Login OTP - Future Milestone',
         html: `
@@ -535,7 +535,7 @@ const sendResetPasswordEmail = async (email, otp) => {
     console.log(`[OTP-FALLBACK] Reset Password OTP for ${email}: ${otp}`);
 
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
         to: email,
         subject: 'Password Reset Code - Future Milestone',
         html: `
@@ -577,7 +577,7 @@ const sendInterviewSlotEmail = async (email, candidateName, jobTitle, companyNam
         const finalMeetingUrl = meetingLink || (applicationId ? `${process.env.FRONTEND_URL || 'http://localhost:5173'}/interview/${applicationId}` : '#');
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
             to: email,
             subject: `Interview Scheduled: ${jobTitle} at ${companyName}`,
             html: `
@@ -642,7 +642,7 @@ const sendInterviewSlotEmail = async (email, candidateName, jobTitle, companyNam
 const sendPostInterviewRejectionEmail = async (email, name, jobTitle, companyName) => {
     try {
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
             to: email,
             subject: `Update regarding your interview for ${jobTitle}`,
             html: `
@@ -682,7 +682,7 @@ const sendPostInterviewRejectionEmail = async (email, name, jobTitle, companyNam
 const sendInterviewReminderEmail = async (email, name, jobTitle, companyName, meetingLink, interviewTime) => {
     try {
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
             to: email,
             subject: `Reminder: Action Required - Your interview for ${jobTitle} starts in 30 minutes!`,
             html: `
@@ -724,7 +724,7 @@ const sendInterviewReminderEmail = async (email, name, jobTitle, companyName, me
 const sendInterviewCancelledEmail = async (recruiterEmail, applicantName, jobTitle) => {
     try {
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
             to: recruiterEmail,
             subject: `Interview Cancelled: ${applicantName} for ${jobTitle}`,
             html: `
