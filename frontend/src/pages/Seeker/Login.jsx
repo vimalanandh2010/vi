@@ -310,7 +310,7 @@ const SeekerLogin = () => {
                                 <button
                                     type="submit"
                                     disabled={isLoading}
-                                    className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all"
+                                    className="w-full py-4 bg-black hover:bg-gray-800 text-white font-bold rounded-xl transition-all"
                                 >
                                     {isLoading ? 'Setting password...' : 'Set Password & Log In'}
                                 </button>

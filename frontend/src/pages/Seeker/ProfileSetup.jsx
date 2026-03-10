@@ -693,7 +693,7 @@ const ProfileSetup = () => {
                                 id="resume-upload"
                                 required
                             />
-                            <label htmlFor="resume-upload" className="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg cursor-pointer transition-all mt-2">
+                            <label htmlFor="resume-upload" className="inline-block px-6 py-2 bg-black hover:bg-gray-800 text-white rounded-lg cursor-pointer transition-all mt-2">
                                 Choose File
                             </label>
                             {formData.resume && (
@@ -746,7 +746,7 @@ const ProfileSetup = () => {
                                 <React.Fragment key={step.number}>
                                     <div className="flex flex-col items-center">
                                         <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all ${isCompleted ? 'bg-green-600 border-green-600' :
-                                            isActive ? 'bg-blue-600 border-blue-600' :
+                                            isActive ? 'bg-black border-black' :
                                                 'bg-slate-800 border-slate-700'
                                             }`}>
                                             {isCompleted ? <Check className="text-white" size={24} /> : <Icon className="text-white" size={20} />}

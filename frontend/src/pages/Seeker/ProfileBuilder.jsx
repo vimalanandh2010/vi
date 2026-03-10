@@ -237,7 +237,7 @@ const ProfileBuilder = () => {
                                 <button
                                     onClick={handleSync}
                                     disabled={loading}
-                                    className="px-6 py-3 bg-blue-600 text-black rounded-xl text-[10px] font-black uppercase tracking-widest shadow-[0_10px_20px_rgba(37,99,235,0.3)] hover:bg-blue-700 hover:text-black hover:scale-105 active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
+                                    className="px-6 py-3 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-[0_10px_20px_rgba(0,0,0,0.3)] hover:bg-gray-800 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
                                 >
                                     {loading ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
                                     Save

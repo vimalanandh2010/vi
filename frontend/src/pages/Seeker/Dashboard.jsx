@@ -551,7 +551,7 @@ const SeekerDashboard = () => {
                                     </div>
                                     <h4 className="text-gray-900 font-bold mb-2 text-lg">No recent applications found</h4>
                                     <p className="text-gray-600 max-w-sm mx-auto mb-6">You haven't applied to any jobs recently. Start exploring opportunities that match your skills!</p>
-                                    <Link to="/seeker/jobs" className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all font-semibold shadow-md">
+                                    <Link to="/seeker/jobs" className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-lg transition-all font-semibold shadow-md">
                                         Browse Jobs
                                     </Link>
                                 </div>

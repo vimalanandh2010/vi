@@ -591,7 +591,7 @@ const Home = () => {
                                             <p className="text-2xl font-bold text-gray-900">{category.count}</p>
                                             <p className="text-xs font-semibold text-gray-500">Active Jobs</p>
                                         </div>
-                                        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-md">
+                                        <button className="px-4 py-2 bg-black hover:bg-gray-800 text-white text-xs font-semibold rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-md">
                                             Explore
                                         </button>
                                     </div>
@@ -639,7 +639,7 @@ const Home = () => {
                     <div className="flex justify-center mt-12">
                         <button
                             onClick={() => navigate('/seeker/jobs')}
-                            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95"
+                            className="px-8 py-3 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95"
                         >
                             Load More Listings →
                         </button>

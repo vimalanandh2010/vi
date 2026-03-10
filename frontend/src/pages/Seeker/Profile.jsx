@@ -174,7 +174,7 @@ const Profile = () => {
                                             {isEditable && (
                                                 <button
                                                     onClick={() => navigate('/seeker/profile-builder?section=summary')}
-                                                    className="ml-auto px-3 py-2 bg-blue-600 hover:bg-blue-700 border border-blue-600 rounded-xl text-white transition-all"
+                                                    className="ml-auto px-3 py-2 bg-black hover:bg-gray-800 border border-black rounded-xl text-white transition-all"
                                                 >
                                                     <span className="text-[10px] font-bold uppercase tracking-widest">Edit</span>
                                                 </button>
@@ -236,7 +236,7 @@ const Profile = () => {
                                     {isEditable && (
                                         <button
                                             onClick={() => navigate('/seeker/profile-builder')}
-                                            className="p-4 bg-blue-600 hover:bg-blue-700 border-2 border-blue-600 rounded-2xl text-white transition-all duration-500 shadow-md"
+                                            className="p-4 bg-black hover:bg-gray-800 border-2 border-black rounded-2xl text-white transition-all duration-500 shadow-md"
                                         >
                                             <Plus size={24} />
                                         </button>
@@ -251,7 +251,7 @@ const Profile = () => {
                                                 <div className="bg-white border-2 border-gray-200 rounded-3xl p-10 shadow-md">
                                                     <div className="flex items-center justify-between mb-6">
                                                         <h4 className="text-gray-600 text-[10px] font-black uppercase tracking-[0.2em]">Featured Projects</h4>
-                                                        <button onClick={() => navigate('/seeker/profile-builder?section=projects')} className="p-2 bg-blue-600 hover:bg-blue-700 border-2 border-blue-600 rounded-xl text-white transition-all"><Plus size={16} /></button>
+                                                        <button onClick={() => navigate('/seeker/profile-builder?section=projects')} className="p-2 bg-black hover:bg-gray-800 border-2 border-black rounded-xl text-white transition-all"><Plus size={16} /></button>
                                                     </div>
                                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                         {user.projects.map((proj, idx) => (
