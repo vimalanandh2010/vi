@@ -237,9 +237,9 @@ const JobApplicants = () => {
     if (loading) {
         return (
             <RecruiterLayout>
-                <div className="flex flex-col items-center justify-center h-[80vh] bg-[#FDFDFD]">
-                    <Loader2 className="animate-spin text-black mb-4" size={48} />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Assembling Talent Pool...</p>
+                <div className="flex flex-col items-center justify-center h-[80vh] bg-white">
+                    <Loader2 className="animate-spin text-blue-600 mb-4" size={40} />
+                    <p className="text-sm font-semibold text-gray-600">Loading applicants...</p>
                 </div>
             </RecruiterLayout>
         )

@@ -63,8 +63,8 @@ const MyPostings = () => {
         return (
             <RecruiterLayout>
                 <div className="flex flex-col items-center justify-center h-[80vh] bg-white">
-                    <Loader2 className="animate-spin text-black mb-4" size={48} />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Synchronizing Repository...</p>
+                    <Loader2 className="animate-spin text-blue-600 mb-4" size={40} />
+                    <p className="text-sm font-semibold text-gray-600">Loading your job postings...</p>
                 </div>
             </RecruiterLayout>
         )
@@ -73,55 +73,52 @@ const MyPostings = () => {
     return (
         <RecruiterLayout>
             <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-7xl mx-auto bg-white min-h-full">
-                {/* Tactical Header */}
-                <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-20">
+                {/* Header */}
+                <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-12">
                     <div>
-                        <div className="flex items-center gap-2 mb-6 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
-                            Governance <ChevronRight size={12} /> Resource Allocation
-                        </div>
-                        <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-4">
-                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black tracking-tighter">
-                                Current <br />Mandates
+                        <div className="flex flex-wrap items-center gap-4 mb-2">
+                            <h1 className="text-4xl font-bold text-gray-900">
+                                Your Job Postings
                             </h1>
-                            <div className="px-6 py-2 bg-black text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-2xl">
-                                {jobs.length} ACTIVE
+                            <div className="px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold shadow-sm">
+                                {jobs.length} Active
                             </div>
                         </div>
-                        <p className="text-slate-400 text-xl font-medium tracking-tight">Real-time management of deployed organizational roles.</p>
+                        <p className="text-gray-600 text-sm font-medium">Manage and monitor your active job listings</p>
                     </div>
 
                     <Link
                         to="/recruiter/post-job"
-                        className="inline-flex items-center gap-3 px-6 sm:px-10 py-4 sm:py-6 bg-black hover:bg-blue-600 text-white rounded-[1.5rem] sm:rounded-[2rem] font-black uppercase tracking-[0.2em] text-center text-xs transition-all shadow-[0_20px_50px_rgba(0,0,0,0.1)] active:scale-95 group"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm transition-all shadow-md hover:shadow-lg active:scale-95 group"
                     >
-                        Initiate Deployment
+                        Create New Job
                         <Plus size={18} className="group-hover:rotate-90 transition-transform" />
                     </Link>
                 </header>
 
-                {/* Operations Bar */}
-                <div className="flex flex-col md:flex-row gap-6 mb-12">
+                {/* Search Bar */}
+                <div className="flex flex-col md:flex-row gap-6 mb-8">
                     <div className="relative flex-1 group">
-                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-black transition-colors" size={20} />
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={20} />
                         <input
                             type="text"
-                            placeholder="Filter by title or identifier..."
+                            placeholder="Search by job title..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full bg-slate-50 border border-transparent focus:bg-white focus:border-slate-100 text-black font-bold rounded-[1.5rem] py-5 pl-16 pr-6 outline-none transition-all placeholder:text-slate-300"
+                            className="w-full bg-gray-50 border border-gray-200 focus:bg-white focus:border-blue-500 text-gray-900 font-medium rounded-lg py-3 pl-12 pr-4 outline-none transition-all placeholder:text-gray-400"
                         />
                     </div>
                 </div>
 
-                {/* Mandate Inventory */}
+                {/* Job Listings */}
                 {filteredJobs.length === 0 ? (
-                    <div className="bg-slate-50/50 border border-slate-100 border-dashed rounded-[4rem] p-32 text-center">
-                        <Target size={64} className="text-slate-200 mx-auto mb-8" />
-                        <h3 className="text-2xl font-black text-black mb-2">Zero Matches</h3>
-                        <p className="text-slate-400 font-bold">No active mandates currently align with your filter parameters.</p>
+                    <div className="bg-gray-50 border-2 border-gray-200 border-dashed rounded-2xl p-20 text-center">
+                        <Target size={48} className="text-gray-300 mx-auto mb-6" />
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">No Jobs Found</h3>
+                        <p className="text-gray-600 font-medium text-sm">No job postings match your search criteria.</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                         <AnimatePresence>
                             {filteredJobs.map((job, idx) => (
                                 <motion.div
@@ -130,77 +127,70 @@ const MyPostings = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.05 }}
-                                    className="bg-white border border-slate-100 p-10 rounded-[3rem] hover:shadow-[0_40px_80px_rgba(0,0,0,0.05)] transition-all duration-500 group flex flex-col justify-between"
+                                    className="bg-white border-2 border-gray-200 p-6 rounded-2xl hover:shadow-lg transition-all duration-300 group flex flex-col justify-between"
                                 >
                                     <div>
-                                        <div className="flex justify-between items-start mb-8">
-                                            <div className="w-16 h-16 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center text-black group-hover:bg-black group-hover:text-white transition-all shadow-sm">
-                                                <Briefcase size={28} strokeWidth={2.5} />
+                                        <div className="flex justify-between items-start mb-6">
+                                            <div className="w-12 h-12 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                                <Briefcase size={22} strokeWidth={2.5} />
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <span className="px-3 py-1 bg-green-50 text-green-600 rounded-lg text-[8px] font-black uppercase tracking-[0.2em] border border-green-100">
-                                                    Live
+                                                <span className="px-3 py-1 bg-green-50 text-green-600 rounded-lg text-xs font-semibold border border-green-100">
+                                                    Active
                                                 </span>
                                             </div>
                                         </div>
 
-                                        <h3 className="text-2xl font-black text-black mb-4 tracking-tight leading-tight group-hover:text-blue-600 transition-colors">{job.title}</h3>
+                                        <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors">{job.title}</h3>
 
-                                        <div className="flex flex-col gap-3 mb-10">
-                                            <div className="flex items-center gap-3 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                                <MapPin size={14} className="text-slate-300" />
+                                        <div className="flex flex-col gap-2 mb-6">
+                                            <div className="flex items-center gap-2 text-xs font-medium text-gray-600">
+                                                <MapPin size={14} className="text-gray-400" />
                                                 {job.location}
                                             </div>
-                                            <div className="flex items-center gap-3 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                                <Calendar size={14} className="text-slate-300" />
-                                                Depl: {new Date(job.createdAt).toLocaleDateString()}
+                                            <div className="flex items-center gap-2 text-xs font-medium text-gray-600">
+                                                <Calendar size={14} className="text-gray-400" />
+                                                Posted: {new Date(job.createdAt).toLocaleDateString()}
                                             </div>
                                         </div>
 
-                                        <div className="grid grid-cols-2 gap-4 mb-10">
-                                            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 group-hover:bg-white transition-colors">
-                                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Talent Pool</p>
-                                                <div className="flex items-center gap-3">
-                                                    <Users size={20} className="text-blue-500" />
-                                                    <span className="text-2xl font-black text-black tracking-tighter">{job.applicants || 0}</span>
+                                        <div className="grid grid-cols-2 gap-3 mb-6">
+                                            <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 group-hover:bg-white transition-colors">
+                                                <p className="text-xs font-semibold text-gray-500 mb-1">Applicants</p>
+                                                <div className="flex items-center gap-2">
+                                                    <Users size={18} className="text-blue-500" />
+                                                    <span className="text-2xl font-bold text-gray-900">{job.applicants || 0}</span>
                                                 </div>
                                             </div>
-                                            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 group-hover:bg-white transition-colors">
-                                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Engage Rate</p>
-                                                <div className="flex items-center gap-3">
-                                                    <Activity size={18} className="text-emerald-500" />
-                                                    <span className="text-2xl font-black text-black tracking-tighter">—</span>
+                                            <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 group-hover:bg-white transition-colors">
+                                                <p className="text-xs font-semibold text-gray-500 mb-1">Activity</p>
+                                                <div className="flex items-center gap-2">
+                                                    <Activity size={16} className="text-green-500" />
+                                                    <span className="text-2xl font-bold text-gray-900">—</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-4 pt-8 border-t border-slate-50">
+                                    <div className="flex items-center gap-3 pt-6 border-t border-gray-100">
                                         <Link
                                             to={`/recruiter/job/${job._id}/applicants`}
-                                            className="flex-1 py-4 bg-black text-white rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-blue-600 transition-all shadow-xl shadow-black/5 active:scale-95"
+                                            className="flex-1 py-3 bg-blue-600 text-white rounded-lg font-semibold text-sm flex items-center justify-center gap-2 hover:bg-blue-700 transition-all active:scale-95"
                                         >
-                                            Pipeline
-                                            <ChevronRight size={14} strokeWidth={3} />
+                                            View Applicants
+                                            <ChevronRight size={16} strokeWidth={2.5} />
                                         </Link>
                                         <Link
                                             to={`/recruiter/edit-job/${job._id}`}
-                                            className="p-4 bg-slate-50 hover:bg-slate-100 text-black rounded-2xl transition-all border border-slate-100"
-                                            title="Modify Mandate"
+                                            className="p-3 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-lg transition-all border border-gray-200"
+                                            title="Edit Job"
                                         >
                                             <Edit size={18} strokeWidth={2.5} />
                                         </Link>
-                                        <Link
-                                            to={`/recruiter/job-analytics/${job._id}`}
-                                            className="p-4 bg-slate-50 hover:bg-slate-100 text-black rounded-2xl transition-all border border-slate-100"
-                                            title="Analytical Insight"
-                                        >
-                                            <Activity size={18} strokeWidth={2.5} />
-                                        </Link>
                                         <button
                                             onClick={() => handleDelete(job._id)}
-                                            className="p-4 bg-slate-50 hover:bg-red-50 text-red-500 rounded-2xl transition-all border border-slate-100 hover:border-red-100"
-                                            title="Purge Record"
+                                            className="p-3 bg-gray-50 hover:bg-red-50 text-red-500 rounded-lg transition-all border border-gray-200 hover:border-red-200"
+                                            title="Delete Job"
                                         >
                                             <Trash2 size={18} />
                                         </button>

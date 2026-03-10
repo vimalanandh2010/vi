@@ -135,14 +135,14 @@ const RecruiterCandidates = () => {
     const StatusBadge = ({ status }) => {
         const styles = {
             'applied': 'bg-blue-50 text-blue-600 border-blue-100',
-            'viewed': 'bg-slate-50 text-slate-500 border-slate-100',
+            'viewed': 'bg-gray-50 text-gray-600 border-gray-100',
             'shortlisted': 'bg-orange-50 text-orange-600 border-orange-100',
             'interview': 'bg-purple-50 text-purple-600 border-purple-100',
-            'selected': 'bg-emerald-50 text-emerald-600 border-emerald-100',
+            'selected': 'bg-green-50 text-green-600 border-green-100',
             'rejected': 'bg-red-50 text-red-600 border-red-100'
         }
         return (
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-tighter border ${styles[status] || styles['applied']}`}>
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${styles[status] || styles['applied']}`}>
                 {status}
             </span>
         )
@@ -158,16 +158,16 @@ const RecruiterCandidates = () => {
                     border-r border-slate-100 flex-col bg-white shrink-0
                     ${showDetailMobile ? 'hidden sm:flex' : 'flex'}
                 `}>
-                    <div className="p-6 sm:p-8 border-b border-slate-50 space-y-4 sm:space-y-6">
-                        <h1 className="text-2xl sm:text-3xl font-black text-black">Candidates</h1>
+                    <div className="p-6 sm:p-8 border-b border-gray-100 space-y-4 sm:space-y-6">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Candidates</h1>
                         <div className="relative">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                             <input
                                 type="text"
                                 placeholder="Search by name, role..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 sm:py-3.5 pl-12 pr-4 text-sm text-black focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all"
+                                className="w-full bg-gray-50 border border-gray-200 rounded-lg py-3 sm:py-3.5 pl-12 pr-4 text-sm text-gray-900 font-medium focus:outline-none focus:border-blue-500 focus:bg-white transition-all placeholder:text-gray-400"
                             />
                         </div>
                         <div className="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar">
@@ -175,13 +175,13 @@ const RecruiterCandidates = () => {
                                 <button
                                     key={f}
                                     onClick={() => setFilter(f)}
-                                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-tight whitespace-nowrap transition-all flex items-center gap-1.5 sm:gap-2 ${filter === f
-                                        ? 'bg-black text-white shadow-lg'
-                                        : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
+                                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 sm:gap-2 ${filter === f
+                                        ? 'bg-blue-600 text-white shadow-md'
+                                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
                                         }`}
                                 >
                                     {f}
-                                    <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] ${filter === f ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-500'}`}>
+                                    <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] font-semibold ${filter === f ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-600'}`}>
                                         {getStatusCount(f)}
                                     </span>
                                 </button>
@@ -191,12 +191,12 @@ const RecruiterCandidates = () => {
 
                     <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4 custom-scrollbar">
                         {loading ? (
-                            <div className="flex flex-col items-center justify-center h-64 text-slate-400 font-bold uppercase tracking-widest text-xs">
-                                <Loader2 className="animate-spin mb-4" size={32} />
-                                Loading Candidates...
+                            <div className="flex flex-col items-center justify-center h-64 text-gray-500 font-semibold text-sm">
+                                <Loader2 className="animate-spin mb-4 text-blue-600" size={32} />
+                                Loading candidates...
                             </div>
                         ) : filteredApplications.length === 0 ? (
-                            <div className="text-center py-20 font-bold text-slate-300">No candidates found</div>
+                            <div className="text-center py-20 font-medium text-gray-400">No candidates found</div>
                         ) : (
                             filteredApplications.map(app => (
                                 <motion.div

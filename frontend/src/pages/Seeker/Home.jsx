@@ -275,11 +275,9 @@ const Home = () => {
             {/* ══════════════════════════════════════════
                 HERO SECTION — Elegant Luxury Style
             ══════════════════════════════════════════ */}
-            <section className="relative bg-gradient-to-br from-white via-amber-50/30 to-white pt-24 pb-16 overflow-hidden z-10">
+            <section className="relative bg-white pt-24 pb-16 overflow-hidden z-10">
                 {/* Elegant background effects */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent" />
-                <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-400/10 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+
 
                 {/* Floating particles */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -365,14 +363,13 @@ const Home = () => {
                 </div>
             </section>
 
-            <div className="relative h-24 bg-gradient-to-b from-white via-amber-50/30 to-white" />
+            <div className="relative h-8 bg-white" />
 
             {/* ══════════════════════════════════════════
                 EVERYTHING YOU NEED TO SUCCEED - Elegant
             ══════════════════════════════════════════ */}
-            <section className="py-20 bg-gradient-to-br from-white via-amber-50/30 to-white relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-amber-200/20 to-transparent rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-purple-200/20 to-transparent rounded-full blur-3xl" />
+            <section className="py-20 bg-white relative overflow-hidden">
+
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center mb-12">
                         <motion.div
@@ -452,8 +449,6 @@ const Home = () => {
                 STATS CARDS - Elite Dashboard
             ══════════════════════════════════════════ */}
             <section className="py-16 bg-white relative overflow-hidden">
-                {/* Elegant background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 to-purple-50/30" />
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {statCards.map((s, i) => (
@@ -501,13 +496,12 @@ const Home = () => {
             </section>
 
             {/* Elegant gradient divider */}
-            <div className="relative h-32 bg-gradient-to-b from-white via-amber-50/30 to-amber-50/50" />
+            <div className="relative h-8 bg-white" />
 
             {/* ══════════════════════════════════════════
                 JOB CATEGORIES - Elegant
             ══════════════════════════════════════════ */}
-            <section className="py-20 bg-gradient-to-br from-amber-50/50 via-white to-purple-50/30 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-gradient-to-br from-amber-200/20 to-transparent rounded-full blur-3xl" />
+            <section className="py-20 bg-white relative overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center mb-16">
                         <motion.div

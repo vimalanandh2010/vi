@@ -260,23 +260,23 @@ const PostJob = () => {
                         <motion.section
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="bg-white border border-slate-100 rounded-[3rem] p-10 shadow-sm hover:shadow-xl transition-all group"
+                            className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all"
                         >
-                            <div className="flex items-center gap-5 mb-10">
-                                <div className="p-4 bg-purple-50 text-purple-600 rounded-2xl">
-                                    <Tag size={24} strokeWidth={2.5} />
+                            <div className="flex items-center gap-4 mb-8">
+                                <div className="p-3 bg-purple-50 text-purple-600 rounded-xl">
+                                    <Tag size={22} strokeWidth={2.5} />
                                 </div>
-                                <h3 className="text-xl font-black text-black uppercase tracking-tight">Intellectual Range</h3>
+                                <h3 className="text-lg font-bold text-gray-900">Experience & Skills</h3>
                             </div>
                             <div className="space-y-6">
                                 <div className="space-y-2">
-                                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Target Seniority</label>
+                                    <label className="text-xs font-semibold text-gray-600">Target Seniority</label>
                                     <div className="relative">
                                         <select
                                             name="experienceLevel"
                                             value={formData.experienceLevel}
                                             onChange={handleChange}
-                                            className="w-full bg-slate-50 border border-transparent focus:border-purple-200 focus:bg-white text-black font-bold rounded-xl py-4 px-5 outline-none transition-all appearance-none cursor-pointer"
+                                            className="w-full bg-gray-50 border border-gray-200 focus:border-purple-500 focus:bg-white text-gray-900 font-medium rounded-lg py-3 px-4 outline-none transition-all appearance-none cursor-pointer"
                                         >
                                             <option>Entry Level</option>
                                             <option>Mid-Senior Level</option>
@@ -287,57 +287,57 @@ const PostJob = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Skill Identifiers (Comma Separated)</label>
+                                    <label className="text-xs font-semibold text-gray-600">Required Skills (Comma Separated)</label>
                                     <input
                                         name="tags"
                                         value={formData.tags}
                                         onChange={handleChange}
-                                        placeholder="React, AWS Architecture, Node.js"
-                                        className="w-full bg-slate-50 border border-transparent focus:border-purple-200 focus:bg-white text-black font-bold rounded-xl py-4 px-5 outline-none transition-all placeholder:text-slate-300"
+                                        placeholder="React, AWS, Node.js, MongoDB"
+                                        className="w-full bg-gray-50 border border-gray-200 focus:border-purple-500 focus:bg-white text-gray-900 font-medium rounded-lg py-3 px-4 outline-none transition-all placeholder:text-gray-400"
                                     />
                                 </div>
                             </div>
                         </motion.section>
                     </div>
 
-                    {/* Operational Details */}
+                    {/* Job Description */}
                     <motion.section
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white border border-slate-100 rounded-[3rem] p-10 lg:p-16 shadow-sm hover:shadow-xl transition-all group"
+                        className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all"
                     >
-                        <div className="flex items-center gap-6 mb-12">
-                            <div className="p-5 bg-orange-50 text-orange-600 rounded-3xl group-hover:bg-orange-600 group-hover:text-white transition-all">
-                                <FileText size={28} strokeWidth={2.5} />
+                        <div className="flex items-center gap-4 mb-8">
+                            <div className="p-4 bg-orange-50 text-orange-600 rounded-xl">
+                                <FileText size={24} strokeWidth={2.5} />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black text-black">Operational Context</h2>
-                                <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-1">Refining the narrative</p>
+                                <h2 className="text-xl font-bold text-gray-900">Job Description & Requirements</h2>
+                                <p className="text-xs text-gray-500 font-semibold mt-1">Detailed information about the role</p>
                             </div>
                         </div>
 
-                        <div className="space-y-12">
-                            <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Comprehensive Mandate *</label>
+                        <div className="space-y-8">
+                            <div className="space-y-2">
+                                <label className="text-xs font-semibold text-gray-600 ml-1">Job Description *</label>
                                 <textarea
                                     name="description"
                                     value={formData.description}
                                     onChange={handleChange}
                                     rows="8"
-                                    placeholder="Articulate the vision, impact, and daily operational reality of this role..."
-                                    className="w-full bg-slate-50 border border-transparent focus:border-black/5 focus:bg-white text-black font-bold rounded-3xl py-6 px-8 outline-none transition-all placeholder:text-slate-300 resize-none leading-relaxed"
+                                    placeholder="Describe the role, responsibilities, and what makes this position exciting..."
+                                    className="w-full bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white text-gray-900 font-medium rounded-xl py-4 px-5 outline-none transition-all placeholder:text-gray-400 resize-none leading-relaxed"
                                     required
                                 />
                             </div>
-                            <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Mandatory Competencies</label>
+                            <div className="space-y-2">
+                                <label className="text-xs font-semibold text-gray-600 ml-1">Requirements & Qualifications</label>
                                 <textarea
                                     name="requirements"
                                     value={formData.requirements}
                                     onChange={handleChange}
                                     rows="4"
-                                    placeholder="Enumerate non-negotiable certifications, academic credentials, or specific technical experience..."
-                                    className="w-full bg-slate-50 border border-transparent focus:border-black/5 focus:bg-white text-black font-bold rounded-3xl py-6 px-8 outline-none transition-all placeholder:text-slate-300 resize-none leading-relaxed"
+                                    placeholder="List required certifications, academic qualifications, and technical experience..."
+                                    className="w-full bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white text-gray-900 font-medium rounded-xl py-4 px-5 outline-none transition-all placeholder:text-gray-400 resize-none leading-relaxed"
                                 />
                             </div>
                         </div>
