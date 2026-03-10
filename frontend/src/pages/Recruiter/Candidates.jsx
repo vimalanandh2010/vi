@@ -298,13 +298,17 @@ const RecruiterCandidates = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-3 shrink-0 self-start sm:self-auto">
-                                    {selectedApplication.resumeUrl && (
+                                    {selectedApplication.resumeUrl ? (
                                         <button
                                             onClick={() => setShowResumeModal(true)}
                                             className="px-4 sm:px-5 py-2.5 bg-white border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white rounded-xl font-bold text-xs uppercase tracking-wide transition-all shadow-sm"
                                         >
                                             View Resume
                                         </button>
+                                    ) : (
+                                        <div className="px-4 sm:px-5 py-2.5 bg-slate-100 border-2 border-slate-300 text-slate-500 rounded-xl font-semibold text-xs uppercase tracking-wide">
+                                            No Resume
+                                        </div>
                                     )}
                                     <button className="p-2.5 bg-white border border-slate-300 text-slate-600 hover:text-slate-900 hover:border-slate-900 rounded-xl transition-all">
                                         <MoreVertical size={20} />
