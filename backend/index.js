@@ -1,3 +1,17 @@
+// Suppress canvas polyfill warnings from pdf-parse
+const originalEmitWarning = process.emitWarning;
+process.emitWarning = (warning, type, code) => {
+    if (
+        typeof warning === 'string' && 
+        (warning.includes('Cannot polyfill') || 
+         warning.includes('Cannot access the `require` function') ||
+         warning.includes('process.getBuiltinModule'))
+    ) {
+        return; // Suppress these specific warnings
+    }
+    return originalEmitWarning.call(process, warning, type, code);
+};
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
