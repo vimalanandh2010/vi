@@ -197,7 +197,7 @@ const CompanyProfile = () => {
                                             key={type}
                                             onClick={() => setFormData({ ...formData, companyType: type })}
                                             className={`py-4 px-2 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${formData.companyType === type
-                                                ? 'bg-blue-600 text-white border-blue-600 shadow-xl scale-105'
+                                                ? 'bg-black text-white border-black shadow-xl scale-105'
                                                 : 'bg-slate-50 text-slate-400 border-transparent hover:border-slate-100 hover:bg-white hover:text-black'
                                                 }`}
                                         >
@@ -290,7 +290,7 @@ const CompanyProfile = () => {
                             <button
                                 type="submit"
                                 disabled={saving}
-                                className="group flex items-center gap-4 px-12 py-6 bg-white hover:bg-blue-600 text-black hover:text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-xs transition-all shadow-xl active:scale-95 disabled:opacity-50"
+                                className="group flex items-center gap-4 px-12 py-6 bg-white hover:bg-black text-black hover:text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-xs transition-all shadow-xl active:scale-95 disabled:opacity-50"
                             >
                                 {saving ? (
                                     <Loader2 size={18} className="animate-spin" />

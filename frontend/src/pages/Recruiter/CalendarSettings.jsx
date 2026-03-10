@@ -150,7 +150,7 @@ const CalendarSettings = () => {
                     ) : (
                         <button
                             onClick={handleConnect}
-                            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition-all shadow-lg"
+                            className="flex items-center gap-2 px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-xl font-bold text-sm transition-all shadow-lg"
                         >
                             <Calendar size={16} />
                             Connect Now

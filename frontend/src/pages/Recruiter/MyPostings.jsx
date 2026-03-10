@@ -89,7 +89,7 @@ const MyPostings = () => {
 
                     <Link
                         to="/recruiter/post-job"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm transition-all shadow-md hover:shadow-lg active:scale-95 group"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-black hover:bg-gray-800 text-white rounded-lg font-semibold text-sm transition-all shadow-md hover:shadow-lg active:scale-95 group"
                     >
                         Create New Job
                         <Plus size={18} className="group-hover:rotate-90 transition-transform" />
@@ -175,7 +175,7 @@ const MyPostings = () => {
                                     <div className="flex items-center gap-3 pt-6 border-t border-gray-100">
                                         <Link
                                             to={`/recruiter/job/${job._id}/applicants`}
-                                            className="flex-1 py-3 bg-blue-600 text-white rounded-lg font-semibold text-sm flex items-center justify-center gap-2 hover:bg-blue-700 transition-all active:scale-95"
+                                            className="flex-1 py-3 bg-black text-white rounded-lg font-semibold text-sm flex items-center justify-center gap-2 hover:bg-gray-800 transition-all active:scale-95"
                                         >
                                             View Applicants
                                             <ChevronRight size={16} strokeWidth={2.5} />

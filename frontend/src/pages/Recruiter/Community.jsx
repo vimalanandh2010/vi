@@ -180,7 +180,7 @@ const RecruiterCommunity = ({ openCreateModal = false }) => {
                         </button>
                         <button
                             onClick={() => setShowCreatePost(true)}
-                            className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold shadow-lg shadow-blue-900/20 active:scale-95 transition-all"
+                            className="flex items-center gap-2 px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded-xl font-bold shadow-lg shadow-black/20 active:scale-95 transition-all"
                         >
                             <Plus size={18} /> Post
                         </button>
@@ -330,7 +330,7 @@ const RecruiterCommunity = ({ openCreateModal = false }) => {
                                         </button>
                                         <button
                                             onClick={() => setShowCreatePost(true)}
-                                            className="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold transition-all shadow-xl shadow-blue-900/20"
+                                            className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-2xl font-bold transition-all shadow-xl shadow-black/20"
                                         >
                                             Share an Insight
                                         </button>

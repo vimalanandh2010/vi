@@ -141,7 +141,7 @@ const RecruiterProfile = () => {
                                     </div>
                                     <button
                                         onClick={() => fileInputRef.current?.click()}
-                                        className="absolute -bottom-4 -right-4 p-5 bg-blue-600 hover:bg-blue-700 text-white rounded-[1.5rem] shadow-2xl transition-all hover:scale-110 active:scale-90"
+                                        className="absolute -bottom-4 -right-4 p-5 bg-black hover:bg-gray-800 text-white rounded-[1.5rem] shadow-2xl transition-all hover:scale-110 active:scale-90"
                                     >
                                         <Camera size={24} strokeWidth={2.5} />
                                     </button>
@@ -298,7 +298,7 @@ const RecruiterProfile = () => {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full md:w-auto px-16 py-6 bg-blue-600 hover:bg-blue-700 text-white rounded-[2.5rem] font-black uppercase tracking-[0.2em] text-xs transition-all shadow-[0_20px_40px_rgba(59,130,246,0.1)] active:scale-95 flex items-center justify-center gap-4 group"
+                                        className="w-full md:w-auto px-16 py-6 bg-black hover:bg-gray-800 text-white rounded-[2.5rem] font-black uppercase tracking-[0.2em] text-xs transition-all shadow-[0_20px_40px_rgba(0,0,0,0.1)] active:scale-95 flex items-center justify-center gap-4 group"
                                     >
                                         {loading ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} strokeWidth={2.5} />}
                                         Update Integrity

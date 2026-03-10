@@ -417,7 +417,7 @@ const EditJob = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-10 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm shadow-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95 group"
+                            className="px-10 py-3 bg-black hover:bg-gray-800 text-white rounded-lg font-semibold text-sm shadow-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95 group"
                         >
                             {loading ? (
                                 <Loader2 className="animate-spin" size={20} />

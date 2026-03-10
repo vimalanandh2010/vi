@@ -138,7 +138,7 @@ const RecruiterJobs = () => {
                     <div className="flex items-center gap-4">
                         <button
                             onClick={(e) => handlePostNavigation(e, '/recruiter/post-job', 'post a job')}
-                            className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-xl shadow-blue-600/10 active:scale-95"
+                            className="flex items-center gap-2 px-6 py-3 bg-black hover:bg-gray-800 text-white rounded-xl font-bold transition-all shadow-xl shadow-black/10 active:scale-95"
                         >
                             <Plus size={20} />
                             Post New Job
@@ -291,7 +291,7 @@ const RecruiterJobs = () => {
                                     <div className="flex flex-wrap sm:flex-row xl:flex-col gap-3">
                                         <Link
                                             to={`/recruiter/job-analytics/${job._id}`}
-                                            className="flex items-center gap-2 px-6 py-2.5 bg-gray-100 hover:bg-blue-600 hover:text-white text-gray-700 rounded-xl text-sm font-bold transition-all border border-gray-200"
+                                            className="flex items-center gap-2 px-6 py-2.5 bg-gray-100 hover:bg-black hover:text-white text-gray-700 rounded-xl text-sm font-bold transition-all border border-gray-200"
                                         >
                                             <BarChart3 size={16} />
                                             Analyze
@@ -299,7 +299,7 @@ const RecruiterJobs = () => {
 
                                         <Link
                                             to={`/recruiter/job-applicants/${job._id}`}
-                                            className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/5"
+                                            className="flex items-center gap-2 px-6 py-2.5 bg-black text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-all shadow-lg shadow-black/5"
                                         >
                                             <Eye size={16} />
                                             View Applicants
@@ -427,7 +427,7 @@ const RecruiterJobs = () => {
                                     </button>
                                     <Link
                                         to={`/recruiter/edit-job/${selectedJob._id}`}
-                                        className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-black text-sm transition-all shadow-xl shadow-blue-600/10"
+                                        className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-2xl font-black text-sm transition-all shadow-xl shadow-black/10"
                                     >
                                         Update Job
                                     </Link>

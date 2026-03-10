@@ -151,7 +151,7 @@ const RecruiterHome = () => {
 
                             <button
                                 type="submit"
-                                className="w-full md:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all active:scale-95 flex items-center justify-center shrink-0 shadow-md"
+                                className="w-full md:w-auto px-8 py-3.5 bg-black hover:bg-gray-800 text-white rounded-xl font-semibold transition-all active:scale-95 flex items-center justify-center shrink-0 shadow-md"
                             >
                                 Search Candidates
                             </button>
@@ -170,7 +170,7 @@ const RecruiterHome = () => {
                                 )
                             ) : (
                                 <>
-                                    <Link to="/recruiter/signup" className="w-full sm:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center shadow-lg">
+                                    <Link to="/recruiter/signup" className="w-full sm:w-auto px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-xl font-semibold transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center shadow-lg">
                                         Create Free Account
                                     </Link>
                                     <Link to="/recruiter/login" className="w-full sm:w-auto px-8 py-3 text-gray-600 hover:text-gray-900 rounded-xl font-semibold transition-colors flex items-center justify-center">

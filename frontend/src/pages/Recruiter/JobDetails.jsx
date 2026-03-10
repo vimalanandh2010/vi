@@ -219,7 +219,7 @@ const JobDetails = () => {
                                                         </div>
                                                         <button
                                                             onClick={() => navigate(`/recruiter/candidates/${cand.candidateId}`)}
-                                                            className="flex items-center gap-3 px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl shadow-blue-600/10 group-hover:scale-105 active:scale-95"
+                                                            className="flex items-center gap-3 px-8 py-3.5 bg-black hover:bg-gray-800 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl shadow-black/10 group-hover:scale-105 active:scale-95"
                                                         >
                                                             Profile
                                                             <ExternalLink size={14} strokeWidth={3} />
@@ -285,7 +285,7 @@ const JobDetails = () => {
                             <div className="mt-12 pt-8">
                                 <Link
                                     to={`/recruiter/job-analytics/${job._id}`}
-                                    className="flex items-center justify-center gap-3 w-full py-5 border-2 border-blue-600 hover:bg-blue-600 hover:text-white text-blue-600 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all group"
+                                    className="flex items-center justify-center gap-3 w-full py-5 border-2 border-black hover:bg-black hover:text-white text-black rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all group"
                                 >
                                     Analytical Data
                                     <Sparkles size={14} className="group-hover:animate-pulse" />

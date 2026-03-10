@@ -74,7 +74,7 @@ const RecruiterDashboard = () => {
                     <p className="text-gray-600 mb-8 leading-relaxed">{statsError}</p>
                     <button
                         onClick={() => window.location.reload()}
-                        className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all shadow-md"
+                        className="w-full py-3.5 bg-black hover:bg-gray-800 text-white rounded-xl font-semibold transition-all shadow-md"
                     >
                         Reconnect Now
                     </button>

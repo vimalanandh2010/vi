@@ -93,7 +93,7 @@ const JobAnalytics = () => {
             <RecruiterLayout>
                 <div className="flex flex-col items-center justify-center h-[80vh] bg-white">
                     <p className="text-gray-600 font-medium mb-4">No analytics data available</p>
-                    <Link to="/recruiter/jobs" className="px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-all">
+                    <Link to="/recruiter/jobs" className="px-6 py-2.5 bg-black text-white rounded-lg text-sm font-semibold hover:bg-gray-800 transition-all">
                         Back to Jobs
                     </Link>
                 </div>
@@ -112,7 +112,7 @@ const JobAnalytics = () => {
                     <div className="flex items-center gap-4">
                         <Link
                             to="/recruiter/jobs"
-                            className="p-3 bg-gray-50 hover:bg-blue-600 hover:text-white text-gray-600 rounded-lg transition-all border border-gray-200"
+                            className="p-3 bg-gray-50 hover:bg-black hover:text-white text-gray-600 rounded-lg transition-all border border-gray-200"
                         >
                             <ArrowLeft size={20} />
                         </Link>
@@ -295,7 +295,7 @@ const JobAnalytics = () => {
                 <div className="mt-16 text-center">
                     <Link
                         to={`/recruiter/job-applicants/${analytics.jobId}`}
-                        className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-sm transition-all shadow-lg active:scale-95 group"
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-black hover:bg-gray-800 text-white rounded-xl font-semibold text-sm transition-all shadow-lg active:scale-95 group"
                     >
                         <Users size={20} className="group-hover:scale-110 transition-transform" />
                         View All Applicants
