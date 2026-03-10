@@ -1,18 +1,31 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-let pdfParse;
-try {
-    pdfParse = require('pdf-parse');
-    // Handle default export if it exists
-    if (pdfParse && pdfParse.default) {
-        pdfParse = pdfParse.default;
-    }
-} catch (err) {
-    console.error('[DocumentParser] Failed to load pdf-parse:', err.message);
-}
 const mammoth = require('mammoth');
 const { extractTextFromFile } = require('./geminiScannerService');
+
+// Cache for pdf-parse module
+let pdfParseCache = null;
+
+/**
+ * Dynamically loads pdf-parse to avoid canvas polyfill warnings during module initialization.
+ * @returns {Promise<Function|null>} The pdf-parse function or null if unavailable
+ */
+const loadPdfParse = async () => {
+    if (pdfParseCache !== null) {
+        return pdfParseCache;
+    }
+    
+    try {
+        const pdfModule = await import('pdf-parse');
+        pdfParseCache = pdfModule.default || pdfModule;
+        return pdfParseCache;
+    } catch (err) {
+        console.warn('[DocumentParser] pdf-parse unavailable, will use OCR fallback:', err.message);
+        pdfParseCache = false; // Mark as unavailable to avoid repeated attempts
+        return null;
+    }
+};
 
 /**
  * Downloads a file from a URL using fetch with AbortController for reliable timeouts.
@@ -60,6 +73,7 @@ const extractText = async (url) => {
 
         if (lowerUrl.endsWith('.pdf')) {
             try {
+                const pdfParse = await loadPdfParse();
                 if (!pdfParse || typeof pdfParse !== 'function') {
                     throw new Error('pdf-parse is not available or not a function');
                 }
@@ -93,6 +107,7 @@ const extractText = async (url) => {
         } else {
             // Default fallback: try as PDF first, then use OCR
             try {
+                const pdfParse = await loadPdfParse();
                 if (pdfParse && typeof pdfParse === 'function') {
                     const result = await pdfParse(buffer);
                     extractedText = result.text;
