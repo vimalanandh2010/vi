@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axiosClient from '../../api/axiosClient';
 import { Search, MapPin, Building2, Filter, ChevronRight, Briefcase, Globe, Users } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import CompanyCard from '../../components/Cards/CompanyCard';
 
 const Companies = () => {
     const [companies, setCompanies] = useState([]);
@@ -110,7 +111,7 @@ const Companies = () => {
                                 {Object.values(filters).some(v => Array.isArray(v) ? v.length > 0 : Boolean(v)) && (
                                     <button
                                         onClick={() => setFilters({ type: '', industry: '', location: '', skills: [] })}
-                                        className="ml-auto text-xs text-blue-400 hover:text-blue-300 font-medium"
+                                        className="ml-auto text-xs text-blue-600 hover:text-blue-700 font-medium"
                                     >
                                         Reset
                                     </button>
@@ -172,8 +173,8 @@ const Companies = () => {
                                                         setFilters({ ...filters, skills: newSkills });
                                                     }}
                                                     className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${isSelected
-                                                        ? 'bg-[#1e3a8a] border-[#1e3a8a] text-white shadow-md'
-                                                        : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-900'
+                                                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 border-blue-500 text-white shadow-lg shadow-blue-500/30'
+                                                        : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-blue-300 hover:text-blue-900'
                                                         }`}
                                                 >
                                                     {skill}
@@ -204,82 +205,20 @@ const Companies = () => {
                     {/* Main Content */}
                     <main className="flex-1">
                         {loading ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {[1, 2, 4, 5, 6].map(i => (
-                                    <div key={i} className="h-64 bg-slate-900/50 animate-pulse rounded-3xl border border-slate-800/50" />
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {[1, 2, 3, 4, 5, 6].map(i => (
+                                    <div key={i} className="h-96 bg-slate-100 animate-pulse rounded-2xl border border-slate-200" />
                                 ))}
                             </div>
                         ) : companies.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <AnimatePresence mode="popLayout">
                                     {companies.map((company, idx) => (
-                                        <motion.div
+                                        <CompanyCard
                                             key={company._id}
-                                            layout
-                                            initial={{ opacity: 0, scale: 0.9 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            exit={{ opacity: 0, scale: 0.9 }}
-                                            transition={{ duration: 0.2, delay: idx * 0.05 }}
-                                            className="group bg-white hover:bg-[#1e3a8a] border border-slate-200 rounded-3xl p-6 transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col h-full relative overflow-hidden"
-                                        >
-                                            <div className="flex items-start justify-between mb-6 relative z-10">
-                                                <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-2xl font-black text-slate-900 shadow-sm overflow-hidden shrink-0 transition-transform duration-500 group-hover:scale-105">
-                                                    {company.logo ? (
-                                                        <img src={company.logo} alt={company.name} className="w-full h-full object-cover" />
-                                                    ) : (
-                                                        company.name.charAt(0)
-                                                    )}
-                                                </div>
-                                                <div className="flex flex-col items-end gap-2">
-                                                    {company.verified && (
-                                                        <div className="flex items-center gap-1 px-2 py-1 bg-green-50 group-hover:bg-green-500/20 border border-green-200 group-hover:border-green-400/30 rounded-lg transition-colors">
-                                                            <CheckCircle size={10} className="text-green-500 group-hover:text-green-300" />
-                                                            <span className="text-[9px] font-black uppercase tracking-wider text-green-600 group-hover:text-green-200">Verified</span>
-                                                        </div>
-                                                    )}
-                                                    <span className="px-3 py-1 bg-slate-100 group-hover:bg-white/10 border border-slate-200 group-hover:border-white/20 text-slate-700 group-hover:text-white rounded-lg text-[9px] font-black uppercase tracking-widest transition-colors duration-500">
-                                                        {company.companyType || 'Enterprise'}
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div className="relative z-10">
-                                                <h3 className="text-xl font-black text-slate-900 mb-1.5 group-hover:text-white transition-colors duration-500 tracking-tight">{company.name}</h3>
-                                                <p className="text-slate-500 group-hover:text-blue-100 text-sm line-clamp-2 mb-6 leading-relaxed font-medium transition-colors duration-500">
-                                                    {company.about || 'Innovative company shaping the future of the industry.'}
-                                                </p>
-                                            </div>
-
-                                            <div className="flex flex-wrap gap-2 mb-8 relative z-10">
-                                                {company.industries?.slice(0, 3).map(industry => (
-                                                    <span key={industry} className="px-2.5 py-1 bg-slate-100 group-hover:bg-white/10 text-slate-600 group-hover:text-white border border-slate-200 group-hover:border-white/20 rounded-lg text-[9px] font-black uppercase tracking-wider whitespace-nowrap transition-colors duration-500">
-                                                        {industry}
-                                                    </span>
-                                                ))}
-                                                {company.industries?.length > 3 && (
-                                                    <span className="text-[10px] text-slate-500 group-hover:text-blue-200 self-center transition-colors">+{company.industries.length - 3}</span>
-                                                )}
-                                            </div>
-
-                                            <div className="flex items-center justify-between border-t border-slate-100 group-hover:border-white/20 mt-auto pt-4 transition-colors duration-500 relative z-10">
-                                                <div className="flex items-center gap-4 text-slate-500 group-hover:text-white text-xs font-bold transition-colors duration-500">
-                                                    <div className="flex items-center gap-1.5">
-                                                        <MapPin size={14} className="text-slate-400 group-hover:text-white transition-colors" />
-                                                        {company.location || 'Global'}
-                                                    </div>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <Users size={14} className="text-slate-400 group-hover:text-white transition-colors" />
-                                                        {company.size || '10-50'}
-                                                    </div>
-                                                </div>
-                                                <Link
-                                                    to={`/seeker/company/${company._id}`}
-                                                    className="px-4 py-2 bg-slate-900 group-hover:bg-white text-white group-hover:!text-slate-900 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm transition-all duration-300 hover:scale-105 active:scale-95"
-                                                >
-                                                    View
-                                                </Link>
-                                            </div>
-                                        </motion.div>
+                                            company={company}
+                                            onClick={() => window.location.href = `/seeker/company/${company._id}`}
+                                        />
                                     ))}
                                 </AnimatePresence>
                             </div>
@@ -298,22 +237,5 @@ const Companies = () => {
         </div>
     );
 };
-
-const CheckCircle = ({ size, className }) => (
-    <svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={className}
-    >
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-        <polyline points="22 4 12 14.01 9 11.01" />
-    </svg>
-);
 
 export default Companies;

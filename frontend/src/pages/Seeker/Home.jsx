@@ -5,7 +5,7 @@ import {
     Globe, Zap, MessageCircle, Code2, Cpu, Settings, LineChart,
     BarChart, Palette, ArrowRight, MapPin, MousePointer2,
     DollarSign, Flame, Clock, ChevronRight, CheckCircle2, Star,
-    Target, Rocket, Award, Shield
+    Target, Rocket, Award, Shield, Sparkles, Crown
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import axiosClient from '../../api/axiosClient'
@@ -41,11 +41,11 @@ const Home = () => {
                 ]
                 if (token) promises.push(axiosClient.get('dashboard/seeker'))
                 const results = await Promise.all(promises)
-                
+
                 console.log('✅ Categories data received:', results[0])
                 console.log('✅ Companies data received:', results[1])
                 console.log('✅ Jobs data received:', results[2])
-                
+
                 if (Array.isArray(results[0])) {
                     setLiveCategories(results[0])
                     // Calculate total jobs count from all categories
@@ -273,17 +273,44 @@ const Home = () => {
             <Navbar />
 
             {/* ══════════════════════════════════════════
-                HERO SECTION — Clean Professional Style
+                HERO SECTION — Elegant Luxury Style
             ══════════════════════════════════════════ */}
-            <section className="relative bg-white pt-24 pb-12 overflow-hidden z-10">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <section className="relative bg-gradient-to-br from-white via-amber-50/30 to-white pt-24 pb-16 overflow-hidden z-10">
+                {/* Elegant background effects */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent" />
+                <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-400/10 rounded-full blur-[120px] animate-pulse" />
+                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+
+                {/* Floating particles */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    {[...Array(20)].map((_, i) => (
+                        <div
+                            key={i}
+                            className="absolute w-1 h-1 bg-amber-400/40 rounded-full"
+                            style={{
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
+                                animation: `float ${5 + Math.random() * 10}s infinite ease-in-out`,
+                                animationDelay: `${Math.random() * 5}s`
+                            }}
+                        />
+                    ))}
+                </div>
+
+                <style>{`
+                    @keyframes float {
+                        0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0; }
+                        50% { transform: translateY(-100px) translateX(20px); opacity: 1; }
+                    }
+                `}</style>
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 
                     {/* Headline */}
                     <motion.h1
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, ease: 'easeOut' }}
-                        className="font-heading text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight leading-tight mb-4"
+                        className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6"
                     >
                         Find Your Dream Job
                     </motion.h1>
@@ -292,7 +319,7 @@ const Home = () => {
                         initial={{ opacity: 0, y: 18 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3, duration: 0.7 }}
-                        className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed mb-8"
+                        className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10"
                     >
                         Discover opportunities that match your skills and aspirations
                     </motion.p>
@@ -302,13 +329,15 @@ const Home = () => {
                         initial={{ opacity: 0, y: 18 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5, duration: 0.7 }}
-                        className="mb-8"
+                        className="mb-10"
                     >
                         <button
                             onClick={() => navigate('/seeker/jobs')}
-                            className="px-10 py-4 bg-black text-white font-bold rounded-xl shadow-lg hover:bg-slate-800 transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-2 text-sm"
+                            className="group relative px-8 py-4 bg-black hover:bg-gray-900 text-white font-semibold rounded-xl transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-3 text-base shadow-none"
                         >
-                            Explore All Jobs <ArrowRight size={18} />
+
+                            <span className="relative z-10">Explore All Jobs</span>
+                            <ArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform" size={20} />
                         </button>
                     </motion.div>
 
@@ -319,12 +348,15 @@ const Home = () => {
                         transition={{ delay: 0.7, duration: 0.7 }}
                         className="flex flex-wrap justify-center gap-3"
                     >
+                        <span className="text-blue-600 text-sm font-semibold flex items-center gap-2">
+                            <Sparkles size={14} /> Trending:
+                        </span>
                         {trendingJobs.map((job, i) => (
                             <motion.span
                                 key={i}
-                                whileHover={{ scale: 1.05, backgroundColor: '#f1f5f9' }}
+                                whileHover={{ scale: 1.05 }}
                                 onClick={() => navigate(`/seeker/jobs?search=${encodeURIComponent(job)}`)}
-                                className="px-5 py-2.5 bg-slate-50 border border-slate-200 text-slate-700 text-sm font-semibold rounded-lg cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md hover:border-slate-300"
+                                className="px-5 py-2.5 bg-white backdrop-blur-sm border border-blue-300 text-blue-700 text-sm font-semibold rounded-xl cursor-pointer transition-all duration-300 hover:bg-blue-50 hover:border-blue-400 hover:shadow-lg hover:shadow-blue-500/20"
                             >
                                 {job}
                             </motion.span>
@@ -333,24 +365,26 @@ const Home = () => {
                 </div>
             </section>
 
-            <WaveDivider toColor="#ffffff" fromColor="rgb(239, 246, 255)" />
+            <div className="relative h-24 bg-gradient-to-b from-white via-amber-50/30 to-white" />
 
             {/* ══════════════════════════════════════════
-                EVERYTHING YOU NEED TO SUCCEED
+                EVERYTHING YOU NEED TO SUCCEED - Elegant
             ══════════════════════════════════════════ */}
-            <section className="py-20 bg-white">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-16">
+            <section className="py-20 bg-gradient-to-br from-white via-amber-50/30 to-white relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-amber-200/20 to-transparent rounded-full blur-3xl" />
+                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-purple-200/20 to-transparent rounded-full blur-3xl" />
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="text-center mb-12">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
                         >
-                            <h2 className="font-heading text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-3">
+                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                                 Everything You Need to Succeed
                             </h2>
-                            <p className="text-slate-500 font-medium text-base max-w-2xl mx-auto">
+                            <p className="text-gray-600 text-base max-w-2xl mx-auto">
                                 Powerful tools and resources to accelerate your job search and career growth
                             </p>
                         </motion.div>
@@ -393,16 +427,19 @@ const Home = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.1, duration: 0.6 }}
-                                whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
-                                className="group bg-gradient-to-br from-white to-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-slate-300 transition-all duration-300 cursor-default"
+                                whileHover={{ y: -12, boxShadow: '0 25px 50px rgba(37, 99, 235, 0.2)' }}
+                                className="group relative bg-gradient-to-br from-white via-white to-blue-50/30 rounded-3xl p-8 border-2 border-blue-200/50 shadow-xl hover:border-blue-300 hover:shadow-2xl transition-all duration-500 cursor-default overflow-hidden"
                             >
-                                <div className={`w-14 h-14 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                                    <item.icon size={26} className="text-white" />
+                                {/* Premium shine effect */}
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-200/30 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                                <div className={`relative w-16 h-16 bg-gradient-to-br ${item.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-2xl shadow-blue-500/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
+                                    <item.icon size={26} className="text-white stroke-white" strokeWidth={2.5} />
                                 </div>
-                                <h3 className="font-heading text-lg font-black text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-700 transition-colors">
                                     {item.title}
                                 </h3>
-                                <p className="text-sm text-slate-600 font-medium leading-relaxed">
+                                <p className="text-sm text-gray-600 leading-relaxed">
                                     {item.desc}
                                 </p>
                             </motion.div>
@@ -412,11 +449,13 @@ const Home = () => {
             </section>
 
             {/* ══════════════════════════════════════════
-                STATS CARDS (Dashboard)
+                STATS CARDS - Elite Dashboard
             ══════════════════════════════════════════ */}
-            <section className="py-6 bg-white">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <section className="py-16 bg-white relative overflow-hidden">
+                {/* Elegant background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 to-purple-50/30" />
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {statCards.map((s, i) => (
                             <motion.div
                                 key={i}
@@ -424,64 +463,62 @@ const Home = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.08 }}
-                                whileHover={{ y: -6, scale: 1.02 }}
-                                className="group relative bg-white rounded-2xl p-6 overflow-hidden cursor-default shadow-[0_4px_24px_rgba(0,0,0,0.07)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.13)] transition-all duration-400 border border-slate-100"
-                                style={{ borderTop: `3px solid ${s.accent}` }}
+                                whileHover={{ y: -8, scale: 1.03 }}
+                                className="group relative bg-white rounded-2xl p-6 overflow-hidden cursor-default shadow-md hover:shadow-xl hover:border-gray-300 transition-all duration-300 border-2 border-gray-200"
                             >
-                                {/* Background subtle glow */}
-                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                                    style={{ background: `radial-gradient(circle at top right, ${s.accent}12, transparent 60%)` }} />
+                                {/* Elegant glow effect */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                {/* Icon */}
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
-                                        style={{ background: `${s.accent}18` }}>
-                                        <s.icon size={22} style={{ color: s.accent }} />
+                                <div className="flex items-center justify-between mb-6 relative z-10">
+                                    <div className="w-14 h-14 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 bg-gradient-to-br from-blue-500 to-blue-600">
+                                        <s.icon size={24} className="text-white" color="white" />
                                     </div>
-                                    <span className="text-xs font-bold px-2.5 py-1 rounded-full"
-                                        style={{ background: `${s.accent}15`, color: s.accent }}>
+                                    <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-50 border border-blue-200 text-blue-700">
                                         {s.trend}
                                     </span>
                                 </div>
 
                                 {/* Number */}
-                                <p className="font-heading text-4xl font-black text-slate-900 mb-0.5">{s.value}</p>
-                                <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mb-4">{s.label}</p>
+                                <p className="relative z-10 text-4xl font-bold text-gray-900 mb-2">{s.value}</p>
+                                <p className="relative z-10 text-sm text-gray-600 font-semibold mb-6">{s.label}</p>
 
                                 {/* Progress bar */}
-                                <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                                <div className="relative z-10 w-full bg-blue-50 rounded-full h-2 overflow-hidden">
                                     <motion.div
                                         initial={{ width: 0 }}
                                         whileInView={{ width: `${s.progress}%` }}
                                         viewport={{ once: true }}
-                                        transition={{ duration: 1, delay: 0.3 + i * 0.1, ease: 'easeOut' }}
-                                        className="h-full rounded-full"
-                                        style={{ background: s.accent }}
+                                        transition={{ duration: 1.5, delay: 0.3 + i * 0.1, ease: 'easeOut' }}
+                                        className="h-full rounded-full bg-gradient-to-r from-blue-400 to-blue-600 shadow-lg shadow-blue-500/50"
                                     />
                                 </div>
-                                <p className="text-xs text-slate-400 mt-1.5 font-medium">{s.sub}</p>
+                                <p className="relative z-10 text-xs text-gray-500 mt-2">{s.sub}</p>
                             </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Wave into categories */}
-            <WaveDivider toColor="#f8fafc" fromColor="#ffffff" />
+            {/* Elegant gradient divider */}
+            <div className="relative h-32 bg-gradient-to-b from-white via-amber-50/30 to-amber-50/50" />
 
             {/* ══════════════════════════════════════════
-                JOB CATEGORIES
+                JOB CATEGORIES - Elegant
             ══════════════════════════════════════════ */}
-            <section className="py-8 bg-[#f8fafc]">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-14">
-                        <h2 className="font-heading text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-3">
-                            Popular Job Categories
-                        </h2>
-                        <p className="text-slate-500 font-medium text-base">
-                            <span className="font-bold text-blue-600">{totalJobsCount.toLocaleString()}</span> jobs live — 
-                            <span className="font-bold text-green-600">{jobsAddedToday}</span> added today.
-                        </p>
+            <section className="py-20 bg-gradient-to-br from-amber-50/50 via-white to-purple-50/30 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-gradient-to-br from-amber-200/20 to-transparent rounded-full blur-3xl" />
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="text-center mb-16">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                                Popular Job Categories
+                            </h2>
+                        </motion.div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -495,72 +532,72 @@ const Home = () => {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: idx * 0.06 }}
-                                    whileHover={{ y: -8, boxShadow: '0 20px 50px rgba(0,0,0,0.15)', backgroundColor: '#1e3a8a', borderColor: '#1e3a8a' }}
+                                    whileHover={{ y: -8, boxShadow: '0 25px 50px rgba(37, 99, 235, 0.25)', borderColor: '#60a5fa' }}
                                     onClick={() => navigate(`/seeker/jobs?search=${encodeURIComponent(category.name)}`)}
-                                    className="group relative bg-white border border-slate-200 rounded-3xl p-8 cursor-pointer shadow-sm flex flex-col h-full overflow-hidden transition-all duration-500"
+                                    className="group relative bg-gradient-to-br from-white via-white to-blue-50/50 border-2 border-blue-200/50 rounded-2xl p-6 cursor-pointer shadow-lg hover:shadow-xl flex flex-col h-full overflow-hidden transition-all duration-500"
                                 >
                                     {/* Grid texture overlay */}
-                                    <div className="absolute inset-0 grid-texture opacity-50 pointer-events-none" />
+                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-blue-500/5 to-transparent" />
+
+                                    {/* Premium glow */}
+                                    <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-400/20 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                                     {/* Hot badge */}
                                     {isHot && (
-                                        <div className="absolute top-4 right-4 flex items-center gap-1 px-2.5 py-1 bg-orange-50 group-hover:bg-orange-500/20 border border-orange-200 group-hover:border-orange-400/30 rounded-full transition-colors">
-                                            <Flame size={10} className="text-orange-500 group-hover:text-orange-300" />
-                                            <span className="text-[9px] font-black uppercase tracking-wider text-orange-600 group-hover:text-orange-200">Hot</span>
+                                        <div className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-orange-400 to-red-500 border border-orange-300 rounded-full shadow-lg">
+                                            <Flame size={12} className="text-white" />
+                                            <span className="text-[10px] font-black uppercase tracking-wider text-white">Hot</span>
                                         </div>
                                     )}
 
                                     {/* Icon */}
                                     <div className="flex items-start justify-between mb-5 relative z-10">
-                                        <div className={`w-14 h-14 rounded-2xl ${category.colorConfig?.icon} group-hover:bg-white/20 group-hover:backdrop-blur-sm flex items-center justify-center transition-all duration-500 group-hover:rotate-6`}>
-                                            <Icon size={26} className="group-hover:text-white transition-colors duration-500" />
+                                        <div className={`w-14 h-14 rounded-xl ${category.colorConfig?.icon} shadow-lg flex items-center justify-center transition-all duration-500 group-hover:scale-110`}>
+                                            <Icon size={26} className="group-hover:drop-shadow-lg transition-all duration-500" />
                                         </div>
-                                        <ArrowRight size={18} className="text-slate-300 group-hover:text-white transition-colors duration-500 mt-1 opacity-0 group-hover:opacity-100" />
+                                        <ArrowRight size={20} className="text-blue-400 transition-all duration-500 mt-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1" />
                                     </div>
 
                                     {/* Name + description */}
-                                    <div className="relative z-10 mb-4">
-                                        <h3 className="font-heading text-lg font-black text-slate-900 group-hover:text-white uppercase tracking-tight mb-1.5 transition-colors duration-500">
+                                    <div className="relative z-10 mb-5">
+                                        <h3 className="text-lg font-bold text-gray-900 mb-2">
                                             {category.name}
                                         </h3>
-                                        <p className="text-slate-500 group-hover:text-slate-200 text-xs font-medium leading-relaxed transition-colors duration-500 line-clamp-2">
+                                        <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
                                             {category.description}
                                         </p>
                                     </div>
 
                                     {/* Skills */}
-                                    <div className="flex flex-wrap gap-1.5 mb-5 relative z-10">
+                                    <div className="flex flex-wrap gap-2 mb-6 relative z-10">
                                         {category.skills?.map((skill, i) => (
-                                            <span key={i} className="px-2.5 py-1 bg-slate-100 text-slate-600 group-hover:bg-white/10 group-hover:text-white text-[9px] font-black uppercase rounded-lg border border-slate-200 group-hover:border-white/30 tracking-wider transition-all duration-500">
+                                            <span key={i} className="px-3 py-1.5 bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold rounded-lg transition-all duration-300 hover:bg-blue-100">
                                                 {skill}
                                             </span>
                                         ))}
                                     </div>
 
                                     {/* Demand bar */}
-                                    <div className="mb-5 relative z-10">
-                                        <div className="flex justify-between items-center mb-1.5">
-                                            <span className="text-[9px] font-black uppercase tracking-widest text-black group-hover:text-slate-300 transition-colors">Job Demand</span>
-                                            <span className="text-[9px] font-black text-black group-hover:text-white transition-colors">{category.demand}%</span>
+                                    <div className="mb-6 relative z-10">
+                                        <div className="flex justify-between items-center mb-2">
+                                            <span className="text-xs font-semibold text-gray-600">Job Demand</span>
+                                            <span className="text-sm font-bold text-blue-600">{category.demand}%</span>
                                         </div>
-                                        <div className="w-full bg-slate-100 group-hover:bg-black/30 rounded-full h-1.5 transition-colors duration-500">
+                                        <div className="w-full bg-slate-100 rounded-full h-2 transition-colors duration-500 overflow-hidden">
                                             <div
-                                                className="h-full rounded-full transition-all duration-700 bg-[var(--bar-color)] group-hover:!bg-white"
-                                                style={{
-                                                    width: `${category.demand}%`,
-                                                    '--bar-color': category.colorConfig?.card || '#1e3a8a'
-                                                }}
+                                                className="h-full rounded-full transition-all duration-700 bg-gradient-to-r from-blue-400 to-blue-600 shadow-lg shadow-blue-500/30"
+                                                style={{ width: `${category.demand}%` }}
                                             />
                                         </div>
                                     </div>
 
                                     {/* Footer */}
-                                    <div className="pt-4 border-t border-slate-100 group-hover:border-white/20 mt-auto relative z-10 transition-colors duration-500 flex items-center justify-between">
+                                    <div className="pt-5 border-t-2 border-blue-200/50 mt-auto relative z-10 transition-colors duration-500 flex items-center justify-between">
                                         <div>
-                                            <p className="font-heading text-xl font-black text-slate-900 group-hover:text-white transition-colors duration-500">{category.count}</p>
-                                            <p className="text-[9px] font-black text-slate-400 group-hover:text-slate-300 uppercase tracking-widest transition-colors">Active Jobs</p>
+                                            <p className="text-2xl font-bold text-gray-900">{category.count}</p>
+                                            <p className="text-xs font-semibold text-gray-500">Active Jobs</p>
                                         </div>
-                                        <button className="px-4 py-2 bg-slate-900 group-hover:bg-white text-white group-hover:!text-slate-900 text-[9px] font-black uppercase tracking-wider rounded-xl transition-all duration-300 hover:scale-105 active:scale-95">
+                                        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-md">
                                             Explore
                                         </button>
                                     </div>
@@ -576,11 +613,11 @@ const Home = () => {
             {/* ══════════════════════════════════════════
                 FEATURED JOBS
             ══════════════════════════════════════════ */}
-            <section className="py-20 bg-[#f8fafc]">
+            <section className="py-16 bg-[#f8fafc]">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <h2 className="font-heading text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-3">Featured Jobs</h2>
-                        <p className="text-slate-500 font-medium text-base">Know your worth and find the job that qualifies your life</p>
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Featured Jobs</h2>
+                        <p className="text-gray-600 text-base">Know your worth and find the job that qualifies your life</p>
                         <Link to="/seeker/jobs" className="inline-flex items-center gap-1 text-[#1e3a8a] font-bold text-sm mt-3 hover:underline">
                             Explore All Opportunities <ChevronRight size={15} />
                         </Link>
@@ -608,7 +645,7 @@ const Home = () => {
                     <div className="flex justify-center mt-12">
                         <button
                             onClick={() => navigate('/seeker/jobs')}
-                            className="px-12 py-4 bg-white border-2 border-slate-300 text-slate-800 hover:bg-[#1e3a8a] hover:border-[#1e3a8a] hover:text-black font-bold rounded-2xl shadow-sm transition-all hover:scale-100 active:scale-90 text-sm"
+                            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95"
                         >
                             Load More Listings →
                         </button>
@@ -619,16 +656,16 @@ const Home = () => {
             {/* ══════════════════════════════════════════
                 TOP COMPANIES — CARD GRID
             ══════════════════════════════════════════ */}
-            <section className="py-20 bg-white border-t border-slate-100">
+            <section className="py-16 bg-white border-t border-slate-100">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <h2 className="font-heading text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-3">
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
                             Top Companies Hiring
                         </h2>
-                        <p className="text-slate-500 font-medium text-base mb-5">Join the world's best companies</p>
+                        <p className="text-gray-600 text-base mb-5">Join the world's best companies</p>
                         <button
                             onClick={() => navigate('/seeker/companies')}
-                            className="px-8 py-3 bg-black text-white text-sm font-bold rounded-xl hover:bg-slate-800 transition-all hover:scale-105"
+                            className="px-6 py-2.5 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-xl transition-all hover:scale-105 shadow-md"
                         >
                             View All Partners →
                         </button>
@@ -651,10 +688,10 @@ const Home = () => {
                                 >
                                     {company.logo || company.name?.charAt(0) || 'C'}
                                 </div>
-                                <p className="font-heading font-bold text-slate-900 text-sm mb-1 group-hover:text-[#1e3a8a] transition-colors truncate w-full">
+                                <p className="font-bold text-gray-900 text-sm mb-1 group-hover:text-blue-700 transition-colors truncate w-full">
                                     {company.name}
                                 </p>
-                                <p className="text-xs text-slate-400 font-semibold">{company.openings} Openings</p>
+                                <p className="text-xs text-gray-500 font-semibold">{company.openings} Openings</p>
                             </motion.div>
                         ))}
                     </div>
@@ -667,9 +704,9 @@ const Home = () => {
             <div className="fixed bottom-6 right-6 z-50">
                 <button
                     onClick={() => navigate('/seeker/chat')}
-                    className="w-14 h-14 bg-[#1e3a8a] hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+                    className="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-full shadow-2xl shadow-blue-500/30 hover:shadow-blue-500/50 flex items-center justify-center transition-all hover:scale-110 active:scale-95"
                 >
-                    <MessageCircle size={22} />
+                    <MessageCircle size={22} className="text-white stroke-white" strokeWidth={2.5} />
                 </button>
             </div>
         </div>

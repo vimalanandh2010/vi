@@ -36,7 +36,7 @@ const HelpAI = () => {
                     onClick={() => setIsOpen(true)}
                     className="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-2xl shadow-blue-500/40 border border-blue-400/30 group"
                 >
-                    <Bot size={28} className="group-hover:rotate-12 transition-transform" />
+                    <Bot size={28} className="text-white stroke-white group-hover:rotate-12 transition-transform" strokeWidth={2.5} />
                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-slate-900 animate-pulse" />
                 </motion.button>
             )}

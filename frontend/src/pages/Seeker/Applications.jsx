@@ -203,7 +203,7 @@ const Applications = () => {
                         </div>
                         <h3 className="text-2xl font-bold text-white mb-2">No applications found</h3>
                         <p className="text-slate-400 mb-8 max-w-sm mx-auto">You haven't applied to any jobs yet. Start your journey today!</p>
-                        <Link to="/seeker/jobs" className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-2xl font-bold transition-all inline-flex items-center gap-2">
+                        <Link to="/seeker/jobs" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-2xl font-bold transition-all inline-flex items-center gap-2 shadow-lg shadow-blue-500/30">
                             Browse Jobs <ArrowRight size={20} />
                         </Link>
                     </div>

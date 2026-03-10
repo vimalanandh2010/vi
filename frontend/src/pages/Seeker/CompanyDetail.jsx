@@ -88,7 +88,7 @@ const CompanyDetail = () => {
                                         <span>{company.size} Employees</span>
                                     </div>
                                     {company.website && (
-                                        <a href={company.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#1e3a8a] hover:text-blue-700 text-sm transition-colors group font-bold">
+                                        <a href={company.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-blue-600 hover:text-blue-700 text-sm transition-colors group font-bold">
                                             <Globe size={18} className="group-hover:scale-110 transition-transform" />
                                             <span>Official Website</span>
                                             <ExternalLink size={14} className="opacity-50" />
@@ -149,31 +149,34 @@ const CompanyDetail = () => {
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: idx * 0.1 }}
-                                        className="group bg-white hover:bg-[#1e3a8a] border border-slate-200 rounded-2xl p-6 transition-all duration-500 shadow-sm hover:shadow-xl hover:-translate-y-1 overflow-hidden relative"
+                                        className="group bg-white border-2 border-blue-200/50 rounded-2xl p-6 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 hover:-translate-y-1 hover:border-blue-300 overflow-hidden relative"
                                     >
+                                        {/* Blue gradient overlay on hover */}
+                                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                                        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-400/20 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
                                             <div className="space-y-2">
                                                 <div className="flex items-center gap-3">
-                                                    <h3 className="text-xl font-black text-slate-900 group-hover:text-white transition-colors tracking-tight">{job.title}</h3>
-                                                    <span className="px-2 py-1 bg-slate-100 group-hover:bg-white/10 text-slate-600 group-hover:text-white border border-slate-200 group-hover:border-white/20 rounded-lg text-[9px] font-black uppercase tracking-widest transition-colors duration-500">{job.type}</span>
+                                                    <h3 className="text-xl font-black text-slate-900 group-hover:text-blue-900 transition-colors tracking-tight">{job.title}</h3>
+                                                    <span className="px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 group-hover:bg-blue-100 group-hover:border-blue-300 rounded-lg text-[9px] font-black uppercase tracking-widest transition-colors duration-500">{job.type}</span>
                                                 </div>
-                                                <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 group-hover:text-blue-100 font-bold transition-colors duration-500">
+                                                <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 group-hover:text-slate-700 font-bold transition-colors duration-500">
                                                     <div className="flex items-center gap-1.5 line-clamp-1">
-                                                        <MapPin size={14} className="text-slate-400 group-hover:text-blue-200 transition-colors" />
+                                                        <MapPin size={14} className="text-slate-400 group-hover:text-blue-600 transition-colors" />
                                                         {job.location}
                                                     </div>
                                                     <div className="flex items-center gap-1.5">
-                                                        <Calendar size={14} className="text-slate-400 group-hover:text-blue-200 transition-colors" />
+                                                        <Calendar size={14} className="text-slate-400 group-hover:text-blue-600 transition-colors" />
                                                         Posted {new Date(job.createdAt).toLocaleDateString()}
                                                     </div>
-                                                    <div className="text-slate-900 group-hover:text-white font-black transition-colors">
+                                                    <div className="text-slate-900 group-hover:text-blue-900 font-black transition-colors">
                                                         {job.salary}
                                                     </div>
                                                 </div>
                                             </div>
                                             <Link
                                                 to={`/seeker/jobs?id=${job._id}`}
-                                                className="px-8 py-3 bg-black group-hover:bg-white text-white group-hover:!text-slate-900 rounded-xl font-black text-xs uppercase tracking-widest transition-all text-center whitespace-nowrap shadow-sm hover:scale-105 active:scale-95"
+                                                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-500/30 transition-all text-center whitespace-nowrap hover:scale-105 active:scale-95"
                                             >
                                                 Apply Now
                                             </Link>
@@ -182,7 +185,7 @@ const CompanyDetail = () => {
                                         {/* Tags */}
                                         <div className="flex flex-wrap gap-2 mt-6 relative z-10">
                                             {job.tags?.slice(0, 3).map(tag => (
-                                                <span key={tag} className="px-2.5 py-1 bg-slate-50 group-hover:bg-white/10 text-slate-500 group-hover:text-white border border-slate-200 group-hover:border-white/20 rounded-lg text-[9px] font-black uppercase tracking-wider transition-colors duration-500">#{tag}</span>
+                                                <span key={tag} className="px-2.5 py-1 bg-blue-50 text-blue-700 border border-blue-200 group-hover:bg-blue-100 group-hover:border-blue-300 rounded-lg text-[9px] font-black uppercase tracking-wider transition-colors duration-500">#{tag}</span>
                                             ))}
                                         </div>
                                     </motion.div>

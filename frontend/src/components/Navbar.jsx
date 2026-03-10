@@ -41,7 +41,7 @@ const Navbar = ({ onSidebarToggle, showSidebarToggle = false }) => {
                 <div className="flex items-center gap-3 sm:gap-6 h-20 sm:h-24">
                     {/* Left: Logo & Branding */}
                     <Link to={user?.role === 'employer' ? "/recruiter/home" : "/seeker/home"} className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
-                        <img src={logo} alt="Logo" className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl object-cover shadow-lg border-2 border-slate-300/50 hover:scale-105 transition-transform" />
+                        <img src={logo} alt="Logo" className="h-16 w-16 sm:h-20 sm:w-20 rounded-xl object-cover shadow-lg border-2 border-slate-300/50 hover:scale-105 transition-transform" />
                     </Link>
 
                     {/* Middle: Desktop Navigation */}
@@ -80,7 +80,7 @@ const Navbar = ({ onSidebarToggle, showSidebarToggle = false }) => {
                                     onClick={() => setShowProfileMenu(!showProfileMenu)}
                                     className="flex items-center gap-2.5 bg-slate-100 hover:bg-blue-950 border border-slate-200 hover:border-blue-900 text-slate-700 hover:text-white rounded-xl px-2 sm:px-3 py-2 transition-all group"
                                 >
-                                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-sm sm:text-base font-bold shadow-lg group-hover:scale-105 transition-transform">
+                                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-sm sm:text-base font-bold text-white shadow-lg group-hover:scale-105 transition-transform">
                                         {user.firstName?.charAt(0) || 'U'}
                                     </div>
                                     <div className="hidden xs:flex sm:flex flex-col items-start pr-1 sm:pr-2">

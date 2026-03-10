@@ -15,7 +15,7 @@ const PostCard = ({ post, user, onLike }) => {
                         {post.author?.photoUrl ? (
                             <img src={post.author.photoUrl} alt="" className="w-full h-full object-cover rounded-2xl" />
                         ) : (
-                            post.author?.firstName?.[0] || <User />
+                            post.author?.firstName?.[0] || <User className="text-white stroke-white" strokeWidth={2.5} />
                         )}
                     </div>
                     <div>

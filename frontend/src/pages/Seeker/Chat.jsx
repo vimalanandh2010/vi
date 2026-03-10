@@ -199,7 +199,7 @@ const SeekerChat = () => {
                                                 <img src={other.photoUrl} alt="" className="w-10 h-10 rounded-full object-cover" />
                                             ) : (
                                                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">
-                                                    {other?.firstName?.charAt(0) || <User size={18} />}
+                                                    {other?.firstName?.charAt(0) || <User size={18} className="text-white stroke-white" strokeWidth={2.5} />}
                                                 </div>
                                             )}
                                             {online && (

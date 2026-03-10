@@ -249,7 +249,7 @@ const RecruiterChat = () => {
                                                 {u.photoUrl ? (
                                                     <img src={u.photoUrl} alt="" className="w-10 h-10 rounded-full object-cover" />
                                                 ) : (
-                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center font-bold text-sm">
+                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center font-bold text-sm text-white">
                                                         {u.firstName?.charAt(0)}
                                                     </div>
                                                 )}
@@ -314,10 +314,10 @@ const RecruiterChat = () => {
                                             />
                                         ) : null}
                                         <div
-                                            className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center font-bold"
+                                            className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center font-bold text-white"
                                             style={{ display: other?.photoUrl ? 'none' : 'flex' }}
                                         >
-                                            {other?.firstName?.charAt(0) || <User size={20} />}
+                                            {other?.firstName?.charAt(0) || <User size={20} className="text-white stroke-white" strokeWidth={2.5} />}
                                         </div>
                                         {isUserOnline(other?._id) && (
                                             <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full ring-2 ring-[#0f0f17]" />
@@ -379,8 +379,8 @@ const RecruiterChat = () => {
                                         {other?.photoUrl ? (
                                             <img src={other.photoUrl} alt="" className="w-10 h-10 rounded-full object-cover" />
                                         ) : (
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center font-bold text-sm">
-                                                {other?.firstName?.charAt(0) || <User size={18} />}
+                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center font-bold text-sm text-white">
+                                                {other?.firstName?.charAt(0) || <User size={18} className="text-white stroke-white" strokeWidth={2.5} />}
                                             </div>
                                         )}
                                         {online && (

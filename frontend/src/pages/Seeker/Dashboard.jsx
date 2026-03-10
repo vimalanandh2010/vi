@@ -129,7 +129,7 @@ const SeekerDashboard = () => {
             // Listen for application status updates
             socketRef.current.on('applicationStatusUpdate', (updateData) => {
                 console.log('📬 Received application status update:', updateData);
-                
+
                 // Update applications list
                 setApplications(prev => prev.map(app => {
                     if (app._id === updateData.applicationId) {
@@ -148,7 +148,7 @@ const SeekerDashboard = () => {
                 setDashboardStats(prev => {
                     if (!prev) return prev;
                     const newStats = { ...prev };
-                    
+
                     // Decrement old status count
                     if (updateData.oldStatus === 'shortlisted') newStats.shortlisted = Math.max(0, (newStats.shortlisted || 0) - 1);
                     if (updateData.oldStatus === 'interview' || updateData.oldStatus === 'scheduled') newStats.interviews = Math.max(0, (newStats.interviews || 0) - 1);
@@ -234,40 +234,40 @@ const SeekerDashboard = () => {
     const profileStrength = calculateProfileStrength(user);
 
     const stats = [
-        { 
-            label: 'Applied', 
-            value: dashboardStats?.applied || 0, 
-            icon: Briefcase, 
+        {
+            label: 'Applied',
+            value: dashboardStats?.applied || 0,
+            icon: Briefcase,
             gradient: 'from-blue-500 to-blue-600',
             shadowColor: 'shadow-blue-500/30',
             iconBg: 'bg-blue-500/20',
             trend: '+2 this week',
             emptyText: 'Start applying to jobs that match your profile'
         },
-        { 
-            label: 'Shortlisted', 
-            value: dashboardStats?.shortlisted || 0, 
-            icon: TrendingUp, 
+        {
+            label: 'Shortlisted',
+            value: dashboardStats?.shortlisted || 0,
+            icon: TrendingUp,
             gradient: 'from-emerald-500 to-teal-600',
             shadowColor: 'shadow-emerald-500/30',
             iconBg: 'bg-emerald-500/20',
             trend: '↑ 12%',
             emptyText: 'Keep applying! Companies will notice you soon'
         },
-        { 
-            label: 'Interviews', 
-            value: dashboardStats?.interviews || 0, 
-            icon: Users, 
+        {
+            label: 'Interviews',
+            value: dashboardStats?.interviews || 0,
+            icon: Users,
             gradient: 'from-orange-500 to-red-500',
             shadowColor: 'shadow-orange-500/30',
             iconBg: 'bg-orange-500/20',
             trend: '2 scheduled',
             emptyText: 'Prepare your profile for interview invites'
         },
-        { 
-            label: 'Offers', 
-            value: dashboardStats?.offers || 0, 
-            icon: Award, 
+        {
+            label: 'Offers',
+            value: dashboardStats?.offers || 0,
+            icon: Award,
             gradient: 'from-purple-500 to-pink-600',
             shadowColor: 'shadow-purple-500/30',
             iconBg: 'bg-purple-500/20',
@@ -277,27 +277,27 @@ const SeekerDashboard = () => {
     ]
 
     const quickActions = [
-        { 
-            title: 'Search Jobs', 
-            desc: 'Find your next opportunity', 
-            icon: Search, 
-            link: '/seeker/jobs', 
+        {
+            title: 'Search Jobs',
+            desc: 'Find your next opportunity',
+            icon: Search,
+            link: '/seeker/jobs',
             gradient: 'from-blue-500 to-blue-600',
             preview: dashboardStats ? `${dashboardStats.applied} jobs explored` : 'Explore opportunities'
         },
-        { 
-            title: 'Saved Jobs', 
-            desc: 'View your bookmarked roles', 
-            icon: Bookmark, 
-            link: '/seeker/saved-jobs', 
+        {
+            title: 'Saved Jobs',
+            desc: 'View your bookmarked roles',
+            icon: Bookmark,
+            link: '/seeker/saved-jobs',
             gradient: 'from-purple-500 to-pink-500',
             preview: savedJobs.length > 0 ? `${savedJobs.length} jobs saved` : 'Save interesting jobs'
         },
-        { 
-            title: 'Messages', 
-            desc: 'Chat with employers', 
-            icon: MessageCircle, 
-            link: '/seeker/chat', 
+        {
+            title: 'Messages',
+            desc: 'Chat with employers',
+            icon: MessageCircle,
+            link: '/seeker/chat',
             gradient: 'from-indigo-500 to-purple-600',
             preview: 'Connect with recruiters'
         },
@@ -349,18 +349,17 @@ const SeekerDashboard = () => {
                                     </h4>
                                     <p className="text-sm text-gray-700 leading-relaxed">
                                         Your application for <span className="font-semibold text-blue-700">{realtimeNotification.jobTitle}</span> at <span className="font-semibold">{realtimeNotification.company}</span> has been updated to: {' '}
-                                        <span className={`font-bold uppercase ${
-                                            realtimeNotification.status === 'interview' ? 'text-orange-600' :
+                                        <span className={`font-bold uppercase ${realtimeNotification.status === 'interview' ? 'text-orange-600' :
                                             realtimeNotification.status === 'shortlisted' ? 'text-green-600' :
-                                            realtimeNotification.status === 'rejected' ? 'text-red-600' :
-                                            realtimeNotification.status === 'offer' ? 'text-purple-600' :
-                                            'text-blue-600'
-                                        }`}>
+                                                realtimeNotification.status === 'rejected' ? 'text-red-600' :
+                                                    realtimeNotification.status === 'offer' ? 'text-purple-600' :
+                                                        'text-blue-600'
+                                            }`}>
                                             {realtimeNotification.status}
                                         </span>
                                     </p>
                                 </div>
-                                <button 
+                                <button
                                     onClick={() => setRealtimeNotification(null)}
                                     className="text-gray-400 hover:text-gray-600 transition-colors"
                                 >
@@ -430,11 +429,11 @@ const SeekerDashboard = () => {
                                     <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-7 h-full shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300">
                                         {/* Background glow effect */}
                                         <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-2xl`} />
-                                        
+
                                         <div className="relative z-10">
                                             <div className="flex items-center justify-between mb-4">
                                                 <div className={`bg-gradient-to-br ${stat.gradient} rounded-xl p-3 shadow-md`}>
-                                                    <stat.icon size={24} className="text-white" />
+                                                    <stat.icon size={24} className="text-white stroke-white" strokeWidth={2.5} color="white" />
                                                 </div>
                                                 {stat.value > 0 && (
                                                     <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
@@ -479,69 +478,69 @@ const SeekerDashboard = () => {
                                         const companyName = app.job?.company?.name || app.job?.company || 'Company';
                                         return (
                                             <div key={app._id} className="p-6 hover:bg-blue-50/20 transition-all border-l-4 border-transparent hover:border-blue-600">
-                                            <div className="flex items-start justify-between gap-4">
-                                                <div className="flex items-center gap-4 flex-1">
-                                                    <div className="w-16 h-16 flex-shrink-0 rounded-xl flex items-center justify-center text-xl font-bold text-white shadow-lg overflow-hidden">
-                                                        {app.job?.company?.logo || app.job?.companyLogo ? (
-                                                            <img src={app.job?.company?.logo || app.job?.companyLogo} alt="" className="w-full h-full object-cover" />
-                                                        ) : (
-                                                            <div className={`w-full h-full bg-gradient-to-br ${getCompanyColor(companyName)} flex items-center justify-center`}>
-                                                                <span className="text-lg font-black">{getCompanyInitials(companyName)}</span>
+                                                <div className="flex items-start justify-between gap-4">
+                                                    <div className="flex items-center gap-4 flex-1">
+                                                        <div className="w-16 h-16 flex-shrink-0 rounded-xl flex items-center justify-center text-xl font-bold text-white shadow-lg overflow-hidden">
+                                                            {app.job?.company?.logo || app.job?.companyLogo ? (
+                                                                <img src={app.job?.company?.logo || app.job?.companyLogo} alt="" className="w-full h-full object-cover" />
+                                                            ) : (
+                                                                <div className="w-full h-full bg-white flex items-center justify-center">
+                                                                    <span className="text-lg font-black text-blue-600 drop-shadow-sm">{getCompanyInitials(companyName)}</span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <h4 className="text-gray-900 font-bold text-lg mb-1">{app.job?.title}</h4>
+                                                            <div className="flex items-center gap-2 text-gray-600">
+                                                                <p className="text-sm font-medium">{companyName}</p>
+                                                                <span className="text-gray-400">•</span>
+                                                                <p className="text-sm flex items-center gap-1">
+                                                                    <MapPin size={14} /> {app.job?.location}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-right flex flex-col items-end gap-2">
+                                                        <span className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider border-2 shadow-sm
+                                                        ${app.status === 'pending' || app.status === 'applied' ? 'bg-blue-50 text-blue-700 border-blue-300' :
+                                                                app.status === 'viewed' || app.status === 'reviewed' ? 'bg-white text-gray-700 border-gray-400' :
+                                                                    app.status === 'shortlisted' ? 'bg-orange-50 text-orange-700 border-orange-300' :
+                                                                        app.status === 'interview' || app.status === 'scheduled' ? 'bg-purple-50 text-purple-700 border-purple-300' :
+                                                                            app.status === 'selected' || app.status === 'offer' ? 'bg-emerald-50 text-emerald-700 border-emerald-300' :
+                                                                                app.status === 'hired' ? 'bg-green-50 text-green-700 border-green-300' :
+                                                                                    app.status === 'rejected' || app.status.includes('rejected') ? 'bg-red-50 text-red-700 border-red-300' :
+                                                                                        'bg-white text-gray-700 border-gray-400'
+                                                            }`}>
+                                                            {app.status}
+                                                        </span>
+                                                        <p className="text-gray-500 text-xs flex items-center gap-1">
+                                                            <Calendar size={12} />
+                                                            {new Date(app.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                        </p>
+                                                        {['interview', 'scheduled', 'offer'].includes(app.status) && app.interviewDate && (
+                                                            <div className="mt-2 flex flex-col gap-2 w-full">
+                                                                {app.meetingLink ? (
+                                                                    <a
+                                                                        href={app.meetingLink.startsWith('http') ? app.meetingLink : `https://${app.meetingLink}`}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-white hover:bg-gray-50 text-blue-600 border-2 border-gray-300 hover:border-blue-400 rounded-lg text-xs font-bold transition-all shadow-md"
+                                                                    >
+                                                                        <Video size={14} /> Join Meeting
+                                                                    </a>
+                                                                ) : (
+                                                                    <Link
+                                                                        to={`/interview/${app._id}`}
+                                                                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-white hover:bg-gray-50 text-blue-600 border-2 border-gray-300 hover:border-blue-400 rounded-lg text-xs font-bold transition-all shadow-md"
+                                                                    >
+                                                                        <Video size={14} /> Join Call
+                                                                    </Link>
+                                                                )}
                                                             </div>
                                                         )}
                                                     </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <h4 className="text-gray-900 font-bold text-lg mb-1">{app.job?.title}</h4>
-                                                        <div className="flex items-center gap-2 text-gray-600">
-                                                            <p className="text-sm font-medium">{companyName}</p>
-                                                            <span className="text-gray-400">•</span>
-                                                            <p className="text-sm flex items-center gap-1">
-                                                                <MapPin size={14} /> {app.job?.location}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="text-right flex flex-col items-end gap-2">
-                                                    <span className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider border-2 shadow-sm
-                                                        ${app.status === 'pending' || app.status === 'applied' ? 'bg-blue-50 text-blue-700 border-blue-300' :
-                                                            app.status === 'viewed' || app.status === 'reviewed' ? 'bg-white text-gray-700 border-gray-400' :
-                                                                app.status === 'shortlisted' ? 'bg-orange-50 text-orange-700 border-orange-300' :
-                                                                    app.status === 'interview' || app.status === 'scheduled' ? 'bg-purple-50 text-purple-700 border-purple-300' :
-                                                                        app.status === 'selected' || app.status === 'offer' ? 'bg-emerald-50 text-emerald-700 border-emerald-300' :
-                                                                            app.status === 'hired' ? 'bg-green-50 text-green-700 border-green-300' :
-                                                                                app.status === 'rejected' || app.status.includes('rejected') ? 'bg-red-50 text-red-700 border-red-300' :
-                                                                                    'bg-white text-gray-700 border-gray-400'
-                                                        }`}>
-                                                        {app.status}
-                                                    </span>
-                                                    <p className="text-gray-500 text-xs flex items-center gap-1">
-                                                        <Calendar size={12} />
-                                                        {new Date(app.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                                                    </p>
-                                                    {['interview', 'scheduled', 'offer'].includes(app.status) && app.interviewDate && (
-                                                        <div className="mt-2 flex flex-col gap-2 w-full">
-                                                            {app.meetingLink ? (
-                                                                <a
-                                                                    href={app.meetingLink.startsWith('http') ? app.meetingLink : `https://${app.meetingLink}`}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-white hover:bg-gray-50 text-blue-600 border-2 border-gray-300 hover:border-blue-400 rounded-lg text-xs font-bold transition-all shadow-md"
-                                                                >
-                                                                    <Video size={14} /> Join Meeting
-                                                                </a>
-                                                            ) : (
-                                                                <Link
-                                                                    to={`/interview/${app._id}`}
-                                                                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-white hover:bg-gray-50 text-blue-600 border-2 border-gray-300 hover:border-blue-400 rounded-lg text-xs font-bold transition-all shadow-md"
-                                                                >
-                                                                    <Video size={14} /> Join Call
-                                                                </Link>
-                                                            )}
-                                                        </div>
-                                                    )}
                                                 </div>
                                             </div>
-                                        </div>
                                         );
                                     })}
                                 </div>
@@ -586,11 +585,13 @@ const SeekerDashboard = () => {
                                             className="bg-white border-2 border-gray-200 rounded-xl p-4 hover:border-purple-600 hover:shadow-md transition-all group/card"
                                         >
                                             <div className="flex items-start justify-between mb-3">
-                                                <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-lg overflow-hidden border-2 border-gray-200">
+                                                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg overflow-hidden border-2 border-gray-200 shadow-sm">
                                                     {job.company?.logo || job.companyLogo ? (
                                                         <img src={job.company?.logo || job.companyLogo} alt="" className="w-full h-full object-cover" />
                                                     ) : (
-                                                        <span className="text-xl">🏢</span>
+                                                        <div className="w-full h-full bg-white flex items-center justify-center">
+                                                            <span className="text-xs font-black text-blue-600 drop-shadow-sm">{getCompanyInitials(job.company?.name || job.company || 'Company')}</span>
+                                                        </div>
                                                     )}
                                                 </div>
                                                 <Link to="/seeker/jobs" className="p-2 text-gray-400 hover:text-purple-600 transition-colors">
@@ -682,22 +683,20 @@ const SeekerDashboard = () => {
                             <div className="p-4 bg-white rounded-xl border-2 border-gray-200 mb-4">
                                 <div className="flex items-center justify-between mb-3">
                                     <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Profile Strength</p>
-                                    <span className={`text-xs font-bold ${
-                                        profileStrength >= 80 ? 'text-emerald-600' :
+                                    <span className={`text-xs font-bold ${profileStrength >= 80 ? 'text-emerald-600' :
                                         profileStrength >= 50 ? 'text-orange-600' :
-                                        'text-red-600'
-                                    }`}>{profileStrength}%</span>
+                                            'text-red-600'
+                                        }`}>{profileStrength}%</span>
                                 </div>
                                 <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden mb-2">
                                     <motion.div
                                         initial={{ width: 0 }}
                                         animate={{ width: `${profileStrength}%` }}
                                         transition={{ duration: 1, ease: 'easeOut' }}
-                                        className={`h-full rounded-full ${
-                                            profileStrength >= 80 ? 'bg-gradient-to-r from-emerald-500 to-teal-500' :
+                                        className={`h-full rounded-full ${profileStrength >= 80 ? 'bg-gradient-to-r from-emerald-500 to-teal-500' :
                                             profileStrength >= 50 ? 'bg-gradient-to-r from-orange-500 to-amber-500' :
-                                            'bg-gradient-to-r from-red-500 to-pink-500'
-                                        }`}
+                                                'bg-gradient-to-r from-red-500 to-pink-500'
+                                            }`}
                                     />
                                 </div>
                                 {profileStrength < 100 && (
@@ -755,7 +754,7 @@ const SeekerDashboard = () => {
                                             <div className="bg-white p-5 rounded-xl transition-all flex items-center justify-between text-left group-hover:shadow-lg">
                                                 <div className="flex items-center gap-4">
                                                     <div className={`bg-gradient-to-br ${action.gradient} w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform`}>
-                                                        <action.icon size={22} />
+                                                        <action.icon size={22} className="text-white stroke-white" strokeWidth={2.5} />
                                                     </div>
                                                     <div>
                                                         <h5 className="text-gray-900 font-bold text-sm mb-0.5">{action.title}</h5>

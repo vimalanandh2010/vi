@@ -102,11 +102,11 @@ const PostJob = () => {
         <RecruiterLayout>
             <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-5xl mx-auto bg-white min-h-full">
                 {/* Minimalist Header */}
-                <header className="mb-16">
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black tracking-tighter mb-4 leading-tight">
-                        Launch a New <br />Professional Mandate
+                <header className="mb-12">
+                    <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                        Launch a New Position
                     </h1>
-                    <p className="text-slate-400 text-base sm:text-xl font-medium tracking-tight">Deploy high-performance roles to our elite network of candidates.</p>
+                    <p className="text-gray-600 text-base md:text-lg">Deploy high-performance roles to our elite network of candidates.</p>
                 </header>
 
                 <form onSubmit={handleSubmit} className="space-y-12 pb-24">
@@ -114,32 +114,32 @@ const PostJob = () => {
                     <motion.section
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white border border-slate-100 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-10 lg:p-16 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden relative group"
+                        className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all relative"
                     >
-                        <div className="flex items-center gap-6 mb-12">
-                            <div className="p-5 bg-black text-white rounded-3xl shadow-2xl group-hover:scale-110 transition-transform">
-                                <Briefcase size={28} strokeWidth={2.5} />
+                        <div className="flex items-center gap-4 mb-8">
+                            <div className="p-4 bg-blue-600 text-white rounded-xl shadow-md">
+                                <Briefcase size={24} strokeWidth={2.5} />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black text-black">Role Architecture</h2>
-                                <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-1">Foundational Parameters</p>
+                                <h2 className="text-xl font-bold text-gray-900">Role Architecture</h2>
+                                <p className="text-xs text-gray-500 font-semibold mt-1">Foundational Parameters</p>
                             </div>
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-10">
-                            <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Professional Title *</label>
+                            <div className="space-y-2">
+                                <label className="text-xs font-semibold text-gray-600 ml-1">Professional Title *</label>
                                 <input
                                     name="title"
                                     value={formData.title}
                                     onChange={handleChange}
                                     placeholder="e.g. Senior Logic Architect"
-                                    className="w-full bg-slate-50 border border-transparent focus:border-black/10 focus:bg-white text-black font-bold rounded-2xl py-5 px-6 outline-none transition-all placeholder:text-slate-300"
+                                    className="w-full bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white text-gray-900 font-medium rounded-xl py-3 px-4 outline-none transition-all placeholder:text-gray-400"
                                     required
                                 />
                             </div>
-                            <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Deployment Location *</label>
+                            <div className="space-y-2">
+                                <label className="text-xs font-semibold text-gray-600 ml-1">Deployment Location *</label>
                                 <LocationAutocomplete
                                     value={formData.location}
                                     onChange={(value) => setFormData({ ...formData, location: value })}
@@ -151,12 +151,12 @@ const PostJob = () => {
                                         });
                                     }}
                                     placeholder="City, State, or Country"
-                                    className="w-full bg-slate-50 border border-transparent focus:border-black/10 focus:bg-white text-black font-bold rounded-2xl py-5 pl-14 pr-6 outline-none transition-all placeholder:text-slate-300"
+                                    className="w-full bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white text-gray-900 font-medium rounded-xl py-3 pl-14 pr-4 outline-none transition-all placeholder:text-gray-400"
                                     required
                                 />
                             </div>
-                            <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Engagement Framework</label>
+                            <div className="space-y-2">
+                                <label className="text-xs font-semibold text-gray-600 ml-1">Engagement Framework</label>
                                 <div className="relative">
                                     <select
                                         name="type"
@@ -175,8 +175,8 @@ const PostJob = () => {
                                     <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
                                 </div>
                             </div>
-                            <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Domain Classification</label>
+                            <div className="space-y-2">
+                                <label className="text-xs font-semibold text-gray-600 ml-1">Domain Classification</label>
                                 <div className="relative">
                                     <select
                                         name="category"
@@ -219,34 +219,34 @@ const PostJob = () => {
                         <motion.section
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="bg-white border border-slate-100 rounded-[3rem] p-10 shadow-sm hover:shadow-xl transition-all group"
+                            className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all"
                         >
-                            <div className="flex items-center gap-5 mb-10">
-                                <div className="p-4 bg-emerald-50 text-emerald-600 rounded-2xl">
-                                    <DollarSign size={24} strokeWidth={2.5} />
+                            <div className="flex items-center gap-4 mb-8">
+                                <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
+                                    <DollarSign size={22} strokeWidth={2.5} />
                                 </div>
-                                <h3 className="text-xl font-black text-black uppercase tracking-tight">Monetary Spectrum</h3>
+                                <h3 className="text-lg font-bold text-gray-900">Monetary Spectrum</h3>
                             </div>
-                            <div className="space-y-8">
-                                <div className="grid grid-cols-2 gap-6">
+                            <div className="space-y-6">
+                                <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Base Lower (LPA)</label>
+                                        <label className="text-xs font-semibold text-gray-600">Base Lower (LPA)</label>
                                         <input
                                             name="minSalary"
                                             value={formData.minSalary}
                                             onChange={handleChange}
                                             placeholder="5.0"
-                                            className="w-full bg-slate-50 border border-transparent focus:border-emerald-200 focus:bg-white text-black font-bold rounded-xl py-4 px-5 outline-none transition-all text-center placeholder:text-slate-300"
+                                            className="w-full bg-gray-50 border border-gray-200 focus:border-emerald-500 focus:bg-white text-gray-900 font-medium rounded-lg py-3 px-4 outline-none transition-all text-center placeholder:text-gray-400"
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Base Upper (LPA)</label>
+                                        <label className="text-xs font-semibold text-gray-600">Base Upper (LPA)</label>
                                         <input
                                             name="maxSalary"
                                             value={formData.maxSalary}
                                             onChange={handleChange}
                                             placeholder="12.0"
-                                            className="w-full bg-slate-50 border border-transparent focus:border-emerald-200 focus:bg-white text-black font-bold rounded-xl py-4 px-5 outline-none transition-all text-center placeholder:text-slate-300"
+                                            className="w-full bg-gray-50 border border-gray-200 focus:border-emerald-500 focus:bg-white text-gray-900 font-medium rounded-lg py-3 px-4 outline-none transition-all text-center placeholder:text-gray-400"
                                         />
                                     </div>
                                 </div>

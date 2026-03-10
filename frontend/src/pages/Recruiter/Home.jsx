@@ -108,14 +108,11 @@ const RecruiterHome = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <span className="px-5 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-[10px] font-black tracking-widest uppercase mb-10 inline-block shadow-sm">
-                            Recruiter Platform 2.0
-                        </span>
-                        <h1 className="font-heading text-6xl md:text-8xl font-black tracking-tight mb-8 leading-[1.05] text-black">
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-gray-900">
                             Hire the Best Talent <br />
                             Faster Than Ever
                         </h1>
-                        <p className="text-xl text-slate-500 max-w-3xl mx-auto mb-12 leading-relaxed font-medium">
+                        <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
                             Stop chasing candidates. Start building teams. Future Milestone provides you with the precision tools to find, track, and hire the world's most ambitious talent.
                         </p>
 
@@ -154,7 +151,7 @@ const RecruiterHome = () => {
 
                             <button
                                 type="submit"
-                                className="w-full md:w-auto px-10 py-4 bg-black hover:bg-slate-800 text-white rounded-[22px] font-bold text-lg transition-all active:scale-95 flex items-center justify-center shrink-0 shadow-lg"
+                                className="w-full md:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all active:scale-95 flex items-center justify-center shrink-0 shadow-md"
                             >
                                 Search Candidates
                             </button>
@@ -163,20 +160,20 @@ const RecruiterHome = () => {
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
                             {user ? (
                                 user.role === 'employer' ? (
-                                    <Link to="/recruiter/candidates" className="w-full sm:w-auto px-10 py-4 bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-200 rounded-2xl font-bold transition-all flex items-center justify-center gap-3 shadow-sm hover:shadow-md">
+                                    <Link to="/recruiter/candidates" className="w-full sm:w-auto px-8 py-3 bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-200 rounded-xl font-semibold transition-all flex items-center justify-center gap-3 shadow-sm hover:shadow-md">
                                         View All Talent <ArrowRight size={20} />
                                     </Link>
                                 ) : (
-                                    <Link to="/seeker/dashboard" className="w-full sm:w-auto px-10 py-4 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-2xl font-bold transition-all flex items-center justify-center gap-3">
+                                    <Link to="/seeker/dashboard" className="w-full sm:w-auto px-8 py-3 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-xl font-semibold transition-all flex items-center justify-center gap-3">
                                         Go to Seeker Dashboard <ArrowRight size={20} />
                                     </Link>
                                 )
                             ) : (
                                 <>
-                                    <Link to="/recruiter/signup" className="w-full sm:w-auto px-10 py-4 bg-black text-white rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center shadow-xl">
+                                    <Link to="/recruiter/signup" className="w-full sm:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center shadow-lg">
                                         Create Free Account
                                     </Link>
-                                    <Link to="/recruiter/login" className="w-full sm:w-auto px-10 py-4 text-slate-500 hover:text-slate-900 rounded-2xl font-bold transition-colors flex items-center justify-center">
+                                    <Link to="/recruiter/login" className="w-full sm:w-auto px-8 py-3 text-gray-600 hover:text-gray-900 rounded-xl font-semibold transition-colors flex items-center justify-center">
                                         Log In
                                     </Link>
                                 </>
@@ -191,9 +188,9 @@ const RecruiterHome = () => {
             <section className="py-24 px-6 bg-white relative">
                 <div className="absolute inset-0 grid-texture opacity-30 pointer-events-none" />
                 <div className="max-w-7xl mx-auto relative z-10">
-                    <div className="text-center mb-20">
-                        <h2 className="font-heading text-4xl md:text-5xl font-black mb-6 text-slate-900">Designed for Modern Teams</h2>
-                        <p className="text-slate-500 max-w-2xl mx-auto text-lg font-medium">Everything you need to scale your engineering, product, and design teams seamlessly.</p>
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Designed for Modern Teams</h2>
+                        <p className="text-gray-600 max-w-2xl mx-auto text-base">Everything you need to scale your engineering, product, and design teams seamlessly.</p>
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -210,8 +207,8 @@ const RecruiterHome = () => {
                                 <div className={`w-16 h-16 rounded-2xl bg-${f.color}-50 flex items-center justify-center text-${f.color}-600 mb-8 group-hover:rotate-6 transition-transform`}>
                                     <f.icon size={30} />
                                 </div>
-                                <h3 className="font-heading text-xl font-black mb-4 text-slate-900">{f.title}</h3>
-                                <p className="text-slate-500 text-sm leading-relaxed font-medium">{f.description}</p>
+                                <h3 className="text-lg font-bold mb-3 text-gray-900">{f.title}</h3>
+                                <p className="text-gray-600 text-sm leading-relaxed">{f.description}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -224,20 +221,20 @@ const RecruiterHome = () => {
             <section className="py-24 px-6 bg-white overflow-hidden relative">
                 <div className="max-w-4xl mx-auto relative">
                     <div className="text-center mb-16">
-                        <h2 className="font-heading text-3xl md:text-4xl font-black text-slate-900">Loved by TA Teams</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Loved by TA Teams</h2>
                     </div>
                     <div className="grid md:grid-cols-2 gap-8">
                         {testimonials.map((t, i) => (
                             <div key={i} className="p-10 rounded-[40px] bg-slate-50 border border-slate-100 relative group">
                                 <Star className="absolute top-10 right-10 text-slate-200 group-hover:text-yellow-400/20 transition-colors" size={40} />
-                                <p className="text-slate-600 font-medium italic mb-10 text-lg leading-relaxed relative z-10">"{t.content}"</p>
-                                <div className="flex items-center gap-5">
-                                    <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center font-black text-white shadow-xl text-lg">
+                                <p className="text-gray-600 italic mb-8 text-base leading-relaxed relative z-10">"{t.content}"</p>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center font-bold text-white shadow-lg text-base">
                                         {t.avatar}
                                     </div>
                                     <div>
-                                        <h4 className="font-heading font-black text-slate-900">{t.name}</h4>
-                                        <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">{t.role}</p>
+                                        <h4 className="font-bold text-gray-900">{t.name}</h4>
+                                        <p className="text-xs text-gray-500 font-semibold">{t.role}</p>
                                     </div>
                                 </div>
                             </div>
@@ -251,15 +248,15 @@ const RecruiterHome = () => {
                 <div className="max-w-6xl mx-auto rounded-[50px] bg-black p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
                     <div className="absolute top-[-20%] right-[-10%] w-[40%] h-[100%] bg-blue-500/10 rounded-full blur-[100px]" />
                     <div className="relative z-10">
-                        <h2 className="font-heading text-4xl md:text-6xl font-black text-white mb-8">Ready to scale your team?</h2>
-                        <p className="text-slate-400 text-xl mb-12 max-w-2xl mx-auto font-medium">Join 500+ companies hiring from a pool of 50k+ vetted professionals worldwide.</p>
+                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Ready to scale your team?</h2>
+                        <p className="text-gray-400 text-lg mb-10 max-w-2xl mx-auto">Join 500+ companies hiring from a pool of 50k+ vetted professionals worldwide.</p>
                         {user && user.role === 'employer' ? (
-                            <Link to="/recruiter/candidates" className="inline-flex items-center gap-3 px-12 py-5 bg-white text-black rounded-2xl font-black text-xl hover:bg-slate-100 transition-all shadow-xl active:scale-95">
-                                Explore Talent Hub <ArrowRight size={22} />
+                            <Link to="/recruiter/candidates" className="inline-flex items-center gap-3 px-8 py-3.5 bg-white text-black rounded-xl font-semibold text-base hover:bg-gray-100 transition-all shadow-lg active:scale-95">
+                                Explore Talent Hub <ArrowRight size={20} />
                             </Link>
                         ) : (
-                            <Link to="/recruiter/signup" className="inline-flex items-center gap-3 px-12 py-5 bg-white text-black rounded-2xl font-black text-xl hover:bg-slate-100 transition-all shadow-xl active:scale-95">
-                                Start Hiring Now <ArrowRight size={22} />
+                            <Link to="/recruiter/signup" className="inline-flex items-center gap-3 px-8 py-3.5 bg-white text-black rounded-xl font-semibold text-base hover:bg-gray-100 transition-all shadow-lg active:scale-95">
+                                Start Hiring Now <ArrowRight size={20} />
                             </Link>
                         )}
                     </div>
@@ -271,10 +268,10 @@ const RecruiterHome = () => {
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
                     <div className="flex items-center gap-3">
                         <img src={logo} alt="Logo" className="h-10 w-10 rounded-xl" />
-                        <span className="font-heading font-black text-2xl tracking-tighter text-slate-900">Future Milestone</span>
+                        <span className="font-bold text-xl text-gray-900">Future Milestone</span>
                     </div>
-                    <p className="text-slate-400 text-sm font-bold uppercase tracking-widest">© {new Date().getFullYear()} Future Milestone. Built for scale.</p>
-                    <div className="flex gap-8 text-slate-400 text-sm font-black uppercase tracking-widest">
+                    <p className="text-gray-500 text-sm font-semibold">© {new Date().getFullYear()} Future Milestone. Built for scale.</p>
+                    <div className="flex gap-8 text-gray-500 text-sm font-semibold">
                         <a href="#" className="hover:text-black transition-colors">Privacy</a>
                         <a href="#" className="hover:text-black transition-colors">Terms</a>
                         <a href="#" className="hover:text-black transition-colors">Support</a>

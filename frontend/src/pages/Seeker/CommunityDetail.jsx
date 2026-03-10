@@ -130,7 +130,7 @@ const CommunityDetail = () => {
                         ) : (
                             <button
                                 onClick={handleJoin}
-                                className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold transition-all shadow-xl shadow-blue-900/40 active:scale-95"
+                                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-2xl font-bold transition-all shadow-xl shadow-blue-500/40 active:scale-95"
                             >
                                 Join Community
                             </button>

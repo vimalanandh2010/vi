@@ -357,7 +357,7 @@ const Jobs = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.05 }}
-                                    className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-2xl hover:shadow-blue-900/20 hover:bg-blue-950 hover:border-blue-900 transition-all duration-300 group relative overflow-hidden max-w-sm mx-auto w-full"
+                                    className="bg-white border-2 border-blue-200/50 rounded-2xl p-5 shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-300 transition-all duration-300 group relative overflow-hidden max-w-sm mx-auto w-full"
                                 >
                                     <div
                                         onClick={() => handleCardClick(job)}
@@ -386,18 +386,18 @@ const Jobs = () => {
                                             </button>
                                         </div>
 
-                                        <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-white transition-colors duration-300">{job.title}</h3>
+                                        <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-blue-900 transition-colors duration-300">{job.title}</h3>
                                         <div className="mb-4">
-                                            <p className="text-slate-600 group-hover:text-blue-300 font-bold transition-colors duration-300">{job.companyName || job.company?.name || job.company}</p>
+                                            <p className="text-slate-600 group-hover:text-blue-700 font-bold transition-colors duration-300">{job.companyName || job.company?.name || job.company}</p>
                                         </div>
 
                                         <div className="space-y-2 mb-5">
-                                            <div className="flex items-center gap-2 text-slate-500 group-hover:text-blue-200 text-sm font-medium transition-colors duration-300">
-                                                <MapPin size={16} className="text-slate-400 group-hover:text-white transition-colors" />
+                                            <div className="flex items-center gap-2 text-slate-500 group-hover:text-blue-700 text-sm font-medium transition-colors duration-300">
+                                                <MapPin size={16} className="text-slate-400 group-hover:text-blue-600 transition-colors" />
                                                 {job.location}
                                             </div>
-                                            <div className="flex items-center gap-2 text-slate-500 group-hover:text-blue-200 text-sm font-medium transition-colors duration-300">
-                                                <Briefcase size={16} className="text-slate-400 group-hover:text-white transition-colors" />
+                                            <div className="flex items-center gap-2 text-slate-500 group-hover:text-blue-700 text-sm font-medium transition-colors duration-300">
+                                                <Briefcase size={16} className="text-slate-400 group-hover:text-blue-600 transition-colors" />
                                                 {job.type}
                                             </div>
                                         </div>
@@ -411,15 +411,15 @@ const Jobs = () => {
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center justify-between pt-3 border-t border-slate-100 group-hover:border-blue-900 transition-colors duration-300">
+                                    <div className="flex items-center justify-between pt-3 border-t border-slate-100 group-hover:border-blue-200 transition-colors duration-300">
                                         <div className="flex flex-col">
-                                            <p className="text-slate-900 font-bold group-hover:text-white transition-colors duration-300">{job.salary || 'Competitive'}</p>
+                                            <p className="text-slate-900 font-bold group-hover:text-blue-900 transition-colors duration-300">{job.salary || 'Competitive'}</p>
                                             {job.postedBy && (
                                                 <button
                                                     onClick={() => handleMessage(job.postedBy._id || job.postedBy)}
-                                                    className="flex items-center gap-1.5 text-slate-500 group-hover:text-blue-400 hover:text-blue-200 text-xs font-bold mt-1 transition-colors duration-300"
+                                                    className="flex items-center gap-1.5 text-slate-500 group-hover:text-blue-600 hover:text-blue-700 text-xs font-bold mt-1 transition-colors duration-300"
                                                 >
-                                                    <MessageSquare size={14} className="group-hover:text-white transition-colors" />
+                                                    <MessageSquare size={14} className="group-hover:text-blue-600 transition-colors" />
                                                     Message Recruiter
                                                 </button>
                                             )}

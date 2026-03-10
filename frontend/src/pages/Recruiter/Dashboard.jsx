@@ -58,7 +58,7 @@ const RecruiterDashboard = () => {
         return (
             <div className="min-h-screen bg-white flex flex-col items-center justify-center">
                 <div className="w-16 h-16 border-4 border-slate-100 border-t-black rounded-full animate-spin mb-4" />
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Initialising Dashboard</p>
+                <p className="text-xs font-semibold text-gray-400">Initialising Dashboard</p>
             </div>
         )
     }
@@ -70,11 +70,11 @@ const RecruiterDashboard = () => {
                     <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-sm">
                         <X className="text-red-500" size={40} />
                     </div>
-                    <h3 className="text-2xl font-black text-black mb-4">Dashboard Offline</h3>
-                    <p className="text-slate-500 mb-8 font-medium leading-relaxed">{statsError}</p>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Dashboard Offline</h3>
+                    <p className="text-gray-600 mb-8 leading-relaxed">{statsError}</p>
                     <button
                         onClick={() => window.location.reload()}
-                        className="w-full py-4 bg-black hover:bg-slate-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl"
+                        className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all shadow-md"
                     >
                         Reconnect Now
                     </button>
@@ -95,7 +95,7 @@ const RecruiterDashboard = () => {
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.8 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    className="w-16 h-16 bg-black rounded-2xl flex items-center justify-center text-3xl font-black text-white shadow-2xl"
+                                    className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center text-2xl font-bold text-white shadow-lg"
                                 >
                                     {user?.firstName?.[0] || 'R'}
                                 </motion.div>
@@ -104,12 +104,12 @@ const RecruiterDashboard = () => {
                                         <motion.h1
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            className="text-2xl sm:text-3xl lg:text-5xl font-black tracking-tight text-black"
+                                            className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900"
                                         >
                                             Hello, {user?.firstName || 'Recruiter'}
                                         </motion.h1>
                                     </div>
-                                    <p className="text-slate-400 mt-2 text-lg font-bold">Here's the latest from your recruitment pipeline.</p>
+                                    <p className="text-gray-600 mt-2 text-base md:text-lg">Here's the latest from your recruitment pipeline.</p>
                                 </div>
                             </div>
 
@@ -124,13 +124,13 @@ const RecruiterDashboard = () => {
                                             <Shield size={24} strokeWidth={2.5} />
                                         </div>
                                         <div>
-                                            <p className="text-xl font-black text-white">Complete Your Profile</p>
-                                            <p className="text-sm text-blue-100 font-medium">Set up your company details to start posting jobs.</p>
+                                            <p className="text-lg font-bold text-white">Complete Your Profile</p>
+                                            <p className="text-sm text-blue-100">Set up your company details to start posting jobs.</p>
                                         </div>
                                     </div>
                                     <button
                                         onClick={() => navigate('/recruiter/company-profile')}
-                                        className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-blue-600 text-xs font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl active:scale-95 relative z-10"
+                                        className="w-full sm:w-auto px-6 py-3 bg-white hover:bg-gray-50 text-blue-600 font-semibold rounded-xl transition-all shadow-lg active:scale-95 relative z-10"
                                     >
                                         Setup Profile
                                     </button>
@@ -145,7 +145,7 @@ const RecruiterDashboard = () => {
                                 <input
                                     type="text"
                                     placeholder="Search applicants..."
-                                    className="w-full bg-white border border-slate-100 rounded-[1.25rem] py-4 pl-14 pr-6 focus:outline-none focus:ring-8 focus:ring-black/5 focus:border-black transition-all text-sm text-black font-bold shadow-sm"
+                                    className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-14 pr-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm text-gray-900 font-medium shadow-sm"
                                 />
                             </div>
                         </div>

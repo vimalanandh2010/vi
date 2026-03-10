@@ -355,7 +355,7 @@ const RecruiterCandidates = () => {
                                                     <div key={i} className="bg-white p-5 sm:p-6 rounded-[1.5rem] border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                                                         <div className="flex items-start gap-4 mb-3">
                                                             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shrink-0 shadow-md">
-                                                                <span className="text-white font-black text-lg">{exp.company?.[0] || exp.role?.[0] || 'E'}</span>
+                                                                <span className="text-white font-black text-lg drop-shadow-sm">{exp.company?.[0] || exp.role?.[0] || 'E'}</span>
                                                             </div>
                                                             <div className="flex-1 min-w-0">
                                                                 <h4 className="text-base sm:text-lg font-black text-slate-900 mb-0.5 truncate">{exp.role || 'Position not specified'}</h4>
@@ -429,7 +429,7 @@ const RecruiterCandidates = () => {
                                                 <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
                                                     <div className="relative">
                                                         <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center shadow-lg border-4 border-slate-500/20">
-                                                            <svg className="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                                             </svg>
@@ -444,7 +444,7 @@ const RecruiterCandidates = () => {
                                                 <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
                                                     <div className="relative">
                                                         <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-600 flex items-center justify-center shadow-lg border-4 border-slate-500/20">
-                                                            <Loader2 className="animate-spin text-slate-300" size={32} />
+                                                            <Loader2 className="animate-spin text-white stroke-white" size={32} strokeWidth={2.5} />
                                                         </div>
                                                     </div>
                                                     <div>

@@ -143,7 +143,7 @@ const SeekerCommunity = () => {
                         </div>
                         <button
                             onClick={() => setShowCreatePost(true)}
-                            className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold shadow-lg shadow-blue-900/20 active:scale-95 transition-all"
+                            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-bold shadow-lg shadow-blue-500/30 active:scale-95 transition-all"
                         >
                             <Plus size={18} /> Post
                         </button>
@@ -267,11 +267,11 @@ const SeekerCommunity = () => {
                                     <div className="flex justify-between items-start mb-6">
                                         <div className="flex gap-4">
                                             <div className="relative">
-                                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-xl border-2 border-slate-800 shadow-xl">
+                                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-xl text-white border-2 border-slate-800 shadow-xl">
                                                     {post.author?.firstName?.[0] || 'U'}
                                                 </div>
                                                 <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-lg border-2 border-slate-900 flex items-center justify-center">
-                                                    <CheckCircle size={10} className="text-white" />
+                                                    <CheckCircle size={10} className="text-white stroke-white" strokeWidth={2.5} />
                                                 </div>
                                             </div>
                                             <div>
@@ -384,7 +384,7 @@ const SeekerCommunity = () => {
                                             key={type}
                                             type="button"
                                             onClick={() => setNewPost({ ...newPost, type })}
-                                            className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${newPost.type === type ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/50' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
+                                            className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${newPost.type === type ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/50' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
                                         >
                                             {type}
                                         </button>
@@ -458,7 +458,7 @@ const SeekerCommunity = () => {
                                         className="w-full bg-slate-800/50 border border-slate-700 rounded-2xl py-3 px-6 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                                     />
                                 </div>
-                                <button type="submit" className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-2xl font-bold text-lg shadow-xl shadow-blue-900/20 active:scale-95 transition-all">
+                                <button type="submit" className="w-full py-4 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-600 hover:from-blue-700 hover:via-blue-800 hover:to-blue-700 text-white rounded-2xl font-bold text-lg shadow-xl shadow-blue-500/30 active:scale-95 transition-all">
                                     Publish Post
                                 </button>
                             </form>

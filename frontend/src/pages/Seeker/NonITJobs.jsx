@@ -248,7 +248,7 @@ const NonITJobs = () => {
                                     exit={{ opacity: 0, scale: 0.9 }}
                                     transition={{ duration: 0.5, delay: idx * 0.05 }}
                                     onClick={() => handleCardClick(job)}
-                                    className="bg-white border border-slate-100 rounded-[2.5rem] p-8 hover:bg-blue-950 hover:border-blue-900 transition-all duration-300 group flex flex-col h-full shadow-xl shadow-black/[0.03] hover:shadow-2xl hover:shadow-blue-900/20 cursor-pointer"
+                                    className="bg-white border-2 border-blue-200/50 rounded-[2.5rem] p-8 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full shadow-xl shadow-black/[0.03] hover:shadow-2xl hover:shadow-blue-500/20 cursor-pointer"
                                 >
                                     <div className="flex justify-between items-start mb-8">
                                         <div className="w-14 h-14 rounded-2xl bg-slate-50 group-hover:bg-blue-900 flex items-center justify-center text-3xl border border-slate-100 group-hover:border-blue-800 shadow-inner transition-colors duration-300">

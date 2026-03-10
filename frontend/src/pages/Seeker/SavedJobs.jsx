@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Bookmark, MapPin, Briefcase, Trash2, Loader2, ArrowLeft, ArrowRight, MessageSquare } from 'lucide-react'
+import { Bookmark, MapPin, Briefcase, Trash2, Loader2, ArrowLeft, ArrowRight, MessageSquare, Building2 } from 'lucide-react'
 import Navbar from '../../components/Navbar'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
@@ -100,7 +100,7 @@ const SavedJobs = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.05 }}
-                                    className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-2xl hover:shadow-blue-900/20 hover:bg-blue-950 hover:border-blue-900 transition-all duration-300 group relative"
+                                    className="bg-white border-2 border-blue-200/50 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-300 transition-all duration-300 group relative"
                                 >
                                     <button
                                         onClick={() => handleRemove(job._id)}
@@ -110,40 +110,40 @@ const SavedJobs = () => {
                                         <Trash2 size={18} />
                                     </button>
 
-                                    <div className="w-12 h-12 rounded-xl bg-slate-100 group-hover:bg-blue-900 flex items-center justify-center text-2xl mb-4 transition-all duration-300">
-                                        🏢
+                                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-2xl mb-4 transition-all duration-300 group-hover:scale-110">
+                                        <Building2 size={24} className="text-white stroke-white" strokeWidth={2.5} />
                                     </div>
 
-                                    <h3 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-white transition-colors pr-8">{job.title}</h3>
-                                    <p className="text-slate-600 group-hover:text-blue-300 font-bold mb-6 transition-colors">{job.company?.name || job.company}</p>
+                                    <h3 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-blue-900 transition-colors pr-8">{job.title}</h3>
+                                    <p className="text-slate-600 group-hover:text-blue-700 font-bold mb-6 transition-colors">{job.company?.name || job.company}</p>
 
                                     <div className="space-y-3 mb-8">
-                                        <div className="flex items-center gap-2 text-slate-500 group-hover:text-blue-200 text-sm font-medium transition-colors">
-                                            <MapPin size={16} className="text-slate-400 group-hover:text-white transition-colors" />
+                                        <div className="flex items-center gap-2 text-slate-500 group-hover:text-blue-700 text-sm font-medium transition-colors">
+                                            <MapPin size={16} className="text-slate-400 group-hover:text-blue-600 transition-colors" />
                                             {job.location}
                                         </div>
-                                        <div className="flex items-center gap-2 text-slate-500 group-hover:text-blue-200 text-sm font-medium transition-colors">
-                                            <Briefcase size={16} className="text-slate-400 group-hover:text-white transition-colors" />
+                                        <div className="flex items-center gap-2 text-slate-500 group-hover:text-blue-700 text-sm font-medium transition-colors">
+                                            <Briefcase size={16} className="text-slate-400 group-hover:text-blue-600 transition-colors" />
                                             {job.type}
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center justify-between pt-4 border-t border-slate-100 group-hover:border-blue-900 transition-colors duration-300">
+                                    <div className="flex items-center justify-between pt-4 border-t border-slate-100 group-hover:border-blue-200 transition-colors duration-300">
                                         <div className="flex flex-col">
-                                            <p className="text-slate-900 font-bold group-hover:text-white transition-colors">{job.salary || 'Competitive'}</p>
+                                            <p className="text-slate-900 font-bold group-hover:text-blue-900 transition-colors">{job.salary || 'Competitive'}</p>
                                             {job.postedBy && (
                                                 <button
                                                     onClick={() => handleMessage(job.postedBy._id || job.postedBy)}
-                                                    className="flex items-center gap-1.5 text-slate-500 group-hover:text-blue-400 hover:text-blue-200 text-xs font-bold mt-1 transition-colors"
+                                                    className="flex items-center gap-1.5 text-slate-500 group-hover:text-blue-600 hover:text-blue-700 text-xs font-bold mt-1 transition-colors"
                                                 >
-                                                    <MessageSquare size={14} className="group-hover:text-white transition-colors" />
+                                                    <MessageSquare size={14} className="group-hover:text-blue-600 transition-colors" />
                                                     Message
                                                 </button>
                                             )}
                                         </div>
                                         <Link
                                             to="/seeker/jobs"
-                                            className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl text-sm transition-all"
+                                            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-2 rounded-xl text-sm transition-all shadow-lg shadow-blue-500/30"
                                         >
                                             View Details <ArrowRight size={16} />
                                         </Link>

@@ -347,11 +347,11 @@ const RecruiterCommunity = ({ openCreateModal = false }) => {
                                         <div className="flex justify-between items-start mb-6">
                                             <div className="flex gap-4">
                                                 <div className="relative">
-                                                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-xl border-2 border-slate-800 shadow-xl">
+                                                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-xl text-white border-2 border-slate-800 shadow-xl">
                                                         {post.author?.firstName?.[0] || 'U'}
                                                     </div>
                                                     <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-lg border-2 border-slate-900 flex items-center justify-center">
-                                                        <CheckCircle size={10} className="text-white" />
+                                                        <CheckCircle size={10} className="text-white stroke-white" strokeWidth={2.5} />
                                                     </div>
                                                 </div>
                                                 <div>

@@ -82,7 +82,7 @@ const CommunityList = ({ isSeeker = true }) => {
                         {!isSeeker && (
                             <button
                                 onClick={() => setShowCreateModal(true)}
-                                className="px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold shadow-xl shadow-blue-900/20 transition-all active:scale-95 whitespace-nowrap"
+                                className="px-6 py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-2xl font-bold shadow-xl shadow-blue-500/30 transition-all active:scale-95 whitespace-nowrap"
                             >
                                 + Create New
                             </button>
@@ -188,7 +188,7 @@ const CommunityList = ({ isSeeker = true }) => {
                                         className="w-full bg-slate-800/50 border border-slate-700 rounded-2xl py-3 px-6 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                                     />
                                 </div>
-                                <button type="submit" className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-2xl font-bold text-lg shadow-xl shadow-blue-900/20 active:scale-95 transition-all">
+                                <button type="submit" className="w-full py-4 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-600 hover:from-blue-700 hover:via-blue-800 hover:to-blue-700 text-white rounded-2xl font-bold text-lg shadow-xl shadow-blue-500/30 active:scale-95 transition-all">
                                     Create Community
                                 </button>
                             </form>

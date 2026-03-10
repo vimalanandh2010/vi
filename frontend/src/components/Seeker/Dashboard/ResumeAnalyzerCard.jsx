@@ -19,7 +19,7 @@ const ResumeAnalyzerCard = () => {
                     <div className="flex-1 space-y-8">
                         <div className="flex items-center gap-5">
                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-2xl shadow-blue-500/40 group-hover:scale-110 transition-transform duration-500">
-                                <Sparkles size={28} className="animate-pulse" />
+                                <Sparkles size={28} className="text-white stroke-white animate-pulse" strokeWidth={2.5} />
                             </div>
                             <div>
                                 <h3 className="text-2xl font-black text-white tracking-tight group-hover:text-blue-400 transition-colors">Local ATS Intelligence</h3>

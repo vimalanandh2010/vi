@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useGoogleLogin } from '@react-oauth/google'
-import { motion } from 'framer-motion'
+import { motion, useInView as useFramerInView } from 'framer-motion'
 import {
     Briefcase,
     TrendingUp,
@@ -11,16 +11,53 @@ import {
     Award,
     Target,
     Users,
-    BookOpen
+    BookOpen,
+    Search,
+    Building2,
+    Rocket,
+    Shield,
+    Clock,
+    Heart
 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import logo from '../../assets/logo.jpeg'
 
+// Animated Counter Component
+const AnimatedCounter = ({ end, duration = 2, suffix = '' }) => {
+    const [count, setCount] = useState(0);
+    const ref = useRef(null);
+    const isInView = useFramerInView(ref, { once: true });
+
+    useEffect(() => {
+        if (!isInView) return;
+        
+        let startTime;
+        let animationFrame;
+
+        const animate = (timestamp) => {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+            
+            setCount(Math.floor(progress * end));
+
+            if (progress < 1) {
+                animationFrame = requestAnimationFrame(animate);
+            }
+        };
+
+        animationFrame = requestAnimationFrame(animate);
+        return () => cancelAnimationFrame(animationFrame);
+    }, [end, duration, isInView]);
+
+    return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
+};
+
 const SeekerLanding = () => {
     const { user, loginWithGoogle, getRedirectPath } = useAuth()
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
+    const [searchQuery, setSearchQuery] = useState('')
 
     const googleLogin = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
@@ -117,6 +154,38 @@ const SeekerLanding = () => {
                             Join thousands of professionals who've found their perfect role. Browse verified opportunities, upskill with free courses, and take control of your career journey.
                         </p>
 
+                        {/* Search Bar */}
+                        <div className="max-w-3xl mx-auto mb-8">
+                            <div className="relative">
+                                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={24} />
+                                <input
+                                    type="text"
+                                    placeholder="Search jobs, skills, or companies..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && navigate(`/seeker/jobs?search=${searchQuery}`)}
+                                    className="w-full pl-16 pr-32 py-5 rounded-2xl border-2 border-slate-200 focus:border-blue-500 outline-none text-lg shadow-lg"
+                                />
+                                <button 
+                                    onClick={() => navigate(`/seeker/jobs?search=${searchQuery}`)}
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 px-8 py-3 bg-black text-white rounded-xl font-bold hover:bg-slate-800 transition-all"
+                                >
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Trust Badge */}
+                        <motion.p 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.8 }}
+                            className="text-slate-500 text-sm flex items-center justify-center gap-2 mb-8"
+                        >
+                            <Users size={16} />
+                            <span>Join <strong>50,000+</strong> professionals finding their dream jobs</span>
+                        </motion.p>
+
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             {user ? (
                                 user.role === 'seeker' ? (
@@ -166,8 +235,62 @@ const SeekerLanding = () => {
                 </div>
             </section>
 
+            {/* Trusted Companies Strip */}
+            <section className="py-16 px-6 bg-white border-y border-slate-100">
+                <div className="max-w-7xl mx-auto">
+                    <p className="text-center text-slate-500 text-sm font-semibold uppercase tracking-wider mb-8">
+                        Trusted by professionals at
+                    </p>
+                    <div className="flex flex-wrap items-center justify-center gap-12 opacity-60">
+                        {['Google', 'Microsoft', 'Amazon', 'TCS', 'Infosys', 'Wipro'].map((company, idx) => (
+                            <motion.div 
+                                key={idx}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 0.6, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.1 }}
+                                className="text-2xl font-black text-slate-800"
+                            >
+                                {company}
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Animated Stats Counter */}
+            <section className="py-24 px-6 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        {[
+                            { number: 50000, label: 'Active Jobs', icon: Briefcase, suffix: '+', color: 'blue' },
+                            { number: 500, label: 'Companies Hiring', icon: Building2, suffix: '+', color: 'purple' },
+                            { number: 10000, label: 'Job Seekers', icon: Users, suffix: '+', color: 'green' },
+                            { number: 95, label: 'Success Rate', icon: TrendingUp, suffix: '%', color: 'orange' }
+                        ].map((stat, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.1, duration: 0.6 }}
+                                className="text-center p-8 rounded-2xl bg-white shadow-lg border border-slate-100 hover:-translate-y-2 transition-all"
+                            >
+                                <div className={`w-14 h-14 mx-auto mb-4 bg-${stat.color}-100 rounded-full flex items-center justify-center`}>
+                                    <stat.icon className={`text-${stat.color}-600`} size={28} />
+                                </div>
+                                <div className="text-4xl font-black text-slate-900 mb-2">
+                                    <AnimatedCounter end={stat.number} duration={2.5} suffix={stat.suffix} />
+                                </div>
+                                <p className="text-slate-600 font-semibold text-sm">{stat.label}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* Core Features */}
-            <section className="py-24 px-6 bg-transparent">
+            <section className="py-24 px-6 bg-white">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-20">
                         <h2 className="text-3xl md:text-5xl font-bold mb-6">Everything You Need to Succeed</h2>
@@ -189,6 +312,64 @@ const SeekerLanding = () => {
                                 </div>
                                 <h3 className="text-xl font-bold mb-4 text-slate-900">{f.title}</h3>
                                 <p className="text-slate-600 text-sm leading-relaxed">{f.description}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* How It Works Section */}
+            <section className="py-24 px-6 bg-gradient-to-br from-slate-50 to-white">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-20">
+                        <h2 className="text-3xl md:text-5xl font-bold mb-6 text-slate-900">How It Works</h2>
+                        <p className="text-slate-600 max-w-2xl mx-auto text-lg">
+                            Start your journey in 3 simple steps
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-12 relative">
+                        {/* Connecting line */}
+                        <div className="hidden md:block absolute top-[60px] left-[16.6%] right-[16.6%] h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-green-500" />
+                        
+                        {[
+                            {
+                                step: '01',
+                                title: 'Create Your Profile',
+                                description: 'Sign up in seconds and build your professional profile with resume, skills, and preferences.',
+                                icon: Users,
+                                color: 'blue'
+                            },
+                            {
+                                step: '02',
+                                title: 'Apply to Jobs',
+                                description: 'Browse thousands of verified opportunities and apply with one click. Track all applications.',
+                                icon: Rocket,
+                                color: 'purple'
+                            },
+                            {
+                                step: '03',
+                                title: 'Get Hired',
+                                description: 'Connect with recruiters, attend interviews, and land your dream job. We support you all the way.',
+                                icon: Award,
+                                color: 'green'
+                            }
+                        ].map((item, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.2, duration: 0.6 }}
+                                className="relative text-center"
+                            >
+                                {/* Step number background */}
+                                <div className={`w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-${item.color}-500 to-${item.color}-600 shadow-2xl flex items-center justify-center relative z-10`}>
+                                    <item.icon className="text-white stroke-white" size={36} strokeWidth={2.5} />
+                                </div>
+                                <div className="text-sm font-black text-slate-400 tracking-widest mb-2">STEP {item.step}</div>
+                                <h3 className="text-xl font-bold mb-4 text-slate-900">{item.title}</h3>
+                                <p className="text-slate-600 leading-relaxed">{item.description}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -246,54 +427,141 @@ const SeekerLanding = () => {
                 </div>
             </section>
 
-            {/* Testimonials */}
-            <section className="py-24 px-6 relative">
+            {/* Success Stories - Enhanced */}
+            <section className="py-24 px-6 bg-gradient-to-br from-slate-50 to-white">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold mb-2">Success Stories</h2>
+                        <span className="inline-block px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-bold uppercase tracking-wider mb-4">
+                            Success Stories
+                        </span>
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-slate-900">
+                            Loved by Professionals
+                        </h2>
+                        <p className="text-slate-600 max-w-2xl mx-auto text-lg">
+                            Real stories from people who found their dream jobs through our platform
+                        </p>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                        {testimonials.map((t, i) => (
-                            <div key={i} className="p-8 rounded-3xl bg-white shadow-lg border border-slate-200 hover:-translate-y-1 transition-all relative">
-                                <Star className="absolute top-8 right-8 text-yellow-500/20" size={40} />
-                                <p className="text-slate-600 italic mb-8 relative z-10">"{t.content}"</p>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {[
+                            {
+                                name: "Priya Sharma",
+                                role: "Software Engineer at Google",
+                                content: "I landed my dream job within 2 weeks of signing up. The platform made it so easy to apply to multiple companies. The AI matching really works!",
+                                avatar: "PS",
+                                rating: 5,
+                                color: "blue"
+                            },
+                            {
+                                name: "Rahul Verma",
+                                role: "Product Designer at Microsoft",
+                                content: "The course offerings helped me upskill and secure a product design role. The platform connected me with recruiters directly!",
+                                avatar: "RV",
+                                rating: 5,
+                                color: "purple"
+                            },
+                            {
+                                name: "Anjali Patel",
+                                role: "Data Analyst at Amazon",
+                                content: "Amazing experience! Got interview calls from top companies. The AI matching really works. Highly recommended for job seekers.",
+                                avatar: "AP",
+                                rating: 5,
+                                color: "green"
+                            }
+                        ].map((testimonial, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.15, duration: 0.6 }}
+                                className="p-8 rounded-3xl bg-white shadow-lg border border-slate-200 hover:-translate-y-2 transition-all"
+                            >
+                                {/* Rating stars */}
+                                <div className="flex gap-1 mb-6">
+                                    {[...Array(testimonial.rating)].map((_, i) => (
+                                        <Star key={i} className="text-yellow-500 fill-yellow-500" size={16} />
+                                    ))}
+                                </div>
+                                
+                                {/* Quote */}
+                                <p className="text-slate-600 mb-8 leading-relaxed italic">
+                                    "{testimonial.content}"
+                                </p>
+                                
+                                {/* Author */}
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center font-bold text-white shadow-lg">
-                                        {t.avatar}
+                                    <div className={`w-14 h-14 rounded-full bg-gradient-to-br from-${testimonial.color}-500 to-${testimonial.color}-600 flex items-center justify-center font-black text-white shadow-lg text-lg`}>
+                                        {testimonial.avatar}
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-slate-900 leading-none mb-1">{t.name}</h4>
-                                        <p className="text-xs text-slate-500">{t.role}</p>
+                                        <h4 className="font-bold text-slate-900 leading-none mb-1">{testimonial.name}</h4>
+                                        <p className="text-xs text-slate-500">{testimonial.role}</p>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Final CTA */}
+            {/* Final CTA - Enhanced */}
             <section className="py-24 px-6 relative overflow-hidden">
-                <div className="max-w-4xl mx-auto rounded-[40px] bg-black p-12 md:p-20 text-center relative shadow-2xl">
-                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
+                <div className="max-w-5xl mx-auto rounded-[40px] bg-gradient-to-br from-blue-600 to-purple-600 p-12 md:p-20 text-center relative shadow-2xl">
+                    <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6bTAgNmMwLTIuMjEgMS43OS00IDQtNHM0IDEuNzkgNCA0LTEuNzkgNC00IDQtNC0xLjc5LTQtNHptNiAwYzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00em0wLTZjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')" }} />
+                    
                     <div className="relative z-10">
-                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Ready to start your journey?</h2>
-                        <p className="text-slate-300 text-lg mb-10 max-w-xl mx-auto">Join 50,000+ professionals who've found their dream careers through our platform.</p>
+                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+                            Ready to Start Your Journey?
+                        </h2>
+                        <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
+                            Join 50,000+ professionals who've found their dream careers through our platform
+                        </p>
+                        
+                        {/* Trust indicators */}
+                        <div className="flex flex-wrap justify-center gap-6 mb-10 text-white/90">
+                            <div className="flex items-center gap-2">
+                                <Shield size={20} />
+                                <span className="text-sm font-semibold">100% Verified Jobs</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Clock size={20} />
+                                <span className="text-sm font-semibold">Sign Up in 2 Minutes</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Heart size={20} />
+                                <span className="text-sm font-semibold">Free Forever</span>
+                            </div>
+                        </div>
+                        {/* CTA Button */}
                         {user ? (
                             user.role === 'seeker' ? (
-                                <Link to="/seeker/home" className="inline-flex items-center gap-2 px-10 py-4 bg-white text-black rounded-2xl font-bold text-lg hover:bg-slate-100 transition-all shadow-xl active:scale-95 leading-none">
-                                    Open Dashboard <ArrowRight size={20} />
+                                <Link
+                                    to="/seeker/home"
+                                    className="inline-flex items-center gap-2 px-12 py-5 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all shadow-2xl hover:shadow-3xl active:scale-95"
+                                >
+                                    Go to Dashboard <ArrowRight size={20} />
                                 </Link>
                             ) : (
-                                <Link to="/recruiter/dashboard" className="inline-flex items-center gap-2 px-10 py-4 bg-white text-black rounded-2xl font-bold text-lg hover:bg-slate-100 transition-all shadow-xl active:scale-95 leading-none">
+                                <Link
+                                    to="/recruiter/dashboard"
+                                    className="inline-flex items-center gap-2 px-12 py-5 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all shadow-2xl active:scale-95"
+                                >
                                     Go to Recruiter Dashboard <ArrowRight size={20} />
                                 </Link>
                             )
                         ) : (
-                            <Link to="/seeker/signup" className="inline-flex items-center gap-2 px-10 py-4 bg-white text-black rounded-2xl font-bold text-lg hover:bg-slate-100 transition-all shadow-xl active:scale-95 leading-none">
+                            <Link
+                                to="/seeker/signup"
+                                className="inline-flex items-center gap-2 px-12 py-5 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all shadow-2xl hover:shadow-3xl active:scale-95"
+                            >
                                 Get Started Free <ArrowRight size={20} />
                             </Link>
                         )}
+                        
+                        <p className="text-blue-100 text-sm mt-6">
+                            No credit card required • Free forever • Cancel anytime
+                        </p>
                     </div>
                 </div>
             </section>

@@ -37,3 +37,7 @@ node_modules/
 .vscode/
 dist/
 build/
+backend/test_brevo_api.js 
+backend/test_brevo_email.js 
+backend/test_email_now.js 
+backend/test_final_email.js 
