@@ -197,7 +197,7 @@ const CompanyProfile = () => {
                                             key={type}
                                             onClick={() => setFormData({ ...formData, companyType: type })}
                                             className={`py-4 px-2 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${formData.companyType === type
-                                                ? 'bg-black text-white border-black shadow-xl scale-105'
+                                                ? 'bg-blue-600 text-white border-blue-600 shadow-xl scale-105'
                                                 : 'bg-slate-50 text-slate-400 border-transparent hover:border-slate-100 hover:bg-white hover:text-black'
                                                 }`}
                                         >

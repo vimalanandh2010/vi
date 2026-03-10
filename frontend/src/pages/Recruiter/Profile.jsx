@@ -119,7 +119,7 @@ const RecruiterProfile = () => {
                     </div>
                     <button
                         onClick={logout}
-                        className="group flex items-center gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-slate-50 hover:bg-black hover:text-white text-black rounded-[1.5rem] sm:rounded-[2rem] font-black uppercase tracking-[0.2em] text-[10px] transition-all border border-slate-100 shadow-sm"
+                        className="group flex items-center gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-red-50 hover:bg-red-600 hover:text-white text-red-600 rounded-[1.5rem] sm:rounded-[2rem] font-black uppercase tracking-[0.2em] text-[10px] transition-all border border-red-200 shadow-sm"
                     >
                         Deactivate Session
                         <LogOut size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -141,7 +141,7 @@ const RecruiterProfile = () => {
                                     </div>
                                     <button
                                         onClick={() => fileInputRef.current?.click()}
-                                        className="absolute -bottom-4 -right-4 p-5 bg-black text-white rounded-[1.5rem] shadow-2xl transition-all hover:bg-blue-600 hover:scale-110 active:scale-90"
+                                        className="absolute -bottom-4 -right-4 p-5 bg-blue-600 hover:bg-blue-700 text-white rounded-[1.5rem] shadow-2xl transition-all hover:scale-110 active:scale-90"
                                     >
                                         <Camera size={24} strokeWidth={2.5} />
                                     </button>
@@ -298,7 +298,7 @@ const RecruiterProfile = () => {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full md:w-auto px-16 py-6 bg-black hover:bg-blue-600 text-white rounded-[2.5rem] font-black uppercase tracking-[0.2em] text-xs transition-all shadow-[0_20px_40px_rgba(0,0,0,0.1)] active:scale-95 flex items-center justify-center gap-4 group"
+                                        className="w-full md:w-auto px-16 py-6 bg-blue-600 hover:bg-blue-700 text-white rounded-[2.5rem] font-black uppercase tracking-[0.2em] text-xs transition-all shadow-[0_20px_40px_rgba(59,130,246,0.1)] active:scale-95 flex items-center justify-center gap-4 group"
                                     >
                                         {loading ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} strokeWidth={2.5} />}
                                         Update Integrity

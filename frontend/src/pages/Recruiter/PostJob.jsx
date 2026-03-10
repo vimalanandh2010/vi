@@ -378,26 +378,26 @@ const PostJob = () => {
                         </div>
                     </motion.section>
 
-                    {/* Transactional Actions */}
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-10 border-t border-slate-50">
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-10 border-t border-gray-100">
                         <Link
                             to="/recruiter/jobs"
-                            className="px-6 sm:px-10 py-4 sm:py-5 bg-slate-50 hover:bg-black hover:text-white text-black rounded-[1.5rem] sm:rounded-[2rem] font-black uppercase tracking-[0.2em] text-[10px] transition-all text-center"
+                            className="px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm transition-all text-center border border-gray-300"
                         >
-                            Cancel Mission
+                            Cancel
                         </Link>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-16 py-6 bg-black hover:bg-blue-600 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-xs shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex items-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95 group"
+                            className="px-10 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm shadow-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95 group"
                         >
                             {loading ? (
                                 <Loader2 className="animate-spin" size={20} />
                             ) : (
                                 <>
-                                    Deployment Active
-                                    <Sparkles size={18} className="group-hover:animate-pulse" />
+                                    Post Job
+                                    <Sparkles size={18} className="group-hover:rotate-12 transition-transform" />
                                 </>
                             )}
                         </button>

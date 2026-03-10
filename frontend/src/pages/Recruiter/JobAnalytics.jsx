@@ -126,21 +126,21 @@ const JobAnalytics = () => {
                     </div>
 
                     {/* Job Stepper */}
-                    <div className="flex items-center gap-4 bg-slate-50 border border-slate-100 p-2 rounded-2xl shadow-sm">
+                    <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 p-2 rounded-xl shadow-sm">
                         <button
                             onClick={() => navigateToJob('prev')}
                             disabled={currentJobIndex === 0}
-                            className="p-3 bg-white hover:bg-black hover:text-white text-slate-400 rounded-xl transition-all disabled:opacity-20 shadow-sm"
+                            className="p-3 bg-white hover:bg-blue-600 hover:text-white text-gray-600 rounded-lg transition-all disabled:opacity-20 shadow-sm"
                         >
                             <ArrowLeft size={18} />
                         </button>
-                        <span className="text-[10px] font-black text-black uppercase tracking-widest px-4">
+                        <span className="text-xs font-semibold text-gray-900 px-4">
                             Job {currentJobIndex + 1} of {allJobs.length}
                         </span>
                         <button
                             onClick={() => navigateToJob('next')}
                             disabled={currentJobIndex === allJobs.length - 1}
-                            className="p-3 bg-white hover:bg-black hover:text-white text-slate-400 rounded-xl transition-all disabled:opacity-20 shadow-sm"
+                            className="p-3 bg-white hover:bg-blue-600 hover:text-white text-gray-600 rounded-lg transition-all disabled:opacity-20 shadow-sm"
                         >
                             <ArrowRight size={18} />
                         </button>
@@ -295,10 +295,10 @@ const JobAnalytics = () => {
                 <div className="mt-16 text-center">
                     <Link
                         to={`/recruiter/job-applicants/${analytics.jobId}`}
-                        className="inline-flex items-center gap-6 px-12 py-6 bg-black hover:bg-slate-800 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-xs transition-all shadow-2xl active:scale-95 group"
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-sm transition-all shadow-lg active:scale-95 group"
                     >
-                        <Users size={20} className="group-hover:scale-125 transition-transform" />
-                        View Full Talent Pool
+                        <Users size={20} className="group-hover:scale-110 transition-transform" />
+                        View All Applicants
                     </Link>
                 </div>
             </main>

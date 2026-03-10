@@ -372,7 +372,7 @@ const JobApplicants = () => {
                                             <div className="flex items-center gap-3">
                                                 <button
                                                     onClick={(e) => messageApplicant(e, app.user?._id)}
-                                                    className="p-4 bg-slate-50 hover:bg-black hover:text-white text-black border border-slate-100 rounded-2xl transition-all shadow-sm active:scale-95"
+                                                    className="p-4 bg-gray-100 hover:bg-blue-600 hover:text-white text-gray-700 border border-gray-200 rounded-2xl transition-all shadow-sm active:scale-95"
                                                     title="Direct Communication"
                                                 >
                                                     <MessageCircle size={20} strokeWidth={2.5} />
@@ -386,7 +386,7 @@ const JobApplicants = () => {
                                                             setResumeUserName(app.user?.firstName || 'Candidate')
                                                             setShowResumeModal(true)
                                                         }}
-                                                        className="p-4 bg-slate-50 hover:bg-black hover:text-white text-black border border-slate-100 rounded-2xl transition-all shadow-sm active:scale-95"
+                                                        className="p-4 bg-gray-100 hover:bg-blue-600 hover:text-white text-gray-700 border border-gray-200 rounded-2xl transition-all shadow-sm active:scale-95"
                                                         title="Credentials Check"
                                                     >
                                                         <FileText size={20} strokeWidth={2.5} />
@@ -488,7 +488,7 @@ const JobApplicants = () => {
                                     <div className="flex items-center gap-4">
                                         <button
                                             onClick={() => setSelectedCandidate(null)}
-                                            className="p-6 bg-slate-50 hover:bg-black hover:text-white rounded-[2rem] transition-all group"
+                                            className="p-6 bg-gray-100 hover:bg-gray-200 rounded-[2rem] transition-all group"
                                         >
                                             <X size={24} strokeWidth={3} className="group-hover:rotate-90 transition-transform" />
                                         </button>
@@ -577,7 +577,7 @@ const JobApplicants = () => {
                                                     </a>
                                                 )}
                                                 {selectedCandidate.user?.githubUrl && (
-                                                    <a href={selectedCandidate.user.githubUrl} target="_blank" rel="noreferrer" className="flex items-center justify-between p-6 bg-slate-50 text-black rounded-3xl border border-slate-100 hover:bg-black hover:text-white transition-all group/link font-black text-[10px] uppercase tracking-widest">
+                                                    <a href={selectedCandidate.user.githubUrl} target="_blank" rel="noreferrer" className="flex items-center justify-between p-6 bg-gray-100 text-gray-700 rounded-3xl border border-gray-200 hover:bg-blue-600 hover:text-white transition-all group/link font-black text-[10px] uppercase tracking-widest">
                                                         Engineering Profile <ExternalLink size={16} />
                                                     </a>
                                                 )}
@@ -714,7 +714,7 @@ const JobApplicants = () => {
                                     <button
                                         type="submit"
                                         disabled={updating === schedulingAppId}
-                                        className="flex-1 py-4 bg-black hover:bg-slate-800 text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                        className="flex-1 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                     >
                                         {updating === schedulingAppId ? (
                                             <>

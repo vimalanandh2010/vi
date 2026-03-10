@@ -405,31 +405,26 @@ const EditJob = () => {
                         </div>
                     </motion.section>
 
-                    {/* Transactional Actions */}
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-10 border-t border-slate-50">
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-10 border-t border-gray-100">
                         <Link
                             to="/recruiter/jobs"
-                            className="px-6 sm:px-10 py-4 sm:py-5 bg-slate-50 hover:bg-black hover:text-white text-black rounded-[1.5rem] sm:rounded-[2rem] font-black uppercase tracking-[0.2em] text-[10px] transition-all text-center"
+                            className="px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm transition-all text-center border border-gray-300"
                         >
-                            Cancel Optimization
+                            Cancel
                         </Link>
 
-                        <div className="flex items-center gap-6">
-                            <div className="hidden lg:flex flex-col items-end">
-                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Validation Ready</p>
-                                <p className="text-xs font-black text-blue-500 uppercase">System Calibrated</p>
-                            </div>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="px-16 py-6 bg-black hover:bg-blue-600 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] text-xs shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex items-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95 group"
-                            >
-                                {loading ? (
-                                    <Loader2 className="animate-spin" size={20} />
-                                ) : (
-                                    <>
-                                        Update Active Mandate
-                                        <Sparkles size={18} className="group-hover:animate-pulse" />
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="px-10 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm shadow-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95 group"
+                        >
+                            {loading ? (
+                                <Loader2 className="animate-spin" size={20} />
+                            ) : (
+                                <>
+                                    Update Job
+                                    <Sparkles size={18} className="group-hover:rotate-12 transition-transform" />
                                     </>
                                 )}
                             </button>
