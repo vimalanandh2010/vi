@@ -1,19 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Video, MapPin, Clock, ChevronRight } from 'lucide-react';
+import { Calendar, Video, MapPin, Clock, ChevronRight, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import useFetch from '../../../hooks/useFetch';
 import recruiterApi from '../../../api/modules/recruiter.api';
+import axiosClient from '../../../api/axiosClient';
 
 const UpcomingInterviews = () => {
     const { data, loading } = useFetch(recruiterApi.getInterviews);
-    const interviews = data?.interviews?.slice(0, 3) || [];
+    const [sendingEmail, setSendingEmail] = useState(null);
+    
+    // Filter interviews for today only
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const todayInterviews = (data?.interviews || []).filter(iv => {
+        const interviewDate = new Date(iv.interviewDate);
+        interviewDate.setHours(0, 0, 0, 0);
+        return interviewDate.getTime() === today.getTime();
+    });
 
     const formatTime = (timeStr) => {
         if (!timeStr) return '';
         const [hh, mm] = timeStr.split(':');
         const h = parseInt(hh, 10);
         return `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${mm} ${h >= 12 ? 'PM' : 'AM'}`;
+    };
+
+    const sendInterviewEmail = async (interview) => {
+        if (!interview.candidate?.email || !interview.meetingLink) {
+            toast.error('Missing candidate email or meeting link');
+            return;
+        }
+
+        setSendingEmail(interview._id);
+        try {
+            await axiosClient.post('/send-interview-email', {
+                to: interview.candidate.email,
+                candidateName: interview.candidate.name,
+                jobTitle: interview.job?.title,
+                interviewDate: interview.interviewDate,
+                interviewTime: interview.interviewTime,
+                meetingLink: interview.meetingLink
+            });
+            toast.success('Interview email sent successfully!');
+        } catch (error) {
+            toast.error('Failed to send email');
+        } finally {
+            setSendingEmail(null);
+        }
     };
 
     if (loading) {
@@ -33,8 +69,10 @@ const UpcomingInterviews = () => {
         <section className="bg-white border border-slate-100 rounded-[2.5rem] p-8 shadow-sm hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h3 className="text-xl font-black text-black">Upcoming Interviews</h3>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Calendar Overview</p>
+                    <h3 className="text-xl font-black text-black">Today's Interviews</h3>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">
+                        {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                    </p>
                 </div>
                 <Link
                     to="/recruiter/calendar"
@@ -45,8 +83,8 @@ const UpcomingInterviews = () => {
             </div>
 
             <div className="space-y-4">
-                {interviews.length > 0 ? (
-                    interviews.map((iv, idx) => (
+                {todayInterviews.length > 0 ? (
+                    todayInterviews.map((iv, idx) => (
                         <motion.div
                             key={idx}
                             initial={{ opacity: 0, x: -20 }}
@@ -81,15 +119,25 @@ const UpcomingInterviews = () => {
                                     </div>
                                 </div>
                                 {iv.meetingLink && (
-                                    <a
-                                        href={iv.meetingLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-xl text-[10px] font-black uppercase tracking-wider transition-all shadow-md hover:shadow-lg active:scale-95"
-                                    >
-                                        <Video size={14} />
-                                        Join Meeting
-                                    </a>
+                                    <div className="mt-3 flex gap-2">
+                                        <a
+                                            href={iv.meetingLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-2 px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-xl text-[10px] font-black uppercase tracking-wider transition-all shadow-md hover:shadow-lg active:scale-95"
+                                        >
+                                            <Video size={14} />
+                                            Join Meeting
+                                        </a>
+                                        <button
+                                            onClick={() => sendInterviewEmail(iv)}
+                                            disabled={sendingEmail === iv._id}
+                                            className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-[10px] font-black uppercase tracking-wider transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            <Mail size={14} />
+                                            {sendingEmail === iv._id ? 'Sending...' : 'Send Email'}
+                                        </button>
+                                    </div>
                                 )}
                             </div>
 
@@ -106,7 +154,7 @@ const UpcomingInterviews = () => {
                 ) : (
                     <div className="bg-slate-50 border border-dashed border-slate-200 rounded-3xl p-12 text-center">
                         <Calendar className="mx-auto text-slate-200 mb-4" size={40} />
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">No Interviews Scheduled</p>
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">No Interviews Today</p>
                     </div>
                 )}
             </div>
