@@ -204,6 +204,14 @@ router.post('/', auth, upload.single('poster'), async (req, res) => {
 
         let { title, location, type, salary, minSalary, maxSalary, experienceLevel, description, tags, requirements, category } = req.body;
 
+        // Validate required fields
+        if (!title || !title.trim()) {
+            return res.status(400).json({ message: 'Job title is required' });
+        }
+        if (!location || !location.trim()) {
+            return res.status(400).json({ message: 'Job location is required' });
+        }
+
         // Process tags and requirements if they come as strings
         if (typeof tags === 'string') {
             tags = tags.split(',').map(t => t.trim()).filter(t => t);
@@ -214,7 +222,13 @@ router.post('/', auth, upload.single('poster'), async (req, res) => {
 
         let posterUrl = '';
         if (req.file) {
-            posterUrl = await uploadFile(req.file, 'job-posters');
+            try {
+                posterUrl = await uploadFile(req.file, 'job-posters');
+                console.log('✅ [JobRoutes] Poster uploaded:', posterUrl);
+            } catch (uploadErr) {
+                console.warn('⚠️ [JobRoutes] Poster upload failed, continuing without poster:', uploadErr.message);
+                // Continue without poster - don't fail the entire job posting
+            }
         }
 
         const companyId = user.company?._id || user.company;
