@@ -4,7 +4,8 @@ import {
     Briefcase, TrendingUp, GraduationCap, Users,
     Globe, Zap, MessageCircle, Code2, Cpu, Settings, LineChart,
     BarChart, Palette, ArrowRight, MapPin, MousePointer2,
-    DollarSign, Flame, Clock, ChevronRight
+    DollarSign, Flame, Clock, ChevronRight, CheckCircle2, Star,
+    Target, Rocket, Award, Shield
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import axiosClient from '../../api/axiosClient'
@@ -272,21 +273,17 @@ const Home = () => {
             <Navbar />
 
             {/* ══════════════════════════════════════════
-                HERO SECTION — Clean Minimal Style
+                HERO SECTION — Clean Professional Style
             ══════════════════════════════════════════ */}
-            <section className="relative bg-[#F8FAFC] pt-16 pb-6 overflow-hidden z-10">
-                {/* Subtle background blobs */}
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/10 rounded-full blur-[120px] pointer-events-none animate-pulse" />
-                <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[30%] bg-purple-400/10 rounded-full blur-[100px] pointer-events-none" />
-
+            <section className="relative bg-white pt-24 pb-12 overflow-hidden z-10">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 
                     {/* Headline */}
                     <motion.h1
-                        initial={{ opacity: 0, scale: 0.9, filter: 'blur(12px)' }}
-                        animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                        transition={{ duration: 1.0, ease: 'easeOut' }}
-                        className="font-heading text-6xl md:text-7xl lg:text-8xl font-black text-[#1F2937] tracking-tight leading-tight mb-3"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8, ease: 'easeOut' }}
+                        className="font-heading text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight leading-tight mb-4"
                     >
                         Find Your Dream Job
                     </motion.h1>
@@ -294,8 +291,8 @@ const Home = () => {
                     <motion.p
                         initial={{ opacity: 0, y: 18 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.35, duration: 0.7 }}
-                        className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed mb-6"
+                        transition={{ delay: 0.3, duration: 0.7 }}
+                        className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed mb-8"
                     >
                         Discover opportunities that match your skills and aspirations
                     </motion.p>
@@ -305,33 +302,114 @@ const Home = () => {
                         initial={{ opacity: 0, y: 18 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5, duration: 0.7 }}
-                        className="flex flex-col items-center gap-5"
+                        className="mb-8"
                     >
                         <button
                             onClick={() => navigate('/seeker/jobs')}
-                            className="px-14 py-5 bg-black text-white font-bold rounded-2xl shadow-2xl hover:bg-slate-900 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 text-base"
+                            className="px-10 py-4 bg-black text-white font-bold rounded-xl shadow-lg hover:bg-slate-800 transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-2 text-sm"
                         >
-                            Explore All Jobs <ArrowRight size={20} />
+                            Explore All Jobs <ArrowRight size={18} />
                         </button>
+                    </motion.div>
 
-                        {/* Trending tag pills */}
-                        <div className="flex flex-wrap justify-center gap-3">
-                            {trendingJobs.map((job, i) => (
-                                <motion.span
-                                    key={i}
-                                    whileHover={{ scale: 1.05, backgroundColor: '#f1f5f9' }}
-                                    onClick={() => navigate(`/seeker/jobs?search=${encodeURIComponent(job)}`)}
-                                    className="px-6 py-3 bg-white border-2 border-slate-200 text-slate-700 text-sm font-semibold rounded-2xl cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md hover:border-slate-300"
-                                >
-                                    {job}
-                                </motion.span>
-                            ))}
-                        </div>
+                    {/* Trending tag pills */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.7, duration: 0.7 }}
+                        className="flex flex-wrap justify-center gap-3"
+                    >
+                        {trendingJobs.map((job, i) => (
+                            <motion.span
+                                key={i}
+                                whileHover={{ scale: 1.05, backgroundColor: '#f1f5f9' }}
+                                onClick={() => navigate(`/seeker/jobs?search=${encodeURIComponent(job)}`)}
+                                className="px-5 py-2.5 bg-slate-50 border border-slate-200 text-slate-700 text-sm font-semibold rounded-lg cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md hover:border-slate-300"
+                            >
+                                {job}
+                            </motion.span>
+                        ))}
                     </motion.div>
                 </div>
             </section>
 
-            <WaveDivider toColor="#ffffff" fromColor="#F8FAFC" />
+            <WaveDivider toColor="#ffffff" fromColor="rgb(239, 246, 255)" />
+
+            {/* ══════════════════════════════════════════
+                EVERYTHING YOU NEED TO SUCCEED
+            ══════════════════════════════════════════ */}
+            <section className="py-20 bg-white">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-16">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <h2 className="font-heading text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-3">
+                                Everything You Need to Succeed
+                            </h2>
+                            <p className="text-slate-500 font-medium text-base max-w-2xl mx-auto">
+                                Powerful tools and resources to accelerate your job search and career growth
+                            </p>
+                        </motion.div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {[
+                            {
+                                icon: Briefcase,
+                                title: 'Browse Jobs',
+                                desc: 'Access thousands of verified job listings from top companies worldwide',
+                                color: 'blue',
+                                gradient: 'from-blue-500 to-cyan-500'
+                            },
+                            {
+                                icon: Target,
+                                title: 'Apply Easily',
+                                desc: 'One-click applications with your profile. Track everything in one place',
+                                color: 'emerald',
+                                gradient: 'from-emerald-500 to-teal-500'
+                            },
+                            {
+                                icon: GraduationCap,
+                                title: 'Skill Development',
+                                desc: 'Access free courses from leading companies to boost your career',
+                                color: 'purple',
+                                gradient: 'from-purple-500 to-pink-500'
+                            },
+                            {
+                                icon: Rocket,
+                                title: 'Career Growth',
+                                desc: 'Get matched with opportunities that align with your skills and goals',
+                                color: 'orange',
+                                gradient: 'from-orange-500 to-red-500'
+                            }
+                        ].map((item, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.1, duration: 0.6 }}
+                                whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
+                                className="group bg-gradient-to-br from-white to-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-slate-300 transition-all duration-300 cursor-default"
+                            >
+                                <div className={`w-14 h-14 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                                    <item.icon size={26} className="text-white" />
+                                </div>
+                                <h3 className="font-heading text-lg font-black text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                                    {item.title}
+                                </h3>
+                                <p className="text-sm text-slate-600 font-medium leading-relaxed">
+                                    {item.desc}
+                                </p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
             {/* ══════════════════════════════════════════
                 STATS CARDS (Dashboard)
@@ -580,255 +658,6 @@ const Home = () => {
                             </motion.div>
                         ))}
                     </div>
-                </div>
-            </section>
-
-            {/* ══════════════════════════════════════════
-                PREMIUM PRICING PLANS
-            ══════════════════════════════════════════ */}
-            <section className="py-20 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 relative overflow-hidden">
-                {/* Background decorative elements */}
-                <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-[150px] pointer-events-none" />
-                <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-400/10 rounded-full blur-[150px] pointer-events-none" />
-                
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    {/* Section Header */}
-                    <div className="text-center mb-16">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 text-xs font-black uppercase tracking-wider rounded-full mb-4">
-                                <Zap size={14} className="fill-blue-700" />
-                                Premium Plans
-                            </span>
-                            <h2 className="font-heading text-5xl md:text-6xl font-black text-slate-900 tracking-tight mb-4">
-                                Choose Your Plan
-                            </h2>
-                            <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">
-                                Unlock powerful features to accelerate your job search and connect with top employers
-                            </p>
-                        </motion.div>
-                    </div>
-
-                    {/* Pricing Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                        {/* FREE PLAN */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.1, duration: 0.6 }}
-                            whileHover={{ y: -8, boxShadow: '0 20px 50px rgba(0,0,0,0.12)' }}
-                            className="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-lg transition-all duration-300"
-                        >
-                            <div className="mb-6">
-                                <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center mb-4">
-                                    <Briefcase size={24} className="text-slate-600" />
-                                </div>
-                                <h3 className="font-heading text-2xl font-black text-slate-900 mb-2">Free</h3>
-                                <p className="text-slate-500 text-sm font-medium mb-4">Perfect to get started</p>
-                                <div className="flex items-baseline gap-1 mb-6">
-                                    <span className="font-heading text-5xl font-black text-slate-900">₹0</span>
-                                    <span className="text-slate-400 text-sm font-semibold">/month</span>
-                                </div>
-                            </div>
-
-                            <ul className="space-y-3 mb-8">
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-green-600 text-xs">✓</span>
-                                    </div>
-                                    <span className="text-slate-600 font-medium">Browse unlimited jobs</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-green-600 text-xs">✓</span>
-                                    </div>
-                                    <span className="text-slate-600 font-medium">Apply to 10 jobs/month</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-green-600 text-xs">✓</span>
-                                    </div>
-                                    <span className="text-slate-600 font-medium">Basic profile visibility</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-green-600 text-xs">✓</span>
-                                    </div>
-                                    <span className="text-slate-600 font-medium">Email notifications</span>
-                                </li>
-                            </ul>
-
-                            <button className="w-full py-4 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold rounded-xl transition-all hover:scale-105 active:scale-95">
-                                Get Started Free
-                            </button>
-                        </motion.div>
-
-                        {/* PRO PLAN (Featured) */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.2, duration: 0.6 }}
-                            whileHover={{ y: -12, boxShadow: '0 30px 60px rgba(30,58,138,0.25)' }}
-                            className="bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] rounded-3xl p-8 border-2 border-blue-400 shadow-2xl relative transition-all duration-300 transform scale-105"
-                        >
-                            {/* Popular Badge */}
-                            <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                                <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-black uppercase tracking-wider rounded-full shadow-lg">
-                                    <Zap size={12} className="fill-white" />
-                                    Most Popular
-                                </span>
-                            </div>
-
-                            <div className="mb-6">
-                                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4">
-                                    <TrendingUp size={24} className="text-white" />
-                                </div>
-                                <h3 className="font-heading text-2xl font-black text-white mb-2">Pro</h3>
-                                <p className="text-blue-100 text-sm font-medium mb-4">For serious job seekers</p>
-                                <div className="flex items-baseline gap-1 mb-6">
-                                    <span className="font-heading text-5xl font-black text-white">₹499</span>
-                                    <span className="text-blue-200 text-sm font-semibold">/month</span>
-                                </div>
-                            </div>
-
-                            <ul className="space-y-3 mb-8">
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-blue-600 text-xs font-bold">✓</span>
-                                    </div>
-                                    <span className="text-white font-semibold">Everything in Free</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-blue-600 text-xs font-bold">✓</span>
-                                    </div>
-                                    <span className="text-white font-semibold">Unlimited job applications</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-blue-600 text-xs font-bold">✓</span>
-                                    </div>
-                                    <span className="text-white font-semibold">Priority profile visibility</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-blue-600 text-xs font-bold">✓</span>
-                                    </div>
-                                    <span className="text-white font-semibold">AI-powered resume analysis</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-blue-600 text-xs font-bold">✓</span>
-                                    </div>
-                                    <span className="text-white font-semibold">Direct messaging with recruiters</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-blue-600 text-xs font-bold">✓</span>
-                                    </div>
-                                    <span className="text-white font-semibold">Job alerts & recommendations</span>
-                                </li>
-                            </ul>
-
-                            <button className="w-full py-4 bg-white hover:bg-blue-50 text-[#1e3a8a] font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg">
-                                Upgrade to Pro
-                            </button>
-                        </motion.div>
-
-                        {/* ENTERPRISE PLAN */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.3, duration: 0.6 }}
-                            whileHover={{ y: -8, boxShadow: '0 20px 50px rgba(0,0,0,0.12)' }}
-                            className="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-lg transition-all duration-300"
-                        >
-                            <div className="mb-6">
-                                <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mb-4">
-                                    <Globe size={24} className="text-purple-600" />
-                                </div>
-                                <h3 className="font-heading text-2xl font-black text-slate-900 mb-2">Enterprise</h3>
-                                <p className="text-slate-500 text-sm font-medium mb-4">For teams & organizations</p>
-                                <div className="flex items-baseline gap-1 mb-6">
-                                    <span className="font-heading text-5xl font-black text-slate-900">₹999</span>
-                                    <span className="text-slate-400 text-sm font-semibold">/month</span>
-                                </div>
-                            </div>
-
-                            <ul className="space-y-3 mb-8">
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-purple-600 text-xs">✓</span>
-                                    </div>
-                                    <span className="text-slate-600 font-medium">Everything in Pro</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-purple-600 text-xs">✓</span>
-                                    </div>
-                                    <span className="text-slate-600 font-medium">Dedicated account manager</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-purple-600 text-xs">✓</span>
-                                    </div>
-                                    <span className="text-slate-600 font-medium">Priority 24/7 support</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-purple-600 text-xs">✓</span>
-                                    </div>
-                                    <span className="text-slate-600 font-medium">Custom integrations</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-purple-600 text-xs">✓</span>
-                                    </div>
-                                    <span className="text-slate-600 font-medium">Analytics & insights</span>
-                                </li>
-                                <li className="flex items-start gap-3 text-sm">
-                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-purple-600 text-xs">✓</span>
-                                    </div>
-                                    <span className="text-slate-600 font-medium">Team collaboration tools</span>
-                                </li>
-                            </ul>
-
-                            <button className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg">
-                                Contact Sales
-                            </button>
-                        </motion.div>
-                    </div>
-
-                    {/* Trust Badge */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.5, duration: 0.6 }}
-                        className="text-center mt-12"
-                    >
-                        <p className="text-slate-400 text-sm font-medium flex items-center justify-center gap-2 flex-wrap">
-                            <span className="flex items-center gap-1.5">
-                                ✓ <span className="font-semibold text-slate-600">30-day money back guarantee</span>
-                            </span>
-                            <span className="text-slate-300">•</span>
-                            <span className="flex items-center gap-1.5">
-                                ✓ <span className="font-semibold text-slate-600">Cancel anytime</span>
-                            </span>
-                            <span className="text-slate-300">•</span>
-                            <span className="flex items-center gap-1.5">
-                                ✓ <span className="font-semibold text-slate-600">Secure payment</span>
-                            </span>
-                        </p>
-                    </motion.div>
                 </div>
             </section>
 
