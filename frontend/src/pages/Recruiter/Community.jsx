@@ -577,7 +577,7 @@ const RecruiterCommunity = ({ openCreateModal = false }) => {
                                             placeholder="e.g. 💼, 🚀"
                                             value={newCommunity.icon}
                                             onChange={(e) => setNewCommunity({ ...newCommunity, icon: e.target.value })}
-                                            className="w-full bg-slate-800/50 border border-slate-700 rounded-2xl py-3 px-6 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-center text-xl"
+                                            className="w-full bg-slate-800/50 border border-slate-700 rounded-2xl py-3 px-6 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-center text-xl"
                                         />
                                     </div>
                                 </div>

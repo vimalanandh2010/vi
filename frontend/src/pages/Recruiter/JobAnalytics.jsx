@@ -81,8 +81,8 @@ const JobAnalytics = () => {
         return (
             <RecruiterLayout>
                 <div className="flex flex-col items-center justify-center h-[80vh] bg-white">
-                    <Loader2 className="animate-spin text-black mb-4" size={48} />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Loading Intelligence...</p>
+                    <Loader2 className="animate-spin text-blue-600 mb-4" size={40} />
+                    <p className="text-sm font-semibold text-gray-600">Loading analytics...</p>
                 </div>
             </RecruiterLayout>
         )
@@ -92,8 +92,8 @@ const JobAnalytics = () => {
         return (
             <RecruiterLayout>
                 <div className="flex flex-col items-center justify-center h-[80vh] bg-white">
-                    <p className="text-slate-400 font-bold mb-4">No analytics data available</p>
-                    <Link to="/recruiter/jobs" className="px-6 py-2 bg-black text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all">
+                    <p className="text-gray-600 font-medium mb-4">No analytics data available</p>
+                    <Link to="/recruiter/jobs" className="px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-all">
                         Back to Jobs
                     </Link>
                 </div>
@@ -108,16 +108,15 @@ const JobAnalytics = () => {
         <RecruiterLayout>
             <main className="p-8 md:p-12 lg:p-16 max-w-7xl mx-auto bg-white min-h-full">
                 {/* Header with Navigation */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-                    <div className="flex items-center gap-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                    <div className="flex items-center gap-4">
                         <Link
                             to="/recruiter/jobs"
-                            className="p-4 bg-slate-50 hover:bg-black hover:text-white text-slate-400 rounded-2xl transition-all shadow-sm"
+                            className="p-3 bg-gray-50 hover:bg-blue-600 hover:text-white text-gray-600 rounded-lg transition-all border border-gray-200"
                         >
-                            <ArrowLeft size={24} />
+                            <ArrowLeft size={20} />
                         </Link>
                         <div>
-                            <div className="flex items-center gap-3">
                                 <h1 className="text-4xl font-black text-black tracking-tight">{analytics.jobTitle}</h1>
                                 <span className="px-3 py-1 bg-blue-50 text-blue-600 border border-blue-100 rounded-full text-[10px] font-bold uppercase tracking-widest">Analytics</span>
                             </div>

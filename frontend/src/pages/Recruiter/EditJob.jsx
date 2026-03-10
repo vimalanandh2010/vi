@@ -115,9 +115,9 @@ const EditJob = () => {
     if (fetching) {
         return (
             <RecruiterLayout>
-                <div className="flex flex-col items-center justify-center min-h-[60vh] text-slate-400">
-                    <Loader2 className="animate-spin mb-4" size={32} />
-                    <p className="text-sm font-black uppercase tracking-widest">Retrieving Mandate...</p>
+                <div className="flex flex-col items-center justify-center min-h-[60vh] text-gray-600">
+                    <Loader2 className="animate-spin mb-4 text-blue-600" size={40} />
+                    <p className="text-sm font-semibold">Loading job details...</p>
                 </div>
             </RecruiterLayout>
         )
@@ -126,17 +126,17 @@ const EditJob = () => {
     return (
         <RecruiterLayout>
             <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-5xl mx-auto bg-white min-h-full">
-                {/* Minimalist Header */}
-                <header className="mb-16">
-                    <div className="flex items-center gap-3 mb-6">
-                        <span className="px-3 py-1 bg-black text-white rounded-lg text-[10px] font-black uppercase tracking-widest border border-black/10">Refinement Mode</span>
-                        <ChevronRight size={14} className="text-slate-300" />
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Iterative Optimization</span>
+                {/* Header */}
+                <header className="mb-12">
+                    <div className="flex items-center gap-2 mb-4">
+                        <Link to="/recruiter/jobs" className="text-sm font-semibold text-gray-600 hover:text-blue-600 transition-colors">
+                            ← Back to Jobs
+                        </Link>
                     </div>
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black tracking-tighter mb-4 leading-tight">
-                        Optimize Professional <br />Mandate
+                    <h1 className="text-4xl font-bold text-gray-900 mb-3">
+                        Edit Job Posting
                     </h1>
-                    <p className="text-slate-400 text-base sm:text-xl font-medium tracking-tight">Refine parameters for maximum candidate precision.</p>
+                    <p className="text-gray-600 text-base font-medium">Update your job posting details to attract the right candidates.</p>
                 </header>
 
                 <form onSubmit={handleSubmit} className="space-y-12 pb-24">

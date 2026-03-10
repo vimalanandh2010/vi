@@ -75,8 +75,8 @@ const CompanyProfile = () => {
     if (contextLoading) {
         return (
             <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-                <Loader2 className="animate-spin text-black mb-4" size={48} />
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Validating Infrastructure...</p>
+                <Loader2 className="animate-spin text-blue-600 mb-4" size={40} />
+                <p className="text-sm font-semibold text-gray-600">Loading company profile...</p>
             </div>
         );
     }
@@ -84,8 +84,8 @@ const CompanyProfile = () => {
     if (company) {
         return (
             <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-                <Loader2 className="animate-spin text-black mb-4" size={48} />
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Rerouting to Command Center...</p>
+                <Loader2 className="animate-spin text-blue-600 mb-4" size={40} />
+                <p className="text-sm font-semibold text-gray-600">Redirecting to dashboard...</p>
             </div>
         );
     }
@@ -93,55 +93,52 @@ const CompanyProfile = () => {
     return (
         <RecruiterLayout>
             <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-5xl mx-auto bg-white min-h-full">
-                {/* Strategic Header */}
-                <header className="mb-20">
-                    <div className="flex items-center gap-2 mb-6 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
-                        Governance <ChevronRight size={12} /> Organizational Architect
-                    </div>
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black tracking-tighter mb-4 leading-tight">
-                        Register Your <br />Corporate Entity
+                {/* Header */}
+                <header className="mb-12">
+                    <h1 className="text-4xl font-bold text-gray-900 mb-3">
+                        Register Your Company
                     </h1>
-                    <p className="text-slate-400 text-base sm:text-xl font-medium tracking-tight">Establish your brand presence to attract top-tier global talent.</p>
+                    <p className="text-gray-600 text-base font-medium">Establish your company profile to attract top talent.</p>
                 </header>
 
-                <form onSubmit={handleSubmit} className="space-y-12 pb-24">
-                    {/* Fundamental Info */}
+                <form onSubmit={handleSubmit} className="space-y-8 pb-16">
+                    {/* Basic Info */}
                     <motion.section
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white border border-slate-100 rounded-[2rem] sm:rounded-[3.5rem] p-6 sm:p-10 lg:p-16 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden relative group"
+                        className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:shadow-md transition-all"
                     >
-                        <div className="flex items-center gap-6 mb-12">
-                            <div className="p-5 bg-black text-white rounded-3xl group-hover:bg-blue-600 transition-colors">
-                                <Building2 size={28} strokeWidth={2.5} />
+                        <div className="flex items-center gap-4 mb-8">
+                            <div className="p-3 bg-blue-600 text-white rounded-xl">
+                                <Building2 size={24} strokeWidth={2.5} />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black text-black">Entity Fundamentals</h2>
-                                <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-1">Core Identity Parameters</p>
+                                <h2 className="text-xl font-bold text-gray-900">Company Information</h2>
+                                <p className="text-xs font-semibold text-gray-500 mt-0.5">Basic details about your company</p>
                             </div>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-10">
-                            <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Legal Entity Name *</label>
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <label className="text-xs font-semibold text-gray-600 ml-1">Company Name *</label>
                                 <div className="relative group/input">
-                                    <Building2 className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within/input:text-black transition-colors" size={20} />
+                                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within/input:text-blue-600 transition-colors" size={18} />
                                     <input
                                         type="text"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
                                         placeholder="e.g. Atlas Systems"
-                                        className="w-full bg-slate-50 border border-transparent focus:border-black/5 focus:bg-white text-black font-bold rounded-2xl py-5 pl-14 pr-6 outline-none transition-all placeholder:text-slate-300"
+                                        className="w-full bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white text-gray-900 font-medium rounded-lg py-3 pl-12 pr-4 outline-none transition-all placeholder:text-gray-400"
                                         required
                                     />
                                 </div>
                             </div>
 
-                            <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Digital Domain (URL)</label>
+                            <div className="space-y-2">
+                                <label className="text-xs font-semibold text-gray-600 ml-1">Website URL</label>
                                 <div className="relative group/input">
-                                    <Globe className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within/input:text-black transition-colors" size={20} />
+                                    <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within/input:text-blue-600 transition-colors" size={18} />
                                     <input
                                         type="url"
                                         name="website"

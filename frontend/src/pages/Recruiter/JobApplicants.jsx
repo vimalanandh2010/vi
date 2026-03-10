@@ -247,39 +247,39 @@ const JobApplicants = () => {
 
     return (
         <RecruiterLayout>
-            <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-7xl mx-auto bg-[#FDFDFD] min-h-full">
+            <main className="p-4 sm:p-8 md:p-12 lg:p-16 max-w-7xl mx-auto bg-white min-h-full">
                 {/* Header Section */}
-                <div className="mb-16">
-                    <Link to="/recruiter/jobs" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-black mb-10 transition-all group">
+                <div className="mb-12">
+                    <Link to="/recruiter/jobs" className="inline-flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-blue-600 mb-8 transition-all group">
                         <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-                        Workspace / Active Pipeline
+                        Back to Jobs
                     </Link>
 
-                    <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                         <div>
-                            <div className="flex items-center gap-4 mb-3">
-                                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-black tracking-tighter">
+                            <div className="flex items-center gap-4 mb-2">
+                                <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
                                     Applicants
                                 </h1>
-                                <span className="px-3 py-1 bg-black text-white rounded-lg text-[10px] font-black uppercase tracking-widest">
+                                <span className="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs font-semibold">
                                     {applicants.length} Total
                                 </span>
                             </div>
-                            <p className="text-slate-400 text-xl font-bold flex items-center gap-2">
-                                For <span className="text-black">{jobDetails?.title || 'Loading...'}</span>
+                            <p className="text-gray-600 text-base font-medium flex items-center gap-2">
+                                For <span className="text-gray-900 font-semibold">{jobDetails?.title || 'Loading...'}</span>
                             </p>
                         </div>
 
-                        <div className="flex items-center gap-4 bg-white border border-slate-100 p-6 rounded-[2rem] shadow-sm">
-                            <div className="pr-6 border-r border-slate-100 text-center">
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Engaged</p>
-                                <p className="text-2xl font-black text-black">
+                        <div className="flex items-center gap-6 bg-gray-50 border-2 border-gray-200 p-6 rounded-xl">
+                            <div className="pr-6 border-r border-gray-300 text-center">
+                                <p className="text-xs font-semibold text-gray-600 mb-1">Engaged</p>
+                                <p className="text-2xl font-bold text-gray-900">
                                     {applicants.filter(a => a.status !== 'applied').length}
                                 </p>
                             </div>
                             <div className="pl-6 text-center">
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">New</p>
-                                <p className="text-2xl font-black text-blue-600">
+                                <p className="text-xs font-semibold text-gray-600 mb-1">New</p>
+                                <p className="text-2xl font-bold text-blue-600">
                                     {applicants.filter(a => a.status === 'applied').length}
                                 </p>
                             </div>
@@ -289,10 +289,10 @@ const JobApplicants = () => {
 
                 {/* Applicants Grid */}
                 {applicants.length === 0 ? (
-                    <div className="bg-white border border-slate-100 rounded-[3.5rem] p-24 text-center shadow-sm">
-                        <Users size={64} className="text-slate-100 mx-auto mb-8" />
-                        <h3 className="text-2xl font-black text-black mb-2">Passive Pipeline</h3>
-                        <p className="text-slate-400 font-bold">This opportunity currently has no active applicants.</p>
+                    <div className="bg-gray-50 border-2 border-gray-200 border-dashed rounded-2xl p-20 text-center">
+                        <Users size={48} className="text-gray-300 mx-auto mb-6" />
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">No Applicants Yet</h3>
+                        <p className="text-gray-600 font-medium text-sm">This job posting hasn't received any applications yet.</p>
                     </div>
                 ) : (
                     <div className="grid gap-6">
@@ -304,13 +304,13 @@ const JobApplicants = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.05 }}
                                     onClick={() => setSelectedCandidate(app)}
-                                    className={`bg-white border rounded-[2.5rem] p-10 transition-all group cursor-pointer relative overflow-hidden shadow-sm hover:shadow-xl hover:shadow-black/[0.02] ${selectedCandidate?._id === app._id ? 'border-black ring-1 ring-black' : 'border-slate-100'
+                                    className={`bg-white border-2 rounded-2xl p-6 sm:p-8 transition-all group cursor-pointer relative overflow-hidden hover:shadow-md ${selectedCandidate?._id === app._id ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200'
                                         }`}
                                 >
-                                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+                                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                                         {/* Candidate Primary Info */}
-                                        <div className="flex items-center gap-4 sm:gap-8">
-                                            <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl sm:text-3xl font-black text-black shadow-sm group-hover:bg-black group-hover:text-white transition-all overflow-hidden shrink-0">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-xl sm:text-2xl font-bold text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all overflow-hidden shrink-0">
                                                 {app.user?.photoUrl ? (
                                                     <img src={app.user.photoUrl} alt="" className="w-full h-full object-cover" />
                                                 ) : (
@@ -318,19 +318,19 @@ const JobApplicants = () => {
                                                 )}
                                             </div>
                                             <div>
-                                                <h3 className="text-2xl font-black text-black tracking-tight mb-2 group-hover:text-blue-600 transition-colors">
+                                                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                                                     {app.user?.firstName} {app.user?.lastName}
                                                 </h3>
-                                                <div className="flex flex-wrap items-center gap-6">
-                                                    <span className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                                        <Mail size={14} className="text-slate-300" /> {app.user?.email}
+                                                <div className="flex flex-wrap items-center gap-4">
+                                                    <span className="flex items-center gap-1.5 text-xs font-medium text-gray-600">
+                                                        <Mail size={12} className="text-gray-400" /> {app.user?.email}
                                                     </span>
-                                                    <span className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                                        <Clock size={14} className="text-slate-300" /> {new Date(app.createdAt).toLocaleDateString()}
+                                                    <span className="flex items-center gap-1.5 text-xs font-medium text-gray-600">
+                                                        <Clock size={12} className="text-gray-400" /> {new Date(app.createdAt).toLocaleDateString()}
                                                     </span>
                                                     {app.user?.experienceLevel && (
-                                                        <span className="px-3 py-1 bg-slate-50 text-black border border-slate-100 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">
-                                                            {app.user.experienceLevel} Tier
+                                                        <span className="px-2.5 py-1 bg-gray-50 text-gray-700 border border-gray-200 rounded-lg text-xs font-semibold">
+                                                            {app.user.experienceLevel}
                                                         </span>
                                                     )}
                                                 </div>
@@ -338,22 +338,22 @@ const JobApplicants = () => {
                                         </div>
 
                                         {/* ATS & Actions Section */}
-                                        <div className="flex flex-wrap items-center gap-4 sm:gap-8 w-full lg:w-auto border-t lg:border-t-0 lg:border-l border-slate-100 pt-4 sm:pt-8 lg:pt-0 lg:pl-8">
+                                        <div className="flex flex-wrap items-center gap-4 sm:gap-6 w-full lg:w-auto border-t lg:border-t-0 lg:border-l border-gray-100 pt-4 sm:pt-6 lg:pt-0 lg:pl-6">
                                             {/* AI Match Score */}
-                                            <div className="text-center group/score pr-8 border-r border-slate-50">
+                                            <div className="text-center group/score pr-6 border-r border-gray-100">
                                                 {app.aiMatchScore === -1 ? (
-                                                    <div className="text-red-500 font-black text-2xl tracking-tighter flex items-center gap-2">
-                                                        <AlertCircle size={20} /> ERR
+                                                    <div className="text-red-500 font-bold text-xl flex items-center gap-2">
+                                                        <AlertCircle size={20} /> Error
                                                     </div>
                                                 ) : app.aiMatchScore != null ? (
-                                                    <div className="flex items-center gap-4">
+                                                    <div className="flex items-center gap-3">
                                                         <div>
-                                                            <div className="text-4xl font-black text-black group-hover/score:text-blue-600 transition-colors leading-none tracking-tighter">
+                                                            <div className="text-3xl font-bold text-gray-900 group-hover/score:text-blue-600 transition-colors leading-none">
                                                                 {app.aiMatchScore}%
                                                             </div>
-                                                            <div className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] mt-1">Intelligence</div>
+                                                            <div className="text-xs font-semibold text-gray-500 mt-1">AI Match</div>
                                                         </div>
-                                                        <div className="w-1.5 h-12 bg-slate-50 rounded-full overflow-hidden flex flex-col justify-end">
+                                                        <div className="w-1.5 h-10 bg-gray-100 rounded-full overflow-hidden flex flex-col justify-end">
                                                             <motion.div
                                                                 initial={{ height: 0 }}
                                                                 animate={{ height: `${app.aiMatchScore}%` }}
