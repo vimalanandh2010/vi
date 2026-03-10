@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { v4: uuidv4 } = require('uuid');
 let pdfParse;
 try {
     pdfParse = require('pdf-parse');
@@ -47,6 +46,9 @@ const downloadFileBuffer = async (url, timeoutMs = 10000) => {
  * @returns {Promise<string>} - Extracted text content.
  */
 const extractText = async (url) => {
+    // Dynamic import for uuid ES Module
+    const { v4: uuidv4 } = await import('uuid');
+    
     let tempFilePath = null;
     try {
         console.log(`[DocumentParser] Downloading file: ${url}`);
