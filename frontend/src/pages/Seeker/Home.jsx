@@ -584,6 +584,255 @@ const Home = () => {
             </section>
 
             {/* ══════════════════════════════════════════
+                PREMIUM PRICING PLANS
+            ══════════════════════════════════════════ */}
+            <section className="py-20 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 relative overflow-hidden">
+                {/* Background decorative elements */}
+                <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full blur-[150px] pointer-events-none" />
+                <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-400/10 rounded-full blur-[150px] pointer-events-none" />
+                
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    {/* Section Header */}
+                    <div className="text-center mb-16">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 text-xs font-black uppercase tracking-wider rounded-full mb-4">
+                                <Zap size={14} className="fill-blue-700" />
+                                Premium Plans
+                            </span>
+                            <h2 className="font-heading text-5xl md:text-6xl font-black text-slate-900 tracking-tight mb-4">
+                                Choose Your Plan
+                            </h2>
+                            <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">
+                                Unlock powerful features to accelerate your job search and connect with top employers
+                            </p>
+                        </motion.div>
+                    </div>
+
+                    {/* Pricing Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                        {/* FREE PLAN */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1, duration: 0.6 }}
+                            whileHover={{ y: -8, boxShadow: '0 20px 50px rgba(0,0,0,0.12)' }}
+                            className="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-lg transition-all duration-300"
+                        >
+                            <div className="mb-6">
+                                <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center mb-4">
+                                    <Briefcase size={24} className="text-slate-600" />
+                                </div>
+                                <h3 className="font-heading text-2xl font-black text-slate-900 mb-2">Free</h3>
+                                <p className="text-slate-500 text-sm font-medium mb-4">Perfect to get started</p>
+                                <div className="flex items-baseline gap-1 mb-6">
+                                    <span className="font-heading text-5xl font-black text-slate-900">₹0</span>
+                                    <span className="text-slate-400 text-sm font-semibold">/month</span>
+                                </div>
+                            </div>
+
+                            <ul className="space-y-3 mb-8">
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-green-600 text-xs">✓</span>
+                                    </div>
+                                    <span className="text-slate-600 font-medium">Browse unlimited jobs</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-green-600 text-xs">✓</span>
+                                    </div>
+                                    <span className="text-slate-600 font-medium">Apply to 10 jobs/month</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-green-600 text-xs">✓</span>
+                                    </div>
+                                    <span className="text-slate-600 font-medium">Basic profile visibility</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-green-600 text-xs">✓</span>
+                                    </div>
+                                    <span className="text-slate-600 font-medium">Email notifications</span>
+                                </li>
+                            </ul>
+
+                            <button className="w-full py-4 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold rounded-xl transition-all hover:scale-105 active:scale-95">
+                                Get Started Free
+                            </button>
+                        </motion.div>
+
+                        {/* PRO PLAN (Featured) */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2, duration: 0.6 }}
+                            whileHover={{ y: -12, boxShadow: '0 30px 60px rgba(30,58,138,0.25)' }}
+                            className="bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] rounded-3xl p-8 border-2 border-blue-400 shadow-2xl relative transition-all duration-300 transform scale-105"
+                        >
+                            {/* Popular Badge */}
+                            <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                                <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-black uppercase tracking-wider rounded-full shadow-lg">
+                                    <Zap size={12} className="fill-white" />
+                                    Most Popular
+                                </span>
+                            </div>
+
+                            <div className="mb-6">
+                                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4">
+                                    <TrendingUp size={24} className="text-white" />
+                                </div>
+                                <h3 className="font-heading text-2xl font-black text-white mb-2">Pro</h3>
+                                <p className="text-blue-100 text-sm font-medium mb-4">For serious job seekers</p>
+                                <div className="flex items-baseline gap-1 mb-6">
+                                    <span className="font-heading text-5xl font-black text-white">₹499</span>
+                                    <span className="text-blue-200 text-sm font-semibold">/month</span>
+                                </div>
+                            </div>
+
+                            <ul className="space-y-3 mb-8">
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-blue-600 text-xs font-bold">✓</span>
+                                    </div>
+                                    <span className="text-white font-semibold">Everything in Free</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-blue-600 text-xs font-bold">✓</span>
+                                    </div>
+                                    <span className="text-white font-semibold">Unlimited job applications</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-blue-600 text-xs font-bold">✓</span>
+                                    </div>
+                                    <span className="text-white font-semibold">Priority profile visibility</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-blue-600 text-xs font-bold">✓</span>
+                                    </div>
+                                    <span className="text-white font-semibold">AI-powered resume analysis</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-blue-600 text-xs font-bold">✓</span>
+                                    </div>
+                                    <span className="text-white font-semibold">Direct messaging with recruiters</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-blue-600 text-xs font-bold">✓</span>
+                                    </div>
+                                    <span className="text-white font-semibold">Job alerts & recommendations</span>
+                                </li>
+                            </ul>
+
+                            <button className="w-full py-4 bg-white hover:bg-blue-50 text-[#1e3a8a] font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg">
+                                Upgrade to Pro
+                            </button>
+                        </motion.div>
+
+                        {/* ENTERPRISE PLAN */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3, duration: 0.6 }}
+                            whileHover={{ y: -8, boxShadow: '0 20px 50px rgba(0,0,0,0.12)' }}
+                            className="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-lg transition-all duration-300"
+                        >
+                            <div className="mb-6">
+                                <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mb-4">
+                                    <Globe size={24} className="text-purple-600" />
+                                </div>
+                                <h3 className="font-heading text-2xl font-black text-slate-900 mb-2">Enterprise</h3>
+                                <p className="text-slate-500 text-sm font-medium mb-4">For teams & organizations</p>
+                                <div className="flex items-baseline gap-1 mb-6">
+                                    <span className="font-heading text-5xl font-black text-slate-900">₹999</span>
+                                    <span className="text-slate-400 text-sm font-semibold">/month</span>
+                                </div>
+                            </div>
+
+                            <ul className="space-y-3 mb-8">
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-purple-600 text-xs">✓</span>
+                                    </div>
+                                    <span className="text-slate-600 font-medium">Everything in Pro</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-purple-600 text-xs">✓</span>
+                                    </div>
+                                    <span className="text-slate-600 font-medium">Dedicated account manager</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-purple-600 text-xs">✓</span>
+                                    </div>
+                                    <span className="text-slate-600 font-medium">Priority 24/7 support</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-purple-600 text-xs">✓</span>
+                                    </div>
+                                    <span className="text-slate-600 font-medium">Custom integrations</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-purple-600 text-xs">✓</span>
+                                    </div>
+                                    <span className="text-slate-600 font-medium">Analytics & insights</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-sm">
+                                    <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-purple-600 text-xs">✓</span>
+                                    </div>
+                                    <span className="text-slate-600 font-medium">Team collaboration tools</span>
+                                </li>
+                            </ul>
+
+                            <button className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg">
+                                Contact Sales
+                            </button>
+                        </motion.div>
+                    </div>
+
+                    {/* Trust Badge */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.5, duration: 0.6 }}
+                        className="text-center mt-12"
+                    >
+                        <p className="text-slate-400 text-sm font-medium flex items-center justify-center gap-2 flex-wrap">
+                            <span className="flex items-center gap-1.5">
+                                ✓ <span className="font-semibold text-slate-600">30-day money back guarantee</span>
+                            </span>
+                            <span className="text-slate-300">•</span>
+                            <span className="flex items-center gap-1.5">
+                                ✓ <span className="font-semibold text-slate-600">Cancel anytime</span>
+                            </span>
+                            <span className="text-slate-300">•</span>
+                            <span className="flex items-center gap-1.5">
+                                ✓ <span className="font-semibold text-slate-600">Secure payment</span>
+                            </span>
+                        </p>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* ══════════════════════════════════════════
                 CHAT WIDGET
             ══════════════════════════════════════════ */}
             <div className="fixed bottom-6 right-6 z-50">
