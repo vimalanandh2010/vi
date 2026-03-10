@@ -35,6 +35,7 @@ const jobSchema = new mongoose.Schema({
             'Operations',
             'Customer Success',
             'Customer Service',
+            'CustomerService',
             'Finance',
             'HR',
             'Human Resources',
@@ -45,6 +46,15 @@ const jobSchema = new mongoose.Schema({
             'Legal',
             'Retail',
             'Hospitality',
+            'Administration',
+            'Consulting',
+            'Manufacturing',
+            'Construction',
+            'Media',
+            'RealEstate',
+            'Research',
+            'Agriculture',
+            'Management',
             'Other'
         ],
         default: 'Other'
