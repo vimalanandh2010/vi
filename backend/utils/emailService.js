@@ -560,10 +560,10 @@ const sendResetPasswordEmail = async (email, otp) => {
 
 const sendInterviewSlotEmail = async (email, candidateName, jobTitle, companyName, interviewDate, interviewTime, interviewNotes, applicationId, meetingLink = null) => {
     try {
-        // Format date nicely: "Monday, 24 February 2026"
+        // Format date: "24 Feb 2026"
         const dateObj = new Date(interviewDate);
-        const formattedDate = dateObj.toLocaleDateString('en-IN', {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        const formattedDate = dateObj.toLocaleDateString('en-GB', {
+            day: 'numeric', month: 'short', year: 'numeric'
         });
 
         // Format time: "18:00" -> "6:00 PM"
@@ -571,71 +571,43 @@ const sendInterviewSlotEmail = async (email, candidateName, jobTitle, companyNam
         const h = parseInt(hh, 10);
         const formattedTime = `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${mm} ${h >= 12 ? 'PM' : 'AM'}`;
 
-        // Determine final meeting URL
-        // If meetingLink is provided (Google Meet etc), use it. 
-        // Otherwise fallback to Jitsi if applicationId is provided.
+        // Meeting link
         const finalMeetingUrl = meetingLink || (applicationId ? `${process.env.FRONTEND_URL || 'http://localhost:5173'}/interview/${applicationId}` : '#');
 
         const mailOptions = {
             from: process.env.SENDER_EMAIL || 'ceitvimalanandh27@gmail.com',
             to: email,
-            subject: `Interview Scheduled: ${jobTitle} at ${companyName}`,
+            subject: `Interview: ${jobTitle} - ${formattedDate}`,
             html: `
-                <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: auto; background: #0f172a; color: #e2e8f0; border-radius: 16px; overflow: hidden;">
-                    <div style="background: linear-gradient(135deg, #2563eb, #4f46e5); padding: 36px 32px; text-align: center;">
-                        <h1 style="margin: 0; font-size: 26px; color: white; font-weight: 800;">🎯 Interview Scheduled!</h1>
-                        <p style="margin: 8px 0 0; color: rgba(255,255,255,0.85); font-size: 14px;">Future Milestone Job Portal</p>
-                    </div>
-                    <div style="padding: 32px;">
-                        <p style="font-size: 16px; margin: 0 0 16px;">Hi <strong style="color: #60a5fa;">${candidateName}</strong>,</p>
-                        <p style="color: #94a3b8; margin: 0 0 24px; line-height: 1.6;">
-                            Your interview for <strong style="color: white;">${jobTitle}</strong> at <strong style="color: white;">${companyName}</strong> has been scheduled.
+                <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 20px auto; padding: 20px; background: #ffffff; border-radius: 8px; border: 1px solid #e5e7eb;">
+                    <h2 style="margin: 0 0 20px; font-size: 20px; color: #111827;">Interview Scheduled</h2>
+                    
+                    <p style="margin: 0 0 16px; font-size: 15px; color: #374151;">
+                        <strong>${jobTitle}</strong> at ${companyName}
+                    </p>
+                    
+                    <div style="background: #f9fafb; padding: 16px; border-radius: 6px; margin-bottom: 20px;">
+                        <p style="margin: 0 0 8px; font-size: 14px; color: #6b7280;">
+                            📅 ${formattedDate} | 🕐 ${formattedTime}
                         </p>
-                        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
-                            <div style="display: flex; align-items: center; margin-bottom: 16px;">
-                                <span style="font-size: 24px; margin-right: 12px;">📅</span>
-                                <div>
-                                    <p style="margin: 0; font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Interview Date</p>
-                                    <p style="margin: 4px 0 0; font-size: 18px; font-weight: 800; color: #60a5fa;">${formattedDate}</p>
-                                </div>
-                            </div>
-                            <div style="display: flex; align-items: center; margin-bottom: ${interviewNotes ? '16px' : '0'};">
-                                <span style="font-size: 24px; margin-right: 12px;">🕐</span>
-                                <div>
-                                    <p style="margin: 0; font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Interview Time</p>
-                                    <p style="margin: 4px 0 0; font-size: 18px; font-weight: 800; color: #a78bfa;">${formattedTime}</p>
-                                </div>
-                            </div>
-                            ${interviewNotes ? `
-                            <div style="display: flex; align-items: flex-start; margin-bottom: 16px;">
-                                <span style="font-size: 24px; margin-right: 12px;">📝</span>
-                                <div>
-                                    <p style="margin: 0; font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Notes</p>
-                                    <p style="margin: 4px 0 0; font-size: 14px; color: #94a3b8;">${interviewNotes}</p>
-                                </div>
-                            </div>` : ''}
-                            
-                            <div style="margin-top: 24px; text-align: center;">
-                                <a href="${finalMeetingUrl}" style="display: inline-block; background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
-                                    🎥 Join Interview Session
-                                </a>
-                            </div>
-                        </div>
-                        <div style="background: #1e3a5f; border: 1px solid #2563eb33; border-radius: 10px; padding: 16px; margin-bottom: 24px;">
-                            <p style="margin: 0; font-size: 13px; color: #93c5fd; line-height: 1.6;">
-                                💡 <strong>Tip:</strong> Please be ready 5 minutes before time. Keep your resume handy and ensure a stable internet connection.
-                            </p>
-                        </div>
-                        <p style="color: #64748b; font-size: 13px; margin: 0;">Best of luck!<br><strong style="color: #94a3b8;">The Future Milestone Team</strong></p>
+                        ${interviewNotes ? `<p style="margin: 8px 0 0; font-size: 13px; color: #6b7280;">${interviewNotes}</p>` : ''}
                     </div>
+                    
+                    <a href="${finalMeetingUrl}" style="display: inline-block; background: #000000; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px;">
+                        Join Meeting
+                    </a>
+                    
+                    <p style="margin: 20px 0 0; font-size: 12px; color: #9ca3af;">
+                        Please join 5 minutes early.
+                    </p>
                 </div>
             `
         };
 
         await sendEmail(mailOptions);
-        console.log(`[Email] Interview slot email sent to ${email}`);
+        console.log(`[Email] Interview email sent to ${email}`);
     } catch (error) {
-        console.error('[Email] Error sending interview slot email:', error);
+        console.error('[Email] Error sending interview email:', error);
     }
 };
 

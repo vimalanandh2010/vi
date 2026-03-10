@@ -1735,7 +1735,7 @@ router.post('/recruiter/candidate-action', recruiterAuth, async (req, res) => {
 });
 
 // @route   GET /api/jobs/recruiter/interviews
-// @desc    Get all scheduled interviews for the recruiter's calendar
+// @desc    Get all scheduled interviews for the recruiter's calendar (only current/upcoming)
 router.get('/recruiter/interviews', recruiterAuth, async (req, res) => {
     try {
         const recruiterJobs = await Job.find({ postedBy: req.user.id }).select('_id title companyName');
@@ -1743,7 +1743,7 @@ router.get('/recruiter/interviews', recruiterAuth, async (req, res) => {
         recruiterJobs.forEach(j => { jobMap[j._id.toString()] = j; });
         const jobIds = recruiterJobs.map(j => j._id);
 
-        const interviews = await Application.find({
+        const allInterviews = await Application.find({
             job: { $in: jobIds },
             status: { $in: ['interview', 'scheduled', 'shortlisted'] },
             interviewDate: { $exists: true, $ne: '' }
@@ -1751,6 +1751,26 @@ router.get('/recruiter/interviews', recruiterAuth, async (req, res) => {
             .populate('user', 'firstName lastName email photoUrl experienceLevel')
             .populate('job', 'title companyName')
             .sort({ interviewDate: 1, interviewTime: 1 });
+
+        // Filter out past interviews - only return current/upcoming
+        const now = new Date();
+        const today = now.toISOString().split('T')[0];
+        const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+        const interviews = allInterviews.filter(interview => {
+            if (!interview.interviewDate) return false;
+            
+            // If interview date is in the future, include it
+            if (interview.interviewDate > today) return true;
+            
+            // If interview date is today, check if time hasn't passed
+            if (interview.interviewDate === today) {
+                return interview.interviewTime >= currentTime;
+            }
+            
+            // Past date, exclude
+            return false;
+        });
 
         res.json({ success: true, interviews });
     } catch (err) {
