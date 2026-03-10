@@ -128,34 +128,49 @@ if (emailService === 'brevo' || emailService === 'sendinblue') {
     };
 }
 
-// Only setup transporter if we have a host (i.e., not using Resend API)
+// Only setup transporter if we have a host (i.e., not using REST API)
 let transporter = null;
-if (transportConfig.host) {
-    console.log('📧 Creating SMTP transporter with config:', {
-        host: transportConfig.host,
-        port: transportConfig.port,
-        user: transportConfig.auth?.user?.substring(0, 15) + '...',
-        secure: transportConfig.secure
-    });
-    
-    transportConfig.logger = true; // Always log in production for debugging
-    transportConfig.debug = true;  // Always debug in production for debugging
-    transportConfig.connectionTimeout = 10000; // 10 second timeout
-    transportConfig.greetingTimeout = 5000;    // 5 second greeting timeout
-    transportConfig.socketTimeout = 15000;      // 15 second socket timeout
-    
-    transporter = nodemailer.createTransport(transportConfig);
 
-    transporter.verify(function (error) {
-        if (error) {
-            console.error('❌ SMTP Service Error:', error.message);
-            console.error('❌ Error Code:', error.code);
-            console.error('❌ Full Error:', JSON.stringify(error, null, 2));
+// Skip SMTP transporter in production when using Brevo (use REST API instead)
+if (transportConfig && transportConfig.host) {
+    const isBrevo = emailService === 'brevo' || emailService === 'sendinblue';
+    const isProduction = process.env.NODE_ENV === 'production';
+    
+    if (isBrevo && isProduction) {
+        console.log('📧 Skipping SMTP transporter in production - will use Brevo REST API');
+        console.log('📧 Reason: SMTP ports blocked on Render free tier');
+        transporter = null; // Don't create transporter
+    } else {
+        console.log('📧 Creating SMTP transporter with config:', {
+            host: transportConfig.host,
+            port: transportConfig.port,
+            user: transportConfig.auth?.user?.substring(0, 15) + '...',
+            secure: transportConfig.secure
+        });
+        
+        transportConfig.logger = true; // Always log for debugging
+        transportConfig.debug = true;  // Always debug for debugging
+        transportConfig.connectionTimeout = 10000; // 10 second timeout
+        transportConfig.greetingTimeout = 5000;    // 5 second greeting timeout
+        transportConfig.socketTimeout = 15000;      // 15 second socket timeout
+        
+        transporter = nodemailer.createTransport(transportConfig);
+
+        // Only verify connection in development (to avoid timeout crashes in production)
+        if (!isProduction) {
+            transporter.verify(function (error) {
+                if (error) {
+                    console.error('❌ SMTP Service Error:', error.message);
+                    console.error('❌ Error Code:', error.code);
+                } else {
+                    console.log('✅ SMTP Service is ready');
+                    console.log('✅ Connected to:', transportConfig.host);
+                }
+            });
         } else {
-            console.log('✅ SMTP Service is ready');
-            console.log('✅ Connected to:', transportConfig.host);
+            console.log('⚠️ Skipping SMTP verification in production');
         }
-    });
+    }
 } else {
     console.log('📧 No SMTP transporter created (using API-based service)');
 }
