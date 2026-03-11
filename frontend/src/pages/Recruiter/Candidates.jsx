@@ -398,8 +398,18 @@ const RecruiterCandidates = () => {
                                         <div className="relative z-10">
                                             <h3 className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.3em] mb-6 sm:mb-8">AI Match Analysis</h3>
                                             
-                                            {/* Match Score */}
-                                            {selectedApplication.aiMatchScore !== null && selectedApplication.aiMatchScore !== undefined && selectedApplication.aiMatchScore !== -1 ? (
+                                            {/* Improved AI Match Analysis UI */}
+                                            {!selectedApplication.resumeUrl ? (
+                                                <div className="flex flex-col items-center justify-center py-12">
+                                                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center shadow-lg mb-6">
+                                                        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                        </svg>
+                                                    </div>
+                                                    <p className="text-white font-black text-xl mb-2">No Resume Uploaded</p>
+                                                    <p className="text-slate-400 text-sm font-semibold">Please ask the candidate to upload a resume to enable AI analysis.</p>
+                                                </div>
+                                            ) : selectedApplication.aiMatchScore !== null && selectedApplication.aiMatchScore !== undefined && selectedApplication.aiMatchScore !== -1 ? (
                                                 <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
                                                     <div className="relative">
                                                         <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl font-black shadow-lg border-4 ${
@@ -425,21 +435,6 @@ const RecruiterCandidates = () => {
                                                         <p className="text-slate-400 text-xs font-bold uppercase tracking-wide">✓ AI Verified Score</p>
                                                     </div>
                                                 </div>
-                                            ) : !selectedApplication.resumeUrl ? (
-                                                <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
-                                                    <div className="relative">
-                                                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center shadow-lg border-4 border-slate-500/20">
-                                                            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-white font-black text-lg sm:text-xl mb-1">No Resume Uploaded</p>
-                                                        <p className="text-slate-400 text-xs font-bold uppercase tracking-wide">⚠️ Cannot Analyze</p>
-                                                    </div>
-                                                </div>
                                             ) : (
                                                 <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
                                                     <div className="relative">
@@ -454,20 +449,13 @@ const RecruiterCandidates = () => {
                                                 </div>
                                             )}
 
-                                            {/* Skill Match Breakdown */}
-                                            <div className="mb-6">
-                                                <p className="text-slate-300 text-xs font-black uppercase tracking-widest mb-4">Skill Match:</p>
-                                                {!selectedApplication.resumeUrl ? (
-                                                    <div className="col-span-2 text-center py-6 px-3 bg-slate-700/20 border border-slate-600/30 rounded-xl">
-                                                        <svg className="w-10 h-10 text-slate-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                        </svg>
-                                                        <p className="text-slate-400 text-xs font-medium">No resume to analyze skills</p>
-                                                    </div>
-                                                ) : (
-                                                <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                                                    {selectedApplication.user?.skills && selectedApplication.user.skills.length > 0 ? (
-                                                        selectedApplication.user.skills.slice(0, 4).map((skill, idx) => {
+                                            {/* Skill Match Breakdown & Recommendation - Only show if resume exists */}
+                                            {selectedApplication.resumeUrl && (
+                                                <div className="mb-6">
+                                                    <p className="text-slate-300 text-xs font-black uppercase tracking-widest mb-4">Skill Match:</p>
+                                                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                                                        {selectedApplication.user?.skills && selectedApplication.user.skills.length > 0 ? (
+                                                            selectedApplication.user.skills.slice(0, 4).map((skill, idx) => {
                                                             const matched = idx < 2 // First 2 skills matched
                                                             return (
                                                                 <div 
