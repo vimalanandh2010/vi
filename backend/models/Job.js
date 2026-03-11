@@ -14,7 +14,7 @@ const jobSchema = new mongoose.Schema({
     description: { type: String },
     minSalary: { type: Number },
     maxSalary: { type: Number },
-    experienceLevel: { type: String, enum: ['Entry Level', 'Mid-Senior Level', 'Senior Level', 'Expert/Principal'], default: 'Entry Level' },
+    experienceLevel: { type: String, enum: ['Entry Level', 'Mid Level', 'Mid-Senior Level', 'Senior Level', 'Expert', 'Expert/Principal'], default: 'Entry Level' },
     tags: [String],
     requiredSkills: [String],
     requirements: [String],

@@ -374,8 +374,9 @@ router.post('/bulk-upload', recruiterAuth, async (req, res) => {
     } catch (err) {
         console.error('[JobRoutes] Bulk Upload Error:', err);
         res.status(500).json({ 
-            message: 'Internal Server Error during bulk upload', 
-            error: err.message 
+            message: err.name === 'ValidationError' ? 'Validation Error: Some fields are incorrect' : 'Internal Server Error during bulk upload', 
+            error: err.message,
+            errors: err.errors // Return detailed validation errors if they exist
         });
     }
 });
