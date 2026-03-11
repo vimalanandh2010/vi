@@ -254,7 +254,7 @@ router.post('/link-password', [
 // @desc    Get current user profile (Protected)
 router.get('/me', auth, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select('-password');
+        const user = await User.findById(req.user.id).select('-password').populate('company', 'name logo website');
         if (!user) {
             return res.status(401).json({ message: 'User no longer exists. Please sign up again.' });
         }
@@ -269,7 +269,7 @@ router.get('/me', auth, async (req, res) => {
 // @desc    Get current user data (Protected)
 router.get('/user', auth, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select('-password');
+        const user = await User.findById(req.user.id).select('-password').populate('company', 'name logo website');
         if (!user) return res.status(404).json({ message: 'User not found' });
         res.json(user);
     } catch (err) {

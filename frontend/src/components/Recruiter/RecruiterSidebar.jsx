@@ -138,12 +138,18 @@ const RecruiterSidebar = ({ jobCount = 0, onClose }) => {
                 </button>
 
                 <div className="mt-6 pt-6 border-t border-slate-100 flex items-center gap-3 px-2">
-                    <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center font-bold text-white shadow-md shrink-0">
-                        {user?.firstName?.charAt(0) || 'R'}
+                    <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center font-bold text-white shadow-md shrink-0 overflow-hidden">
+                        {user?.company?.logo ? (
+                            <img src={user.company.logo} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                            user?.company?.name?.[0] || user?.companyName?.[0] || user?.firstName?.charAt(0) || 'R'
+                        )}
                     </div>
                     <div className="min-w-0">
                         <p className="text-sm font-bold text-black truncate">{user?.firstName || 'Recruiter'}</p>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Hiring Manager</p>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight truncate">
+                            {user?.company?.name || user?.companyName || 'Hiring Manager'}
+                        </p>
                     </div>
                 </div>
             </div>
