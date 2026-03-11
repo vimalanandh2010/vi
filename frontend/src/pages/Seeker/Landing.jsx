@@ -372,17 +372,18 @@ const SeekerLanding = () => {
             </section>
 
             {/* Success Stories - Enhanced */}
-            <section className="py-24 px-6 bg-gradient-to-br from-slate-50 to-white">
-                <div className="max-w-7xl mx-auto">
+            <section className="py-24 px-6 bg-[#F8FAFC] relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-[30%] h-[30%] bg-blue-50/50 rounded-full blur-[100px] pointer-events-none" />
+                <div className="max-w-7xl mx-auto relative z-10">
                     <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-bold uppercase tracking-wider mb-4">
+                        <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-bold uppercase tracking-wider mb-4">
                             Success Stories
                         </span>
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-slate-900">
+                        <h2 className="text-3xl md:text-5xl font-extrabold mb-6 text-slate-900">
                             Loved by Professionals
                         </h2>
-                        <p className="text-slate-600 max-w-2xl mx-auto text-lg">
-                            Real stories from people who found their dream jobs through our platform
+                        <p className="text-slate-500 max-w-3xl mx-auto text-lg md:text-xl leading-relaxed">
+                            Discover how thousands of job seekers transformed their careers and landed their dream roles at world-class companies through our AI-powered matching and career development platform.
                         </p>
                     </div>
 
