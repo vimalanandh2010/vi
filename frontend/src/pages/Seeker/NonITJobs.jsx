@@ -312,7 +312,7 @@ const NonITJobs = () => {
                                                     handleApply(job?._id);
                                                 }}
                                                 disabled={applying === job?._id}
-                                                className="flex items-center gap-3 bg-gradient-to-br from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition-all active:scale-95 disabled:opacity-50 shadow-2xl shadow-orange-600/30 group/btn"
+                                                className="flex items-center gap-3 bg-black hover:bg-slate-800 text-white px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition-all active:scale-95 disabled:opacity-50 shadow-xl shadow-black/20 group/btn"
                                             >
                                                 {applying === job?._id ? (
                                                     <Loader2 className="animate-spin" size={18} strokeWidth={3} />
@@ -505,7 +505,7 @@ const NonITJobs = () => {
                                     <button
                                         onClick={() => handleApply(selectedJob._id)}
                                         disabled={applying === selectedJob._id}
-                                        className="flex-1 md:flex-none flex items-center justify-center gap-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white px-10 py-3 rounded-2xl font-black shadow-lg shadow-orange-600/30 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 text-sm uppercase tracking-widest"
+                                        className="flex-1 md:flex-none flex items-center justify-center gap-3 bg-black hover:bg-slate-800 text-white px-10 py-3 rounded-2xl font-black shadow-xl shadow-black/20 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 text-sm uppercase tracking-widest"
                                     >
                                         {applying === selectedJob._id ? (
                                             <Loader2 className="animate-spin" size={24} />

@@ -176,7 +176,7 @@ const CompanyDetail = () => {
                                             </div>
                                             <Link
                                                 to={`/seeker/jobs?id=${job._id}`}
-                                                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-500/30 transition-all text-center whitespace-nowrap hover:scale-105 active:scale-95"
+                                                className="px-8 py-3 bg-black hover:bg-slate-800 text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-xl shadow-black/20 transition-all text-center whitespace-nowrap hover:scale-105 active:scale-95"
                                             >
                                                 Apply Now
                                             </Link>
