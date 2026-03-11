@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Tech Corp Solutions",
+    "about": "A global leader in software development and digital transformation.",
+    "companyType": "Enterprise",
+    "industries": ["Web/SaaS", "AI/ML"],
+    "size": "10000+",
+    "location": "Bangalore, India",
+    "website": "https://techcorp.example.com",
+    "officialEmail": "contact@techcorp.example.com"
+  },
+  {
+    "name": "Green Energy Systems",
+    "about": "Innovating sustainable energy solutions for a cleaner planet.",
+    "companyType": "Scale-up",
+    "industries": ["IoT", "Manufacturing"],
+    "size": "501-1000",
+    "location": "Mumbai, India",
+    "website": "https://greenenergy.example.com",
+    "officialEmail": "info@greenenergy.example.com"
+  },
+  {
+    "name": "Alpha AI",
+    "about": "Building the next generation of artificial intelligence for healthcare.",
+    "companyType": "Startup",
+    "industries": ["AI/ML", "Healthcare"],
+    "size": "11-50",
+    "location": "Remote",
+    "website": "https://alpha.ai.example.com",
+    "officialEmail": "hello@alpha.ai.example.com"
+  }
+]
