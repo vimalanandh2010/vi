@@ -232,8 +232,12 @@ const RecruiterJobs = () => {
                                 <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 sm:gap-8">
                                     <div className="flex-1">
                                         <div className="flex items-start gap-6 mb-6">
-                                            <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-black font-black text-2xl shrink-0 group-hover:bg-black group-hover:text-white transition-colors border border-slate-100">
-                                                {job.company?.[0] || 'J'}
+                                            <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-black font-black text-2xl shrink-0 group-hover:bg-black group-hover:text-white transition-colors border border-slate-100 overflow-hidden">
+                                                {job.company?.logo ? (
+                                                    <img src={job.company.logo} alt="" className="w-full h-full object-contain p-2" />
+                                                ) : (
+                                                    (job.company?.name || job.companyName || 'J')?.[0]
+                                                )}
                                             </div>
                                             <div
                                                 onClick={() => handleCardClick(job)}
@@ -246,7 +250,7 @@ const RecruiterJobs = () => {
                                                     </span>
                                                 </h3>
                                                 <div className="flex items-center gap-3">
-                                                    <p className="text-slate-500 font-bold">{job.company}</p>
+                                                    <p className="text-slate-500 font-bold">{job.company?.name || job.companyName || 'Unknown Company'}</p>
                                                     <span className="w-1.5 h-1.5 rounded-full bg-slate-200" />
                                                     <p className="text-slate-400 text-sm font-medium">{new Date(job.createdAt).toLocaleDateString()}</p>
                                                 </div>
@@ -348,7 +352,7 @@ const RecruiterJobs = () => {
                             <div className="p-8 border-b border-slate-50 flex justify-between items-start">
                                 <div className="flex-1">
                                     <h2 className="text-3xl font-black text-black mb-2">{selectedJob.title}</h2>
-                                    <p className="text-slate-600 font-bold">{selectedJob.company}</p>
+                                    <p className="text-slate-600 font-bold">{selectedJob.company?.name || selectedJob.companyName || 'Unknown Company'}</p>
                                 </div>
                                 <button
                                     onClick={() => setIsModalOpen(false)}

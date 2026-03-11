@@ -147,6 +147,7 @@ router.get('/recruiter/jobs', recruiterAuth, async (req, res) => {
         console.log(`[JobRoutes] Fetching jobs for recruiter: ${req.user.id}`);
         const jobs = await Job.find({ postedBy: req.user.id })
             .sort({ createdAt: -1 })
+            .populate('company', 'name logo')
             .populate({
                 path: 'applicants',
                 populate: { path: 'user', select: 'firstName lastName email' },
