@@ -30,8 +30,8 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
             <div className={`relative overflow-hidden ${isPremium ? 'bg-slate-900/60 backdrop-blur-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.4)]' : 'bg-white border-2 border-gray-200 shadow-md'} rounded-[3rem] p-10 group`}>
 
                 {/* Visual Accent */}
-                <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/10 rounded-full blur-[80px] -mr-20 -mt-20 group-hover:bg-blue-600/20 transition-all duration-700" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-600/5 rounded-full blur-[60px] -ml-16 -mb-16" />
+                <div className="absolute top-0 right-0 w-40 h-40 bg-black/5 rounded-full blur-[80px] -mr-20 -mt-20 group-hover:bg-black/10 transition-all duration-700" />
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/5 rounded-full blur-[60px] -ml-16 -mb-16" />
 
                 <div className="flex flex-col items-center text-center relative z-10">
                     <div className="relative mb-8 group/avatar cursor-pointer" onClick={onPhotoUpload}>
@@ -43,14 +43,14 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover/avatar:scale-110"
                                 />
                             ) : (
-                                <div className="text-6xl font-black bg-gradient-to-br from-blue-400 to-indigo-500 bg-clip-text text-transparent w-full h-full flex items-center justify-center uppercase">
+                                <div className="text-6xl font-black text-black/20 w-full h-full flex items-center justify-center uppercase">
                                     {user?.firstName?.charAt(0) || 'U'}
                                 </div>
                             )}
                         </div>
                         {isEditable && (
                             <button
-                                className="absolute bottom-2 right-2 p-4 bg-white text-slate-900 rounded-full shadow-[0_15px_30px_rgba(0,0,0,0.3)] transition-all hover:bg-blue-600 hover:text-white hover:scale-110 active:scale-90"
+                                className="absolute bottom-2 right-2 p-4 bg-black text-white rounded-full shadow-[0_15px_30px_rgba(0,0,0,0.3)] transition-all hover:bg-gray-800 hover:scale-110 active:scale-90"
                             >
                                 <Camera size={20} />
                             </button>
@@ -60,7 +60,7 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
                     <h2 className={`text-4xl font-black tracking-tight ${isPremium ? 'text-white' : 'text-slate-900'} mb-2`}>
                         {user?.firstName} {user?.lastName}
                     </h2>
-                    <div className="px-5 py-2 bg-blue-600/10 border border-blue-500/20 text-blue-400 font-black text-[10px] tracking-[0.2em] uppercase rounded-xl mb-6 inline-block">
+                    <div className="px-5 py-2 bg-black/10 border border-black/20 text-black font-black text-[10px] tracking-[0.2em] uppercase rounded-xl mb-6 inline-block">
                         {user?.preferredRole || user?.jobPreferences?.preferredRole || user?.primarySkill || 'Set your primary role'}
                     </div>
 
@@ -79,7 +79,7 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
                         { icon: Phone, text: (user?.phoneNumber && user?.phoneNumber !== '0000000000') ? user.phoneNumber : 'Phone not set', label: 'SECURE', missing: (!user?.phoneNumber || user?.phoneNumber === '0000000000') }
                     ].map((item, i) => (
                         <div key={i} className={`flex items-center gap-5 p-4 ${isPremium ? 'hover:bg-white/5 border border-transparent hover:border-white/5' : 'hover:bg-white border border-transparent hover:border-slate-100'} rounded-2xl transition-all duration-300 group/item`}>
-                            <div className={`w-12 h-12 rounded-xl ${isPremium ? 'bg-slate-800' : 'bg-slate-50'} flex items-center justify-center text-blue-500 group-hover/item:scale-110 transition-transform`}>
+                            <div className={`w-12 h-12 rounded-xl ${isPremium ? 'bg-slate-800' : 'bg-slate-50'} flex items-center justify-center text-black group-hover/item:scale-110 transition-transform`}>
                                 <item.icon size={20} />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -101,7 +101,7 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
                 </div>
 
                 {/* Profile Strength Indicator - New High-End Feature */}
-                <div className="mb-10 p-6 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2rem] relative overflow-hidden group/strength">
+                <div className="mb-10 p-6 bg-black rounded-[2rem] border border-gray-800 relative overflow-hidden group/strength">
                     <div className="absolute top-0 right-0 p-4 opacity-20 group-hover/strength:rotate-12 transition-transform duration-700">
                         <TrendingUp size={60} />
                     </div>
@@ -123,12 +123,12 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
                 <div className="mb-10 relative z-10">
                     <div className="flex items-center justify-between mb-6 px-4">
                         <h3 className={`text-[10px] font-black ${isPremium ? 'text-slate-500' : 'text-slate-400'} uppercase tracking-[0.3em]`}>Core Tech Stack</h3>
-                        {isEditable && <button onClick={onAddSkill} className="w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-lg hover:scale-110 active:scale-95 transition-all shadow-lg"><Plus size={16} /></button>}
+                            {isEditable && <button onClick={onAddSkill} className="w-8 h-8 flex items-center justify-center bg-black text-white rounded-lg hover:scale-110 active:scale-95 transition-all shadow-lg"><Plus size={16} /></button>}
                     </div>
                     <div className="flex flex-wrap gap-2.5 px-2">
                         {user?.primarySkill ? (
                             user.primarySkill.split(',').map((skill, idx) => (
-                                <div key={idx} className={`flex items-center gap-2 px-4 py-2 ${isPremium ? 'bg-white/5 border-white/5 text-slate-300 hover:border-blue-500/50' : 'bg-white border-slate-100 text-slate-700 hover:border-blue-300'} border rounded-xl text-xs font-black shadow-sm transition-all duration-300 group/skill`}>
+                                <div key={idx} className={`flex items-center gap-2 px-4 py-2 ${isPremium ? 'bg-white/5 border-white/5 text-slate-300 hover:border-black' : 'bg-white border-slate-100 text-slate-700 hover:border-black'} border rounded-xl text-xs font-black shadow-sm transition-all duration-300 group/skill`}>
                                     {skill.trim()}
                                     {isEditable && (
                                         <X
@@ -153,7 +153,7 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
                             { icon: Linkedin, url: user?.socialLinks?.linkedin },
                             { icon: Globe, url: user?.socialLinks?.portfolio }
                         ].map((social, i) => social.url && (
-                            <a key={i} href={social.url} target="_blank" rel="noopener noreferrer" className={`w-14 h-14 ${isPremium ? 'bg-white/5 border-white/5 text-slate-400 hover:text-white' : 'bg-slate-50 border-slate-100 text-slate-500'} border rounded-2xl flex items-center justify-center transition-all hover:border-blue-500 hover:-translate-y-2 shadow-xl`}>
+                            <a key={i} href={social.url} target="_blank" rel="noopener noreferrer" className={`w-14 h-14 ${isPremium ? 'bg-white/5 border-white/5 text-slate-400 hover:text-white' : 'bg-slate-50 border-slate-100 text-slate-500'} border rounded-2xl flex items-center justify-center transition-all hover:border-black hover:-translate-y-2 shadow-xl`}>
                                 <social.icon size={24} />
                             </a>
                         ))}
@@ -175,7 +175,7 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
             <div className="space-y-4">
                 <div className={`p-8 ${isPremium ? 'bg-slate-900/60 backdrop-blur-3xl border border-white/10' : 'bg-white border-2 border-gray-200 shadow-md'} rounded-[3rem] group`}>
                     <div className="flex items-center gap-6">
-                        <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 border border-emerald-500/20 group-hover:scale-110 transition-transform duration-500">
+                        <div className="w-16 h-16 rounded-2xl bg-black/10 flex items-center justify-center text-black border border-black/20 group-hover:scale-110 transition-transform duration-500">
                             <ShieldCheck size={32} />
                         </div>
                         <div>
@@ -192,7 +192,7 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
                             href={user.resumeUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`w-full p-6 ${isPremium ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'} rounded-[2.5rem] flex items-center justify-between group transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1`}
+                            className={`w-full p-6 bg-black text-white hover:bg-gray-800 rounded-[2.5rem] flex items-center justify-between group transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1`}
                         >
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
@@ -203,7 +203,7 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
                                     <p className="font-bold text-sm">Open Resume</p>
                                 </div>
                             </div>
-                            <div className="w-10 h-10 bg-white text-blue-600 rounded-full flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+                            <div className="w-10 h-10 bg-white text-black rounded-full flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
                             </div>
                         </a>
@@ -214,10 +214,10 @@ const ProfileSidebar = ({ user, isEditable, onEdit, onPhotoUpload, onDeleteSkill
                                 e.preventDefault();
                                 onViewResume && onViewResume();
                             }}
-                            className={`w-full p-5 ${isPremium ? 'bg-slate-800/60 hover:bg-slate-800 border border-white/10 text-white' : 'bg-white border-2 border-gray-200 text-gray-900 hover:border-blue-500'} rounded-[2rem] flex items-center justify-between group transition-all hover:shadow-lg`}
+                            className={`w-full p-5 ${isPremium ? 'bg-slate-800/60 hover:bg-slate-800 border border-white/10 text-white' : 'bg-white border-2 border-gray-200 text-gray-900 hover:border-black'} rounded-[2rem] flex items-center justify-between group transition-all hover:shadow-lg`}
                         >
                             <div className="flex items-center gap-4">
-                                <div className={`w-10 h-10 ${isPremium ? 'bg-white/10' : 'bg-blue-50'} rounded-xl flex items-center justify-center ${isPremium ? 'text-blue-400' : 'text-blue-600'}`}>
+                                <div className={`w-10 h-10 ${isPremium ? 'bg-white/10' : 'bg-black/10'} rounded-xl flex items-center justify-center ${isPremium ? 'text-white' : 'text-black'}`}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" /></svg>
                                 </div>
                                 <div className="text-left">

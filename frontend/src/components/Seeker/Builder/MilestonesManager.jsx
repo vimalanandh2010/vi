@@ -96,14 +96,14 @@ const MilestonesManager = ({ user, onUpdate }) => {
             <div className="flex gap-4 p-1.5 bg-gray-50 rounded-2xl border border-gray-200 max-w-md mx-auto">
                 <button
                     onClick={() => setActiveTab('accomplishments')}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-500 font-black text-[10px] tracking-widest ${activeTab === 'accomplishments' ? 'bg-blue-50 text-black shadow-md border border-blue-200' : 'text-gray-500 hover:text-black'}`}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-500 font-black text-[10px] tracking-widest ${activeTab === 'accomplishments' ? 'bg-black text-white shadow-md border border-black' : 'text-gray-500 hover:text-black'}`}
                 >
                     <Award size={14} />
                     ACCOMPLISHMENTS
                 </button>
                 <button
                     onClick={() => setActiveTab('certifications')}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-500 font-black text-[10px] tracking-widest ${activeTab === 'certifications' ? 'bg-indigo-50 text-black shadow-md border border-indigo-200' : 'text-gray-500 hover:text-black'}`}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-500 font-black text-[10px] tracking-widest ${activeTab === 'certifications' ? 'bg-black text-white shadow-md border border-black' : 'text-gray-500 hover:text-black'}`}
                 >
                     <ShieldCheck size={14} />
                     CERTIFICATIONS
@@ -116,7 +116,7 @@ const MilestonesManager = ({ user, onUpdate }) => {
                 </h3>
                 <button
                     onClick={() => handleOpen()}
-                    className={`p-4 bg-gray-50 text-black border border-gray-200 rounded-2xl shadow-sm hover:scale-105 active:scale-95 transition-all`}
+                    className={`p-4 bg-black text-white rounded-2xl shadow-sm hover:scale-105 active:scale-95 transition-all`}
                 >
                     <Plus size={24} />
                 </button>
@@ -126,7 +126,7 @@ const MilestonesManager = ({ user, onUpdate }) => {
                 {data.map((item, idx) => (
                     <div key={idx} className="bg-white border-2 border-gray-200 rounded-[2.5rem] p-8 group hover:shadow-lg transition-all relative">
                         <div className="flex items-start gap-6">
-                            <div className={`w-14 h-14 rounded-2xl ${activeTab === 'accomplishments' ? 'bg-blue-50 text-blue-600' : 'bg-indigo-50 text-indigo-600'} flex items-center justify-center text-xl`}>
+                            <div className={`w-14 h-14 rounded-2xl bg-black/10 text-black flex items-center justify-center text-xl`}>
                                 {activeTab === 'accomplishments' ? (item.category === 'Hackathon' ? '🚀' : '🏆') : '📜'}
                             </div>
                             <div className="flex-1">
@@ -178,7 +178,7 @@ const MilestonesManager = ({ user, onUpdate }) => {
                                             <input
                                                 value={formData.title}
                                                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 text-white outline-none focus:border-blue-500/50"
+                                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 text-white outline-none focus:border-black"
                                                 placeholder="E.g. Winner of Global Hackathon 2024"
                                             />
                                         </div>
@@ -188,7 +188,7 @@ const MilestonesManager = ({ user, onUpdate }) => {
                                                 <select
                                                     value={formData.category}
                                                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                                    className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-blue-500/50 focus:bg-white outline-none appearance-none"
+                                                    className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white outline-none appearance-none"
                                                 >
                                                     <option value="Hackathon" className="bg-white text-black">Hackathon</option>
                                                     <option value="Award" className="bg-white text-black">Award</option>
@@ -202,7 +202,7 @@ const MilestonesManager = ({ user, onUpdate }) => {
                                                 <input
                                                     value={formData.date}
                                                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                                                    className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-blue-500/50 focus:bg-white outline-none"
+                                                    className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white outline-none"
                                                     placeholder="E.g. March 2024"
                                                 />
                                             </div>
@@ -215,7 +215,7 @@ const MilestonesManager = ({ user, onUpdate }) => {
                                             <input
                                                 value={formData.name}
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-indigo-500/50 focus:bg-white outline-none"
+                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white outline-none"
                                                 placeholder="E.g. AWS Certified Solutions Architect"
                                             />
                                         </div>
@@ -224,7 +224,7 @@ const MilestonesManager = ({ user, onUpdate }) => {
                                             <input
                                                 value={formData.issuer}
                                                 onChange={(e) => setFormData({ ...formData, issuer: e.target.value })}
-                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-indigo-500/50 focus:bg-white outline-none"
+                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white outline-none"
                                                 placeholder="E.g. Amazon Web Services"
                                             />
                                         </div>
@@ -234,7 +234,7 @@ const MilestonesManager = ({ user, onUpdate }) => {
                                                 <input
                                                     value={formData.date}
                                                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                                                    className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-indigo-500/50 focus:bg-white outline-none"
+                                                    className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white outline-none"
                                                     placeholder="E.g. 2023"
                                                 />
                                             </div>
@@ -244,16 +244,16 @@ const MilestonesManager = ({ user, onUpdate }) => {
                                                     <input
                                                         value={formData.link}
                                                         onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-                                                        className="flex-1 bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-indigo-500/50 focus:bg-white outline-none"
+                                                        className="flex-1 bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white outline-none"
                                                         placeholder="https://..."
                                                     />
-                                                    <label className="p-4 bg-indigo-50 text-indigo-600 rounded-2xl border border-indigo-200 cursor-pointer hover:bg-indigo-600 hover:text-white transition-all">
+                                                    <label className="p-4 bg-black/10 text-black rounded-2xl border border-black/20 cursor-pointer hover:bg-black hover:text-white transition-all">
                                                         <Plus size={20} />
                                                         <input type="file" hidden onChange={handleFileUpload} accept=".pdf,image/*" />
                                                     </label>
                                                 </div>
                                                 {formData.link && (
-                                                    <p className="text-[9px] text-indigo-600 font-bold mt-1 truncate max-w-full">
+                                                    <p className="text-[9px] text-black font-bold mt-1 truncate max-w-full">
                                                         Linked: {formData.link}
                                                     </p>
                                                 )}
@@ -265,7 +265,7 @@ const MilestonesManager = ({ user, onUpdate }) => {
 
                             <div className="px-10 py-8 border-t border-gray-100 bg-gray-50 flex gap-4">
                                 <button onClick={() => { setIsAdding(false); setEditingIdx(-1); }} className="flex-1 py-4 bg-white border border-gray-200 text-gray-600 font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-gray-100 transition-all">Cancel</button>
-                                <button onClick={handleSave} className={`flex-1 py-4 ${activeTab === 'accomplishments' ? 'bg-blue-600' : 'bg-indigo-600'} text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:opacity-90 transition-all flex items-center justify-center gap-2`}>
+                                <button onClick={handleSave} className={`flex-1 py-4 bg-black text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:bg-gray-800 transition-all flex items-center justify-center gap-2`}>
                                     <CheckCircle2 size={18} />
                                     Sync Data
                                 </button>

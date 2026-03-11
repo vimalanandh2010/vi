@@ -42,8 +42,8 @@ const SkillManager = ({ user, onUpdate }) => {
 
     return (
         <div className="space-y-12 max-w-5xl">
-            <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-8">
-                <p className="text-blue-700 text-sm font-medium leading-relaxed">
+            <div className="bg-black border border-gray-800 rounded-2xl p-6 mb-8">
+                <p className="text-white text-sm font-medium leading-relaxed">
                     <span className="font-black">Recruiter Tip:</span> Profiles with at least 5 validated skills are 40% more likely to be shortlisted for technical roles.
                 </p>
             </div>
@@ -53,18 +53,18 @@ const SkillManager = ({ user, onUpdate }) => {
                 <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Add Core Skills</label>
                 <div className="flex gap-4">
                     <div className="relative flex-1">
-                        <Zap className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-500" size={18} />
+                        <Zap className="absolute left-4 top-1/2 -translate-y-1/2 text-black" size={18} />
                         <input
                             value={newSkill}
                             onChange={(e) => setNewSkill(e.target.value)}
                             onKeyDown={handleAddSkill}
-                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-4 text-black placeholder:text-gray-400 focus:border-blue-500/50 focus:bg-blue-50 transition-all outline-none font-bold"
+                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-4 text-black placeholder:text-gray-400 focus:border-black focus:bg-white transition-all outline-none font-bold"
                             placeholder="E.g. React, Python, Product Management..."
                         />
                     </div>
                     <button
                         onClick={handleAddSkill}
-                        className="px-8 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition-all flex items-center gap-2 shadow-xl active:scale-95"
+                        className="px-8 bg-black text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-800 transition-all flex items-center gap-2 shadow-xl active:scale-95"
                     >
                         <Plus size={18} />
                         Add
@@ -79,17 +79,17 @@ const SkillManager = ({ user, onUpdate }) => {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         key={idx}
-                        className="bg-white border border-gray-200 rounded-2xl p-4 group hover:border-blue-500/50 shadow-sm hover:shadow-md transition-all duration-500 flex items-center justify-between"
+                        className="bg-white border border-gray-200 rounded-2xl p-4 group hover:bg-black hover:border-black transition-all duration-500 flex items-center justify-between"
                     >
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                            <div className="w-10 h-10 rounded-xl bg-black/10 flex items-center justify-center text-black group-hover:bg-white/10 group-hover:text-white group-hover:scale-110 transition-all">
                                 <Target size={18} />
                             </div>
-                            <span className="text-black font-black text-lg tracking-tight">{skill}</span>
+                            <span className="text-black font-black text-lg tracking-tight group-hover:text-white transition-colors">{skill}</span>
                         </div>
                         <button
                             onClick={() => handleDeleteSkill(skill)}
-                            className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
+                            className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-400/10 group-hover:text-white/70 group-hover:hover:text-red-400 rounded-lg transition-all"
                             title="Remove Skill"
                         >
                             <X size={18} />

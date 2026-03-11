@@ -49,7 +49,7 @@ const BasicInfoForm = ({ user, onUpdate }) => {
                             </div>
                         )}
                     </div>
-                    <label className="absolute bottom-2 right-2 p-4 bg-blue-600 text-white rounded-2xl shadow-xl cursor-pointer hover:bg-blue-700 transition-all hover:scale-110 active:scale-95">
+                    <label className="absolute bottom-2 right-2 p-4 bg-black text-white rounded-2xl shadow-xl cursor-pointer hover:bg-gray-800 transition-all hover:scale-110 active:scale-95">
                         <Camera size={20} />
                         <input type="file" hidden onChange={handlePhotoUpload} accept="image/*" />
                     </label>
@@ -132,10 +132,10 @@ const BasicInfoForm = ({ user, onUpdate }) => {
                                 <button
                                     key={opt.id}
                                     onClick={() => handleInputChange({ target: { name: 'experienceLevel', value: opt.id } })}
-                                    className={`p-3 rounded-2xl transition-all duration-500 border-2 ${user?.experienceLevel === opt.id ? 'bg-blue-50 border-blue-400 text-black shadow-md' : 'bg-transparent border-transparent text-gray-500 hover:bg-gray-100 hover:text-black'}`}
+                                    className={`p-3 rounded-2xl transition-all duration-500 border-2 ${user?.experienceLevel === opt.id ? 'bg-black border-black text-white shadow-md' : 'bg-transparent border-transparent text-gray-500 hover:bg-black hover:text-white'}`}
                                 >
                                     <p className="text-[10px] font-black tracking-widest leading-none mb-1">{opt.label}</p>
-                                    <p className={`text-[8px] font-bold ${user?.experienceLevel === opt.id ? 'text-gray-800' : 'text-gray-400'}`}>{opt.desc}</p>
+                                    <p className={`text-[8px] font-bold ${user?.experienceLevel === opt.id ? 'text-gray-300' : 'text-gray-400'}`}>{opt.desc}</p>
                                 </button>
                             ))}
                         </div>

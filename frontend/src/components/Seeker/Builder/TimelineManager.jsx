@@ -66,7 +66,7 @@ const TimelineManager = ({ type, user, onUpdate, experienceLevel }) => {
         <div className="space-y-10">
             <div className="flex justify-between items-center px-4">
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-600/10 flex items-center justify-center text-blue-500">
+                    <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white shadow-lg">
                         {isExperience ? <Briefcase size={24} /> : <GraduationCap size={24} />}
                     </div>
                     <div>
@@ -80,7 +80,7 @@ const TimelineManager = ({ type, user, onUpdate, experienceLevel }) => {
                 </div>
                 <button
                     onClick={() => handleOpen()}
-                    className="p-4 bg-blue-600 text-white rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition-all"
+                    className="p-4 bg-black text-white rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition-all"
                 >
                     <Plus size={24} />
                 </button>
@@ -91,20 +91,20 @@ const TimelineManager = ({ type, user, onUpdate, experienceLevel }) => {
                 {data.map((item, idx) => (
                     <div key={idx} className="bg-white border-2 border-gray-200 rounded-[2.5rem] p-8 flex flex-col md:flex-row justify-between items-start gap-8 group hover:shadow-lg transition-all">
                         <div className="flex gap-6">
-                            <div className="w-16 h-16 rounded-[1.25rem] bg-gray-100 flex items-center justify-center text-2xl border-2 border-gray-200 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
+                            <div className="w-16 h-16 rounded-[1.25rem] bg-gray-100 flex items-center justify-center text-2xl border-2 border-gray-200 group-hover:bg-black group-hover:text-white transition-all duration-500">
                                 {isExperience ? '🏢' : '🎓'}
                             </div>
                             <div>
                                 <h4 className="text-2xl font-black text-gray-900 mb-2">
                                     {isExperience ? item.role : item.degreeName}
                                 </h4>
-                                <div className="flex items-center gap-3 text-blue-400 font-bold mb-4">
+                                <div className="flex items-center gap-3 mb-4">
                                     <div className="flex items-center gap-2 text-gray-500 text-[10px] uppercase font-black tracking-widest shrink-0">
                                         <Calendar size={14} />
                                         {isExperience ? (item.duration || 'Duration') : `Class of ${item.yearOfPassing}`}
                                     </div>
                                     <div className="w-1.5 h-1.5 rounded-full bg-gray-300" />
-                                    <div className="px-2 py-0.5 bg-blue-600/10 text-blue-400 text-[9px] font-black uppercase rounded">
+                                    <div className="px-2 py-0.5 bg-gray-100 text-gray-500 text-[9px] font-black uppercase rounded">
                                         {isExperience ? (item.type || 'job') : (item.level || 'Degree')}
                                     </div>
                                 </div>
@@ -151,7 +151,7 @@ const TimelineManager = ({ type, user, onUpdate, experienceLevel }) => {
                                         <input
                                             value={isExperience ? formData.company : formData.institutionName}
                                             onChange={(e) => setFormData({ ...formData, [isExperience ? 'company' : 'institutionName']: e.target.value })}
-                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-blue-500/50 focus:bg-white transition-all outline-none"
+                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white transition-all outline-none"
                                             placeholder={isExperience ? (isFresher ? "E.g. Google, Microsoft" : "E.g. Apple Inc.") : "E.g. Stanford University"}
                                         />
                                     </div>
@@ -160,7 +160,7 @@ const TimelineManager = ({ type, user, onUpdate, experienceLevel }) => {
                                         <input
                                             value={isExperience ? formData.role : formData.degreeName}
                                             onChange={(e) => setFormData({ ...formData, [isExperience ? 'role' : 'degreeName']: e.target.value })}
-                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-blue-500/50 focus:bg-white transition-all outline-none"
+                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white transition-all outline-none"
                                             placeholder={isExperience ? (isFresher ? "E.g. Software Development Intern" : "E.g. Senior Product Designer") : "E.g. B.S Computer Science"}
                                         />
                                     </div>
@@ -169,7 +169,7 @@ const TimelineManager = ({ type, user, onUpdate, experienceLevel }) => {
                                         <input
                                             value={isExperience ? formData.duration : formData.yearOfPassing}
                                             onChange={(e) => setFormData({ ...formData, [isExperience ? 'duration' : 'yearOfPassing']: e.target.value })}
-                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-blue-500/50 focus:bg-white transition-all outline-none"
+                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white transition-all outline-none"
                                             placeholder={isExperience ? "E.g. Jan 2022 - Present" : "E.g. 2024"}
                                         />
                                     </div>
@@ -178,7 +178,7 @@ const TimelineManager = ({ type, user, onUpdate, experienceLevel }) => {
                                         <select
                                             value={isExperience ? formData.type : formData.level}
                                             onChange={(e) => setFormData({ ...formData, [isExperience ? 'type' : 'level']: e.target.value })}
-                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-blue-500/50 focus:bg-white transition-all outline-none appearance-none"
+                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white transition-all outline-none appearance-none"
                                         >
                                             {isExperience ? (
                                                 <>
@@ -204,7 +204,7 @@ const TimelineManager = ({ type, user, onUpdate, experienceLevel }) => {
                                             <input
                                                 value={formData.score}
                                                 onChange={(e) => setFormData({ ...formData, score: e.target.value })}
-                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-blue-500/50 focus:bg-white transition-all outline-none"
+                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white transition-all outline-none"
                                                 placeholder="E.g. 3.9/4.0"
                                             />
                                         </div>
@@ -216,7 +216,7 @@ const TimelineManager = ({ type, user, onUpdate, experienceLevel }) => {
                                         <textarea
                                             value={formData.description}
                                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-blue-500/50 focus:bg-white transition-all outline-none min-h-[120px]"
+                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white transition-all outline-none min-h-[120px]"
                                             placeholder="Outline your responsibilities and achievements..."
                                         />
                                     </div>
@@ -225,7 +225,7 @@ const TimelineManager = ({ type, user, onUpdate, experienceLevel }) => {
 
                             <div className="px-10 py-8 border-t border-gray-100 bg-gray-50 flex gap-4">
                                 <button onClick={() => { setIsAdding(false); setEditingIdx(-1); }} className="flex-1 py-4 bg-white border border-gray-200 text-gray-600 font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-gray-100 transition-all">Cancel</button>
-                                <button onClick={handleSave} className="flex-1 py-4 bg-blue-600 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:bg-blue-700 transition-all flex items-center justify-center gap-2">
+                                <button onClick={handleSave} className="flex-1 py-4 bg-black text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:bg-gray-800 transition-all flex items-center justify-center gap-2">
                                     <CheckCircle2 size={18} />
                                     Confirm
                                 </button>

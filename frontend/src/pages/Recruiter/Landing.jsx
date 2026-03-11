@@ -171,15 +171,44 @@ const RecruiterLanding = () => {
             </div >
 
             {/* CTA Footer */}
-            < div className="py-24 text-center bg-black" >
-                <div className="max-w-3xl mx-auto px-4">
-                    <h2 className="text-4xl font-bold mb-6 text-white">Ready to scale your team?</h2>
-                    <p className="text-slate-300 mb-10">Join thousands of companies building the future with our platform.</p>
-                    <Link to="/recruiter/signup" className="px-12 py-5 bg-white text-slate-900 rounded-2xl text-xl font-bold hover:bg-slate-100 transition-all inline-block shadow-2xl">
-                        Create Your Recruiter Account
-                    </Link>
+            <section className="py-24 px-6 relative overflow-hidden">
+                <div className="max-w-5xl mx-auto rounded-[40px] bg-black p-12 md:p-20 text-center relative shadow-2xl border border-white/10">
+                    <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6bTAgNmMwLTIuMjEgMS43OS00IDQtNHM0IDEuNzkgNCA0LTEuNzkgNC00IDQtNC0xLjc5LTQtNHptNiAwYzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00em0wLTZjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')" }} />
+                    
+                    <div className="relative z-10">
+                        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+                            Ready to scale your team?
+                        </h2>
+                        <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto font-medium">
+                            Join thousands of companies building the future with our AI-powered hiring platform.
+                        </p>
+                        
+                        {/* Trust indicators */}
+                        <div className="flex flex-wrap justify-center gap-6 mb-10 text-white/80">
+                            <div className="flex items-center gap-2">
+                                <Shield size={20} />
+                                <span className="text-sm font-bold uppercase tracking-widest text-[10px]">GDPR Compliant</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Users size={20} />
+                                <span className="text-sm font-bold uppercase tracking-widest text-[10px]">AI-Vetted Talent</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Zap size={20} />
+                                <span className="text-sm font-bold uppercase tracking-widest text-[10px]">3x Faster Hiring</span>
+                            </div>
+                        </div>
+
+                        <Link to="/recruiter/signup" className="inline-flex items-center gap-2 px-12 py-5 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-gray-100 transition-all shadow-2xl hover:shadow-3xl active:scale-95">
+                            Create Your Recruiter Account <ArrowRight size={20} />
+                        </Link>
+                        
+                        <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] mt-8">
+                            Join 2,500+ Top Companies Worldwide
+                        </p>
+                    </div>
                 </div>
-            </div >
+            </section>
 
             <footer className="py-10 border-t border-slate-800 text-center text-slate-500 text-sm">
                 &copy; {new Date().getFullYear()} Future Milestone. All rights reserved.

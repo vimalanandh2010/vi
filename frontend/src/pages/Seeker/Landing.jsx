@@ -371,111 +371,32 @@ const SeekerLanding = () => {
                 </div>
             </section>
 
-            {/* Success Stories - Enhanced */}
-            <section className="py-24 px-6 bg-[#F8FAFC] relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-[30%] h-[30%] bg-blue-50/50 rounded-full blur-[100px] pointer-events-none" />
-                <div className="max-w-7xl mx-auto relative z-10">
-                    <div className="text-center mb-16">
-                        <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-bold uppercase tracking-wider mb-4">
-                            Success Stories
-                        </span>
-                        <h2 className="text-3xl md:text-5xl font-extrabold mb-6 text-slate-900">
-                            Loved by Professionals
-                        </h2>
-                        <p className="text-slate-500 max-w-3xl mx-auto text-lg md:text-xl leading-relaxed">
-                            Discover how thousands of job seekers transformed their careers and landed their dream roles at world-class companies through our AI-powered matching and career development platform.
-                        </p>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {[
-                            {
-                                name: "Priya Sharma",
-                                role: "Software Engineer at Google",
-                                content: "I landed my dream job within 2 weeks of signing up. The platform made it so easy to apply to multiple companies. The AI matching really works!",
-                                avatar: "PS",
-                                rating: 5,
-                                color: "blue"
-                            },
-                            {
-                                name: "Rahul Verma",
-                                role: "Product Designer at Microsoft",
-                                content: "The course offerings helped me upskill and secure a product design role. The platform connected me with recruiters directly!",
-                                avatar: "RV",
-                                rating: 5,
-                                color: "purple"
-                            },
-                            {
-                                name: "Anjali Patel",
-                                role: "Data Analyst at Amazon",
-                                content: "Amazing experience! Got interview calls from top companies. The AI matching really works. Highly recommended for job seekers.",
-                                avatar: "AP",
-                                rating: 5,
-                                color: "green"
-                            }
-                        ].map((testimonial, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: idx * 0.15, duration: 0.6 }}
-                                className="p-8 rounded-3xl bg-white shadow-lg border border-slate-200 hover:-translate-y-2 transition-all"
-                            >
-                                {/* Rating stars */}
-                                <div className="flex gap-1 mb-6">
-                                    {[...Array(testimonial.rating)].map((_, i) => (
-                                        <Star key={i} className="text-yellow-500 fill-yellow-500" size={16} />
-                                    ))}
-                                </div>
-                                
-                                {/* Quote */}
-                                <p className="text-slate-600 mb-8 leading-relaxed italic">
-                                    "{testimonial.content}"
-                                </p>
-                                
-                                {/* Author */}
-                                <div className="flex items-center gap-4">
-                                    <div className={`w-14 h-14 rounded-full bg-gradient-to-br from-${testimonial.color}-500 to-${testimonial.color}-600 flex items-center justify-center font-black text-white shadow-lg text-lg`}>
-                                        {testimonial.avatar}
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-slate-900 leading-none mb-1">{testimonial.name}</h4>
-                                        <p className="text-xs text-slate-500">{testimonial.role}</p>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* Final CTA - Enhanced */}
             <section className="py-24 px-6 relative overflow-hidden">
-                <div className="max-w-5xl mx-auto rounded-[40px] bg-gradient-to-br from-blue-600 to-purple-600 p-12 md:p-20 text-center relative shadow-2xl">
-                    <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6bTAgNmMwLTIuMjEgMS43OS00IDQtNHM0IDEuNzkgNCA0LTEuNzkgNC00IDQtNC0xLjc5LTQtNHptNiAwYzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00em0wLTZjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')" }} />
+                <div className="max-w-5xl mx-auto rounded-[40px] bg-black p-12 md:p-20 text-center relative shadow-2xl border border-white/10">
+                    <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6bTAgNmMwLTIuMjEgMS43OS00IDQtNHM0IDEuNzkgNCA0LTEuNzkgNC00IDQtNC0xLjc5LTQtNHptNiAwYzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00em0wLTZjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')" }} />
                     
                     <div className="relative z-10">
                         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
                             Ready to Start Your Journey?
                         </h2>
-                        <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
+                        <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto font-medium">
                             Join 50,000+ professionals who've found their dream careers through our platform
                         </p>
                         
                         {/* Trust indicators */}
-                        <div className="flex flex-wrap justify-center gap-6 mb-10 text-white/90">
+                        <div className="flex flex-wrap justify-center gap-6 mb-10 text-white/80">
                             <div className="flex items-center gap-2">
                                 <Shield size={20} />
-                                <span className="text-sm font-semibold">100% Verified Jobs</span>
+                                <span className="text-sm font-bold uppercase tracking-widest text-[10px]">100% Verified Jobs</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Clock size={20} />
-                                <span className="text-sm font-semibold">Sign Up in 2 Minutes</span>
+                                <span className="text-sm font-bold uppercase tracking-widest text-[10px]">Sign Up in 2 Minutes</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Heart size={20} />
-                                <span className="text-sm font-semibold">Free Forever</span>
+                                <span className="text-sm font-bold uppercase tracking-widest text-[10px]">Free Forever</span>
                             </div>
                         </div>
                         {/* CTA Button */}
@@ -483,14 +404,14 @@ const SeekerLanding = () => {
                             user.role === 'seeker' ? (
                                 <Link
                                     to="/seeker/home"
-                                    className="inline-flex items-center gap-2 px-12 py-5 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all shadow-2xl hover:shadow-3xl active:scale-95"
+                                    className="inline-flex items-center gap-2 px-12 py-5 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-gray-100 transition-all shadow-2xl hover:shadow-3xl active:scale-95"
                                 >
                                     Go to Dashboard <ArrowRight size={20} />
                                 </Link>
                             ) : (
                                 <Link
                                     to="/recruiter/dashboard"
-                                    className="inline-flex items-center gap-2 px-12 py-5 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all shadow-2xl active:scale-95"
+                                    className="inline-flex items-center gap-2 px-12 py-5 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-gray-100 transition-all shadow-2xl active:scale-95"
                                 >
                                     Go to Recruiter Dashboard <ArrowRight size={20} />
                                 </Link>
@@ -498,14 +419,14 @@ const SeekerLanding = () => {
                         ) : (
                             <Link
                                 to="/seeker/signup"
-                                className="inline-flex items-center gap-2 px-12 py-5 bg-white text-blue-600 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all shadow-2xl hover:shadow-3xl active:scale-95"
+                                className="inline-flex items-center gap-2 px-12 py-5 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-gray-100 transition-all shadow-2xl hover:shadow-3xl active:scale-95"
                             >
                                 Get Started Free <ArrowRight size={20} />
                             </Link>
                         )}
                         
-                        <p className="text-blue-100 text-sm mt-6">
-                            No credit card required • Free forever • Cancel anytime
+                        <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] mt-8">
+                            No credit card required • Free forever
                         </p>
                     </div>
                 </div>

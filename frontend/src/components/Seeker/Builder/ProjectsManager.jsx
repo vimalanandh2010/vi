@@ -55,7 +55,7 @@ const ProjectsManager = ({ user, onUpdate }) => {
         <div className="space-y-10">
             <div className="flex justify-between items-center px-4">
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-500">
+                    <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white shadow-lg">
                         <Code size={24} />
                     </div>
                     <div>
@@ -65,7 +65,7 @@ const ProjectsManager = ({ user, onUpdate }) => {
                 </div>
                 <button
                     onClick={() => handleOpen()}
-                    className="p-4 bg-teal-600 text-white rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition-all"
+                    className="p-4 bg-black text-white rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition-all"
                 >
                     <Plus size={24} />
                 </button>
@@ -77,7 +77,7 @@ const ProjectsManager = ({ user, onUpdate }) => {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         key={idx}
-                        className="bg-white border-2 border-gray-200 rounded-[2.5rem] p-8 group hover:border-teal-500/50 hover:shadow-lg transition-all duration-500 relative overflow-hidden"
+                        className="bg-white border-2 border-gray-200 rounded-[2.5rem] p-8 group hover:border-black hover:shadow-lg transition-all duration-500 relative overflow-hidden"
                     >
                         <div className="absolute top-0 right-0 p-6 flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
                             <button onClick={() => handleOpen(idx)} className="p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-black transition-all"><Edit3 size={16} /></button>
@@ -98,7 +98,7 @@ const ProjectsManager = ({ user, onUpdate }) => {
 
                         <div className="flex gap-4 border-t border-gray-200 pt-6">
                             {proj.link && (
-                                <a href={proj.link} target="_blank" rel="noopener noreferrer" className="flex-1 py-3 bg-teal-600/10 text-teal-400 border border-teal-500/20 rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-teal-600 hover:text-white transition-all">
+                                <a href={proj.link} target="_blank" rel="noopener noreferrer" className="flex-1 py-3 bg-black text-white border border-black rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-gray-800 transition-all">
                                     <Globe size={14} /> Demo / View Project
                                 </a>
                             )}
@@ -135,7 +135,7 @@ const ProjectsManager = ({ user, onUpdate }) => {
                                         <input
                                             value={formData.title}
                                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-teal-500/50 focus:bg-white transition-all outline-none"
+                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white transition-all outline-none"
                                             placeholder="E.g. E-Commerce Platform"
                                         />
                                     </div>
@@ -144,7 +144,7 @@ const ProjectsManager = ({ user, onUpdate }) => {
                                         <textarea
                                             value={formData.description}
                                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-teal-500/50 focus:bg-white transition-all outline-none min-h-[120px]"
+                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white transition-all outline-none min-h-[120px]"
                                             placeholder="What problem does it solve? What was your role?"
                                         />
                                     </div>
@@ -154,7 +154,7 @@ const ProjectsManager = ({ user, onUpdate }) => {
                                             <input
                                                 value={formData.link}
                                                 onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-teal-500/50 focus:bg-white transition-all outline-none"
+                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white transition-all outline-none"
                                                 placeholder="https://my-app.vercel.app"
                                             />
                                         </div>
@@ -163,7 +163,7 @@ const ProjectsManager = ({ user, onUpdate }) => {
                                             <input
                                                 value={formData.technologies?.join(', ')}
                                                 onChange={(e) => setFormData({ ...formData, technologies: e.target.value.split(',').map(s => s.trim()) })}
-                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-teal-500/50 focus:bg-white transition-all outline-none"
+                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl py-4 px-4 text-black focus:border-black focus:bg-white transition-all outline-none"
                                                 placeholder="React, Firebase, Tailwind"
                                             />
                                         </div>
@@ -173,7 +173,7 @@ const ProjectsManager = ({ user, onUpdate }) => {
 
                             <div className="px-10 py-8 border-t border-gray-100 bg-gray-50 flex gap-4">
                                 <button onClick={() => { setIsAdding(false); setEditingIdx(-1); }} className="flex-1 py-4 bg-white border border-gray-200 text-gray-600 font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-gray-100 transition-all">Cancel</button>
-                                <button onClick={handleSave} className="flex-1 py-4 bg-teal-600 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:bg-teal-700 transition-all">Save Project</button>
+                                <button onClick={handleSave} className="flex-1 py-4 bg-black text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:bg-gray-800 transition-all">Save Project</button>
                             </div>
                         </motion.div>
                     </div>

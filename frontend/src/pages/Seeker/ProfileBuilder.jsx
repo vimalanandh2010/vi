@@ -53,16 +53,16 @@ const ProfileBuilder = () => {
     };
 
     const sections = [
-        { id: 'basic', label: 'Basic Info', icon: User, color: 'text-blue-500' },
-        { id: 'summary', label: 'Summary', icon: FileText, color: 'text-indigo-500' },
-        { id: 'skills', label: 'Skills', icon: Cpu, color: 'text-teal-500' },
-        { id: 'education', label: 'Education', icon: GraduationCap, color: 'text-amber-500' },
-        getExperienceSection(),
-        { id: 'projects', label: 'Projects', icon: Layers, color: 'text-purple-500' },
-        { id: 'milestones', label: 'Milestones & Certs', icon: Award, color: 'text-amber-400' },
-        { id: 'social', label: 'Social & Links', icon: Share2, color: 'text-blue-400' },
-        { id: 'resume', label: 'Resume', icon: Upload, color: 'text-slate-400' },
-        { id: 'preferences', label: 'Preferences', icon: Settings, color: 'text-slate-500' },
+        { id: 'basic', label: 'Basic Info', icon: User, color: 'text-black' },
+        { id: 'summary', label: 'Summary', icon: FileText, color: 'text-black' },
+        { id: 'skills', label: 'Skills', icon: Cpu, color: 'text-black' },
+        { id: 'education', label: 'Education', icon: GraduationCap, color: 'text-black' },
+        { id: 'experience', label: 'Experience', icon: Briefcase, color: 'text-black' },
+        { id: 'projects', label: 'Projects', icon: Layers, color: 'text-black' },
+        { id: 'milestones', label: 'Milestones & Certs', icon: Award, color: 'text-black' },
+        { id: 'social', label: 'Social & Links', icon: Share2, color: 'text-black' },
+        { id: 'resume', label: 'Resume', icon: Upload, color: 'text-black' },
+        { id: 'preferences', label: 'Preferences', icon: Settings, color: 'text-black' },
     ];
 
     useEffect(() => {
@@ -130,13 +130,13 @@ const ProfileBuilder = () => {
     if (loading && !user) {
         return (
             <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-                <Loader2 className="w-10 h-10 text-blue-500 animate-spin" />
+                <Loader2 className="w-10 h-10 text-black animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 font-outfit selection:bg-blue-500/30">
+        <div className="min-h-screen bg-slate-50 font-outfit selection:bg-black/10">
             <style>
                 {`
                     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;500;600;700;800;900&display=swap');
@@ -155,7 +155,7 @@ const ProfileBuilder = () => {
                 <div className="col-span-12 lg:col-span-3">
                     <div className="sticky top-24 space-y-6">
                         <div className="bg-white border-2 border-gray-200 rounded-3xl p-8 shadow-md relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl -mr-16 -mt-16" />
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-black/5 rounded-full blur-3xl -mr-16 -mt-16" />
 
                             <div className="mb-8 text-center">
                                 <h2 className="text-2xl font-black text-gray-900 tracking-tight mb-2">My Profile</h2>
@@ -166,7 +166,7 @@ const ProfileBuilder = () => {
                             <div className="mb-8 p-6 bg-slate-50 rounded-[2rem] border-2 border-gray-100">
                                 <div className="flex justify-between items-end mb-4">
                                     <div className="flex items-center gap-2">
-                                        <Target size={12} className="text-blue-500" />
+                                        <Target size={12} className="text-black" />
                                         <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Strength</span>
                                     </div>
                                     <span className="text-gray-900 font-black text-2xl tracking-tighter">{completion}%</span>
@@ -175,10 +175,10 @@ const ProfileBuilder = () => {
                                     <motion.div
                                         initial={{ width: 0 }}
                                         animate={{ width: `${completion}%` }}
-                                        className="h-full bg-gradient-to-r from-blue-500 to-teal-400 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                                        className="h-full bg-black rounded-full shadow-[0_0_15px_rgba(0,0,0,0.3)]"
                                     />
                                 </div>
-                                <p className="text-[10px] font-bold text-blue-400 mt-4 text-center italic hover:scale-105 transition-transform cursor-default">
+                                <p className="text-[10px] font-bold text-black mt-4 text-center italic hover:scale-105 transition-transform cursor-default">
                                     “Complete your skills to be seen 5x more!”
                                 </p>
                             </div>
@@ -193,22 +193,22 @@ const ProfileBuilder = () => {
                                             key={section.id}
                                             onClick={() => handleSectionChange(section.id)}
                                             className={`w-full group flex items-center justify-between p-3.5 rounded-2xl transition-all duration-300 ${isActive
-                                                ? 'bg-blue-50 text-blue-600 scale-[1.02] border border-blue-200'
-                                                : 'text-gray-500 hover:bg-gray-100 hover:text-black'
+                                                ? 'bg-black text-white scale-[1.02] border border-black'
+                                                : 'text-gray-500 hover:bg-black hover:text-white'
                                                 }`}
                                         >
                                             <div className="flex items-center gap-3">
-                                                <div className={`p-2 rounded-xl transition-colors ${isActive ? 'bg-blue-100 text-blue-600' : `bg-gray-100 ${section.color}`}`}>
+                                                <div className={`p-2 rounded-xl transition-colors ${isActive ? 'bg-white/10 text-white' : `bg-gray-100 ${section.color} group-hover:bg-white/10 group-hover:text-white`}`}>
                                                     <Icon size={16} />
                                                 </div>
-                                                <span className={`text-[13px] font-black tracking-tight ${isActive ? 'text-blue-700' : 'text-black'}`}>
+                                                <span className={`text-[13px] font-black tracking-tight ${isActive ? 'text-white' : 'text-black group-hover:text-white'}`}>
                                                     {section.label}
                                                 </span>
                                             </div>
                                             {isActive ? (
-                                                <ChevronRight size={14} className="text-blue-500" strokeWidth={3} />
+                                                <ChevronRight size={14} className="text-white" strokeWidth={3} />
                                             ) : (
-                                                <div className={`w-1 h-1 rounded-full bg-gray-300 transition-all ${section.color} group-hover:scale-150`} />
+                                                <div className={`w-1 h-1 rounded-full bg-gray-300 transition-all ${section.color} group-hover:scale-150 group-hover:bg-white`} />
                                             )}
                                         </button>
                                     );
@@ -222,7 +222,7 @@ const ProfileBuilder = () => {
                 {/* Right Side: Section Editor */}
                 <div className="col-span-12 lg:col-span-9" ref={containerRef}>
                     <div className="bg-white border-2 border-gray-200 rounded-[3rem] min-h-[85vh] shadow-lg relative overflow-hidden flex flex-col">
-                        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[140px] -mr-80 -mt-80 pointer-events-none" />
+                        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-black/5 rounded-full blur-[140px] -mr-80 -mt-80 pointer-events-none" />
 
                         {/* Section Header */}
                         <div className="px-12 py-10 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white/90 backdrop-blur-xl z-40">

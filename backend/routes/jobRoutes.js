@@ -516,25 +516,38 @@ router.get('/categories/stats', async (req, res) => {
 router.get('/top-companies', async (req, res) => {
     try {
         const companies = await Job.aggregate([
+            { $match: { status: 'active' } },
             {
                 $group: {
                     _id: "$company",
                     count: { $sum: 1 }
                 }
             },
-            { $sort: { count: -1 } },
-            { $limit: 6 }
+            {
+                $lookup: {
+                    from: 'companies',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'companyInfo'
+                }
+            },
+            { $unwind: '$companyInfo' },
+            {
+                $project: {
+                    _id: 0,
+                    id: "$_id",
+                    name: "$companyInfo.name",
+                    logo: "$companyInfo.logo",
+                    openings: "$count"
+                }
+            },
+            { $sort: { openings: -1 } },
+            { $limit: 8 }
         ]);
 
-        const formattedCompanies = companies.map((c, idx) => ({
-            id: idx + 1,
-            name: c._id,
-            openings: c.count,
-            logo: ['🔵', '🟦', '🟧', '⚫', '🔷', '🔴'][idx % 6] // Placeholder logos
-        }));
-
-        res.json(formattedCompanies);
+        res.json(companies);
     } catch (err) {
+        console.error('[JobRoutes] Top Companies Error:', err.message);
         res.status(500).json({ message: err.message });
     }
 });

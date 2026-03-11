@@ -676,11 +676,15 @@ const Home = () => {
                                 onClick={() => navigate(`/seeker/jobs?search=${encodeURIComponent(company.name)}`)}
                                 className="group bg-white border border-slate-200 rounded-2xl p-6 flex flex-col items-center text-center cursor-pointer transition-all shadow-sm"
                             >
-                                {/* Logo circle */}
+                                {/* Logo box */}
                                 <div
-                                    className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-xl mb-4 shadow-sm bg-slate-900 group-hover:scale-105 transition-transform"
+                                    className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-xl mb-4 shadow-sm bg-slate-900 group-hover:scale-105 transition-transform overflow-hidden"
                                 >
-                                    {company.logo || company.name?.charAt(0) || 'C'}
+                                    {company.logo && company.logo.startsWith('http') ? (
+                                        <img src={company.logo} alt={company.name} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <span>{company.name?.charAt(0) || 'C'}</span>
+                                    )}
                                 </div>
                                 <p className="font-bold text-gray-900 text-sm mb-1 group-hover:text-blue-700 transition-colors truncate w-full">
                                     {company.name}
