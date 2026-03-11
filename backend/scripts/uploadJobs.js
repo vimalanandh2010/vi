@@ -33,12 +33,15 @@ const uploadJobs = async () => {
         const jobsToUpload = [];
 
         for (const job of jobsData) {
+            process.stdout.write(`🔍 Finding company: "${job.companyName}"... `);
             const company = await Company.findOne({ name: job.companyName });
             
             if (!company) {
+                console.log('❌ NOT FOUND');
                 console.warn(`⚠️ Warning: Company "${job.companyName}" not found. Skipping job "${job.title}".`);
                 continue;
             }
+            console.log('✅ FOUND');
 
             // Construct salary string like ₹18L - ₹25L
             let salaryString = '';
@@ -64,8 +67,9 @@ const uploadJobs = async () => {
         }
 
         // Insert into database
+        console.log(`🚀 Inserting ${jobsToUpload.length} jobs into database...`);
         const result = await Job.insertMany(jobsToUpload);
-        console.log(`🚀 Successfully uploaded ${result.length} jobs!`);
+        console.log(`✨ Successfully uploaded ${result.length} jobs!`);
 
         process.exit();
     } catch (err) {
