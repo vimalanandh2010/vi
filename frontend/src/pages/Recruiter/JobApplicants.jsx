@@ -25,7 +25,6 @@ import {
     Brain,
     AlertCircle,
     TrendingUp,
-    MessageCircle,
     Video,
     Send
 } from 'lucide-react'
@@ -186,17 +185,7 @@ const JobApplicants = () => {
         }
     }
 
-    const messageApplicant = async (e, applicantUserId) => {
-        e.stopPropagation()
-        try {
-            const res = await axiosClient.post('/chat', { participantId: applicantUserId })
-            if (res && (res._id || res.conversation?._id)) {
-                navigate('/recruiter/chat', { state: { activeChatId: res._id || res.conversation?._id } })
-            }
-        } catch (err) {
-            toast.error('Could not open chat')
-        }
-    }
+    // ...existing code...
 
     const handleGeminiScan = async (e, appId, options = { forceRescan: true, autoClassify: true }) => {
         e.stopPropagation()
@@ -370,13 +359,6 @@ const JobApplicants = () => {
 
                                             {/* Interaction Controls */}
                                             <div className="flex items-center gap-3">
-                                                <button
-                                                    onClick={(e) => messageApplicant(e, app.user?._id)}
-                                                    className="p-4 bg-gray-100 hover:bg-blue-600 hover:text-white text-gray-700 border border-gray-200 rounded-2xl transition-all shadow-sm active:scale-95"
-                                                    title="Direct Communication"
-                                                >
-                                                    <MessageCircle size={20} strokeWidth={2.5} />
-                                                </button>
 
                                                 {app.resumeUrl && (
                                                     <button
