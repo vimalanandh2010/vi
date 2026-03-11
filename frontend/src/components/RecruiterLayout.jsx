@@ -30,7 +30,7 @@ const RecruiterLayout = ({ children, jobCount = 0 }) => {
                 <Navbar onSidebarToggle={() => setSidebarOpen(!sidebarOpen)} showSidebarToggle={true} />
 
                 {/* Scrollable Content */}
-                <main className="flex-1 overflow-y-auto bg-[#FDFDFD] custom-scrollbar recruiter-content">
+                <main className="flex-1 overflow-hidden bg-[#FDFDFD] recruiter-content flex flex-col">
                     {children}
                 </main>
             </div>
