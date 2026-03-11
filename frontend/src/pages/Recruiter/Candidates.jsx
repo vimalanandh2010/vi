@@ -475,15 +475,15 @@ const RecruiterCandidates = () => {
                                                                         {skill}
                                                                     </span>
                                                                 </div>
-                                                            )
-                                                        })
-                                                    ) : (
-                                                        <div className="col-span-2 text-center py-4 px-3 bg-slate-700/20 border border-slate-600/30 rounded-xl">
-                                                            <p className="text-slate-400 text-xs font-medium">No skills listed by candidate</p>
-                                                        </div>
-                                                    )}
+                                                            ))
+                                                        ) : (
+                                                            <div className="col-span-2 text-center py-4 px-3 bg-slate-700/20 border border-slate-600/30 rounded-xl">
+                                                                <p className="text-slate-400 text-xs font-medium">No skills listed by candidate</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                                )}
+                                            )}
                                             </div>
 
                                             {/* Recommendation */}
