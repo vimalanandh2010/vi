@@ -2,10 +2,16 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const companyController = require('../controllers/companyController');
+const upload = require('../config/multerConfig');
 
 // @route   POST /api/companies
 // @desc    Create a company
 router.post('/', auth, companyController.createCompany);
+
+// @route   POST /api/companies/logo
+// @desc    Upload company logo
+// @access  Private
+router.post('/logo', auth, upload.single('logo'), companyController.uploadLogo);
 
 // @route   PUT /api/companies/update
 // @desc    Create or Update company (Upsert)

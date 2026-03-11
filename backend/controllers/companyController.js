@@ -1,5 +1,6 @@
 const Company = require('../models/Company');
 const User = require('../models/User');
+const { uploadToSupabase, deleteFromSupabase } = require('../utils/supabaseUpload');
 
 // @desc    Create a new company
 // @route   POST /api/companies
@@ -198,11 +199,52 @@ exports.upsertCompany = async (req, res) => {
     }
 };
 
+// @desc    Upload company logo
+// @route   POST /api/companies/logo
+// @access  Private (Employer)
+exports.uploadLogo = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'Please upload a file' });
+        }
+
+        // Find company
+        const company = await Company.findOne({ createdBy: req.user.id });
+        if (!company) {
+            return res.status(404).json({ message: 'Company not found. Create a profile first.' });
+        }
+
+        // Delete old logo if it exists in Supabase
+        if (company.logo && company.logo.includes('supabase')) {
+            await deleteFromSupabase(company.logo);
+        }
+
+        // Upload to Supabase
+        const logoUrl = await uploadToSupabase(req.file, 'company-logos');
+        if (!logoUrl) {
+            return res.status(500).json({ message: 'Failed to upload logo to storage' });
+        }
+
+        // Update company logo field
+        company.logo = logoUrl;
+        await company.save();
+
+        res.json({
+            message: 'Logo uploaded successfully',
+            logo: logoUrl
+        });
+    } catch (err) {
+        console.error('[CompanyController] Logo Upload Error:', err);
+        res.status(500).json({ message: 'Server error during logo upload', error: err.message });
+    }
+};
+
 module.exports = {
     createCompany: exports.createCompany,
     updateCompany: exports.updateCompany,
     getCompanies: exports.getCompanies,
     getCompanyById: exports.getCompanyById,
     getMyCompany: exports.getMyCompany,
-    upsertCompany: exports.upsertCompany
+    upsertCompany: exports.upsertCompany,
+    uploadLogo: exports.uploadLogo
 };

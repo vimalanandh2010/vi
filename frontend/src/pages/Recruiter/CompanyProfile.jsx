@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axiosClient from '../../api/axiosClient';
 import { toast } from 'react-toastify';
-import { Building2, MapPin, Globe, Users, Briefcase, Save, Info, ArrowRight, ChevronRight, Target, Sparkles, Loader2 } from 'lucide-react';
+import { Building2, MapPin, Globe, Users, Briefcase, Save, Info, ArrowRight, ChevronRight, Target, Sparkles, Loader2, Camera, Upload } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import VerificationBadge from '../../components/Common/VerificationBadge';
@@ -11,8 +11,10 @@ import RecruiterLayout from '../../components/RecruiterLayout';
 const CompanyProfile = () => {
     const navigate = useNavigate();
     const { company, updateCompanyContext, loading: contextLoading } = useCompany();
+    const logoInputRef = React.useRef(null);
 
     const [saving, setSaving] = useState(false);
+    const [uploadingLogo, setUploadingLogo] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         logo: '',
@@ -33,10 +35,18 @@ const CompanyProfile = () => {
 
     useEffect(() => {
         if (!contextLoading && company) {
-            navigate('/recruiter/dashboard');
-            toast.info('Mandate active for existing organization.');
+            setFormData({
+                name: company.name || '',
+                logo: company.logo || '',
+                about: company.about || '',
+                companyType: company.companyType || 'Startup',
+                industries: company.industries || [],
+                size: company.size || '1-10',
+                location: company.location || '',
+                website: company.website || ''
+            });
         }
-    }, [company, contextLoading, navigate]);
+    }, [company, contextLoading]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,6 +63,35 @@ const CompanyProfile = () => {
                 ...formData,
                 industries: [...formData.industries, industry]
             });
+        }
+    };
+
+    const handleLogoUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Preview local
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            // Optional: set a temporary preview state if desired
+        };
+        reader.readAsDataURL(file);
+
+        const uploadFormData = new FormData();
+        uploadFormData.append('logo', file);
+
+        setUploadingLogo(true);
+        try {
+            const res = await axiosClient.post('/companies/logo', uploadFormData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            setFormData(prev => ({ ...prev, logo: res.logo }));
+            toast.success('Company logo synchronized');
+        } catch (err) {
+            console.error('Logo upload error:', err);
+            toast.error(err.response?.data?.message || 'Failed to upload logo');
+        } finally {
+            setUploadingLogo(false);
         }
     };
 
@@ -81,14 +120,7 @@ const CompanyProfile = () => {
         );
     }
 
-    if (company) {
-        return (
-            <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-                <Loader2 className="animate-spin text-blue-600 mb-4" size={40} />
-                <p className="text-sm font-semibold text-gray-600">Redirecting to dashboard...</p>
-            </div>
-        );
-    }
+
 
     return (
         <RecruiterLayout>
@@ -96,9 +128,11 @@ const CompanyProfile = () => {
                 {/* Header */}
                 <header className="mb-12">
                     <h1 className="text-4xl font-bold text-gray-900 mb-3">
-                        Register Your Company
+                        {company ? 'Organization Settings' : 'Register Your Company'}
                     </h1>
-                    <p className="text-gray-600 text-base font-medium">Establish your company profile to attract top talent.</p>
+                    <p className="text-gray-600 text-base font-medium">
+                        {company ? 'Update your professional presence and assets.' : 'Establish your company profile to attract top talent.'}
+                    </p>
                 </header>
 
                 <form onSubmit={handleSubmit} className="space-y-8 pb-16">
@@ -108,13 +142,47 @@ const CompanyProfile = () => {
                         animate={{ opacity: 1, y: 0 }}
                         className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:shadow-md transition-all"
                     >
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="p-3 bg-blue-600 text-white rounded-xl">
-                                <Building2 size={24} strokeWidth={2.5} />
+                        <div className="flex flex-col md:flex-row gap-8 mb-12">
+                            {/* Logo Upload */}
+                            <div className="relative group">
+                                <div className="w-32 h-32 rounded-[2rem] bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden transition-all group-hover:border-blue-500/50">
+                                    {formData.logo ? (
+                                        <img src={formData.logo} alt="Company Logo" className="w-full h-full object-cover" />
+                                    ) : (
+                                        <Building2 className="text-slate-300" size={40} />
+                                    )}
+                                    {uploadingLogo && (
+                                        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
+                                            <Loader2 className="animate-spin text-blue-600" size={24} />
+                                        </div>
+                                    )}
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => logoInputRef.current?.click()}
+                                    className="absolute -bottom-2 -right-2 p-2.5 bg-black text-white rounded-xl shadow-xl hover:scale-110 active:scale-95 transition-all"
+                                >
+                                    <Camera size={16} />
+                                </button>
+                                <input
+                                    type="file"
+                                    ref={logoInputRef}
+                                    onChange={handleLogoUpload}
+                                    accept="image/*"
+                                    className="hidden"
+                                />
                             </div>
-                            <div>
-                                <h2 className="text-xl font-bold text-gray-900">Company Information</h2>
-                                <p className="text-xs font-semibold text-gray-500 mt-0.5">Basic details about your company</p>
+
+                            <div className="flex-1 flex flex-col justify-center">
+                                <div className="flex items-center gap-4 mb-2">
+                                    <div className="p-3 bg-blue-600 text-white rounded-xl">
+                                        <Building2 size={24} strokeWidth={2.5} />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-gray-900">Company Information</h2>
+                                        <p className="text-xs font-semibold text-gray-500 mt-0.5">Basic details about your company</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -296,7 +364,7 @@ const CompanyProfile = () => {
                                     <Loader2 size={18} className="animate-spin" />
                                 ) : (
                                     <>
-                                        Calibrate Identity
+                                        {company ? 'Store Modifications' : 'Calibrate Identity'}
                                         <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
                                     </>
                                 )}

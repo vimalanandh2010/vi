@@ -6,6 +6,7 @@ import {
     Briefcase,
     Calendar,
     MessageSquare,
+    Building2,
     Home,
     LogOut,
     X
@@ -103,6 +104,13 @@ const RecruiterSidebar = ({ jobCount = 0, onClose }) => {
                     <div className="mb-4 px-2">
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Management</span>
                     </div>
+                    <SidebarItem
+                        icon={Building2}
+                        label="Company Profile"
+                        path="/recruiter/company-profile"
+                        active={isActive('/recruiter/company-profile')}
+                        onClick={handleNavClick}
+                    />
                     <SidebarItem
                         icon={MessageSquare}
                         label="Messages"
