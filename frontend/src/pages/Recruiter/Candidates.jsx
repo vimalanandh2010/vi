@@ -176,9 +176,9 @@ const RecruiterCandidates = () => {
                                     key={f}
                                     onClick={() => setFilter(f)}
                                     className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 sm:gap-2 ${filter === f
-                                        ? 'bg-black text-white shadow-md'
-                                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
-                                        }`}
+                                    ? 'bg-black text-white shadow-md'
+                                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                                    }`}
                                 >
                                     {f}
                                     <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] font-semibold ${filter === f ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-600'}`}>
@@ -455,9 +455,7 @@ const RecruiterCandidates = () => {
                                                     <p className="text-slate-300 text-xs font-black uppercase tracking-widest mb-4">Skill Match:</p>
                                                     <div className="grid grid-cols-2 gap-2 sm:gap-3">
                                                         {selectedApplication.user?.skills && selectedApplication.user.skills.length > 0 ? (
-                                                            selectedApplication.user.skills.slice(0, 4).map((skill, idx) => {
-                                                            const matched = idx < 2 // First 2 skills matched
-                                                            return (
+                                                            selectedApplication.user.skills.slice(0, 4).map((skill, idx) => (
                                                                 <div 
                                                                     key={idx} 
                                                                     className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${
