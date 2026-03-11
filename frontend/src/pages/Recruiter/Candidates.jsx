@@ -152,113 +152,13 @@ const RecruiterCandidates = () => {
         <RecruiterLayout jobCount={jobCount}>
             <div className="flex h-full overflow-hidden bg-white">
 
-                {/* LEFT PANEL: Candidates List */}
-                <aside className={`
-                    w-full sm:w-[360px] lg:w-[420px] xl:w-[450px]
-                    border-r border-slate-100 flex-col bg-white shrink-0
-                    ${showDetailMobile ? 'hidden sm:flex' : 'flex'}
-                `}>
-                    <div className="p-6 sm:p-8 border-b border-gray-100 space-y-4 sm:space-y-6">
-                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Candidates</h1>
-                        <div className="relative">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                            <input
-                                type="text"
-                                placeholder="Search by name, role..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full bg-gray-50 border border-gray-200 rounded-lg py-3 sm:py-3.5 pl-12 pr-4 text-sm text-gray-900 font-medium focus:outline-none focus:border-blue-500 focus:bg-white transition-all placeholder:text-gray-400"
-                            />
-                        </div>
-                        <div className="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar">
-                            {['All', 'Shortlisted', 'Interview', 'Selected', 'Rejected'].map(f => (
-                                <button
-                                    key={f}
-                                    onClick={() => setFilter(f)}
-                                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 sm:gap-2 ${filter === f
-                                    ? 'bg-black text-white shadow-md'
-                                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
-                                    }`}
-                                >
-                                    {f}
-                                    <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] font-semibold ${filter === f ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-600'}`}>
-                                        {getStatusCount(f)}
-                                    </span>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4 custom-scrollbar">
-                        {loading ? (
-                            <div className="flex flex-col items-center justify-center h-64 text-gray-500 font-semibold text-sm">
-                                <Loader2 className="animate-spin mb-4 text-blue-600" size={32} />
-                                Loading candidates...
-                            </div>
-                        ) : filteredApplications.length === 0 ? (
-                            <div className="text-center py-20 font-medium text-gray-400">No candidates found</div>
-                        ) : (
-                            filteredApplications.map(app => (
-                                <motion.div
-                                    key={app._id}
-                                    onClick={() => {
-                                        setSelectedId(app._id)
-                                        setShowDetailMobile(true)
-                                    }}
-                                    className={`p-4 sm:p-5 rounded-2xl cursor-pointer transition-all border relative group ${selectedId === app._id
-                                        ? 'bg-slate-50 border-slate-300 shadow-md'
-                                        : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm'
-                                        }`}
-                                >
-                                    <div className="flex gap-3 sm:gap-4">
-                                        <div className="relative">
-                                            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-slate-900 flex items-center justify-center font-black text-white shrink-0 text-base sm:text-lg shadow-md">
-                                                {app.user?.firstName?.[0] || '?'}
-                                            </div>
-                                            {app.aiMatchScore >= 70 && (
-                                                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-white">
-                                                    <Check className="text-white" size={10} strokeWidth={3} />
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex justify-between items-start mb-1">
-                                                <h4 className="font-black text-slate-900 text-sm sm:text-base truncate leading-tight">
-                                                    {app.user?.firstName} {app.user?.lastName}
-                                                </h4>
-                                                <StatusBadge status={app.status} />
-                                            </div>
-                                            <p className="text-xs sm:text-sm text-slate-600 font-semibold mb-2 truncate">{app.job?.title}</p>
-                                            <div className="flex items-center gap-3 sm:gap-4">
-                                                <div className="flex items-center gap-1 text-[10px] font-bold text-slate-500 uppercase tracking-tight">
-                                                    <MapPin size={11} />
-                                                    {app.user?.location || 'Remote'}
-                                                </div>
-                                                {app.aiMatchScore && (
-                                                    <div className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-tight ${
-                                                        app.aiMatchScore >= 70 ? 'text-emerald-600' : 
-                                                        app.aiMatchScore >= 50 ? 'text-blue-600' : 'text-slate-500'
-                                                    }`}>
-                                                        <Sparkles size={11} />
-                                                        {app.aiMatchScore}%
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            ))
-                        )}
-                    </div>
-                </aside>
-
-                {/* RIGHT PANEL: Candidate Details */}
+                {/* RIGHT PANEL: Candidate Details (Now on the Left) */}
                 <main className={`
                     flex-1 bg-[#FDFDFD] overflow-y-auto custom-scrollbar flex flex-col
                     ${showDetailMobile ? 'flex' : 'hidden sm:flex'}
                 `}>
                     {selectedApplication ? (
-                        <div className="p-5 sm:p-8 lg:p-12 max-w-5xl mx-auto w-full">
+                        <div className="p-5 sm:p-8 lg:p-12 w-full">
 
                             {/* Mobile Back Button */}
                             <button
@@ -620,6 +520,106 @@ const RecruiterCandidates = () => {
                         </div>
                     )}
                 </main>
+
+                {/* LEFT PANEL: Candidates List (Now on the Right) */}
+                <aside className={`
+                    w-full sm:w-[360px] lg:w-[420px] xl:w-[450px]
+                    border-l border-slate-100 flex-col bg-white shrink-0
+                    ${showDetailMobile ? 'hidden sm:flex' : 'flex'}
+                `}>
+                    <div className="p-6 sm:p-8 border-b border-gray-100 space-y-4 sm:space-y-6">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Candidates</h1>
+                        <div className="relative">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                            <input
+                                type="text"
+                                placeholder="Search by name, role..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full bg-gray-50 border border-gray-200 rounded-lg py-3 sm:py-3.5 pl-12 pr-4 text-sm text-gray-900 font-medium focus:outline-none focus:border-blue-500 focus:bg-white transition-all placeholder:text-gray-400"
+                            />
+                        </div>
+                        <div className="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar">
+                            {['All', 'Shortlisted', 'Interview', 'Selected', 'Rejected'].map(f => (
+                                <button
+                                    key={f}
+                                    onClick={() => setFilter(f)}
+                                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 sm:gap-2 ${filter === f
+                                    ? 'bg-black text-white shadow-md'
+                                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                                    }`}
+                                >
+                                    {f}
+                                    <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] font-semibold ${filter === f ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-600'}`}>
+                                        {getStatusCount(f)}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4 custom-scrollbar">
+                        {loading ? (
+                            <div className="flex flex-col items-center justify-center h-64 text-gray-500 font-semibold text-sm">
+                                <Loader2 className="animate-spin mb-4 text-blue-600" size={32} />
+                                Loading candidates...
+                            </div>
+                        ) : filteredApplications.length === 0 ? (
+                            <div className="text-center py-20 font-medium text-gray-400">No candidates found</div>
+                        ) : (
+                            filteredApplications.map(app => (
+                                <motion.div
+                                    key={app._id}
+                                    onClick={() => {
+                                        setSelectedId(app._id)
+                                        setShowDetailMobile(true)
+                                    }}
+                                    className={`p-4 sm:p-5 rounded-2xl cursor-pointer transition-all border relative group ${selectedId === app._id
+                                        ? 'bg-slate-50 border-slate-300 shadow-md'
+                                        : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm'
+                                        }`}
+                                >
+                                    <div className="flex gap-3 sm:gap-4">
+                                        <div className="relative">
+                                            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-slate-900 flex items-center justify-center font-black text-white shrink-0 text-base sm:text-lg shadow-md">
+                                                {app.user?.firstName?.[0] || '?'}
+                                            </div>
+                                            {app.aiMatchScore >= 70 && (
+                                                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-white">
+                                                    <Check className="text-white" size={10} strokeWidth={3} />
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex justify-between items-start mb-1">
+                                                <h4 className="font-black text-slate-900 text-sm sm:text-base truncate leading-tight">
+                                                    {app.user?.firstName} {app.user?.lastName}
+                                                </h4>
+                                                <StatusBadge status={app.status} />
+                                            </div>
+                                            <p className="text-xs sm:text-sm text-slate-600 font-semibold mb-2 truncate">{app.job?.title}</p>
+                                            <div className="flex items-center gap-3 sm:gap-4">
+                                                <div className="flex items-center gap-1 text-[10px] font-bold text-slate-500 uppercase tracking-tight">
+                                                    <MapPin size={11} />
+                                                    {app.user?.location || 'Remote'}
+                                                </div>
+                                                {app.aiMatchScore && (
+                                                    <div className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-tight ${
+                                                        app.aiMatchScore >= 70 ? 'text-emerald-600' : 
+                                                        app.aiMatchScore >= 50 ? 'text-blue-600' : 'text-slate-500'
+                                                    }`}>
+                                                        <Sparkles size={11} />
+                                                        {app.aiMatchScore}%
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))
+                        )}
+                    </div>
+                </aside>
             </div>
 
             {/* Schedule Interview Modal */}
