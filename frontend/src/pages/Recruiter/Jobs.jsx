@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
 import {
@@ -16,7 +16,8 @@ import {
     Loader2,
     BarChart3,
     TrendingUp,
-    X
+    X,
+    Upload
 } from 'lucide-react'
 import axiosClient from '../../api/axiosClient'
 import { toast } from 'react-toastify'
@@ -36,11 +37,50 @@ const RecruiterJobs = () => {
     const [analyticsData, setAnalyticsData] = useState({})
     const [selectedJob, setSelectedJob] = useState(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const fileInputRef = useRef(null)
 
     useEffect(() => {
         fetchJobs()
         fetchAnalyticsSummary()
     }, [])
+
+    const handleImportClick = () => {
+        if (!company) {
+            toast.error('Please complete your company profile to import jobs.')
+            return
+        }
+        fileInputRef.current?.click()
+    }
+
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0]
+        if (!file) return
+
+        const reader = new FileReader()
+        reader.onload = async (event) => {
+            try {
+                const jobsData = JSON.parse(event.target.result)
+                if (!Array.isArray(jobsData)) {
+                    toast.error('Invalid format. JSON must be an array of jobs.')
+                    return
+                }
+
+                if (!window.confirm(`Are you sure you want to import ${jobsData.length} jobs?`)) return
+
+                const loadingToast = toast.info('Importing jobs...', { autoClose: false })
+                const res = await axiosClient.post('jobs/bulk-upload', jobsData)
+                toast.dismiss(loadingToast)
+                toast.success(res.message || 'Jobs imported successfully')
+                fetchJobs()
+                fetchAnalyticsSummary()
+            } catch (err) {
+                console.error('Import failed:', err)
+                toast.error(err.response?.data?.message || 'Failed to parse or upload JSON file.')
+            }
+        }
+        reader.readAsText(file)
+        e.target.value = ''
+    }
 
     const handlePostNavigation = (e, path, label) => {
         e.preventDefault();
@@ -136,6 +176,20 @@ const RecruiterJobs = () => {
                     </div>
 
                     <div className="flex items-center gap-4">
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                            accept=".json"
+                            className="hidden"
+                        />
+                        <button
+                            onClick={handleImportClick}
+                            className="flex items-center gap-2 px-6 py-3 bg-white hover:bg-slate-50 text-black border border-slate-200 rounded-xl font-bold transition-all active:scale-95"
+                        >
+                            <Upload size={20} />
+                            Import JSON
+                        </button>
                         <button
                             onClick={(e) => handlePostNavigation(e, '/recruiter/post-job', 'post a job')}
                             className="flex items-center gap-2 px-6 py-3 bg-black hover:bg-gray-800 text-white rounded-xl font-bold transition-all shadow-xl shadow-black/10 active:scale-95"

@@ -314,6 +314,85 @@ router.post('/', auth, upload.single('poster'), async (req, res) => {
     }
 });
 
+// @route   POST /api/jobs/bulk-upload
+// @desc    Bulk upload jobs from JSON (Recruiter only)
+router.post('/bulk-upload', recruiterAuth, async (req, res) => {
+    try {
+        const jobsData = req.body;
+        if (!Array.isArray(jobsData)) {
+            return res.status(400).json({ message: 'Payload must be an array of jobs' });
+        }
+
+        const user = await User.findById(req.user.id).populate('company');
+        if (!user || !user.company) {
+            return res.status(403).json({ 
+                message: 'No company linked to your account. Please set up your company profile first.' 
+            });
+        }
+
+        const companyId = user.company._id;
+        const companyName = user.company.name;
+
+        const jobsToInsert = jobsData.map(job => {
+            // Process tags and requirements
+            let tags = job.tags || [];
+            if (typeof tags === 'string') {
+                tags = tags.split(',').map(t => t.trim()).filter(Boolean);
+            }
+            
+            let requirements = job.requirements || [];
+            if (typeof requirements === 'string') {
+                requirements = requirements.split(',').map(r => r.trim()).filter(Boolean);
+            }
+
+            return {
+                title: job.title,
+                location: job.location || 'Remote',
+                type: job.type || 'Full Time',
+                salary: job.salary,
+                minSalary: job.minSalary,
+                maxSalary: job.maxSalary,
+                experienceLevel: job.experienceLevel || 'Mid Level',
+                description: job.description || '',
+                category: job.category || 'IT',
+                tags,
+                requirements,
+                company: companyId,
+                companyName: companyName,
+                postedBy: req.user.id,
+                status: 'active'
+            };
+        });
+
+        const createdJobs = await Job.insertMany(jobsToInsert);
+
+        // Emit socket events for real-time updates (optional summary)
+        try {
+            if (typeof emitNewJobPosted === 'function') {
+                emitNewJobPosted({
+                    count: createdJobs.length,
+                    company: companyName,
+                    isBulk: true
+                });
+            }
+        } catch (socketErr) {
+            console.warn('[JobRoutes] Bulk Socket Error:', socketErr.message);
+        }
+
+        res.status(201).json({
+            message: `Successfully uploaded ${createdJobs.length} jobs`,
+            count: createdJobs.length,
+            jobs: createdJobs
+        });
+    } catch (err) {
+        console.error('[JobRoutes] Bulk Upload Error:', err);
+        res.status(500).json({ 
+            message: 'Internal Server Error during bulk upload', 
+            error: err.message 
+        });
+    }
+});
+
 // @route   GET /api/jobs/my-postings
 // @desc    Get all jobs posted by the logged-in employer
 router.get('/my-postings', auth, async (req, res) => {
