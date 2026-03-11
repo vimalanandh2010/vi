@@ -291,12 +291,12 @@ const RecruiterCandidates = () => {
                                                 selectedApplication.user.experience.map((exp, i) => (
                                                     <div key={i} className="bg-white p-5 sm:p-6 rounded-[1.5rem] border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                                                         <div className="flex items-start gap-4 mb-3">
-                                                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shrink-0 shadow-md">
-                                                                <span className="text-white font-black text-lg drop-shadow-sm">{exp.company?.[0] || exp.role?.[0] || 'E'}</span>
+                                                            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-sm">
+                                                                <span className="text-slate-900 font-black text-lg">{exp.company?.[0] || exp.role?.[0] || 'E'}</span>
                                                             </div>
                                                             <div className="flex-1 min-w-0">
                                                                 <h4 className="text-base sm:text-lg font-black text-slate-900 mb-0.5 truncate">{exp.role || 'Position not specified'}</h4>
-                                                                <p className="text-sm text-blue-600 font-bold truncate">{exp.company || 'Company not specified'}</p>
+                                                                <p className="text-sm text-slate-900 font-bold truncate">{exp.company || 'Company not specified'}</p>
                                                                 <p className="text-xs text-slate-500 font-medium mt-1">{exp.duration || 'Duration not specified'}</p>
                                                             </div>
                                                         </div>
@@ -305,7 +305,7 @@ const RecruiterCandidates = () => {
                                                                 {exp.description.split('\n').slice(0, 2).map((line, idx) => (
                                                                     line.trim() && (
                                                                         <p key={idx} className="text-sm text-slate-600 leading-relaxed flex items-start gap-2">
-                                                                            <span className="text-blue-500 mt-1">•</span>
+                                                                            <span className="text-slate-400 mt-1">•</span>
                                                                             <span>{line}</span>
                                                                         </p>
                                                                     )

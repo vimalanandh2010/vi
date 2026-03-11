@@ -207,10 +207,10 @@ const SeekerLanding = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                         {[
-                            { number: 50000, label: 'Active Jobs', icon: Briefcase, suffix: '+', color: 'blue' },
-                            { number: 500, label: 'Companies Hiring', icon: Building2, suffix: '+', color: 'purple' },
-                            { number: 10000, label: 'Job Seekers', icon: Users, suffix: '+', color: 'green' },
-                            { number: 95, label: 'Success Rate', icon: TrendingUp, suffix: '%', color: 'orange' }
+                            { number: 50000, label: 'Active Jobs', icon: Briefcase, suffix: '+' },
+                            { number: 500, label: 'Companies Hiring', icon: Building2, suffix: '+' },
+                            { number: 10000, label: 'Job Seekers', icon: Users, suffix: '+' },
+                            { number: 95, label: 'Success Rate', icon: TrendingUp, suffix: '%' }
                         ].map((stat, idx) => (
                             <motion.div
                                 key={idx}
@@ -220,13 +220,13 @@ const SeekerLanding = () => {
                                 transition={{ delay: idx * 0.1, duration: 0.6 }}
                                 className="text-center p-8 rounded-2xl bg-white shadow-lg border border-slate-100 hover:-translate-y-2 transition-all"
                             >
-                                <div className={`w-14 h-14 mx-auto mb-4 bg-${stat.color}-100 rounded-full flex items-center justify-center`}>
-                                    <stat.icon className={`text-${stat.color}-600`} size={28} />
+                                <div className="w-14 h-14 mx-auto mb-4 bg-slate-900 rounded-full flex items-center justify-center">
+                                    <stat.icon className="text-white" size={28} />
                                 </div>
                                 <div className="text-4xl font-black text-slate-900 mb-2">
                                     <AnimatedCounter end={stat.number} duration={2.5} suffix={stat.suffix} />
                                 </div>
-                                <p className="text-slate-600 font-semibold text-sm">{stat.label}</p>
+                                <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">{stat.label}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -274,29 +274,26 @@ const SeekerLanding = () => {
 
                     <div className="grid md:grid-cols-3 gap-12 relative">
                         {/* Connecting line */}
-                        <div className="hidden md:block absolute top-[60px] left-[16.6%] right-[16.6%] h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-green-500" />
+                        <div className="hidden md:block absolute top-[60px] left-[16.6%] right-[16.6%] h-0.5 bg-gradient-to-r from-slate-200 via-slate-400 to-slate-200" />
                         
                         {[
                             {
                                 step: '01',
                                 title: 'Create Your Profile',
                                 description: 'Sign up in seconds and build your professional profile with resume, skills, and preferences.',
-                                icon: Users,
-                                color: 'blue'
+                                icon: Users
                             },
                             {
                                 step: '02',
                                 title: 'Apply to Jobs',
                                 description: 'Browse thousands of verified opportunities and apply with one click. Track all applications.',
-                                icon: Rocket,
-                                color: 'purple'
+                                icon: Rocket
                             },
                             {
                                 step: '03',
                                 title: 'Get Hired',
                                 description: 'Connect with recruiters, attend interviews, and land your dream job. We support you all the way.',
-                                icon: Award,
-                                color: 'green'
+                                icon: Award
                             }
                         ].map((item, idx) => (
                             <motion.div
@@ -308,12 +305,12 @@ const SeekerLanding = () => {
                                 className="relative text-center"
                             >
                                 {/* Step number background */}
-                                <div className={`w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-${item.color}-500 to-${item.color}-600 shadow-2xl flex items-center justify-center relative z-10`}>
-                                    <item.icon className="text-white stroke-white" size={36} strokeWidth={2.5} />
+                                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-black shadow-2xl flex items-center justify-center relative z-10 border border-white/10">
+                                    <item.icon className="text-white stroke-white" size={36} strokeWidth={2} />
                                 </div>
-                                <div className="text-sm font-black text-slate-400 tracking-widest mb-2">STEP {item.step}</div>
+                                <div className="text-[10px] font-black text-slate-400 tracking-[0.3em] mb-4">STEP {item.step}</div>
                                 <h3 className="text-xl font-bold mb-4 text-slate-900">{item.title}</h3>
-                                <p className="text-slate-600 leading-relaxed">{item.description}</p>
+                                <p className="text-slate-500 leading-relaxed text-sm">{item.description}</p>
                             </motion.div>
                         ))}
                     </div>

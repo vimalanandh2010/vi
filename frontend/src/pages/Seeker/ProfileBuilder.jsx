@@ -193,22 +193,22 @@ const ProfileBuilder = () => {
                                             key={section.id}
                                             onClick={() => handleSectionChange(section.id)}
                                             className={`w-full group flex items-center justify-between p-3.5 rounded-2xl transition-all duration-300 ${isActive
-                                                ? 'bg-black text-white scale-[1.02] border border-black'
-                                                : 'text-gray-500 hover:bg-black hover:text-white'
+                                                ? 'bg-blue-100 text-black scale-[1.02] border border-blue-200 shadow-md shadow-blue-500/10'
+                                                : 'text-gray-500 hover:bg-blue-50 hover:text-blue-600'
                                                 }`}
                                         >
                                             <div className="flex items-center gap-3">
-                                                <div className={`p-2 rounded-xl transition-colors ${isActive ? 'bg-white/10 text-white' : `bg-gray-100 ${section.color} group-hover:bg-white/10 group-hover:text-white`}`}>
+                                                <div className={`p-2 rounded-xl transition-colors ${isActive ? 'bg-blue-500 text-white' : `bg-gray-100 group-hover:bg-blue-100 group-hover:text-blue-600`}`}>
                                                     <Icon size={16} />
                                                 </div>
-                                                <span className={`text-[13px] font-black tracking-tight ${isActive ? 'text-white' : 'text-black group-hover:text-white'}`}>
+                                                <span className={`text-[13px] font-black tracking-tight ${isActive ? 'text-black' : 'text-gray-500 group-hover:text-blue-600'}`}>
                                                     {section.label}
                                                 </span>
                                             </div>
                                             {isActive ? (
-                                                <ChevronRight size={14} className="text-white" strokeWidth={3} />
+                                                <ChevronRight size={14} className="text-black" strokeWidth={3} />
                                             ) : (
-                                                <div className={`w-1 h-1 rounded-full bg-gray-300 transition-all ${section.color} group-hover:scale-150 group-hover:bg-white`} />
+                                                <div className={`w-1.5 h-1.5 rounded-full bg-gray-300 transition-all group-hover:scale-150 group-hover:bg-blue-500`} />
                                             )}
                                         </button>
                                     );
@@ -237,7 +237,7 @@ const ProfileBuilder = () => {
                                 <button
                                     onClick={handleSync}
                                     disabled={loading}
-                                    className="px-6 py-3 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-[0_10px_20px_rgba(0,0,0,0.3)] hover:bg-gray-800 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
+                                    className="px-6 py-3 bg-blue-100 text-black rounded-xl text-[10px] font-black uppercase tracking-widest shadow-[0_5px_15px_rgba(37,99,235,0.15)] hover:bg-blue-200 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 border border-blue-200"
                                 >
                                     {loading ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
                                     Save
