@@ -187,9 +187,9 @@ const RecruiterCandidates = () => {
 
     return (
         <RecruiterLayout jobCount={jobCount}>
-            <div className="flex h-full overflow-hidden bg-white">
+            <div className="flex flex-col sm:flex-row h-full overflow-hidden bg-white">
 
-                {/* RIGHT PANEL: Candidate Details (Now on the Left) */}
+                {/* RIGHT PANEL: Candidate Details */}
                 <main className={`
                     flex-1 bg-[#FDFDFD] overflow-y-auto custom-scrollbar flex flex-col
                     ${showDetailMobile ? 'flex' : 'hidden sm:flex'}
@@ -519,10 +519,10 @@ const RecruiterCandidates = () => {
                     )}
                 </main>
 
-                {/* LEFT PANEL: Candidates List (Now on the Right) */}
+                {/* LEFT PANEL: Candidates List */}
                 <aside className={`
                     w-full sm:w-[360px] lg:w-[420px] xl:w-[450px]
-                    border-l border-slate-100 flex-col bg-white shrink-0
+                    border-t sm:border-t-0 sm:border-l border-slate-100 flex-col bg-white shrink-0
                     ${showDetailMobile ? 'hidden sm:flex' : 'flex'}
                 `}>
                     <div className="p-6 sm:p-8 border-b border-gray-100 space-y-4 sm:space-y-6">
