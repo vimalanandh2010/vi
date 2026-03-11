@@ -455,7 +455,12 @@ const RecruiterCandidates = () => {
                                                     <p className="text-slate-300 text-xs font-black uppercase tracking-widest mb-4">Skill Match:</p>
                                                     <div className="grid grid-cols-2 gap-2 sm:gap-3">
                                                         {selectedApplication.user?.skills && selectedApplication.user.skills.length > 0 ? (
-                                                            selectedApplication.user.skills.slice(0, 4).map((skill, idx) => (
+                                                            selectedApplication.user.skills.slice(0, 4).map((skill, idx) => {
+                                                                const jobSkills = selectedApplication.job?.requiredSkills || [];
+                                                                const matched = jobSkills.length > 0
+                                                                    ? jobSkills.some(s => s.toLowerCase() === skill.toLowerCase())
+                                                                    : (selectedApplication.aiMatchScore >= 70);
+                                                                return (
                                                                 <div 
                                                                     key={idx} 
                                                                     className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${
@@ -475,7 +480,8 @@ const RecruiterCandidates = () => {
                                                                         {skill}
                                                                     </span>
                                                                 </div>
-                                                            ))
+                                                                );
+                                                            })
                                                         ) : (
                                                             <div className="col-span-2 text-center py-4 px-3 bg-slate-700/20 border border-slate-600/30 rounded-xl">
                                                                 <p className="text-slate-400 text-xs font-medium">No skills listed by candidate</p>
@@ -484,7 +490,6 @@ const RecruiterCandidates = () => {
                                                     </div>
                                                 </div>
                                             )}
-                                            </div>
 
                                             {/* Recommendation */}
                                             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4">
@@ -571,6 +576,7 @@ const RecruiterCandidates = () => {
                                                 </ul>
                                             </div>
                                         </div>
+                                        {/* Decorative blurs - inside section, outside z-10 wrapper */}
                                         <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl" />
                                         <div className="absolute bottom-[-30%] left-[-10%] w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
                                     </section>
