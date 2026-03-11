@@ -34,6 +34,7 @@ const RecruiterCandidates = () => {
     const [searchQuery, setSearchQuery] = useState('')
     const [filter, setFilter] = useState('All')
     const [updatingStatus, setUpdatingStatus] = useState(false)
+    const [isScanning, setIsScanning] = useState(false)
     const [jobCount, setJobCount] = useState(0)
     const [showDetailMobile, setShowDetailMobile] = useState(false)
     const [showResumeModal, setShowResumeModal] = useState(false)
@@ -52,6 +53,13 @@ const RecruiterCandidates = () => {
             if (res.length > 0 && !selectedId) {
                 setSelectedId(res[0]._id)
             }
+            
+            // Background scan for any missing scores
+            res.forEach(app => {
+                if (app.resumeUrl && (app.aiMatchScore === null || app.aiMatchScore === undefined || app.aiMatchScore === -1)) {
+                    triggerAiScan(app._id);
+                }
+            });
         } catch (err) {
             console.error('Error fetching applicants:', err)
             toast.error("Failed to load candidates")
@@ -114,6 +122,35 @@ const RecruiterCandidates = () => {
             interviewNotes: interviewForm.notes
         })
     }
+
+    // Trigger AI Scan for the selected application if score is missing
+    useEffect(() => {
+        if (selectedApplication && (selectedApplication.aiMatchScore === null || selectedApplication.aiMatchScore === undefined || selectedApplication.aiMatchScore === -1)) {
+            if (selectedApplication.resumeUrl) {
+                console.log(`[RecruiterCandidates] Auto-triggering scan for: ${selectedApplication._id}`);
+                triggerAiScan(selectedApplication._id);
+            }
+        }
+    }, [selectedId, applications]);
+
+    const triggerAiScan = async (appId) => {
+        setIsScanning(true);
+        try {
+            const res = await axiosClient.post(`jobs/application/${appId}/scan`, { autoClassify: false });
+            if (res.aiMatchScore !== undefined) {
+                // Update applications state with the new score
+                setApplications(apps => apps.map(app => 
+                    app._id === appId 
+                        ? { ...app, aiMatchScore: res.aiMatchScore, aiAnalysis: res.analysis } 
+                        : app
+                ));
+            }
+        } catch (err) {
+            console.error('[RecruiterCandidates] AI Scan failed:', err);
+        } finally {
+            setIsScanning(false);
+        }
+    };
 
     const selectedApplication = selectedId
         ? applications.find(a => a._id === selectedId)
@@ -350,46 +387,7 @@ const RecruiterCandidates = () => {
                                             )}
 
                                             {/* Skill Match Breakdown & Recommendation - Only show if resume exists */}
-                                            {selectedApplication.resumeUrl && (
-                                                <div className="mb-6">
-                                                    <p className="text-slate-300 text-xs font-black uppercase tracking-widest mb-4">Skill Match:</p>
-                                                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                                                        {selectedApplication.user?.skills && selectedApplication.user.skills.length > 0 ? (
-                                                            selectedApplication.user.skills.slice(0, 4).map((skill, idx) => {
-                                                                const jobSkills = selectedApplication.job?.requiredSkills || [];
-                                                                const matched = jobSkills.length > 0
-                                                                    ? jobSkills.some(s => s.toLowerCase() === skill.toLowerCase())
-                                                                    : (selectedApplication.aiMatchScore >= 70);
-                                                                return (
-                                                                <div 
-                                                                    key={idx} 
-                                                                    className={`flex items-center gap-2 px-3 py-2 rounded-xl border ${
-                                                                        matched 
-                                                                        ? 'bg-emerald-500/20 border-emerald-500/30' 
-                                                                        : 'bg-slate-700/30 border-slate-600/30'
-                                                                    }`}
-                                                                >
-                                                                    {matched ? (
-                                                                        <Check className="text-emerald-400 shrink-0" size={14} strokeWidth={3} />
-                                                                    ) : (
-                                                                        <X className="text-slate-500 shrink-0" size={14} strokeWidth={3} />
-                                                                    )}
-                                                                    <span className={`text-xs font-bold truncate ${
-                                                                        matched ? 'text-emerald-300' : 'text-slate-400'
-                                                                    }`}>
-                                                                        {skill}
-                                                                    </span>
-                                                                </div>
-                                                                );
-                                                            })
-                                                        ) : (
-                                                            <div className="col-span-2 text-center py-4 px-3 bg-slate-700/20 border border-slate-600/30 rounded-xl">
-                                                                <p className="text-slate-400 text-xs font-medium">No skills listed by candidate</p>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            )}
+                                            // ...existing code...
 
                                             {/* Recommendation */}
                                             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4">
