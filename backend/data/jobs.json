@@ -1,41 +1,67 @@
 [
-  {
-    "title": "Senior React Developer",
-    "companyName": "Tech Corp Solutions",
-    "location": "Bangalore, India",
-    "type": "Full Time",
-    "minSalary": 18,
-    "maxSalary": 25,
-    "experienceLevel": "Senior Level",
-    "description": "We are seeking a Senior React Developer to lead our frontend architecture. You will be responsible for building scalable web applications and mentoring junior developers.",
-    "tags": ["React", "JavaScript", "Tailwind", "System Design"],
-    "requirements": ["5+ years experience with React", "Expertise in State Management", "Strong CSS fundamentals"],
-    "category": "Software Engineering"
-  },
-  {
-    "title": "Data Analyst",
-    "companyName": "Green Energy Systems",
-    "location": "Mumbai, India",
-    "type": "Part Time",
-    "minSalary": 8,
-    "maxSalary": 12,
-    "experienceLevel": "Mid-Senior Level",
-    "description": "Join our data team to analyze sustainable energy trends. You'll work with large datasets to provide actionable insights for our engineering teams.",
-    "tags": ["Python", "SQL", "Tableau", "Data Analysis"],
-    "requirements": ["3+ years in data analytics", "Proficiency in SQL and Python", "Experience with BI tools"],
-    "category": "Data & Analytics"
-  },
-  {
-    "title": "AI Research Scientist",
-    "companyName": "Alpha AI",
-    "location": "Remote",
-    "type": "Full Time",
-    "minSalary": 25,
-    "maxSalary": 40,
-    "experienceLevel": "Expert/Principal",
-    "description": "Expert AI scientist needed to develop LLMs and computer vision models for healthcare diagnostics.",
-    "tags": ["AI/ML", "PyTorch", "NLP", "Healthcare"],
-    "requirements": ["PhD in CS/AI or equivalent experience", "Published research in top conferences", "Deep knowledge of neural networks"],
-    "category": "Data Science"
-  }
+    {
+        "title": "Senior React Developer",
+        "companyName": "Tech Corp Solutions",
+        "location": "Remote",
+        "type": "Full Time",
+        "minSalary": 18,
+        "maxSalary": 25,
+        "experienceLevel": "Senior Level",
+        "description": "We are looking for a Senior React Developer to join our core AI products team. You will be responsible for building highly responsive UI components and architecting scalable frontend systems.",
+        "category": "IT",
+        "tags": ["React", "TypeScript", "Redux", "Node.js"],
+        "requirements": ["5+ years React experience", "Strong CSS/Tailwind skills", "Experience with AWS preferred"]
+    },
+    {
+        "title": "Robotics Engineer",
+        "companyName": "Global Innovators Inc",
+        "location": "Hyderabad, TS",
+        "type": "Full Time",
+        "minSalary": 15,
+        "maxSalary": 22,
+        "experienceLevel": "Mid-Senior Level",
+        "description": "Help us build the next generation of industrial robots. You will work on control systems and path-finding algorithms.",
+        "category": "Engineering",
+        "tags": ["Python", "ROS", "C++", "Robotics"],
+        "requirements": ["Degree in Robotics/Mechanics", "Proficiency in ROS", "3+ years engineering experience"]
+    },
+    {
+        "title": "UI/UX Designer",
+        "companyName": "Creative Minds Studio",
+        "location": "Chennai, TN",
+        "type": "Part Time",
+        "minSalary": 8,
+        "maxSalary": 12,
+        "experienceLevel": "Mid Level",
+        "description": "We need a creative designer to handle branding and mobile app interfaces for our boutique clients.",
+        "category": "Design",
+        "tags": ["Figma", "Branding", "Adobe Suite"],
+        "requirements": ["Portfolio of web/mobile work", "Strong understanding of color theory", "Ability to work independently"]
+    },
+    {
+        "title": "Blockchain Developer",
+        "companyName": "FinTech Prime",
+        "location": "Remote",
+        "type": "Contract",
+        "minSalary": 20,
+        "maxSalary": 35,
+        "experienceLevel": "Expert",
+        "description": "Build decentralized ledgers and smart contracts for our high-frequency trading platform.",
+        "category": "Finance",
+        "tags": ["Solidity", "Web3.js", "Ethereum"],
+        "requirements": ["Expert Solidity knowledge", "Security auditing experience", "Familiarity with DeFi protocols"]
+    },
+    {
+        "title": "Product Manager",
+        "companyName": "HealthBridge Systems",
+        "location": "Pune, MH",
+        "type": "Full Time",
+        "minSalary": 12,
+        "maxSalary": 18,
+        "experienceLevel": "Mid Level",
+        "description": "Lead the product roadmap for our tele-health application. Interface between medical professionals and dev teams.",
+        "category": "Management",
+        "tags": ["Agile", "Roadmap", "Analytics", "Healthcare"],
+        "requirements": ["Previous PM experience", "Background in HealthTech is a plus", "Strong communication skills"]
+    }
 ]

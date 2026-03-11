@@ -366,19 +366,6 @@ router.post('/bulk-upload', recruiterAuth, async (req, res) => {
 
         const createdJobs = await Job.insertMany(jobsToInsert);
 
-        // Emit socket events for real-time updates (optional summary)
-        try {
-            if (typeof emitNewJobPosted === 'function') {
-                emitNewJobPosted({
-                    count: createdJobs.length,
-                    company: companyName,
-                    isBulk: true
-                });
-            }
-        } catch (socketErr) {
-            console.warn('[JobRoutes] Bulk Socket Error:', socketErr.message);
-        }
-
         res.status(201).json({
             message: `Successfully uploaded ${createdJobs.length} jobs`,
             count: createdJobs.length,

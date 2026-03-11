@@ -44,6 +44,8 @@ const RecruiterJobs = () => {
         fetchAnalyticsSummary()
     }, [])
 
+
+
     const handleImportClick = () => {
         if (!company) {
             toast.error('Please complete your company profile to import jobs.')
@@ -59,7 +61,8 @@ const RecruiterJobs = () => {
         const reader = new FileReader()
         reader.onload = async (event) => {
             try {
-                const jobsData = JSON.parse(event.target.result)
+                const text = event.target.result
+                const jobsData = JSON.parse(text)
                 if (!Array.isArray(jobsData)) {
                     toast.error('Invalid format. JSON must be an array of jobs.')
                     return

@@ -1,32 +1,52 @@
 [
-  {
-    "name": "Tech Corp Solutions",
-    "about": "A global leader in software development and digital transformation.",
-    "companyType": "Enterprise",
-    "industries": ["Web/SaaS", "AI/ML"],
-    "size": "10000+",
-    "location": "Bangalore, India",
-    "website": "https://techcorp.example.com",
-    "officialEmail": "contact@techcorp.example.com"
-  },
-  {
-    "name": "Green Energy Systems",
-    "about": "Innovating sustainable energy solutions for a cleaner planet.",
-    "companyType": "Scale-up",
-    "industries": ["IoT", "Manufacturing"],
-    "size": "501-1000",
-    "location": "Mumbai, India",
-    "website": "https://greenenergy.example.com",
-    "officialEmail": "info@greenenergy.example.com"
-  },
-  {
-    "name": "Alpha AI",
-    "about": "Building the next generation of artificial intelligence for healthcare.",
-    "companyType": "Startup",
-    "industries": ["AI/ML", "Healthcare"],
-    "size": "11-50",
-    "location": "Remote",
-    "website": "https://alpha.ai.example.com",
-    "officialEmail": "hello@alpha.ai.example.com"
-  }
+    {
+        "name": "Tech Corp Solutions",
+        "about": "A leading provider of enterprise software solutions and cloud services globally. We specialize in AI-driven analytics and cybersecurity.",
+        "location": "Bangalore, KA",
+        "size": "1000-5000",
+        "website": "https://techcorpsolutions.example.com",
+        "industry": ["Technology", "Software", "AI"],
+        "companyType": "Enterprise",
+        "verified": true
+    },
+    {
+        "name": "Global Innovators Inc",
+        "about": "Innovating the future through sustainable energy and robotics. Join us in building a greener planet.",
+        "location": "Hyderabad, TS",
+        "size": "500-1000",
+        "website": "https://globalinnovators.example.com",
+        "industry": ["Engineering", "Energy", "Robotics"],
+        "companyType": "Enterprise",
+        "verified": true
+    },
+    {
+        "name": "Creative Minds Studio",
+        "about": "A boutique design agency focusing on high-end UI/UX and digital branding for startups.",
+        "location": "Chennai, TN",
+        "size": "50-100",
+        "website": "https://creativeminds.example.com",
+        "industry": ["Design", "Marketing", "E-commerce"],
+        "companyType": "Startup",
+        "verified": false
+    },
+    {
+        "name": "FinTech Prime",
+        "about": "Redefining the banking experience with our mobile-first investment platform and blockchain ledger technology.",
+        "location": "Mumbai, MH",
+        "size": "200-500",
+        "website": "https://fintechprime.example.com",
+        "industry": ["Finance", "Banking", "Blockchain"],
+        "companyType": "Enterprise",
+        "verified": true
+    },
+    {
+        "name": "HealthBridge Systems",
+        "about": "Connecting patients and doctors through a seamless digital healthcare ecosystem and remote monitoring tools.",
+        "location": "Pune, MH",
+        "size": "100-200",
+        "website": "https://healthbridge.example.com",
+        "industry": ["Healthcare", "Software"],
+        "companyType": "Mid-Size",
+        "verified": true
+    }
 ]
