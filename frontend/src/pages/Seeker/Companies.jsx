@@ -106,12 +106,12 @@ const Companies = () => {
                             className="bg-white border border-slate-200 rounded-3xl p-6 sticky top-28 shadow-sm"
                         >
                             <div className="flex items-center gap-2 mb-8 border-b border-slate-100 pb-4">
-                                <Filter className="text-blue-600" size={20} />
+                                <Filter className="text-black" size={20} />
                                 <h3 className="font-bold text-lg text-slate-900">Filters</h3>
                                 {Object.values(filters).some(v => Array.isArray(v) ? v.length > 0 : Boolean(v)) && (
                                     <button
                                         onClick={() => setFilters({ type: '', industry: '', location: '', skills: [] })}
-                                        className="ml-auto text-xs text-blue-600 hover:text-blue-700 font-medium"
+                                        className="ml-auto text-xs text-black border-b border-black hover:opacity-70 font-bold transition-all"
                                     >
                                         Reset
                                     </button>
@@ -128,8 +128,8 @@ const Companies = () => {
                                                 key={type}
                                                 onClick={() => setFilters({ ...filters, type: filters.type === type ? '' : type })}
                                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${filters.type === type
-                                                    ? 'bg-slate-900 border-slate-900 text-white shadow-md'
-                                                    : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-900'
+                                                    ? 'bg-black border-black text-white shadow-md'
+                                                    : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-black hover:text-black'
                                                     }`}
                                             >
                                                 {type}
@@ -147,8 +147,8 @@ const Companies = () => {
                                                 key={industry}
                                                 onClick={() => setFilters({ ...filters, industry: filters.industry === industry ? '' : industry })}
                                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${filters.industry === industry
-                                                    ? 'bg-slate-900 border-slate-900 text-white shadow-md'
-                                                    : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-900'
+                                                    ? 'bg-black border-black text-white shadow-md'
+                                                    : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-black hover:text-black'
                                                     }`}
                                             >
                                                 {industry}
@@ -173,8 +173,8 @@ const Companies = () => {
                                                         setFilters({ ...filters, skills: newSkills });
                                                     }}
                                                     className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${isSelected
-                                                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 border-blue-500 text-white shadow-lg shadow-blue-500/30'
-                                                        : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-blue-300 hover:text-blue-900'
+                                                        ? 'bg-black border-black text-white shadow-lg shadow-black/20'
+                                                        : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-black hover:text-black'
                                                         }`}
                                                 >
                                                     {skill}
@@ -194,7 +194,7 @@ const Companies = () => {
                                             placeholder="London, remote..."
                                             value={filters.location}
                                             onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-                                            className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl py-2.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm transition-all placeholder:text-slate-400"
+                                            className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl py-2.5 pl-10 pr-4 focus:outline-none focus:border-black transition-all placeholder:text-slate-400 font-bold"
                                         />
                                     </div>
                                 </div>
