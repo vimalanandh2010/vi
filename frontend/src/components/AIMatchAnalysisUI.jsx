@@ -245,36 +245,6 @@ export const MatchedState = ({ score = 0, skills = [] }) => {
                 </div>
             </div>
 
-            {/* Skill bars */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "8px" }}>
-                {displaySkills.map((skill, index) => (
-                    <div key={index}>
-                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                            <span style={{ fontSize: "11px", color: "rgba(148,163,184,0.9)", fontFamily: "'DM Sans', sans-serif" }}>
-                                {skill.label}
-                            </span>
-                            <span style={{ fontSize: "11px", color: skill.color || "#00FFA3", fontWeight: "600", fontFamily: "'DM Sans', sans-serif" }}>
-                                {skill.score}%
-                            </span>
-                        </div>
-                        <div style={{
-                            height: "4px",
-                            borderRadius: "2px",
-                            background: "rgba(255,255,255,0.06)",
-                            overflow: "hidden",
-                        }}>
-                            <div style={{
-                                height: "100%",
-                                width: `${skill.score}%`,
-                                background: `linear-gradient(90deg, ${skill.color || "#00FFA3"}99, ${skill.color || "#00FFA3"})`,
-                                borderRadius: "2px",
-                                boxShadow: `0 0 6px ${skill.color || "#00FFA3"}66`,
-                                transition: "width 1s ease",
-                            }} />
-                        </div>
-                    </div>
-                ))}
-            </div>
         </div>
     );
 };
