@@ -23,6 +23,7 @@ import axiosClient from '../../api/axiosClient'
 import { useNavigate, useLocation } from 'react-router-dom'
 import ResumeViewerModal from '../../components/ResumeViewerModal'
 import RecruiterLayout from '../../components/RecruiterLayout'
+import { NoResumeState, MatchedState, LoadingState } from '../../components/AIMatchAnalysisUI'
 
 const RecruiterCandidates = () => {
     const { user } = useAuth()
@@ -337,57 +338,15 @@ const RecruiterCandidates = () => {
                                             
                                             {/* Improved AI Match Analysis UI */}
                                             {!selectedApplication.resumeUrl ? (
-                                                <div className="flex flex-col items-center justify-center py-12">
-                                                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center shadow-lg mb-6">
-                                                        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                        </svg>
-                                                    </div>
-                                                    <p className="text-white font-black text-xl mb-2">No Resume Uploaded</p>
-                                                    <p className="text-slate-400 text-sm font-semibold">Please ask the candidate to upload a resume to enable AI analysis.</p>
-                                                </div>
+                                                <NoResumeState />
                                             ) : selectedApplication.aiMatchScore !== null && selectedApplication.aiMatchScore !== undefined && selectedApplication.aiMatchScore !== -1 ? (
-                                                <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
-                                                    <div className="relative">
-                                                        <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl font-black shadow-lg border-4 ${
-                                                            selectedApplication.aiMatchScore >= 70 
-                                                                ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 border-emerald-400/20'
-                                                                : selectedApplication.aiMatchScore >= 50
-                                                                ? 'bg-gradient-to-br from-blue-500 to-blue-600 border-blue-400/20'
-                                                                : 'bg-gradient-to-br from-orange-500 to-orange-600 border-orange-400/20'
-                                                        }`}>
-                                                            {selectedApplication.aiMatchScore}%
-                                                        </div>
-                                                        {selectedApplication.aiMatchScore >= 70 && (
-                                                            <div className="absolute -top-1 -right-1 w-6 h-6 bg-emerald-400 rounded-full flex items-center justify-center">
-                                                                <Check className="text-slate-900" size={14} strokeWidth={3} />
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-white font-black text-lg sm:text-xl mb-1">
-                                                            {selectedApplication.aiMatchScore >= 70 ? 'Strong Match' : 
-                                                             selectedApplication.aiMatchScore >= 50 ? 'Good Match' : 'Weak Match'}
-                                                        </p>
-                                                        <p className="text-slate-400 text-xs font-bold uppercase tracking-wide">✓ AI Verified Score</p>
-                                                    </div>
-                                                </div>
+                                                <MatchedState score={selectedApplication.aiMatchScore} />
                                             ) : (
-                                                <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
-                                                    <div className="relative">
-                                                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-600 flex items-center justify-center shadow-lg border-4 border-slate-500/20">
-                                                            <Loader2 className="animate-spin text-white stroke-white" size={32} strokeWidth={2.5} />
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-white font-black text-lg sm:text-xl mb-1">Analyzing Resume...</p>
-                                                        <p className="text-slate-400 text-xs font-bold uppercase tracking-wide">⏳ Please wait</p>
-                                                    </div>
-                                                </div>
+                                                <LoadingState />
                                             )}
 
                                             {/* Skill Match Breakdown & Recommendation - Only show if resume exists */}
-                                            // ...existing code...
+                                            {/* ...existing code... */}
 
                                             {/* Recommendation */}
                                             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4">
