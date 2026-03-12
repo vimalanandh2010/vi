@@ -25,12 +25,14 @@ const RecruiterLayout = ({ children, jobCount = 0 }) => {
             </div>
 
             {/* Right Side: Navbar + Main Content */}
-            <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+            <div className="flex flex-col flex-1 min-w-0 overflow-hidden bg-[#FDFDFD]">
                 {/* Navbar with hamburger toggle */}
-                <Navbar onSidebarToggle={() => setSidebarOpen(!sidebarOpen)} showSidebarToggle={true} />
+                <div className="shrink-0">
+                    <Navbar onSidebarToggle={() => setSidebarOpen(!sidebarOpen)} showSidebarToggle={true} />
+                </div>
 
                 {/* Scrollable Content */}
-                <main className="flex-1 overflow-hidden bg-[#FDFDFD] recruiter-content flex flex-col">
+                <main className="flex-1 min-h-0 overflow-y-auto custom-scrollbar recruiter-content">
                     {children}
                 </main>
             </div>

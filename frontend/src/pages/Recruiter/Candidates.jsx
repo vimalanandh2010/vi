@@ -187,11 +187,11 @@ const RecruiterCandidates = () => {
 
     return (
         <RecruiterLayout jobCount={jobCount}>
-            <div className="flex flex-col sm:flex-row overflow-hidden bg-white" style={{height: '100%', minHeight: 0}}>
+            <div className="flex flex-col sm:flex-row h-full overflow-hidden bg-white">
 
                 {/* RIGHT PANEL: Candidate Details */}
                 <main className={`
-                    flex-1 bg-[#FDFDFD] overflow-y-auto custom-scrollbar flex flex-col min-w-0
+                    flex-1 bg-[#FDFDFD] overflow-y-auto custom-scrollbar flex flex-col
                     ${showDetailMobile ? 'flex' : 'hidden sm:flex'}
                 `}>
                     {selectedApplication ? (
@@ -521,7 +521,7 @@ const RecruiterCandidates = () => {
 
                 {/* LEFT PANEL: Candidates List */}
                 <aside className={`
-                    w-full sm:w-[300px] lg:w-[360px] xl:w-[400px]
+                    w-full sm:w-[360px] lg:w-[420px] xl:w-[450px]
                     border-t sm:border-t-0 sm:border-l border-slate-100 flex-col bg-white shrink-0
                     ${showDetailMobile ? 'hidden sm:flex' : 'flex'}
                 `}>
