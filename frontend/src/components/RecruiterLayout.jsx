@@ -6,7 +6,7 @@ const RecruiterLayout = ({ children, jobCount = 0 }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="flex h-screen overflow-hidden bg-white font-poppins">
+        <div className="fixed inset-0 flex overflow-hidden bg-white font-poppins">
             {/* Mobile Overlay */}
             {sidebarOpen && (
                 <div
