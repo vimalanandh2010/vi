@@ -51,10 +51,10 @@ const RecruiterSidebar = ({ jobCount = 0, onClose }) => {
     };
 
     return (
-        <aside className="w-72 sm:w-80 bg-white border-r border-slate-100 h-full shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.05)] z-50 overflow-y-auto custom-scrollbar">
-            <div className="block p-6 sm:p-8">
+        <aside className="w-72 sm:w-80 bg-white border-r border-slate-100 h-full shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.05)] z-50 overflow-y-auto custom-scrollbar flex flex-col">
+            <div className="flex flex-col flex-1 p-6 sm:p-8">
                 {/* Mobile Close Button */}
-                <div className="flex items-center justify-between mb-6 lg:hidden">
+                <div className="flex items-center justify-between mb-6 lg:hidden shrink-0">
                     <span className="text-sm font-black text-slate-400 uppercase tracking-[0.2em]">Menu</span>
                     {onClose && (
                         <button
@@ -66,7 +66,7 @@ const RecruiterSidebar = ({ jobCount = 0, onClose }) => {
                     )}
                 </div>
 
-                <div className="space-y-1.5 mb-8">
+                <div className="space-y-1.5 mb-8 flex-1">
                     <div className="mb-6 px-2 hidden lg:block">
                         <span className="text-sm font-black text-slate-400 uppercase tracking-[0.2em]">Recruiter Menu</span>
                     </div>
@@ -122,7 +122,7 @@ const RecruiterSidebar = ({ jobCount = 0, onClose }) => {
                     </div>
                 </div>
 
-                <div className="space-y-1.5 pt-6 border-t border-slate-100 mt-12">
+                <div className="space-y-1.5 pt-6 border-t border-slate-100 mt-auto shrink-0">
                     <button
                         onClick={() => { navigate('/recruiter/home'); handleNavClick(); }}
                         className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-black transition-all"
