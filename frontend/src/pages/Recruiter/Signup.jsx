@@ -21,9 +21,18 @@ const RecruiterSignup = () => {
                 toast.success("Welcome successfully!");
                 navigate(getRedirectPath(user), { replace: true });
             } catch (err) {
-                const errorMessage = err.response?.data?.message || "Google signup failed";
-                if (errorMessage.toLowerCase().includes('company') || errorMessage.toLowerCase().includes('public domain')) {
+                const errorMessage = err.response?.data?.message || err.message || "Google signup failed";
+                console.error("Google Signup Error:", err);
+                
+                const isDomainError = 
+                    errorMessage.toLowerCase().includes('company') || 
+                    errorMessage.toLowerCase().includes('public domain') || 
+                    errorMessage.toLowerCase().includes('gmail') ||
+                    errorMessage.toLowerCase().includes('personal');
+
+                if (isDomainError) {
                     setGoogleAuthError("Personal Gmail accounts are not allowed. You must use a company Google Workspace account (e.g. name@company.com).");
+                    toast.warning("Company email required");
                 } else {
                     toast.error(errorMessage);
                 }

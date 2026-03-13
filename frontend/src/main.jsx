@@ -17,14 +17,21 @@ const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "311500663954-
  */
 const originalWindowOpen = window.open;
 window.open = function (url, target, features) {
-  // If no URL is provided, it might be a library-managed window (like Google Auth popup)
-  // that opens an empty window first. We should NOT enforce noopener/noreferrer then.
-  const isTargetedGoogleAuth = target && typeof target === 'string' && (target.toLowerCase().includes('google') || target.toLowerCase().includes('gsi'));
-  const isGoogleUrl = url && (url.toString().includes('accounts.google.com') || url.toString().includes('google.com/auth'));
+  // Determine if this is a Google Auth related window
+  const isGoogleTarget = target && typeof target === 'string' && 
+    (target.toLowerCase().includes('google') || target.toLowerCase().includes('gsi') || target.startsWith('asdf'));
+  
+  const isGoogleUrl = url && (
+    url.toString().includes('accounts.google.com') || 
+    url.toString().includes('google.com/auth') ||
+    url.toString().includes('google.com/o/oauth2')
+  );
 
-  const isGoogleAuth = isGoogleUrl || isTargetedGoogleAuth;
+  // If it's a blank window (often opened first by libraries) or a Google URL, 
+  // we MUST NOT add noopener/noreferrer or the library loses control of the popup.
+  const isAuthFlow = !url || url === 'about:blank' || isGoogleUrl || isGoogleTarget;
 
-  if (url && !isGoogleAuth) {
+  if (!isAuthFlow) {
     if (!features) {
       features = "noopener,noreferrer";
     } else {
