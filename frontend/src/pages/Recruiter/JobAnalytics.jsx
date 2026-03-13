@@ -149,46 +149,46 @@ const JobAnalytics = () => {
 
                 {/* Key Metrics Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 bg-blue-600 rounded-[2.5rem] text-white shadow-2xl shadow-blue-600/20 relative overflow-hidden group">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 bg-white border border-slate-100 rounded-[2.5rem] shadow-xl relative overflow-hidden group">
                         <div className="relative z-10 flex flex-col justify-between h-full">
                             <div>
-                                <Eye className="text-blue-100 mb-6" size={32} />
-                                <h3 className="text-6xl font-black tracking-tighter mb-2">{analytics.totalViews}</h3>
-                                <p className="text-sm font-black uppercase tracking-widest opacity-80">Total Views</p>
+                                <Eye className="text-blue-600 mb-6" size={32} />
+                                <h3 className="text-6xl font-black tracking-tighter mb-2 text-slate-900">{analytics.totalViews}</h3>
+                                <p className="text-sm font-black uppercase tracking-widest text-slate-500">Total Views</p>
                             </div>
-                            <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-bold">
-                                <span>Unique</span>
-                                <span className="bg-white/10 px-2 py-0.5 rounded-lg">{analytics.uniqueViews}</span>
+                            <div className="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold">
+                                <span className="text-slate-400">Unique</span>
+                                <span className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-lg">{analytics.uniqueViews}</span>
                             </div>
                         </div>
-                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors" />
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-blue-50 rounded-full blur-3xl transition-colors" />
                     </motion.div>
 
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="p-8 bg-purple-600 rounded-[2.5rem] text-white shadow-2xl shadow-purple-600/20 relative overflow-hidden group">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="p-8 bg-white border border-slate-100 rounded-[2.5rem] shadow-xl relative overflow-hidden group">
                         <div className="relative z-10">
-                            <Users className="text-purple-100 mb-6" size={32} />
-                            <h3 className="text-6xl font-black tracking-tighter mb-2">{analytics.totalApplications}</h3>
-                            <p className="text-sm font-black uppercase tracking-widest opacity-80">Total Applications</p>
+                            <Users className="text-purple-600 mb-6" size={32} />
+                            <h3 className="text-6xl font-black tracking-tighter mb-2 text-slate-900">{analytics.totalApplications}</h3>
+                            <p className="text-sm font-black uppercase tracking-widest text-slate-500">Total Applications</p>
                         </div>
-                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors" />
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-purple-50 rounded-full blur-3xl transition-colors" />
                     </motion.div>
 
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="p-8 bg-emerald-600 rounded-[2.5rem] text-white shadow-2xl shadow-emerald-600/20 relative overflow-hidden group">
                         <div className="relative z-10">
-                            <TrendingUp className="text-emerald-100 mb-6" size={32} />
-                            <h3 className="text-6xl font-black tracking-tighter mb-2">{analytics.viewToApplicationRate}%</h3>
-                            <p className="text-sm font-black uppercase tracking-widest opacity-80">Conversion Rate</p>
+                            <TrendingUp className="text-white mb-6" size={32} strokeWidth={2.5} />
+                            <h3 className="text-6xl font-black tracking-tighter mb-2 text-white">{analytics.viewToApplicationRate}%</h3>
+                            <p className="text-sm font-black uppercase tracking-widest text-white">Conversion Rate</p>
                         </div>
-                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors" />
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl transition-colors" />
                     </motion.div>
 
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-8 bg-orange-600 rounded-[2.5rem] text-white shadow-2xl shadow-orange-600/20 relative overflow-hidden group">
                         <div className="relative z-10">
-                            <Clock className="text-orange-100 mb-6" size={32} />
-                            <h3 className="text-6xl font-black tracking-tighter mb-2">{analytics.averageTimeToApply}h</h3>
-                            <p className="text-sm font-black uppercase tracking-widest opacity-80">Avg. Time to Apply</p>
+                            <Clock className="text-white mb-6" size={32} strokeWidth={2.5} />
+                            <h3 className="text-6xl font-black tracking-tighter mb-2 text-white">{analytics.averageTimeToApply}h</h3>
+                            <p className="text-sm font-black uppercase tracking-widest text-white">Avg. Time to Apply</p>
                         </div>
-                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors" />
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl transition-colors" />
                     </motion.div>
                 </div>
 
