@@ -128,12 +128,12 @@ const SeekerSignup = () => {
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-slate-300 rounded-full blur-[120px]" />
             </div>
 
-            <div className="z-10 w-full max-w-6xl p-4 sm:p-6 lg:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="z-10 w-full max-w-md px-4 sm:px-6 py-8">
 
-                {/* Left Side - Form */}
+                {/* Centered Form */}
                 <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                     className="bg-white border border-slate-200 rounded-2xl md:rounded-3xl p-6 sm:p-8 shadow-lg"
                 >
@@ -296,66 +296,6 @@ const SeekerSignup = () => {
                                 Login
                             </Link>
                         </p>
-                    </div>
-                </motion.div>
-
-                {/* Right Side - Quote/Info */}
-                <motion.div
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className="hidden md:flex flex-col justify-center h-full text-slate-900 p-8"
-                >
-                    <div className="mb-6">
-                        <img src={logo} alt="Logo" className="h-16 mb-6 opacity-90 drop-shadow-lg" />
-                    </div>
-
-                    <h1 className="text-5xl font-extrabold mb-6 leading-tight text-slate-900">
-                        Find the job that <br />
-                        <span className="text-black">
-                            matches your passion.
-                        </span>
-                    </h1>
-
-                    <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-lg relative hover:-translate-y-1 transition-all group mb-8">
-                        <div className="text-4xl text-slate-300 absolute -top-4 -left-2">"</div>
-                        <p className="text-lg text-slate-700 italic mb-4 relative z-10">
-                            This platform helped me land my dream role at a top tech company. The process was seamless and the opportunities were exactly what I was looking for.
-                        </p>
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-lg font-bold text-white">
-                                HB
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-900">  Halfbrick</h4>
-                                <p className="text-sm text-slate-600">brick by brick only made a wall</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Milestones Section */}
-                    <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-lg hover:-translate-y-1 transition-all group">
-                        <h3 className="text-xl font-bold text-slate-900 mb-6">Our Milestones</h3>
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-white shadow-lg">
-                                    <Briefcase size={22} />
-                                </div>
-                                <div>
-                                    <h4 className="font-bold text-slate-900 text-lg leading-none mb-1">150k+ Jobs</h4>
-                                    <p className="text-sm text-slate-600">Active opportunities daily</p>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-white shadow-lg">
-                                    <User size={22} />
-                                </div>
-                                <div>
-                                    <h4 className="font-bold text-slate-900 text-lg leading-none mb-1">2M+ Seekers</h4>
-                                    <p className="text-sm text-slate-600">Trusted by professionals</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </motion.div>
 

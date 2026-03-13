@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useGoogleLogin } from '@react-oauth/google'
-import { User, Mail, Lock, Building2, ArrowRight, Chrome, Eye, EyeOff, Phone } from 'lucide-react'
+import { User, Mail, Lock, Building2, ArrowRight, Chrome, Eye, EyeOff, Phone, AlertTriangle } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { toast } from 'react-toastify'
 import logo from '../../assets/logo.jpeg'
@@ -49,23 +49,28 @@ const RecruiterSignup = () => {
     })
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [emailWarning, setEmailWarning] = useState(false);
+
+    const PUBLIC_DOMAINS = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com', 'yahoo.in', 'rediffmail.com', 'protonmail.com', 'live.com'];
+
+    const isPublicDomainEmail = (email) => {
+        const domain = email.split('@')[1]?.toLowerCase();
+        return domain ? PUBLIC_DOMAINS.includes(domain) : false;
+    };
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+        if (name === 'email') {
+            setEmailWarning(value.includes('@') && isPublicDomainEmail(value));
+        }
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (isLoading) return;
 
-        // Domain validation helper
-        const isPublicDomain = (email) => {
-            const domain = email.split('@')[1]?.toLowerCase();
-            const publicDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com'];
-            return publicDomains.includes(domain);
-        };
-
-        if (isPublicDomain(formData.email)) {
+        if (isPublicDomainEmail(formData.email)) {
             toast.error("Recruiters must use an official company email. Gmail/Yahoo etc. are not allowed.");
             return;
         }
@@ -133,40 +138,9 @@ const RecruiterSignup = () => {
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-slate-300 rounded-full blur-[120px]" />
             </div>
 
-            <div className="z-10 w-full max-w-6xl p-4 sm:p-6 lg:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="z-10 w-full max-w-md px-4 sm:px-6 py-8">
 
-                {/* Information Side */}
-                <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="hidden md:block"
-                >
-                    <img src={logo} alt="Logo" className="h-12 mb-8 rounded-xl" />
-                    <h1 className="text-5xl font-bold text-slate-900 mb-6 leading-tight">
-                        Hire the best <br />
-                        <span className="text-black">talent for your <br /> company.</span>
-                    </h1>
-                    <p className="text-slate-600 text-lg mb-8 max-w-md">
-                        Join 500+ companies hiring from a pool of 50k+ vetted professionals worldwide.
-                    </p>
-
-                    <div className="space-y-4">
-                        {[
-                            "Access to top-tier verified talent",
-                            "AI-powered candidate matching",
-                            "Streamlined application management"
-                        ].map((text, i) => (
-                            <div key={i} className="flex items-center gap-3 text-slate-700">
-                                <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-900">
-                                    <ArrowRight size={14} />
-                                </div>
-                                <span className="font-medium">{text}</span>
-                            </div>
-                        ))}
-                    </div>
-                </motion.div>
-
-                {/* Form Side */}
+                {/* Centered Form */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -249,13 +223,35 @@ const RecruiterSignup = () => {
                             <input
                                 type="email"
                                 name="email"
-                                placeholder="Business Email"
+                                placeholder="Business / Company Email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition-all placeholder:text-slate-400"
+                                className={`w-full bg-white border text-slate-900 rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 transition-all placeholder:text-slate-400 ${
+                                    emailWarning
+                                        ? 'border-orange-400 focus:ring-orange-400/30 focus:border-orange-400'
+                                        : 'border-slate-200 focus:ring-slate-500/40'
+                                }`}
                                 required
                             />
                         </div>
+
+                        {/* Real-time email domain warning */}
+                        {emailWarning && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="flex items-start gap-3 bg-orange-50 border border-orange-200 rounded-xl px-4 py-3"
+                            >
+                                <AlertTriangle className="text-orange-500 mt-0.5 shrink-0" size={16} />
+                                <div>
+                                    <p className="text-orange-700 font-bold text-sm">Personal email not allowed</p>
+                                    <p className="text-orange-600 text-xs mt-0.5">
+                                        Recruiters must use a <strong>company/domain email</strong> (e.g. name@company.com).
+                                        Use <strong>Continue with Google</strong> if your Google account is linked to your company.
+                                    </p>
+                                </div>
+                            </motion.div>
+                        )}
 
                         <div className="grid md:grid-cols-2 gap-4">
                             <div className="relative">

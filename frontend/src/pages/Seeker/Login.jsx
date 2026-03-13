@@ -157,12 +157,12 @@ const SeekerLogin = () => {
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-slate-300 rounded-full blur-[120px]" />
             </div>
 
-            <div className="z-10 w-full max-w-6xl p-4 sm:p-6 lg:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="z-10 w-full max-w-md px-4 sm:px-6 py-8">
 
-                {/* Left Side - Form */}
+                {/* Centered Form */}
                 <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                     className="bg-white border border-slate-200 rounded-2xl md:rounded-3xl p-6 sm:p-8 shadow-lg"
                 >
@@ -342,41 +342,6 @@ const SeekerLogin = () => {
                                 Sign Up
                             </Link>
                         </p>
-                    </div>
-                </motion.div>
-
-                {/* Right Side - Quote/Info */}
-                <motion.div
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className="hidden md:flex flex-col justify-center h-full text-slate-900 p-8"
-                >
-                    <div className="mb-6">
-                        <img src={logo} alt="Logo" className="h-16 mb-6 opacity-90 drop-shadow-lg" />
-                    </div>
-
-                    <h1 className="text-5xl font-bold mb-6 leading-tight text-slate-900">
-                        Welcome back to <br />
-                        <span className="text-black">
-                            your future.
-                        </span>
-                    </h1>
-
-                    <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-lg relative hover:-translate-y-1 transition-all group">
-                        <div className="text-4xl text-slate-300 absolute -top-4 -left-2">"</div>
-                        <p className="text-lg text-slate-700 italic mb-4 relative z-10">
-                            Applying to jobs has never been easier. I found my current role within a week of creating my profile here.
-                        </p>
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-lg font-bold text-white">
-                                JS
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-900">halfbrick</h4>
-                                <p className="text-sm text-slate-600">brick by brick only made a wall</p>
-                            </div>
-                        </div>
                     </div>
                 </motion.div>
 

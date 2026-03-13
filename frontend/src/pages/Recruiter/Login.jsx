@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useGoogleLogin } from '@react-oauth/google'
-import { Mail, Lock, ArrowRight, Chrome, ShieldCheck, Eye, EyeOff } from 'lucide-react'
+import { Mail, Lock, ArrowRight, Chrome, ShieldCheck, Eye, EyeOff, AlertTriangle } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { toast } from 'react-toastify'
 import logo from '../../assets/logo.jpeg'
@@ -39,6 +39,14 @@ const RecruiterLogin = () => {
     })
     const [showPassword, setShowPassword] = useState(false);
 
+    const PUBLIC_DOMAINS = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com', 'yahoo.in', 'rediffmail.com', 'protonmail.com', 'live.com'];
+    const [emailWarning, setEmailWarning] = useState(false);
+
+    const isPublicDomainEmail = (email) => {
+        const domain = email.split('@')[1]?.toLowerCase();
+        return domain ? PUBLIC_DOMAINS.includes(domain) : false;
+    };
+
     // Auto-redirect if already logged in or handle auth errors
     React.useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -62,7 +70,11 @@ const RecruiterLogin = () => {
     }, [user, navigate, getRedirectPath, location]);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+        if (name === 'email') {
+            setEmailWarning(value.includes('@') && isPublicDomainEmail(value));
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -148,38 +160,12 @@ const RecruiterLogin = () => {
                 <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-slate-300 rounded-full blur-[120px]" />
             </div>
 
-            <div className="z-10 w-full max-w-5xl p-4 sm:p-6 lg:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="z-10 w-full max-w-md px-4 sm:px-6 py-8">
 
-                {/* Visual Side */}
+                {/* Centered Form */}
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="hidden md:flex flex-col items-center justify-center p-12 bg-white border border-slate-200 rounded-[40px] text-center shadow-lg"
-                >
-                    <div className="w-20 h-20 bg-slate-900 rounded-3xl flex items-center justify-center mb-8 shadow-xl">
-                        <ShieldCheck size={40} className="text-white" />
-                    </div>
-                    <h2 className="text-3xl font-bold text-slate-900 mb-4">Employer Central</h2>
-                    <p className="text-slate-600 mb-8 leading-relaxed">
-                        Securely access your recruitment dashboard and manage your hiring pipeline with industry-leading precision.
-                    </p>
-                    <div className="flex -space-x-4 mb-4">
-                        {[1, 2, 3, 4].map(i => (
-                            <div key={i} className="w-12 h-12 rounded-full border-4 border-[#0f172a] bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400">
-                                {i}
-                            </div>
-                        ))}
-                        <div className="w-12 h-12 rounded-full border-4 border-white bg-slate-900 flex items-center justify-center text-xs font-bold text-white">
-                            +5k
-                        </div>
-                    </div>
-                    <p className="text-sm text-slate-500 font-bold">Joined by 5,000+ top companies</p>
-                </motion.div>
-
-                {/* Form Side */}
-                <motion.div
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
                     className="bg-white border border-slate-200 rounded-2xl md:rounded-[32px] p-6 sm:p-8 md:p-10 shadow-lg"
                 >
                     {!isLinkingPassword ? (
@@ -225,13 +211,35 @@ const RecruiterLogin = () => {
                                     <input
                                         type="email"
                                         name="email"
-                                        placeholder="Business Email"
+                                        placeholder="Business / Company Email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full bg-white border border-slate-200 text-slate-900 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-slate-500/40 transition-all placeholder:text-slate-400"
+                                        className={`w-full bg-white border text-slate-900 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 transition-all placeholder:text-slate-400 ${
+                                            emailWarning
+                                                ? 'border-orange-400 focus:ring-orange-400/30'
+                                                : 'border-slate-200 focus:ring-slate-500/40'
+                                        }`}
                                         required
                                     />
                                 </div>
+
+                                {/* Real-time email domain warning */}
+                                {emailWarning && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="flex items-start gap-3 bg-orange-50 border border-orange-200 rounded-xl px-4 py-3"
+                                    >
+                                        <AlertTriangle className="text-orange-500 mt-0.5 shrink-0" size={16} />
+                                        <div>
+                                            <p className="text-orange-700 font-bold text-sm">Personal email not allowed</p>
+                                            <p className="text-orange-600 text-xs mt-0.5">
+                                                Recruiters must use a <strong>company/domain email</strong> (e.g. name@company.com).
+                                                Use <strong>Continue with Google</strong> if your Google Workspace is linked to your company.
+                                            </p>
+                                        </div>
+                                    </motion.div>
+                                )}
 
                                 <div className="relative group">
                                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-400 transition-colors" size={20} />
