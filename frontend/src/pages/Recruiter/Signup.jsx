@@ -21,7 +21,12 @@ const RecruiterSignup = () => {
                 toast.success("Welcome successfully!");
                 navigate(getRedirectPath(user), { replace: true });
             } catch (err) {
-                toast.error(err.response?.data?.message || "Google signup failed");
+                const errorMessage = err.response?.data?.message || "Google signup failed";
+                if (errorMessage.toLowerCase().includes('company') || errorMessage.toLowerCase().includes('public domain')) {
+                    setGoogleAuthError("Personal Gmail accounts are not allowed. You must use a company Google Workspace account (e.g. name@company.com).");
+                } else {
+                    toast.error(errorMessage);
+                }
             } finally {
                 setIsLoading(false);
             }
@@ -50,6 +55,7 @@ const RecruiterSignup = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [emailWarning, setEmailWarning] = useState(false);
+    const [googleAuthError, setGoogleAuthError] = useState('');
 
     const PUBLIC_DOMAINS = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com', 'yahoo.in', 'rediffmail.com', 'protonmail.com', 'live.com'];
 
@@ -150,6 +156,22 @@ const RecruiterSignup = () => {
                         <h2 className="text-3xl font-bold text-slate-900 mb-2 text-center md:text-left">Recruiter Signup</h2>
                         <p className="text-slate-600 text-center md:text-left">Choose your gateway to global talent.</p>
                     </div>
+
+                    {googleAuthError && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mb-6 flex items-start gap-3 bg-orange-50 border border-orange-200 rounded-2xl p-4"
+                        >
+                            <AlertTriangle className="text-orange-500 shrink-0 mt-0.5" size={20} />
+                            <div>
+                                <h4 className="text-orange-800 font-bold text-sm mb-1">Company Email Required</h4>
+                                <p className="text-orange-600 text-sm">
+                                    {googleAuthError}
+                                </p>
+                            </div>
+                        </motion.div>
+                    )}
 
                     <div className="mb-8">
                         <div className="flex items-center gap-2 mb-4">
