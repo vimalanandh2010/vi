@@ -17,21 +17,13 @@ const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "311500663954-
  */
 const originalWindowOpen = window.open;
 window.open = function (url, target, features) {
-  // Determine if this is a Google Auth related window
-  const isGoogleTarget = target && typeof target === 'string' && 
-    (target.toLowerCase().includes('google') || target.toLowerCase().includes('gsi') || target.startsWith('asdf'));
+  // We only want to add security headers to standard "open in new tab" calls (target="_blank")
+  // We should NOT touch popups (which have features) or specific named windows like Google Auth
+  const isStandardNewTab = target === '_blank' || !target;
+  const isGoogleUrl = url && (url.toString().includes('google.com') || url.toString().includes('accounts.google.com'));
   
-  const isGoogleUrl = url && (
-    url.toString().includes('accounts.google.com') || 
-    url.toString().includes('google.com/auth') ||
-    url.toString().includes('google.com/o/oauth2')
-  );
-
-  // If it's a blank window (often opened first by libraries) or a Google URL, 
-  // we MUST NOT add noopener/noreferrer or the library loses control of the popup.
-  const isAuthFlow = !url || url === 'about:blank' || isGoogleUrl || isGoogleTarget;
-
-  if (!isAuthFlow) {
+  // If it's a standard new tab and NOT a google URL, add security headers
+  if (isStandardNewTab && !isGoogleUrl && url) {
     if (!features) {
       features = "noopener,noreferrer";
     } else {

@@ -173,22 +173,22 @@ const JobAnalytics = () => {
                         <div className="absolute -top-12 -right-12 w-48 h-48 bg-purple-50 rounded-full blur-3xl transition-colors" />
                     </motion.div>
 
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="p-8 bg-emerald-600 rounded-[2.5rem] text-white shadow-2xl shadow-emerald-600/20 relative overflow-hidden group">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="p-8 bg-white border border-slate-100 rounded-[2.5rem] shadow-xl relative overflow-hidden group">
                         <div className="relative z-10">
-                            <TrendingUp className="text-white mb-6" size={32} strokeWidth={2.5} />
-                            <h3 className="text-6xl font-black tracking-tighter mb-2 text-white">{analytics.viewToApplicationRate}%</h3>
-                            <p className="text-sm font-black uppercase tracking-widest text-white">Conversion Rate</p>
+                            <TrendingUp className="text-emerald-600 mb-6" size={32} strokeWidth={2.5} />
+                            <h3 className="text-6xl font-black tracking-tighter mb-2 text-slate-900">{analytics.viewToApplicationRate}%</h3>
+                            <p className="text-sm font-black uppercase tracking-widest text-slate-500">Conversion Rate</p>
                         </div>
-                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl transition-colors" />
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-emerald-50 rounded-full blur-3xl transition-colors" />
                     </motion.div>
 
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-8 bg-orange-600 rounded-[2.5rem] text-white shadow-2xl shadow-orange-600/20 relative overflow-hidden group">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-8 bg-white border border-slate-100 rounded-[2.5rem] shadow-xl relative overflow-hidden group">
                         <div className="relative z-10">
-                            <Clock className="text-white mb-6" size={32} strokeWidth={2.5} />
-                            <h3 className="text-6xl font-black tracking-tighter mb-2 text-white">{analytics.averageTimeToApply}h</h3>
-                            <p className="text-sm font-black uppercase tracking-widest text-white">Avg. Time to Apply</p>
+                            <Clock className="text-orange-600 mb-6" size={32} strokeWidth={2.5} />
+                            <h3 className="text-6xl font-black tracking-tighter mb-2 text-slate-900">{analytics.averageTimeToApply}h</h3>
+                            <p className="text-sm font-black uppercase tracking-widest text-slate-500">Avg. Time to Apply</p>
                         </div>
-                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl transition-colors" />
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-orange-50 rounded-full blur-3xl transition-colors" />
                     </motion.div>
                 </div>
 

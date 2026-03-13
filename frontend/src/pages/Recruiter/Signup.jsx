@@ -91,9 +91,11 @@ const RecruiterSignup = () => {
 
     const handleBlur = (e) => {
         if (e.target.name === 'email' && isPublicDomainEmail(e.target.value)) {
-            toast.warning("Recruiters must use a company email address.", {
-                toastId: 'domain-warning' // Prevent duplicate toasts
-            });
+            const msg = "Recruiters must use a company email address (e.g. name@company.com).";
+            toast.warning(msg, { toastId: 'domain-warning' });
+            setGoogleAuthError(msg);
+            // Use native alert if user expects it
+            window.alert(msg);
         }
     }
 
@@ -102,7 +104,10 @@ const RecruiterSignup = () => {
         if (isLoading) return;
 
         if (isPublicDomainEmail(formData.email)) {
-            toast.error("Manual signup restricted: Personal email accounts (Gmail, Yahoo, etc.) are not allowed for recruiters. Please use your official company email.");
+            const msg = "Manual signup restricted: Personal email accounts (Gmail, Yahoo, etc.) are not allowed for recruiters. Please use your official company email.";
+            toast.error(msg);
+            setGoogleAuthError(msg);
+            window.alert(msg);
             setEmailWarning(true);
             return;
         }
