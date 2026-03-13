@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useGoogleLogin } from '@react-oauth/google'
 import { motion, useInView as useFramerInView } from 'framer-motion'
 import {
     Briefcase,
@@ -57,22 +56,9 @@ const SeekerLanding = () => {
     const { user, loginWithGoogle, getRedirectPath } = useAuth()
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
+    // Remove unused googleLogin logic
 
-    const googleLogin = useGoogleLogin({
-        onSuccess: async (tokenResponse) => {
-            try {
-                const user = await loginWithGoogle(tokenResponse.access_token, 'seeker');
-                navigate(getRedirectPath(user), { replace: true });
-            } catch (err) {
-                console.error("Google login failed", err);
-            } finally {
-                setIsLoading(false);
-            }
-        },
-        onError: () => {
-            setIsLoading(false);
-        }
-    });
+
 
     const features = [
         {
@@ -174,20 +160,9 @@ const SeekerLanding = () => {
                                 )
                             ) : (
                                 <>
-                                    <Link to="/seeker/signup" className="w-full sm:w-auto px-10 py-4 bg-white text-black rounded-2xl font-bold text-lg shadow-lg active:scale-95 flex items-center justify-center gap-2">
-                                        Get Started  <ArrowRight size={20} />
+                                    <Link to="/seeker/signup" className="w-full sm:w-auto px-12 py-5 bg-black hover:bg-zinc-900 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-2xl hover:shadow-3xl transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 border border-white/10">
+                                        Get Started Now <ArrowRight size={20} />
                                     </Link>
-                                    <button
-                                        onClick={() => {
-                                            setIsLoading(true);
-                                            googleLogin();
-                                        }}
-                                        disabled={isLoading}
-                                        className="w-full sm:w-auto px-10 py-4 bg-white text-slate-900 border border-slate-200 rounded-2xl font-bold text-lg transition-all hover:bg-slate-50 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl active:scale-95"
-                                    >
-                                        <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
-                                        <span>Continue with Google</span>
-                                    </button>
                                 </>
                             )}
                         </div>

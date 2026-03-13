@@ -143,7 +143,7 @@ const SavedJobs = () => {
                                         </div>
                                         <Link
                                             to="/seeker/jobs"
-                                            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-2 rounded-xl text-sm transition-all shadow-lg shadow-blue-500/30"
+                                            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-black px-4 py-2 rounded-xl text-sm transition-all shadow-lg shadow-blue-500/30"
                                         >
                                             View Details <ArrowRight size={16} />
                                         </Link>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useGoogleLogin } from '@react-oauth/google'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Users, Zap, Globe, ArrowRight, CheckCircle, BarChart, Shield, MessageSquare, Briefcase, LogOut } from 'lucide-react'
@@ -11,21 +10,8 @@ const RecruiterLanding = () => {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
 
-    const googleLogin = useGoogleLogin({
-        onSuccess: async (tokenResponse) => {
-            try {
-                const user = await loginWithGoogle(tokenResponse.access_token, 'employer');
-                navigate(getRedirectPath(user), { replace: true });
-            } catch (err) {
-                console.error("Google login failed", err);
-            } finally {
-                setIsLoading(false);
-            }
-        },
-        onError: () => {
-            setIsLoading(false);
-        }
-    });
+    // Unused Google login logic removed
+
 
 
     return (
@@ -94,20 +80,9 @@ const RecruiterLanding = () => {
                                 )
                             ) : (
                                 <>
-                                    <Link to="/recruiter/signup" className="px-10 py-4 bg-black hover:bg-zinc-900 text-white rounded-2xl text-lg font-bold transition-all hover:-translate-y-1 flex items-center gap-2 shadow-lg active:scale-95">
+                                    <Link to="/recruiter/signup" className="px-12 py-4 bg-black hover:bg-zinc-900 text-white rounded-2xl text-lg font-bold transition-all hover:-translate-y-1 flex items-center gap-4 shadow-xl hover:shadow-2xl active:scale-95 border border-white/10">
                                         Start Hiring Now <ArrowRight size={20} />
                                     </Link>
-                                    <button
-                                        onClick={() => {
-                                            setIsLoading(true);
-                                            googleLogin();
-                                        }}
-                                        disabled={isLoading}
-                                        className="px-10 py-4 bg-white text-slate-900 rounded-2xl text-lg font-bold transition-all hover:bg-slate-50 flex items-center gap-3 shadow-lg active:scale-95"
-                                    >
-                                        <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
-                                        <span>Continue with Google</span>
-                                    </button>
                                 </>
                             )}
                         </div>
