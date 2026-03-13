@@ -66,10 +66,17 @@ const RecruiterSignup = () => {
     const [emailWarning, setEmailWarning] = useState(false);
     const [googleAuthError, setGoogleAuthError] = useState('');
 
-    const PUBLIC_DOMAINS = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com', 'yahoo.in', 'rediffmail.com', 'protonmail.com', 'live.com'];
+    const PUBLIC_DOMAINS = [
+        'gmail.com', 'googlemail.com', 'yahoo.com', 'ymail.com', 'outlook.com', 
+        'hotmail.com', 'icloud.com', 'me.com', 'mac.com', 'aol.com', 
+        'zoho.com', 'protonmail.com', 'proton.me', 'mail.com', 'gmx.com',
+        'yandex.com', 'mail.ru', 'live.com', 'msn.com', 'rediffmail.com', 'yahoo.in'
+    ];
 
     const isPublicDomainEmail = (email) => {
-        const domain = email.split('@')[1]?.toLowerCase();
+        if (!email || !email.includes('@')) return false;
+        const parts = email.trim().split('@');
+        const domain = parts[parts.length - 1]?.toLowerCase();
         return domain ? PUBLIC_DOMAINS.includes(domain) : false;
     };
 
@@ -77,7 +84,16 @@ const RecruiterSignup = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
         if (name === 'email') {
-            setEmailWarning(value.includes('@') && isPublicDomainEmail(value));
+            const isPersonal = isPublicDomainEmail(value);
+            setEmailWarning(value.includes('@') && isPersonal);
+        }
+    }
+
+    const handleBlur = (e) => {
+        if (e.target.name === 'email' && isPublicDomainEmail(e.target.value)) {
+            toast.warning("Recruiters must use a company email address.", {
+                toastId: 'domain-warning' // Prevent duplicate toasts
+            });
         }
     }
 
@@ -86,7 +102,8 @@ const RecruiterSignup = () => {
         if (isLoading) return;
 
         if (isPublicDomainEmail(formData.email)) {
-            toast.error("Recruiters must use an official company email. Gmail/Yahoo etc. are not allowed.");
+            toast.error("Manual signup restricted: Personal email accounts (Gmail, Yahoo, etc.) are not allowed for recruiters. Please use your official company email.");
+            setEmailWarning(true);
             return;
         }
 
@@ -257,6 +274,7 @@ const RecruiterSignup = () => {
                                 placeholder="Business / Company Email"
                                 value={formData.email}
                                 onChange={handleChange}
+                                onBlur={handleBlur}
                                 className={`w-full bg-white border text-slate-900 rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:ring-2 transition-all placeholder:text-slate-400 ${
                                     emailWarning
                                         ? 'border-orange-400 focus:ring-orange-400/30 focus:border-orange-400'
