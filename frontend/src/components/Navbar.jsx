@@ -18,6 +18,7 @@ const Navbar = ({ onSidebarToggle, showSidebarToggle = false }) => {
     }
 
     const seekerLinks = [
+        { name: 'Home', path: '/seeker/home', icon: Home },
         { name: 'Jobs', path: '/seeker/jobs', icon: Briefcase },
         { name: 'Companies', path: '/seeker/companies', icon: Users },
         { name: 'Message', path: '/seeker/chat', icon: MessageCircle },
